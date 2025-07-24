@@ -1,0 +1,223 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    width: 100%;
+    max-width: 1170px;
+    height: 710px;
+    margin: 0 auto;
+    padding: 144px 0;
+    align-items: center;
+    background: url('https://api.builder.io/api/v1/image/assets/TEMP/7dafcc96daf90e24bc6af89951be7899b6a08a13?width=2340') lightgray 50% / cover no-repeat;
+    position: relative;
+}
+
+.hero-container {
+    width: 100%;
+    max-width: 1170px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Hero Content */
+.hero-content {
+    display: flex;
+    width: 560px;
+    height: 387px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* Title Section */
+.hero-title-wrapper {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    position: relative;
+}
+
+.hero-title {
+    flex: 1 0 0;
+    color: #000;
+    font-family: 'Onest', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 55px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 100%;
+    position: relative;
+    margin: 0;
+}
+
+/* Description Section */
+.hero-description-wrapper {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    position: relative;
+}
+
+.hero-description {
+    flex: 1 0 0;
+    color: #333;
+    text-align: justify;
+    font-family: 'Golos Text', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+    position: relative;
+    margin: 0;
+}
+
+/* Button Section */
+.hero-button-wrapper {
+    position: relative;
+}
+
+.hero-button {
+    display: flex;
+    padding: 10px 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    border-radius: 5px;
+    background: #8D222C;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+    background: #7A1E26;
+}
+
+.button-text {
+    color: #FFF;
+    font-family: 'Golos Text', -apple-system, Roboto, Helvetica, sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.button-arrow {
+    width: 13.273px;
+    height: 16px;
+    transform: rotate(-90deg);
+    fill: #FFF;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .hero-section {
+        max-width: 100%;
+        padding: 144px 20px;
+    }
+    
+    .hero-container {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-section {
+        height: auto;
+        min-height: 500px;
+        padding: 80px 20px;
+    }
+    
+    .hero-content {
+        width: 100%;
+        max-width: 100%;
+        height: auto;
+        gap: 30px;
+    }
+    
+    .hero-title {
+        font-size: 42px;
+        line-height: 110%;
+    }
+    
+    .hero-description {
+        font-size: 14px;
+        line-height: 150%;
+    }
+    
+    .hero-button {
+        padding: 12px 24px;
+        gap: 16px;
+    }
+    
+    .button-text {
+        font-size: 14px;
+    }
+    
+    .button-arrow {
+        width: 12px;
+        height: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 60px 15px;
+        min-height: 400px;
+    }
+    
+    .hero-content {
+        gap: 25px;
+    }
+    
+    .hero-title {
+        font-size: 32px;
+        line-height: 120%;
+    }
+    
+    .hero-description {
+        font-size: 13px;
+        text-align: left;
+    }
+    
+    .hero-button {
+        padding: 10px 20px;
+        gap: 12px;
+    }
+    
+    .button-text {
+        font-size: 13px;
+    }
+    
+    .button-arrow {
+        width: 10px;
+        height: 12px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .hero-section {
+        background: none;
+        color: #000;
+        padding: 20px 0;
+        height: auto;
+    }
+    
+    .hero-button {
+        display: none;
+    }
+}

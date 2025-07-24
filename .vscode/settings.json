@@ -4,7 +4,7 @@
     "out": "${workspaceFolder}/templates/capitalcraft/css/",
     "outExt": ".css",
     "watch": true,
-    "compress": true,
+    "compress": false,
     "autoprefixer": "> 1%, last 2 versions",
     "includePath": ["${workspaceFolder}/templates/capitalcraft/less"]
   },
