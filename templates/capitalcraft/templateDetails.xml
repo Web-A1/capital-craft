@@ -4,7 +4,12 @@
   <version>1.0.0</version>
   <author>A1_dev</author>
   <description>Шаблон Capital Craft</description>
+  <positions>
+    <position>header-menu</position>
+    <position>mobile-menu</position>
+  </positions>
   <files>
+    <filename>header.php</filename>
     <filename>index.php</filename>
     <filename>templateDetails.xml</filename>
     <folder>css</folder>

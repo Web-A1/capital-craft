@@ -34,15 +34,17 @@
                         </svg>
                     </a>
                 </div>
-
             </div>
             <div class="burger" aria-label="Открыть меню">
                 <span></span>
                 <span></span>
                 <span></span>
             </div>
-
         </div>
-
+    </div>
+    <div class="mobile-nav">
+        <nav class="mobile-nav__menu">
+            <jdoc:include type="modules" name="mobile-menu" style="none" />
+        </nav>
     </div>
 </header>
