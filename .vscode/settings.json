@@ -1,6 +1,6 @@
 {
   "less.compile": {
-    "main": ["${workspaceFolder}/templates/capitalcraft/less/main.less"],
+    "main": ["${workspaceFolder}/templates/capitalcraft/less/home.less"],
     "out": "${workspaceFolder}/templates/capitalcraft/css/",
     "outExt": ".css",
     "watch": true,
