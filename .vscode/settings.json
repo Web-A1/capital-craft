@@ -1,0 +1,20 @@
+{
+  "less.compile": {
+    "main": ["${workspaceFolder}/templates/capitalcraft/less/main.less"],
+    "out": "${workspaceFolder}/templates/capitalcraft/css/",
+    "outExt": ".css",
+    "watch": true,
+    "compress": true,
+    "autoprefixer": "> 1%, last 2 versions",
+    "includePath": ["${workspaceFolder}/templates/capitalcraft/less"]
+  },
+  "[less]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[php]": {
+    "editor.defaultFormatter": "bmewburn.vscode-intelephense-client",
+    "editor.formatOnSave": true
+  },
+  "editor.formatOnSave": true
+}

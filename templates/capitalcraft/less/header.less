@@ -1,0 +1,204 @@
+// out: false
+@import 'variables.less';
+
+// Скрываем пункт "Главная" на главной
+.main-nav .item-101.default.current {
+  display: none;
+}
+
+.site-header {
+  max-width: @container-width;
+  margin: 0 auto;
+  padding: 25px 0;
+  border-bottom: 1px solid #000;
+
+  .media(mobile, {
+  margin: 0 20px;
+  padding: 20px 0 10px 0;
+  });
+
+  .header__inner {
+    max-width: 1170px;
+    //margin: 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .media(mobile, {
+       margin: 0;
+       height: 60px;
+       align-items: center;
+       });
+
+    .logo {
+      .media(mobile, {
+         width: 45%;
+        });
+      img {
+        display: block;
+        height: 48px;
+
+        .media(mobile, {
+         height: 36px;
+         object-fit: contain;
+        });
+      }
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+
+      .media(mobile, {
+       gap: 16px;
+       width: 65%;
+       justify-content: space-between;
+       });
+
+      .main-nav {
+        .media(mobile, {display: none;});
+        .mod-menu {
+          display: flex;
+          gap: 30px;
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          a {
+            font-family: 'Golos Text', sans-serif;
+            font-size: 14px;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: @color-text;
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s ease;
+
+            &::after {
+              content: '';
+              position: absolute;
+              left: 0;
+              bottom: -5px;
+              width: 100%;
+              height: 1.5px;
+              background-color: #8d222c;
+              transform: scaleX(0);
+              transform-origin: left;
+              transition: transform 0.3s ease;
+            }
+
+            &:hover {
+              color: #000;
+
+              &::after {
+                transform: scaleX(1);
+              }
+            }
+          }
+
+          .item-active > a {
+            color: #8d222c;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .burger {
+        display: none;
+        width: 24px;
+        height: 18px;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+        z-index: 20;
+
+        span {
+          display: block;
+          height: 2px;
+          background-color: #000;
+          transition: 0.3s ease;
+        }
+
+        .media(mobile, {
+            display: flex;
+          });
+      }
+
+      .header-controls {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+
+        &__inner {
+          display: flex;
+          align-items: center;
+          gap: 30px;
+
+          .divider {
+            .media(mobile, {display: none;});
+
+            width: 1px;
+            height: 25px;
+            background-color: #000;
+            opacity: 1;
+          }
+
+          .btn--primary {
+            padding: 10px 20px;
+            background-color: @color-accent;
+            color: @color-white;
+            font-family: 'Golos Text', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            border-radius: 6px;
+            text-transform: uppercase;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background-color: transparent;
+              color: @color-accent;
+              border-color: @color-accent;
+            }
+            .media(mobile, {
+            padding: 8px 12px;
+            font-size: 12px;
+            height: 36px;
+          });
+          }
+          .header-controls__icons {
+            .media(mobile, {display: none;});
+
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .icon-link {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              width: 40px;
+              height: 40px;
+              transition: color 0.3s ease;
+              color: #000;
+
+              svg {
+                width: 40px;
+                height: 40px;
+                transition: fill 0.3s ease;
+              }
+              &--invertable {
+                padding: 3px;
+                .invertable-icon();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

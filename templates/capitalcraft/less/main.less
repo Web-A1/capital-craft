@@ -1,0 +1,51 @@
+// out: ../css/style.css
+@import 'variables.less';
+@import 'header.less';
+
+/* Сброс отступов и box-sizing */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Базовый стиль для страницы */
+body {
+  font-family: @font-body;
+  font-size: @font-size-text;
+  background-color: @color-bg-craft;
+  color: @color-text;
+  line-height: 1.5;
+}
+
+a {
+  color: @color-accent;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.page-wrapper {
+  background-color: @color-bg-craft;
+}
+
+.magazine-frame {
+  max-width: 1300px;
+  width: 100%;
+  margin: 50px auto;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+
+  .media(mobile, {
+    margin: 0 auto;
+    border: none;});
+}
+
+.container {
+  max-width: @container-width;
+  width: 100%;
+  margin: 0 auto;
+}

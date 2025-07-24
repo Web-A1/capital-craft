@@ -1,0 +1,68 @@
+// out: false
+
+// Цвета
+@color-accent: #8d222c;
+@color-heading: #000000;
+@color-text: #333333;
+@color-bg-craft: #fdfbf5;
+@color-white: #ffffff;
+@section-divider-color: #000000;
+
+// Шрифты
+@font-body: 'Golos Text', sans-serif;
+@font-title: 'Onest', sans-serif;
+
+// Типографика
+@font-size-sub: 14px;
+@font-size-text: 16px;
+@font-size-title: 34px;
+
+// Размеры
+@container-width: 1170px;
+@gap: 30px;
+@padding-button: 10px 20px;
+@section-padding: 80px;
+@radius: 5px;
+
+//Адаптация для мобильных
+@screen-mobile: ~'only screen and (max-width: 767px)';
+.media(@breakpoint, @rules) when (@breakpoint = mobile) {
+  @media @screen-mobile {
+    @rules();
+  }
+}
+
+//Инверсия svg
+.invertable-icon() {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: all 0.3s ease;
+
+  svg {
+    width: 40px;
+    height: 40px;
+
+    .bg {
+      fill: #fdfbf5;
+      transition: fill 0.3s ease;
+    }
+
+    .icon {
+      fill: #000;
+      transition: fill 0.3s ease;
+    }
+  }
+
+  &:hover svg {
+    .bg {
+      fill: #000;
+    }
+
+    .icon {
+      fill: #fdfbf5;
+    }
+  }
+}
