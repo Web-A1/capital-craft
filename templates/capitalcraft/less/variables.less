@@ -66,3 +66,40 @@
     }
   }
 }
+
+// Базовые стили для кнопок
+.btn-base(@color: @color-accent) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: @padding-button;
+  border-radius: @radius;
+  border: 2px solid transparent;
+  background-color: @color;
+  color: @color-white;
+  font-family: @font-body;
+  font-size: @font-size-text;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: transparent;
+    color: @color;
+    border-color: @color;
+  }
+}
+
+// Стили для стрелки в кнопках
+.btn-arrow(@w: 13px, @h: 16px, @rotate: 0deg) {
+  svg {
+    width: @w;
+    height: @h;
+    transform: rotate(@rotate);
+
+    path {
+      fill: currentColor;
+    }
+  }
+}

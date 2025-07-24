@@ -398,34 +398,42 @@ body.menu-open {
   }
 }
 .hero__btn {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  gap: 20px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   padding: 10px 20px;
   border-radius: 5px;
+  border: 2px solid transparent;
   background-color: #8d222c;
   color: #ffffff;
   font-family: 'Golos Text', sans-serif;
   font-size: 16px;
-  line-height: 100%;
   text-transform: uppercase;
   text-decoration: none;
-  -webkit-transition: background-color 0.3s ease;
-  transition: background-color 0.3s ease;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  gap: 20px;
+}
+.hero__btn:hover {
+  background-color: transparent;
+  color: #8d222c;
+  border-color: #8d222c;
 }
 .hero__btn svg {
   width: 13px;
   height: 16px;
-  -webkit-transform: rotate(-90deg);
-          transform: rotate(-90deg);
-  fill: #ffffff;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
 }
-.hero__btn:hover {
-  background-color: #781d26;
+.hero__btn svg path {
+  fill: currentColor;
 }
 @media only screen and (max-width: 767px) {
   .hero__btn {
@@ -436,6 +444,11 @@ body.menu-open {
   .hero__btn svg {
     width: 12px;
     height: 14px;
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  .hero__btn svg path {
+    fill: currentColor;
   }
 }
 /* Сброс отступов и box-sizing */

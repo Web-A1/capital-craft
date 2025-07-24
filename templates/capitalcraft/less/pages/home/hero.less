@@ -60,40 +60,16 @@
   }
 
   &__btn {
+    .btn-base();
     display: inline-flex;
-    align-items: center;
     gap: 20px;
-    padding: @padding-button;
-    border-radius: @radius;
-    background-color: @color-accent;
-    color: @color-white;
-    font-family: @font-body;
-    font-size: @font-size-text;
-    line-height: 100%;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
-
-    svg {
-      width: 13px;
-      height: 16px;
-      transform: rotate(-90deg);
-      fill: @color-white;
-    }
-
-    &:hover {
-      background-color: darken(@color-accent, 5%);
-    }
+    .btn-arrow();
 
     .media(mobile, {
       padding: 12px 24px;
       gap: 16px;
       font-size: 14px;
-
-      svg {
-        width: 12px;
-        height: 14px;
-      }
+      .btn-arrow(12px, 14px);
     });
   }
 }
