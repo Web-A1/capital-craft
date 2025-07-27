@@ -2,9 +2,9 @@
     <div class="modal__overlay"></div>
     <div class="modal__body">
         <button type="button" class="modal__close" aria-label="Закрыть">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <line x1="4" y1="4" x2="20" y2="20" />
-                <line x1="20" y1="4" x2="4" y2="20" />
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+                <line x1="6" y1="6" x2="26" y2="26" />
+                <line x1="26" y1="6" x2="6" y2="26" />
             </svg>
         </button>
         <div class="modal__header">
