@@ -2,8 +2,11 @@
     <div class="modal__overlay"></div>
     <div class="modal__body">
         <button type="button" class="modal__close" aria-label="Закрыть">&times;</button>
-        <h2 class="modal__title">Давайте разбираться</h2>
-        <p class="modal__subtitle">Оставьте свои контакты и кратко опишите задачу — мы свяжемся с вами, чтобы обсудить детали</p>
+        <div class="modal__header">
+            <p class="modal__subtitle">обсудить проект</p>
+            <h2 class="modal__title">Давайте разбираться</h2>
+            <p class="modal__description">Оставьте свои контакты и кратко опишите задачу — мы свяжемся с вами, чтобы обсудить детали</p>
+        </div>
         <form id="contactForm" class="modal__form">
             <input type="text" name="name" placeholder="Имя">
             <div class="phone-field">
