@@ -340,7 +340,7 @@ body.menu-open {
       -ms-flex-align: center;
           align-items: center;
   min-height: 710px;
-  padding: 144px 0;
+  background: url('/templates/capitalcraft/images/home/waves.webp');
 }
 @media only screen and (max-width: 767px) {
   .hero {
@@ -398,6 +398,9 @@ body.menu-open {
   }
 }
 .hero__btn {
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -472,17 +475,14 @@ a {
   color: #8d222c;
   text-decoration: none;
 }
-a:hover {
-  text-decoration: underline;
-}
 .page-wrapper {
   background-color: #fdfbf5;
 }
 .magazine-frame {
   max-width: 1300px;
   width: 100%;
-  margin: 50px auto;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  border: 1px solid #333333;
 }
 @media only screen and (max-width: 767px) {
   .magazine-frame {

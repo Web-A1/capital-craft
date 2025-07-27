@@ -7,6 +7,7 @@
 @color-bg-craft: #fdfbf5;
 @color-white: #ffffff;
 @section-divider-color: #000000;
+@color-outside: #dcd8cf;
 
 // Шрифты
 @font-body: 'Golos Text', sans-serif;
@@ -69,6 +70,7 @@
 
 // Базовые стили для кнопок
 .btn-base(@color: @color-accent) {
+  width: fit-content;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -79,6 +81,7 @@
   color: @color-white;
   font-family: @font-body;
   font-size: @font-size-text;
+  //font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;

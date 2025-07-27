@@ -24,10 +24,6 @@ body {
 a {
   color: @color-accent;
   text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 .page-wrapper {
@@ -37,8 +33,8 @@ a {
 .magazine-frame {
   max-width: 1300px;
   width: 100%;
-  margin: 50px auto;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  border: 1px solid @color-text;
 
   .media(mobile, {
     margin: 0 auto;
