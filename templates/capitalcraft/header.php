@@ -16,7 +16,7 @@
             <div class="header-controls__inner">
                 <div class="divider"></div>
 
-                <a href="#contact" class="btn btn--primary">Обсудить проект</a>
+                <button type="button" class="btn btn--primary js-open-modal">Обсудить проект</button>
 
                 <div class="divider"></div>
                 <div class="header-controls__icons">

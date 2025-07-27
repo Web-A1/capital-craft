@@ -40,6 +40,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
       <?php endif; ?>
 
       <?php include __DIR__ . '/footer.php'; ?>
+      <?php include __DIR__ . '/modal.php'; ?>
 
     </div>
   </div>
