@@ -56,7 +56,8 @@
         }
 
         var fd = new FormData(form);
-        fetch('templates/capitalcraft/sendToTelegram.php', {
+        // корректный путь к скрипту отправки данных в Telegram
+        fetch('templates/capitalcraft/send_to_telegram.php', {
           method: 'POST',
           body: fd,
         })
