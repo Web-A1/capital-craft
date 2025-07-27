@@ -47,10 +47,35 @@
       });
     }
 
-    if (phoneInput) {
-      phoneInput.addEventListener('input', function () {
-        this.value = this.value.replace(/\D/g, '');
+    function setCursor(pos, elem) {
+      elem.focus();
+      if (elem.setSelectionRange) elem.setSelectionRange(pos, pos);
+    }
+
+    function phoneMask(e) {
+      var matrix = '+7 (___) ___-__-__';
+      var i = 0;
+      var def = matrix.replace(/\D/g, '');
+      var val = phoneInput.value.replace(/\D/g, '');
+      if (def.length >= val.length) val = def;
+      phoneInput.value = matrix.replace(/./g, function (a) {
+        return /[_\d]/.test(a) && i < val.length
+          ? val.charAt(i++)
+          : i >= val.length
+          ? ''
+          : a;
       });
+      if (e.type === 'blur') {
+        if (phoneInput.value.replace(/\D/g, '').length < 11) phoneInput.value = '';
+      } else {
+        setCursor(phoneInput.value.length, phoneInput);
+      }
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', phoneMask);
+      phoneInput.addEventListener('focus', phoneMask);
+      phoneInput.addEventListener('blur', phoneMask);
     }
 
     if (form) {
