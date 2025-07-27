@@ -13,6 +13,7 @@
     var modal = document.getElementById('contact-modal');
     var closeBtn = modal ? modal.querySelector('.modal__close') : null;
     var form = document.getElementById('contactForm');
+    var phoneInput = form ? form.querySelector('input[name="phone"]') : null;
 
     function openModal() {
       modal.classList.add('open');
@@ -39,13 +40,23 @@
           closeModal();
         }
       });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('open')) {
+          closeModal();
+        }
+      });
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+      });
     }
 
     if (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var phoneInput = form.querySelector('input[name="phone"]');
-        var phone = phoneInput.value.trim();
+        var phone = phoneInput ? phoneInput.value.trim() : '';
         var error = form.querySelector('.form-error');
         var valid = /^\+?\d{10,15}$/.test(phone);
         if (!valid) {
