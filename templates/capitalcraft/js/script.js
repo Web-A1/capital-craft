@@ -156,11 +156,16 @@
     var partnersList = document.querySelector('.partners__list');
     if (partnersList) {
       var slideTime = 500;
+      var listStyles = getComputedStyle(partnersList);
+      var gap = parseInt(listStyles.gap || listStyles.columnGap || 0, 10);
+
       setInterval(function () {
         var first = partnersList.children[0];
-        var shift = first.offsetWidth + 40; // gap
+        var shift = first.offsetWidth + gap;
+
         partnersList.style.transition = 'transform ' + slideTime + 'ms';
         partnersList.style.transform = 'translateX(-' + shift + 'px)';
+
         setTimeout(function () {
           partnersList.appendChild(first);
           partnersList.style.transition = 'none';

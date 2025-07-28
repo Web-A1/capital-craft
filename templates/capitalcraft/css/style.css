@@ -147,7 +147,11 @@
     display: none;
   }
 }
-.site-header .header__inner .header-right .header-controls__inner .btn--primary {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .btn--primary {
   width: fit-content;
   display: inline-flex;
   align-items: center;
@@ -167,29 +171,50 @@
   border-radius: 6px;
   font-size: 14px;
 }
-.site-header .header__inner .header-right .header-controls__inner .btn--primary:hover {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .btn--primary:hover {
   background-color: transparent;
   color: #8d222c;
   border-color: #8d222c;
 }
 @media only screen and (max-width: 767px) {
-  .site-header .header__inner .header-right .header-controls__inner .btn--primary {
+  .site-header
+    .header__inner
+    .header-right
+    .header-controls__inner
+    .btn--primary {
     padding: 8px 12px;
     font-size: 12px;
     height: 36px;
   }
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 @media only screen and (max-width: 767px) {
-  .site-header .header__inner .header-right .header-controls__inner .header-controls__icons {
+  .site-header
+    .header__inner
+    .header-right
+    .header-controls__inner
+    .header-controls__icons {
     display: none;
   }
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -198,12 +223,23 @@
   transition: color 0.3s ease;
   color: #000;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link svg {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link
+  svg {
   width: 40px;
   height: 40px;
   transition: fill 0.3s ease;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link--invertable {
   padding: 3px;
   display: inline-flex;
   align-items: center;
@@ -212,22 +248,56 @@
   height: 40px;
   transition: all 0.3s ease;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable svg {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link--invertable
+  svg {
   width: 40px;
   height: 40px;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable svg .bg {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link--invertable
+  svg
+  .bg {
   fill: #fdfbf5;
   transition: fill 0.3s ease;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable svg .icon {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link--invertable
+  svg
+  .icon {
   fill: #000;
   transition: fill 0.3s ease;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable:hover svg .bg {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link--invertable:hover
+  svg
+  .bg {
   fill: #000;
 }
-.site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable:hover svg .icon {
+.site-header
+  .header__inner
+  .header-right
+  .header-controls__inner
+  .header-controls__icons
+  .icon-link--invertable:hover
+  svg
+  .icon {
   fill: #fdfbf5;
 }
 body.menu-open {
@@ -692,13 +762,23 @@ body.modal-open {
   text-align: center;
   margin-bottom: 40px;
 }
+.partners__viewport {
+  overflow: hidden;
+  max-width: 560px;
+  margin: 0 auto;
+}
+@media only screen and (max-width: 767px) {
+  .partners__viewport {
+    max-width: 100%;
+  }
+}
 .partners__list {
   display: flex;
   flex-wrap: nowrap;
-  overflow: hidden;
+  width: fit-content;
   gap: 40px;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 @media only screen and (max-width: 767px) {
   .partners__list {

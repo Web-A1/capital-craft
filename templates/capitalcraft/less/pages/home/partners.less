@@ -1,6 +1,13 @@
 // out: false
 @import '../../variables.less';
 
+@partners-item-width: 160px;
+@partners-item-height: 80px;
+@partners-gap: 40px;
+@partners-visible: 3;
+@partners-viewport-width: (@partners-item-width * @partners-visible) +
+  (@partners-gap * (@partners-visible - 1));
+
 .partners {
   padding: @section-padding 0;
 
@@ -13,13 +20,23 @@
     margin-bottom: 40px;
   }
 
+  &__viewport {
+    overflow: hidden;
+    max-width: @partners-viewport-width;
+    margin: 0 auto;
+
+    .media(mobile, {
+      max-width: 100%;
+    });
+  }
+
   &__list {
     display: flex;
     flex-wrap: nowrap;
-    overflow: hidden;
-    gap: 40px;
+    width: fit-content;
+    gap: @partners-gap;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     .media(mobile, {
       overflow-x: auto;
@@ -30,8 +47,8 @@
 
   &__item {
     flex: 0 0 auto;
-    width: 160px;
-    height: 80px;
+    width: @partners-item-width;
+    height: @partners-item-height;
     display: flex;
     align-items: center;
     justify-content: center;
