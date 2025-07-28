@@ -13,6 +13,7 @@
     var modal = document.getElementById('contact-modal');
     var closeBtn = modal ? modal.querySelector('.modal__close') : null;
     var form = document.getElementById('contactForm');
+    var successBox = modal ? modal.querySelector('.modal__success') : null;
     var phoneInput = form ? form.querySelector('input[name="phone"]') : null;
     var consentInput = form ? form.querySelector('.personal-data input') : null;
     var consentError = form ? form.querySelector('.consent-error') : null;
@@ -20,6 +21,17 @@
     function openModal() {
       modal.classList.add('open');
       document.body.classList.add('modal-open');
+      if (form) {
+        form.style.display = 'flex';
+        form.reset();
+        var err = form.querySelector('.form-error');
+        if (err) err.style.display = 'none';
+        var consentErr = form.querySelector('.consent-error');
+        if (consentErr) consentErr.style.display = 'none';
+        var errorResult = form.querySelector('.form-result.error');
+        if (errorResult) errorResult.style.display = 'none';
+      }
+      if (successBox) successBox.style.display = 'none';
     }
 
     function closeModal() {
@@ -123,17 +135,17 @@
           })
           .then(function (data) {
             if (data.status === 'ok') {
-              form.querySelector('.form-result.success').style.display =
-                'block';
-              form.querySelector('.form-result.error').style.display = 'none';
-              form.reset();
+              var errorRes = form.querySelector('.form-result.error');
+              if (errorRes) errorRes.style.display = 'none';
+              form.style.display = 'none';
+              if (successBox) successBox.style.display = 'flex';
             } else {
               throw new Error();
             }
           })
           .catch(function () {
             form.querySelector('.form-result.error').style.display = 'block';
-            form.querySelector('.form-result.success').style.display = 'none';
+            if (successBox) successBox.style.display = 'none';
           });
       });
     }
