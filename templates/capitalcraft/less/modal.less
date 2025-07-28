@@ -67,11 +67,11 @@
     font-family: @font-body;
     font-size: @font-size-sub;
     text-transform: uppercase;
-    color: @color-accent;
+    color: @color-text;
   }
   &__title {
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: 24px;
     color: @color-heading;
   }
   &__description {
@@ -87,13 +87,13 @@
       display: flex;
       align-items: flex-start;
       gap: 8px;
+      span {
+        font-size: 12px;
+      }
     }
     .modal__btn {
-      .btn-base();
-      display: inline-flex;
-      gap: 20px;
+      .btn-main();
       align-self: flex-start;
-      .btn-arrow();
     }
     input,
     textarea {

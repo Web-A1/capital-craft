@@ -49,16 +49,37 @@
 
     if (phoneInput) {
       phoneInput.addEventListener('input', function () {
-        this.value = this.value.replace(/\D/g, '');
+        var digits = this.value.replace(/\D/g, '').replace(/^8/, '7');
+        if (digits.charAt(0) !== '7') {
+          digits = '7' + digits;
+        }
+        if (digits.length > 11) {
+          digits = digits.slice(0, 11);
+        }
+        var formatted = '+7';
+        if (digits.length > 1) {
+          formatted += ' (' + digits.slice(1, 4);
+          if (digits.length >= 4) formatted += ') ';
+        }
+        if (digits.length >= 4) {
+          formatted += digits.slice(4, 7);
+        }
+        if (digits.length >= 7) {
+          formatted += '-' + digits.slice(7, 9);
+        }
+        if (digits.length >= 9) {
+          formatted += '-' + digits.slice(9, 11);
+        }
+        this.value = formatted;
       });
     }
 
     if (form) {
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var phone = phoneInput ? phoneInput.value.trim() : '';
+        var phone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
         var error = form.querySelector('.form-error');
-        var valid = /^\+?\d{10,15}$/.test(phone);
+        var valid = phone.length === 11 && phone.startsWith('7');
         if (!valid) {
           error.style.display = 'block';
           return;
