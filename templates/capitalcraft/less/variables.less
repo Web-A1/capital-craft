@@ -106,16 +106,3 @@
     }
   }
 }
-
-@btn-arrow-shift: 5px;
-
-.btn-main() {
-  .btn-base();
-  display: inline-flex;
-  gap: 20px;
-  .btn-arrow();
-
-  &:hover svg {
-    transform: translateX(@btn-arrow-shift);
-  }
-}

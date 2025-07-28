@@ -1,6 +1,33 @@
 // out: false
 @import 'variables.less';
 
+@btn-arrow-shift: 5px;
+
+@keyframes arrow-pulse {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(@btn-arrow-shift);
+  }
+}
+
+.btn-main() {
+  .btn-base();
+  display: inline-flex;
+  gap: 20px;
+  .btn-arrow();
+
+  svg {
+    transition: transform 0.3s;
+  }
+
+  &:hover svg {
+    animation: arrow-pulse 0.6s infinite ease-in-out;
+  }
+}
+
 .btn-main {
   .btn-main();
 }
