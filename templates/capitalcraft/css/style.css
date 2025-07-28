@@ -521,10 +521,12 @@ body.menu-open {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: flex-start;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
   gap: 10px;
+  margin: 0;
+  padding: 0;
 }
 .modal__form .personal-data input[type='checkbox'] {
   margin: 0;
@@ -560,30 +562,6 @@ body.menu-open {
   gap: 20px;
   -ms-flex-item-align: start;
   align-self: flex-start;
-}
-.modal__form .modal__btn:hover {
-  background-color: transparent;
-  color: #8d222c;
-  border-color: #8d222c;
-}
-.modal__form .modal__btn svg {
-  width: 13px;
-  height: 16px;
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-}
-.modal__form .modal__btn svg path {
-  fill: currentColor;
-}
-.modal__form .modal__btn svg {
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
-}
-.modal__form .modal__btn:hover svg {
-  -webkit-animation: arrow-pulse 0.6s infinite ease-in-out;
-  animation: arrow-pulse 0.6s infinite ease-in-out;
 }
 .modal__form .modal__btn:hover {
   background-color: transparent;
@@ -671,57 +649,11 @@ body.modal-open {
     transform: translateX(5px);
   }
 }
+/*
 .btn-main {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  padding: 10px 20px;
-  border-radius: 5px;
-  border: 2px solid transparent;
-  background-color: #8d222c;
-  color: #ffffff;
-  font-family: 'Golos Text', sans-serif;
-  font-size: 16px;
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  gap: 20px;
+  .btn-main();
 }
-.btn-main:hover {
-  background-color: transparent;
-  color: #8d222c;
-  border-color: #8d222c;
-}
-.btn-main svg {
-  width: 13px;
-  height: 16px;
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-}
-.btn-main svg path {
-  fill: currentColor;
-}
-.btn-main svg {
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
-}
-.btn-main:hover svg {
-  -webkit-animation: arrow-pulse 0.6s infinite ease-in-out;
-  animation: arrow-pulse 0.6s infinite ease-in-out;
-}
+*/
 .hero {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -813,30 +745,6 @@ body.modal-open {
   display: -ms-inline-flexbox;
   display: inline-flex;
   gap: 20px;
-}
-.hero__btn:hover {
-  background-color: transparent;
-  color: #8d222c;
-  border-color: #8d222c;
-}
-.hero__btn svg {
-  width: 13px;
-  height: 16px;
-  -webkit-transform: rotate(0deg);
-  transform: rotate(0deg);
-}
-.hero__btn svg path {
-  fill: currentColor;
-}
-.hero__btn svg {
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
-}
-.hero__btn:hover svg {
-  -webkit-animation: arrow-pulse 0.6s infinite ease-in-out;
-  animation: arrow-pulse 0.6s infinite ease-in-out;
 }
 .hero__btn:hover {
   background-color: transparent;
