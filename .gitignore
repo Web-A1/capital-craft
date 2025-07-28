@@ -22,3 +22,6 @@ Thumbs.db
 *.bak
 *.swp
 *.swo
+
+# отключаем автогенерируемый style.css
+templates/capitalcraft/css/style.css
