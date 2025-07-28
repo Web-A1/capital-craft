@@ -34,9 +34,9 @@
         </form>
         <div class="modal__success">
             <svg viewBox="0 0 24 24" aria-hidden="true">
-                <polyline points="5 13 9 17 19 7" />
+                <path d="M5 13l4 4L19 7" />
             </svg>
-            <p>Спасибо! Мы свяжемся с вами в ближайшее время.</p>
+            <p>Спасибо, форма успешно отправлена! Наш специалист скоро с Вами свяжется</p>
         </div>
     </div>
 </div>
