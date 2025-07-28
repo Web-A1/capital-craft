@@ -88,8 +88,15 @@
         e.preventDefault();
         var phone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
         var error = form.querySelector('.form-error');
-        var valid = phone.length === 11 && phone.startsWith('7');
-        if (!valid) {
+        var message = '';
+        if (!phone) {
+          message = 'Пожалуйста, введите номер телефона';
+        } else if (phone.length !== 11 || !phone.startsWith('7')) {
+          message = 'Введите корректный номер телефона';
+        }
+        var valid = !message;
+        if (message) {
+          error.textContent = message;
           error.style.display = 'block';
         } else {
           error.style.display = 'none';
