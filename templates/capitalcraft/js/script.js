@@ -83,7 +83,8 @@
         e.preventDefault();
         var phone = phoneInput ? phoneInput.value.trim() : '';
         var error = form.querySelector('.form-error');
-        var valid = /^\+?\d{10,15}$/.test(phone);
+        var digits = phone.replace(/\D/g, '');
+        var valid = digits.length >= 10 && digits.length <= 15;
         if (!valid) {
           error.style.display = 'block';
           return;

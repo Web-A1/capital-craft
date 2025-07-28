@@ -17,6 +17,8 @@
 @font-size-sub: 14px;
 @font-size-text: 16px;
 @font-size-title: 34px;
+@btn-arrow-shift: 5px;
+@btn-arrow-transition: transform 0.3s ease;
 
 // Размеры
 @container-width: 1170px;
@@ -100,9 +102,18 @@
     width: @w;
     height: @h;
     transform: rotate(@rotate);
+    transition: @btn-arrow-transition;
 
     path {
       fill: currentColor;
+    }
+  }
+}
+
+.btn-arrow-effect(@shift: @btn-arrow-shift, @rotate: 0deg) {
+  &:hover {
+    svg {
+      transform: rotate(@rotate) translateX(@shift);
     }
   }
 }

@@ -1,0 +1,19 @@
+// out: false
+
+.btn-action() {
+  .btn-base();
+  display: inline-flex;
+  gap: 20px;
+  .btn-arrow();
+  .btn-arrow-effect();
+  .media(mobile, {
+    padding: 12px 24px;
+    gap: 16px;
+    font-size: 14px;
+    .btn-arrow(12px, 14px);
+  });
+}
+
+.btn-action {
+  .btn-action();
+}

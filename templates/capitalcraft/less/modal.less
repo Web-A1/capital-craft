@@ -39,8 +39,8 @@
     right: 20px;
     background: none;
     border: none;
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,8 +85,31 @@
     gap: 20px;
     .personal-data {
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       gap: 8px;
+      font-size: 12px;
+
+      input[type='checkbox'] {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border: 1px solid #383c3e;
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+
+        &:checked::after {
+          content: '';
+          position: absolute;
+          left: 4px;
+          top: 1px;
+          width: 4px;
+          height: 8px;
+          border: solid @color-accent;
+          border-width: 0 2px 2px 0;
+          transform: rotate(45deg);
+        }
+      }
     }
     .phone-field {
       display: flex;
@@ -94,11 +117,8 @@
       gap: 4px;
     }
     .modal__btn {
-      .btn-base();
-      display: inline-flex;
-      gap: 20px;
       align-self: flex-start;
-      .btn-arrow();
+      // Стили приходят из класса .btn-action
     }
     input,
     textarea {
