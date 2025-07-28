@@ -114,7 +114,7 @@
         }
 
         var fd = new FormData(form);
-        fetch('templates/capitalcraft/sendToTelegram.php', {
+        fetch('templates/capitalcraft/send_to_telegram.php', {
           method: 'POST',
           body: fd,
         })
