@@ -8,8 +8,8 @@ if ($phone === '') {
 }
 $name = trim($_POST['name'] ?? '');
 $message = trim($_POST['message'] ?? '');
-$token = 'YOUR_BOT_TOKEN';
-$chat_id = 'YOUR_CHAT_ID';
+$token = '8333203095:AAHOxH540WHGXn3nTi0gfia6Vy-0iOWazCc';
+$chat_id = '6210032078';
 $text = "Новая заявка:\nИмя: {$name}\nТелефон: {$phone}\nСообщение: {$message}";
 $url = "https://api.telegram.org/bot{$token}/sendMessage";
 $params = [
