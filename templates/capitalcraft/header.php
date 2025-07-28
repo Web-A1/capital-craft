@@ -3,7 +3,7 @@
 
         <div class="logo">
             <a href="/">
-                <img src="/templates/capitalcraft/images/logo_red.svg" alt="Capital Craft logo red" />
+                <img src="/templates/capitalcraft/images/logo_red.svg" alt="Логотип Capital Craft (красный)" />
             </a>
         </div>
 
