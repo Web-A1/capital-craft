@@ -30,8 +30,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
 
       <?php if ($isHome): ?>
         <?php include __DIR__ . '/pages/home/hero.php'; ?>
-        <?php include __DIR__ . '/pages/home/philosophy.php'; ?>
-        <?php include __DIR__ . '/pages/home/products.php'; ?>
+
         <!-- добавь другие секции по необходимости -->
       <?php else: ?>
         <main>
