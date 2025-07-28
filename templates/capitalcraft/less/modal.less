@@ -41,6 +41,8 @@
     border: none;
     width: 32px;
     height: 32px;
+    width: 32px;
+    height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -87,7 +89,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 12px;
+      font-size: @font-size-text;
 
       input[type='checkbox'] {
         appearance: none;
@@ -96,18 +98,13 @@
         border: 1px solid #383c3e;
         border-radius: 2px;
         position: relative;
+        margin-top: 2px;
         cursor: pointer;
-
-        &:checked::after {
+        &:checked::before {
           content: '';
           position: absolute;
-          left: 4px;
-          top: 1px;
-          width: 4px;
-          height: 8px;
-          border: solid @color-accent;
-          border-width: 0 2px 2px 0;
-          transform: rotate(45deg);
+          inset: 2px;
+          background: @color-accent;
         }
       }
     }
@@ -118,7 +115,13 @@
     }
     .modal__btn {
       align-self: flex-start;
-      // Стили приходят из класса .btn-action
+      .btn-arrow();
+      .media(mobile, {
+        padding: 12px 24px;
+        gap: 16px;
+        font-size: 14px;
+        .btn-arrow(12px, 14px);
+      });
     }
     input,
     textarea {
