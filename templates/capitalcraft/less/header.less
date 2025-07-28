@@ -1,6 +1,19 @@
 // out: false
 @import 'variables.less';
 
+// Миксин для кнопки в хедере
+.btn-header() {
+  .btn-base();
+  border-radius: 6px;
+  font-size: 14px;
+
+  .media(mobile, {
+    padding: 8px 12px;
+    font-size: 12px;
+    height: 36px;
+  });
+}
+
 // Скрываем пункт "Главная" на главной
 .main-nav .item-101.default.current {
   display: none;
@@ -155,31 +168,7 @@
           }
 
           .btn--primary {
-            padding: 10px 20px;
-            background-color: @color-accent;
-            color: @color-white;
-            font-family: 'Golos Text', sans-serif;
-            font-size: 14px;
-            font-weight: 400;
-            border-radius: 6px;
-            text-transform: uppercase;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-
-            &:hover {
-              background-color: transparent;
-              color: @color-accent;
-              border-color: @color-accent;
-            }
-            .media(mobile, {
-            padding: 8px 12px;
-            font-size: 12px;
-            height: 36px;
-          });
+            .btn-header();
           }
           .header-controls__icons {
             .media(mobile, {display: none;});

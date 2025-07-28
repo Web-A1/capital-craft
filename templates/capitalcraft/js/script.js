@@ -14,6 +14,8 @@
     var closeBtn = modal ? modal.querySelector('.modal__close') : null;
     var form = document.getElementById('contactForm');
     var phoneInput = form ? form.querySelector('input[name="phone"]') : null;
+    var consentInput = form ? form.querySelector('.personal-data input') : null;
+    var consentError = form ? form.querySelector('.consent-error') : null;
 
     function openModal() {
       modal.classList.add('open');
@@ -71,6 +73,13 @@
           formatted += '-' + digits.slice(9, 11);
         }
         this.value = formatted;
+        var errEl = form ? form.querySelector('.form-error') : null;
+        if (errEl) errEl.style.display = 'none';
+      });
+    }
+    if (consentInput) {
+      consentInput.addEventListener('change', function () {
+        if (consentError) consentError.style.display = 'none';
       });
     }
 
@@ -82,9 +91,19 @@
         var valid = phone.length === 11 && phone.startsWith('7');
         if (!valid) {
           error.style.display = 'block';
-          return;
         } else {
           error.style.display = 'none';
+        }
+
+        var consentValid = !consentInput || consentInput.checked;
+        if (!consentValid && consentError) {
+          consentError.style.display = 'block';
+        } else if (consentError) {
+          consentError.style.display = 'none';
+        }
+
+        if (!valid || !consentValid) {
+          return;
         }
 
         var fd = new FormData(form);

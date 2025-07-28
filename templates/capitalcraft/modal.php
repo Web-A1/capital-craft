@@ -12,17 +12,18 @@
             <h2 class="modal__title">Давайте разбираться</h2>
             <p class="modal__description">Оставьте свои контакты и кратко опишите задачу — мы свяжемся с вами, чтобы обсудить детали</p>
         </div>
-        <form id="contactForm" class="modal__form">
+        <form id="contactForm" class="modal__form" novalidate>
             <input type="text" name="name" placeholder="Имя">
             <div class="phone-field">
-                <input type="tel" name="phone" required placeholder="Контактный телефон">
+                <input type="tel" name="phone" placeholder="Контактный телефон">
                 <span class="form-error">Введите корректный номер телефона</span>
             </div>
             <textarea name="message" placeholder="Опишите Вашу задачу"></textarea>
             <label class="personal-data">
-                <input type="checkbox" required>
+                <input type="checkbox">
                 <span>Соглашаюсь на обработку и передачу персональных данных</span>
             </label>
+            <span class="consent-error">Необходимо дать согласие на обработку данных</span>
             <button type="submit" class="btn-main modal__btn">
                 <span>Отправить</span>
                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
