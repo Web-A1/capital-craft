@@ -3,7 +3,7 @@ header('Content-Type: application/json; charset=utf-8');
 $phone = trim($_POST['phone'] ?? '');
 if ($phone === '') {
     http_response_code(400);
-    echo json_encode(['status' => 'error', 'message' => 'phone required']);
+    echo json_encode(['status' => 'error', 'message' => 'Не указан номер телефона']);
     exit;
 }
 $name = trim($_POST['name'] ?? '');
@@ -27,5 +27,5 @@ if ($code == 200) {
     echo json_encode(['status' => 'ok']);
 } else {
     http_response_code(500);
-    echo json_encode(['status' => 'error']);
+    echo json_encode(['status' => 'error', 'message' => 'Ошибка сервера']);
 }
