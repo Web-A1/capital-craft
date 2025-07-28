@@ -152,5 +152,21 @@
           });
       });
     }
+
+    var partnersList = document.querySelector('.partners__list');
+    if (partnersList) {
+      var slideTime = 500;
+      setInterval(function () {
+        var first = partnersList.children[0];
+        var shift = first.offsetWidth + 40; // gap
+        partnersList.style.transition = 'transform ' + slideTime + 'ms';
+        partnersList.style.transform = 'translateX(-' + shift + 'px)';
+        setTimeout(function () {
+          partnersList.appendChild(first);
+          partnersList.style.transition = 'none';
+          partnersList.style.transform = 'translateX(0)';
+        }, slideTime);
+      }, 5000);
+    }
   });
 })();
