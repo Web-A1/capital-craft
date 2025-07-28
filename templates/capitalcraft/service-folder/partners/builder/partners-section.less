@@ -1,0 +1,167 @@
+// Partners Section Styles
+.partners-section {
+    width: 100%;
+    max-width: 1170px;
+    margin: 0 auto;
+    padding: 80px 0;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    position: relative;
+    
+    .partners-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .partners-title {
+        display: flex;
+        padding-right: 40px;
+        align-items: center;
+        border-right: 1px solid #000;
+        position: relative;
+        flex-shrink: 0;
+        
+        .title-text {
+            width: 231.802px;
+            color: #000;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #000;
+            font-family: 'Golos Text', -apple-system, Roboto, Helvetica, sans-serif;
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 160%;
+            margin: 0;
+            position: relative;
+        }
+    }
+    
+    .partners-logos {
+        display: flex;
+        padding-left: 40px;
+        flex: 1 0 0;
+        position: relative;
+        overflow: hidden;
+        
+        .logos-carousel {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            
+            .logos-track {
+                display: flex;
+                align-items: center;
+                transition: transform 1s ease-in-out;
+                width: 200%; // Accommodate 6 logos
+                
+                .logo-item {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex: 0 0 calc(100% / 6); // Each logo takes 1/6 of the track width
+                    padding: 0 20px;
+                    box-sizing: border-box;
+                    
+                    .partner-logo {
+                        height: 55px;
+                        width: auto;
+                        max-width: 100%;
+                        object-fit: contain;
+                        flex-shrink: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Tablet styles
+@media (max-width: 768px) {
+    .partners-section {
+        padding: 60px 20px;
+        
+        .partners-container {
+            flex-direction: column;
+            gap: 40px;
+        }
+        
+        .partners-title {
+            border-right: none;
+            border-bottom: 1px solid #000;
+            padding-right: 0;
+            padding-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+            
+            .title-text {
+                width: auto;
+                text-align: center;
+                font-size: 18px;
+            }
+        }
+        
+        .partners-logos {
+            padding-left: 0;
+            padding-top: 20px;
+            width: 100%;
+            
+            .logos-carousel {
+                .logos-track {
+                    .logo-item {
+                        flex: 0 0 calc(100% / 3); // Show 3 logos on tablet
+                        
+                        .partner-logo {
+                            height: 45px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Mobile styles
+@media (max-width: 480px) {
+    .partners-section {
+        padding: 40px 15px;
+        
+        .partners-title {
+            .title-text {
+                font-size: 14px;
+                line-height: 140%;
+            }
+        }
+        
+        .partners-logos {
+            .logos-carousel {
+                .logos-track {
+                    .logo-item {
+                        flex: 0 0 100%; // Show 1 logo on mobile
+                        
+                        .partner-logo {
+                            height: 40px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Animation keyframes for smooth scrolling
+@keyframes slideLogos {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-16.666%); // Move by 1/6 of the track width
+    }
+}
+
+// Animation classes
+.partners-logos .logos-carousel .logos-track.animating {
+    animation: slideLogos 1s ease-in-out forwards;
+}
