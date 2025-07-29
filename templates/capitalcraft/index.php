@@ -46,6 +46,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
   </div>
 
   <script src="templates/capitalcraft/js/script.js"></script>
+  <script src="templates/capitalcraft/service-folder/partners/builder/partners.js"></script>
 </body>
 
 </html>

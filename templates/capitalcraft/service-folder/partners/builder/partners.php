@@ -1,25 +1,23 @@
 <section class="partners">
-    <!--
     <div class="section-label">our partners (section_3)</div>
-    -->
-
+    
     <div class="partners-container">
         <div class="partners-title">
             <div class="title-text">
                 НАМ ДОВЕРЯЮТ<br>КРУПНЕЙШИЕ БАНКИ<br>И ЛИЗИНГОВЫЕ КОМПАНИИ
             </div>
         </div>
-
+        
         <div class="partners-logos">
             <div class="logo-carousel" id="logoCarousel">
                 <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Alfa bank" class="partner-logo">
+                    <img src="logo1.png" alt="Bank Logo 1" class="partner-logo">
                 </div>
                 <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/vtb.svg" alt="VTB bank" class="partner-logo">
+                    <img src="logo2.png" alt="Bank Logo 2" class="partner-logo">
                 </div>
                 <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/gpbal.svg" alt="GPBAL" class="partner-logo">
+                    <img src="logo3.png" alt="Bank Logo 3" class="partner-logo">
                 </div>
                 <div class="logo-item">
                     <img src="logo4.png" alt="Bank Logo 4" class="partner-logo">
