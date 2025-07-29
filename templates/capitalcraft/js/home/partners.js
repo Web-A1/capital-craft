@@ -138,7 +138,7 @@ class PartnersCarousel {
   }
 
   setupHoverPause() {
-    const logosContainer = document.querySelector('.partners-logos');
+    const logosContainer = document.querySelector('.partners__logos');
     if (!logosContainer) return;
 
     logosContainer.addEventListener('mouseenter', () => {

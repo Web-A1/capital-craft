@@ -1,10 +1,10 @@
-<section class="partners-section">
-    <div class="container partners-section__inner">
-        <div class="partners-section__title">
+<section class="partners">
+    <div class="container partners__inner">
+        <div class="partners__title">
             НАМ ДОВЕРЯЮТ<br>КРУПНЕЙШИЕ БАНКИ<br>И ЛИЗИНГОВЫЕ КОМПАНИИ
         </div>
 
-        <div class="partners-section__logos">
+        <div class="partners__logos">
             <div class="logos-track">
                 <div class="logo-item">
                     <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Альфа-Банк" class="partner-logo">
