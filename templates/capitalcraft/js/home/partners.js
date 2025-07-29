@@ -8,7 +8,7 @@ class PartnersCarousel {
     this.currentIndex = 0;
     this.isTransitioning = false;
 
-    // Configuration for different screen sizes
+    // Конфигурация брейкпоинтов
     this.config = {
       desktop: { minWidth: 1024, visibleLogos: 3 },
       tablet: { minWidth: 768, maxWidth: 1023, visibleLogos: 2 },
@@ -16,30 +16,22 @@ class PartnersCarousel {
     };
 
     this.currentVisibleLogos = this.getVisibleLogos();
+
     this.init();
   }
 
   init() {
-    // Start auto-scroll
     this.startAutoScroll();
+    this.updateCarouselPosition();
+    this.setupHoverPause();
 
-    // Handle window resize
     window.addEventListener('resize', () => {
       this.handleResize();
     });
-
-    // Set initial position
-    this.updateCarouselPosition();
-
-    // Setup hover pause
-    this.setupHoverPause();
   }
-
-  // Logos are duplicated in markup to ensure seamless looping
 
   getVisibleLogos() {
     const width = window.innerWidth;
-
     if (width >= this.config.desktop.minWidth) {
       return this.config.desktop.visibleLogos;
     } else if (
@@ -52,32 +44,35 @@ class PartnersCarousel {
     }
   }
 
-  updateCarouselPosition() {
-    const logoWidth = 100 / this.totalLogos;
-    const translateX = -(this.currentIndex * logoWidth);
+  getLogoStep() {
+    // Адаптивный шаг: на мобилке = ширина видимой области
+    if (window.innerWidth <= 767) {
+      return this.carousel.parentElement.offsetWidth;
+    }
+    return 260 + 40; // Шаг для десктопа и планшета
+  }
 
-    this.carousel.style.transform = `translateX(${translateX}%)`;
+  updateCarouselPosition() {
+    const translateX = -(this.currentIndex * this.getLogoStep());
+    this.carousel.style.transition = 'transform 0.5s ease';
+    this.carousel.style.transform = `translateX(${translateX}px)`;
   }
 
   nextSlide() {
     if (this.isTransitioning) return;
 
     this.isTransitioning = true;
-    this.carousel.classList.add('transitioning');
-
     this.currentIndex++;
     this.updateCarouselPosition();
 
     const onTransitionEnd = () => {
       this.carousel.removeEventListener('transitionend', onTransitionEnd);
-      this.carousel.classList.remove('transitioning');
 
       if (this.currentIndex >= this.totalLogos / 2) {
         this.carousel.style.transition = 'none';
-        this.carousel.style.transform = 'translateX(0%)';
-        // force reflow to apply the style reset immediately
+        this.carousel.style.transform = 'translateX(0px)';
         void this.carousel.offsetWidth;
-        this.carousel.style.transition = '';
+        this.carousel.style.transition = 'transform 0.5s ease';
         this.currentIndex = 0;
       }
 
@@ -88,7 +83,6 @@ class PartnersCarousel {
   }
 
   startAutoScroll() {
-    // Use 3 seconds on mobile, 5 seconds on larger screens
     const interval = window.innerWidth <= 767 ? 3000 : 5000;
     this.autoScrollInterval = setInterval(() => {
       this.nextSlide();
@@ -104,12 +98,10 @@ class PartnersCarousel {
 
   handleResize() {
     const newVisibleLogos = this.getVisibleLogos();
-
     if (newVisibleLogos !== this.currentVisibleLogos) {
       this.currentVisibleLogos = newVisibleLogos;
       this.currentIndex = 0;
       this.updateCarouselPosition();
-
       this.stopAutoScroll();
       this.startAutoScroll();
     }
@@ -134,12 +126,10 @@ class PartnersCarousel {
   }
 }
 
-// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
   window.partnersCarousel = new PartnersCarousel();
 });
 
-// For Joomla compatibility - also try to initialize on window load
 window.addEventListener('load', () => {
   if (!window.partnersCarousel) {
     window.partnersCarousel = new PartnersCarousel();

@@ -12,12 +12,12 @@
   min-height: 238px;
 
   .media(mobile, {
-        max-width: 100%;
-        padding: 40px 0;
-        margin: 0;
-        border-left: none;
-        border-right: none;
-    });
+    max-width: 100%;
+    padding: 40px 0;
+    margin: 0;
+    border-left: none;
+    border-right: none;
+  });
 
   &__inner {
     display: flex;
@@ -26,16 +26,10 @@
     align-items: center;
     justify-content: space-between;
 
-    .media(tablet, {
-            flex-direction: column;
-            gap: 40px;
-        });
-
     .media(mobile, {
-            flex-direction: column;
-            gap: 30px;
-            padding: 0 15px;
-        });
+      display: block;
+      padding: 0 15px;
+    });
   }
 
   &__title {
@@ -45,23 +39,12 @@
     border-right: 1px solid @section-divider-color;
     flex-shrink: 0;
 
-    .media(tablet, {
-            border-right: none;
-            border-bottom: 1px solid @section-divider-color;
-            padding-right: 0;
-            padding-bottom: 20px;
-            width: 100%;
-            justify-content: center;
-        });
-
     .media(mobile, {
-            border-right: none;
-            border-bottom: 1px solid @section-divider-color;
-            padding-right: 0;
-            padding-bottom: 20px;
-            width: 100%;
-            justify-content: center;
-        });
+      border: none;
+      padding: 0;
+      margin-bottom: 20px;
+      justify-content: center;
+    });
 
     &-text {
       width: 231.802px;
@@ -71,82 +54,78 @@
       font-weight: 600;
       line-height: 160%;
 
-      .media(tablet, {
-                width: auto;
-                text-align: center;
-            });
-
       .media(mobile, {
-                width: 100%;
-                text-align: center;
-                font-size: @font-size-sub;
-                line-height: 140%;
-            });
+        width: 100%;
+        text-align: center;
+        font-size: @font-size-sub;
+        line-height: 140%;
+      });
     }
   }
 
   &__logos {
-    flex: 1;
+    width: 900px;
     padding-left: 40px;
     overflow: hidden;
-    position: relative;
+    white-space: nowrap;
+    font-size: 0;
+    box-sizing: content-box;
+    margin: 0 auto;
 
     .media(tablet, {
-            padding-left: 0;
-            width: 100%;
-        });
+      width: 100%;
+      padding-left: 0;
+    });
 
     .media(mobile, {
-            padding-left: 0;
-            width: 100%;
-        });
+      width: 100%;
+      padding-left: 0;
+    });
 
     .logos-track {
-      display: flex;
-      transition: none;
-      width: calc(100% * 2);
+      display: inline-block;
+      white-space: nowrap;
+      transform: translateX(0);
+      transition: transform 0.5s ease;
 
       &.transitioning {
         transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
       .logo-item {
-        flex: 0 0 auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 20px;
-        width: calc(100% / 3); // Desktop: Show 3 logos at a time
+        display: inline-block;
+        width: 260px;
+        margin-right: 40px;
+        vertical-align: top;
+
+        &:last-child {
+          margin-right: 0;
+        }
 
         .media(tablet, {
-                    width: calc(100% / 2); // Tablet: Show 2 logos at a time
-                });
+          width: calc(50% - 20px);
+          margin-right: 40px;
+        });
 
         .media(mobile, {
-                    width: 100%; // Mobile: Show 1 logo at a time
-                    justify-content: center;
-                });
+          width: 100%;
+          margin-right: 0;
+        });
 
         .partner-logo {
+          display: block;
           max-width: 100%;
           max-height: 55px;
           height: auto;
+          margin: 0 auto;
           object-fit: contain;
 
           .media(mobile, {
-                        max-width: 80%;
-                        max-height: 60px;
-                    });
+            max-width: 80%;
+            max-height: 60px;
+          });
         }
       }
     }
-  }
-}
-
-// Tablet specific rules
-@media (min-width: 768px) and (max-width: 1023px) {
-  .partners-section {
-    max-width: 768px;
-    padding: 60px 20px;
   }
 }
