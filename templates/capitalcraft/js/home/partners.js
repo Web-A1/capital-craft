@@ -1,6 +1,6 @@
 class PartnersCarousel {
   constructor() {
-    this.carousel = document.getElementById('logoCarousel');
+    this.carousel = document.querySelector('.logos-track');
     if (!this.carousel) return;
 
     this.logos = this.carousel.querySelectorAll('.logo-item');
