@@ -20,9 +20,6 @@ class PartnersCarousel {
   }
 
   init() {
-    // Clone logos for infinite scroll
-    this.cloneLogos();
-
     // Start auto-scroll
     this.startAutoScroll();
 
@@ -38,14 +35,7 @@ class PartnersCarousel {
     this.setupHoverPause();
   }
 
-  cloneLogos() {
-    const fragment = document.createDocumentFragment();
-    this.logos.forEach((logo) => {
-      const clone = logo.cloneNode(true);
-      fragment.appendChild(clone);
-    });
-    this.carousel.appendChild(fragment);
-  }
+  // Logos are duplicated in markup to ensure seamless looping
 
   getVisibleLogos() {
     const width = window.innerWidth;
@@ -63,12 +53,8 @@ class PartnersCarousel {
   }
 
   updateCarouselPosition() {
-    const logoWidth = 100 / (this.totalLogos * 2);
-    const translateX = -(
-      this.currentIndex *
-      logoWidth *
-      this.currentVisibleLogos
-    );
+    const logoWidth = 100 / this.totalLogos;
+    const translateX = -(this.currentIndex * logoWidth);
 
     this.carousel.style.transform = `translateX(${translateX}%)`;
   }
@@ -81,20 +67,13 @@ class PartnersCarousel {
 
     this.currentIndex++;
 
-    if (this.currentIndex >= this.totalLogos) {
-      this.currentIndex = 0;
-
-      const logoWidth = 100 / (this.totalLogos * 2);
-      const translateX = -(
-        this.totalLogos *
-        logoWidth *
-        this.currentVisibleLogos
-      );
-      this.carousel.style.transform = `translateX(${translateX}%)`;
+    if (this.currentIndex >= this.totalLogos / 2) {
+      this.updateCarouselPosition();
 
       setTimeout(() => {
         this.carousel.classList.remove('transitioning');
         this.carousel.style.transform = 'translateX(0%)';
+        this.currentIndex = 0;
         this.isTransitioning = false;
       }, 500);
     } else {
