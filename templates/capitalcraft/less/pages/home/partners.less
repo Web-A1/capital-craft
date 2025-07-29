@@ -1,7 +1,7 @@
 // out: false
 @import '../../variables.less';
 
-.partners {
+.partners-section {
   position: relative;
   width: 100%;
   max-width: 1170px;
@@ -19,7 +19,7 @@
         border-right: none;
     });
 
-  .partners-container {
+  &__inner {
     display: flex;
     width: 100%;
     height: 100%;
@@ -38,7 +38,7 @@
         });
   }
 
-  .partners-title {
+  &__title {
     display: flex;
     align-items: center;
     padding-right: 40px;
@@ -63,7 +63,7 @@
             justify-content: center;
         });
 
-    .title-text {
+    &-text {
       width: 231.802px;
       color: #000000;
       font-family: 'Golos Text';
@@ -87,7 +87,7 @@
     }
   }
 
-  .partners-logos {
+  &__logos {
     flex: 1;
     padding-left: 40px;
     overflow: hidden;
@@ -103,7 +103,7 @@
             width: 100%;
         });
 
-    .logo-carousel {
+    .logos-track {
       display: flex;
       transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
       width: calc(100% * 2);
@@ -147,7 +147,7 @@
 
 // Tablet specific rules
 @media (min-width: 768px) and (max-width: 1023px) {
-  .partners {
+  .partners-section {
     max-width: 768px;
     padding: 60px 20px;
   }

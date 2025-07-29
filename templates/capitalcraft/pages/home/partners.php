@@ -1,34 +1,19 @@
-<section class="partners">
-    <!--
-    <div class="section-label">our partners (section_3)</div>
-    -->
-
-    <div class="partners-container">
-        <div class="partners-title">
-            <div class="title-text">
-                НАМ ДОВЕРЯЮТ<br>КРУПНЕЙШИЕ БАНКИ<br>И ЛИЗИНГОВЫЕ КОМПАНИИ
-            </div>
+<section class="partners-section">
+    <div class="container partners-section__inner">
+        <div class="partners-section__title">
+            НАМ ДОВЕРЯЮТ<br>КРУПНЕЙШИЕ БАНКИ<br>И ЛИЗИНГОВЫЕ КОМПАНИИ
         </div>
 
-        <div class="partners-logos">
-            <div class="logo-carousel" id="logoCarousel">
+        <div class="partners-section__logos">
+            <div class="logos-track">
                 <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Alfa bank" class="partner-logo">
+                    <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Альфа-Банк" class="partner-logo">
                 </div>
                 <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/vtb.svg" alt="VTB bank" class="partner-logo">
+                    <img src="/templates/capitalcraft/images/home/vtb.svg" alt="ВТБ" class="partner-logo">
                 </div>
                 <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/gpbal.svg" alt="GPBAL" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="logo4.png" alt="Bank Logo 4" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="logo5.png" alt="Bank Logo 5" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="logo6.png" alt="Bank Logo 6" class="partner-logo">
+                    <img src="/templates/capitalcraft/images/home/gpbal.svg" alt="ГПБ" class="partner-logo">
                 </div>
             </div>
         </div>
