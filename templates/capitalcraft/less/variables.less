@@ -33,6 +33,13 @@
   }
 }
 
+@screen-tablet: ~'only screen and (min-width: 768px) and (max-width: 1023px)';
+.media(@breakpoint, @rules) when (@breakpoint = tablet) {
+  @media @screen-tablet {
+    @rules();
+  }
+}
+
 //Инверсия svg
 .invertable-icon() {
   display: inline-flex;

@@ -103,7 +103,7 @@
 
     .logos-track {
       display: flex;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: none;
       width: calc(100% * 2);
 
       &.transitioning {
@@ -116,10 +116,10 @@
         align-items: center;
         justify-content: center;
         padding: 0 20px;
-        width: calc(100% / 6); // Desktop: Show 3 logos at a time
+        width: calc(100% / 3); // Desktop: Show 3 logos at a time
 
         .media(tablet, {
-                    width: calc(100% / 3); // Tablet: Show 2 logos at a time
+                    width: calc(100% / 2); // Tablet: Show 2 logos at a time
                 });
 
         .media(mobile, {

@@ -66,24 +66,25 @@ class PartnersCarousel {
     this.carousel.classList.add('transitioning');
 
     this.currentIndex++;
+    this.updateCarouselPosition();
 
-    if (this.currentIndex >= this.totalLogos / 2) {
-      this.updateCarouselPosition();
+    const onTransitionEnd = () => {
+      this.carousel.removeEventListener('transitionend', onTransitionEnd);
+      this.carousel.classList.remove('transitioning');
 
-      setTimeout(() => {
-        this.carousel.classList.remove('transitioning');
+      if (this.currentIndex >= this.totalLogos / 2) {
+        this.carousel.style.transition = 'none';
         this.carousel.style.transform = 'translateX(0%)';
+        // force reflow to apply the style reset immediately
+        void this.carousel.offsetWidth;
+        this.carousel.style.transition = '';
         this.currentIndex = 0;
-        this.isTransitioning = false;
-      }, 500);
-    } else {
-      this.updateCarouselPosition();
+      }
 
-      setTimeout(() => {
-        this.carousel.classList.remove('transitioning');
-        this.isTransitioning = false;
-      }, 500);
-    }
+      this.isTransitioning = false;
+    };
+
+    this.carousel.addEventListener('transitionend', onTransitionEnd);
   }
 
   startAutoScroll() {
