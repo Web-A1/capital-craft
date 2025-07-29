@@ -63,8 +63,6 @@ class PartnersCarousel {
   }
 
   updateCarouselPosition() {
-    if (this.isTransitioning) return;
-
     const logoWidth = 100 / (this.totalLogos * 2);
     const translateX = -(
       this.currentIndex *
