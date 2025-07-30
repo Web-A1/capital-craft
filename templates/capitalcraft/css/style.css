@@ -918,6 +918,13 @@ body.modal-open {
   height: 1px;
   background-color: #000000;
 }
+@media only screen and (max-width: 767px) {
+  .partners__divider {
+    left: 24px;
+    right: 24px;
+    width: auto;
+  }
+}
 .partners__divider--top {
   top: 0;
 }
