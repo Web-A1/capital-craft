@@ -1,7 +1,11 @@
 <section class="partners">
+    <div class="partners__divider partners__divider--top"></div>
+
     <div class="container partners__inner">
         <div class="partners__title">
-            НАМ ДОВЕРЯЮТ<br>КРУПНЕЙШИЕ БАНКИ<br>И ЛИЗИНГОВЫЕ КОМПАНИИ
+            <div class="partners__title-text">
+                НАМ ДОВЕРЯЮТ КРУПНЕЙШИЕ БАНКИ И ЛИЗИНГОВЫЕ КОМПАНИИ
+            </div>
         </div>
 
         <div class="partners__logos">
@@ -27,4 +31,6 @@
             </div>
         </div>
     </div>
+
+    <div class="partners__divider partners__divider--bottom"></div>
 </section>
