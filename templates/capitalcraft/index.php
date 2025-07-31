@@ -23,7 +23,6 @@ $isHome = $menu->getActive() == $menu->getDefault();
 
   <!-- Embla Carousel -->
   <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.css" />
 </head>
 
 <body>
