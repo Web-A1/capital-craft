@@ -31,7 +31,7 @@
     left: 0;
     right: 0;
     z-index: 1000;
-    margin: 0 20px;
+    margin: 0 @mobile-side-padding;
     padding: 20px 0 10px 0;
     background: @color-bg-craft;
   });
@@ -218,7 +218,7 @@ body.menu-open {
   left: 0;
   width: 100%;
   height: 100%;
-  padding: 20px;
+  padding: @mobile-side-padding;
   background: @color-bg-craft;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
