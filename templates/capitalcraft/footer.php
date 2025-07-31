@@ -59,7 +59,7 @@
                         <span>Контакты</span>
                     </div>
                     <div class="footer-contact-address">
-                        <span>117105, Москва,Варшавское шоссе 33, стр 1</span>
+                        <span>117105, Москва, Варшавское шоссе 33, стр 1</span>
                     </div>
                     <div class="footer-contact-phone">
                         <a href="tel:+74993256826">+7 (499) 325-68-26</a>

@@ -1025,7 +1025,7 @@ body.modal-open {
 .footer {
   width: 100%;
   padding: 0;
-  margin-top: 40px;
+  margin: 40px 0;
 }
 .footer .footer-container {
   max-width: 1170px;
@@ -1185,7 +1185,6 @@ body.modal-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 10px;
 }
 .footer-navigation .footer-navigation-links .footer-nav-item a {
   font-family: 'Golos Text', sans-serif;
@@ -1402,9 +1401,6 @@ body.modal-open {
 }
 .footer-legal .footer-legal-terms a:hover {
   color: #000000;
-}
-.footer-legal .footer-legal-policy {
-  width: 249.5px;
 }
 @media only screen and (max-width: 767px) {
   .footer-legal .footer-legal-policy {
