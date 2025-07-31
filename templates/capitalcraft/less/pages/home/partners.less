@@ -13,10 +13,15 @@
 
   &__divider {
     position: absolute;
-    left: 24px;
-    right: 24px;
+    left: 0px;
+    right: 0px;
     height: 1px;
     background-color: @section-divider-color;
+
+    .media(mobile, {
+      left: 24px;
+      right: 24px;
+     });
 
     &--top {
       top: 0;

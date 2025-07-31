@@ -899,10 +899,16 @@ body.modal-open {
 }
 .partners__divider {
   position: absolute;
-  left: 24px;
-  right: 24px;
+  left: 0px;
+  right: 0px;
   height: 1px;
   background-color: #000000;
+}
+@media only screen and (max-width: 767px) {
+  .partners__divider {
+    left: 24px;
+    right: 24px;
+  }
 }
 .partners__divider--top {
   top: 0;
