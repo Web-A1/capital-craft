@@ -1234,11 +1234,6 @@ body.modal-open {
 .footer-contacts .footer-contact-email a:hover {
   color: #000000;
 }
-.footer-messengers {
-  width: 172px;
-  -ms-flex-negative: 0;
-      flex-shrink: 0;
-}
 @media only screen and (max-width: 767px) {
   .footer-messengers {
     width: 100%;
@@ -1258,10 +1253,11 @@ body.modal-open {
   margin-bottom: 0;
 }
 .footer-messengers .footer-messenger-item .footer-messenger-icon {
-  width: 17px;
+  width: 19px;
   -ms-flex-negative: 0;
       flex-shrink: 0;
 }
+.footer-messengers .footer-messenger-item .footer-messenger-icon img,
 .footer-messengers .footer-messenger-item .footer-messenger-icon svg {
   width: 100%;
   height: auto;
