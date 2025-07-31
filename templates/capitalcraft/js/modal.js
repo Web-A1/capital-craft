@@ -9,6 +9,10 @@ const initModal = () => {
   const openModal = () => {
     modal.classList.add('open');
     document.body.classList.add('modal-open');
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
     const form = document.getElementById('contactForm');
     if (form) {
       form.style.display = 'flex';
@@ -29,6 +33,7 @@ const initModal = () => {
   const closeModal = () => {
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
+    document.body.style.paddingRight = '';
   };
 
   if (openBtn) openBtn.addEventListener('click', openModal);
