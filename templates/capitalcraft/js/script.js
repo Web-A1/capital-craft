@@ -1,5 +1,7 @@
-(function () {
-  document.addEventListener('DOMContentLoaded', function () {
+"use strict";
+
+(() => {
+  document.addEventListener('DOMContentLoaded', () => {
     if (typeof initBurger === 'function') initBurger();
     if (typeof initModal === 'function') initModal();
     if (typeof initPhoneMask === 'function') initPhoneMask();

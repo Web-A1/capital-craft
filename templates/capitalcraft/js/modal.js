@@ -1,10 +1,12 @@
-function initModal() {
+"use strict";
+
+const initModal = () => {
   const openBtn = document.querySelector('.js-open-modal');
   const modal = document.getElementById('contact-modal');
   if (!modal) return;
   const closeBtn = modal.querySelector('.modal__close');
 
-  function openModal() {
+  const openModal = () => {
     modal.classList.add('open');
     document.body.classList.add('modal-open');
     const form = document.getElementById('contactForm');
@@ -22,12 +24,12 @@ function initModal() {
     if (header) header.style.display = 'flex';
     const successBox = modal.querySelector('.modal__success');
     if (successBox) successBox.style.display = 'none';
-  }
+  };
 
-  function closeModal() {
+  const closeModal = () => {
     modal.classList.remove('open');
     document.body.classList.remove('modal-open');
-  }
+  };
 
   if (openBtn) openBtn.addEventListener('click', openModal);
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
@@ -41,6 +43,6 @@ function initModal() {
       closeModal();
     }
   });
-}
+};
 
 window.initModal = initModal;

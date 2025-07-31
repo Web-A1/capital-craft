@@ -1,4 +1,6 @@
-function initFormSubmit() {
+"use strict";
+
+const initFormSubmit = () => {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
@@ -14,7 +16,7 @@ function initFormSubmit() {
     });
   }
 
-  form.addEventListener('submit', function (e) {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const phone = phoneInput ? phoneInput.value.replace(/\D/g, '') : '';
     const error = form.querySelector('.form-error');
@@ -41,27 +43,32 @@ function initFormSubmit() {
     if (!valid || !consentValid) return;
 
     const fd = new FormData(form);
-    fetch('templates/capitalcraft/send_to_telegram.php', {
-      method: 'POST',
-      body: fd,
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        if (data.status === 'ok') {
-          const errorRes = form.querySelector('.form-result.error');
-          if (errorRes) errorRes.style.display = 'none';
-          form.style.display = 'none';
-          if (header) header.style.display = 'none';
-          if (successBox) successBox.style.display = 'flex';
-        } else {
-          throw new Error();
-        }
-      })
-      .catch(() => {
-        form.querySelector('.form-result.error').style.display = 'block';
-        if (successBox) successBox.style.display = 'none';
+    try {
+      const response = await fetch('templates/capitalcraft/send_to_telegram.php', {
+        method: 'POST',
+        body: fd,
       });
+
+      if (!response.ok) {
+        throw new Error(`Network error: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.status === 'ok') {
+        const errorRes = form.querySelector('.form-result.error');
+        if (errorRes) errorRes.style.display = 'none';
+        form.style.display = 'none';
+        if (header) header.style.display = 'none';
+        if (successBox) successBox.style.display = 'flex';
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      form.querySelector('.form-result.error').style.display = 'block';
+      if (successBox) successBox.style.display = 'none';
+    }
   });
-}
+};
 
 window.initFormSubmit = initFormSubmit;
