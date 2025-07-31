@@ -7,12 +7,12 @@ const initModal = () => {
   const closeBtn = modal.querySelector('.modal__close');
 
   const openModal = () => {
-    modal.classList.add('open');
-    document.body.classList.add('modal-open');
     const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     if (scrollbarWidth > 0) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
+    document.body.classList.add('modal-open');
+    modal.classList.add('open');
     const form = document.getElementById('contactForm');
     if (form) {
       form.style.display = 'flex';
