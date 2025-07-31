@@ -1,7 +1,7 @@
 <header class="site-header">
     <div class="container header__inner">
 
-        <div class="logo">
+        <div class="header-logo">
             <a href="/">
                 <img src="/templates/capitalcraft/images/logo_red.svg" alt="Логотип Capital Craft (красный)" />
             </a>
