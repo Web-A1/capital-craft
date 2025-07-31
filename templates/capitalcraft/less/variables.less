@@ -23,7 +23,7 @@
 @gap: 30px;
 @padding-button: 10px 20px;
 @section-padding: 40px;
-@radius: 5px;
+@radius: 6px;
 
 //Адаптация для мобильных
 @screen-mobile: ~'only screen and (max-width: 767px)';
@@ -99,6 +99,12 @@
     color: @color;
     border-color: @color;
   }
+
+  .media(mobile, {
+    padding: 8px 12px;
+    font-size: @font-size-sub * 0.85;
+    font-weight: 500;
+  });
 }
 
 // Стили для стрелки в кнопках

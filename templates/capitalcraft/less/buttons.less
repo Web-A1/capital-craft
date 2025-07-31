@@ -26,8 +26,16 @@
   &:hover svg {
     animation: arrow-pulse 0.6s infinite ease-in-out;
   }
+
+  .media(mobile, {
+    padding: 8px 12px;
+    gap: 16px;
+    font-size: @font-size-text*0.75;
+    .btn-arrow(12px, 14px);
+  });
 }
 
+//для всех кнопок использовать класс btn-main
 .btn-main {
   .btn-main();
 }

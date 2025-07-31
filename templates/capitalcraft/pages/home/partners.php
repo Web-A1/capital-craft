@@ -9,6 +9,10 @@
         </div>
 
         <div class="partners__logos">
+            <div class="partners__arrow partners__arrow--left">
+                <img src="../templates/capitalcraft/images/home/arrow_left.svg" alt="Назад" />
+            </div>
+
             <div class="logos-track">
                 <div class="logo-item">
                     <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Альфа-Банк" class="partner-logo">
@@ -28,6 +32,10 @@
                 <div class="logo-item">
                     <img src="/templates/capitalcraft/images/home/gpbal.svg" alt="ГПБ" class="partner-logo">
                 </div>
+            </div>
+
+            <div class="partners__arrow partners__arrow--right">
+                <img src="../templates/capitalcraft/images/home/arrow_right.svg" alt="Вперёд" />
             </div>
         </div>
     </div>

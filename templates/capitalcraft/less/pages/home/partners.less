@@ -99,6 +99,7 @@
     });
 
     .media(mobile, {
+      position: relative;
       width: 70%;
       padding-left: 0;
     });
@@ -147,6 +148,29 @@
           });
         }
       }
+    }
+  }
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    z-index: 2;
+    opacity: 0.6;
+    cursor: pointer;
+    display: none;
+
+    .media(mobile, {
+      display: block;
+    });
+
+    &--left {
+      left: 4px;
+    }
+
+    &--right {
+      right: 4px;
     }
   }
 }

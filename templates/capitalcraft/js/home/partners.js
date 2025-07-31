@@ -45,7 +45,6 @@ class PartnersCarousel {
   }
 
   getLogoStep() {
-    // Адаптивный шаг: на мобилке = ширина видимой области
     if (window.innerWidth <= 767) {
       return this.carousel.parentElement.offsetWidth;
     }
@@ -128,6 +127,26 @@ class PartnersCarousel {
 
 document.addEventListener('DOMContentLoaded', () => {
   window.partnersCarousel = new PartnersCarousel();
+
+  // Добавление стрелок для ручной прокрутки (моб. версия)
+  const track = document.querySelector('.logos-track');
+  const arrowLeft = document.querySelector('.partners__arrow--left');
+  const arrowRight = document.querySelector('.partners__arrow--right');
+  let scrollX = 0;
+  const step = 260;
+
+  if (arrowLeft && arrowRight && track) {
+    arrowLeft.addEventListener('click', () => {
+      scrollX = Math.max(scrollX - step, 0);
+      track.style.transform = `translateX(-${scrollX}px)`;
+    });
+
+    arrowRight.addEventListener('click', () => {
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      scrollX = Math.min(scrollX + step, maxScroll);
+      track.style.transform = `translateX(-${scrollX}px)`;
+    });
+  }
 });
 
 window.addEventListener('load', () => {
