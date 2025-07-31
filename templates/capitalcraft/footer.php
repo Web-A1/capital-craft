@@ -78,9 +78,7 @@
                     <!-- WhatsApp -->
                     <div class="footer-messenger-item">
                         <div class="footer-messenger-icon">
-                            <a>
-                                <img src="/templates/capitalcraft/images/wa_contacts_footer.svg" alt="Вотсап футер контакты" />
-                            </a>
+                            <img src="/templates/capitalcraft/images/wa_contacts_footer.svg" alt="Вотсап футер контакты" />
                         </div>
                         <div class="footer-messenger-number">
                             <a href="https://wa.me/79951550644">+7 (995) 155-06-44</a>
@@ -90,9 +88,7 @@
                     <!-- Telegram -->
                     <div class="footer-messenger-item">
                         <div class="footer-messenger-icon">
-                            <a>
-                                <img src="/templates/capitalcraft/images/tg_contacts_footer.svg" alt="Телеграм футер контакты" />
-                            </a>
+                            <img src="/templates/capitalcraft/images/tg_contacts_footer.svg" alt="Телеграм футер контакты" />
                         </div>
                         <div class="footer-messenger-number">
                             <a href="https://t.me/79951550644">+7 (995) 155-06-44</a>
