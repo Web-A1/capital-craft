@@ -19,8 +19,8 @@
     background-color: @section-divider-color;
 
     .media(mobile, {
-      left: 24px;
-      right: 24px;
+      left: @mobile-side-padding;
+      right: @mobile-side-padding;
      });
 
     &--top {
@@ -38,7 +38,7 @@
 
     .media(mobile, {
       flex-direction: column;
-      padding: 0 15px;
+      padding: 0 @mobile-side-padding;
     });
   }
 
