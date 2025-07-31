@@ -46,6 +46,8 @@ $isHome = $menu->getActive() == $menu->getDefault();
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
   <?php if ($isHome): ?>
     <script src="templates/capitalcraft/js/home/partners.js"></script>
   <?php endif; ?>
@@ -55,8 +57,6 @@ $isHome = $menu->getActive() == $menu->getDefault();
   <script src="templates/capitalcraft/js/form-submit.js"></script>
   <script src="templates/capitalcraft/js/script.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
 </body>
 
 </html>
