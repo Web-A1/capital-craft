@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const initModal = () => {
   const openBtn = document.querySelector('.js-open-modal');
@@ -7,7 +7,8 @@ const initModal = () => {
   const closeBtn = modal.querySelector('.modal__close');
 
   const openModal = () => {
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
     if (scrollbarWidth > 0) {
       document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
