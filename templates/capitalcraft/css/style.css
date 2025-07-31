@@ -1259,6 +1259,7 @@ body.modal-open {
 }
 .footer-messengers .footer-messenger-item .footer-messenger-icon img,
 .footer-messengers .footer-messenger-item .footer-messenger-icon svg {
+  display: block;
   width: 100%;
   height: auto;
 }
