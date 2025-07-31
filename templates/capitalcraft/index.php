@@ -21,8 +21,6 @@ $isHome = $menu->getActive() == $menu->getDefault();
   <!-- Основные стили -->
   <link rel="stylesheet" href="templates/capitalcraft/css/style.css">
 
-  <!-- Embla Carousel -->
-  <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
 </head>
 
 <body>
