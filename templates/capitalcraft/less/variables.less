@@ -41,20 +41,20 @@
 }
 
 //Инверсия svg
-.invertable-icon() {
+.invertable-icon(@size: 40px) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: @size;
+  height: @size;
   transition: all 0.3s ease;
 
   svg {
-    width: 40px;
-    height: 40px;
+    width: @size;
+    height: @size;
 
     .bg {
-      fill: #fdfbf5;
+      fill: @color-bg-craft;
       transition: fill 0.3s ease;
     }
 
@@ -70,7 +70,7 @@
     }
 
     .icon {
-      fill: #fdfbf5;
+      fill: @color-bg-craft;
     }
   }
 }

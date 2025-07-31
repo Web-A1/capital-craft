@@ -1309,7 +1309,7 @@ body.modal-open {
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start;
-  gap: 20px;
+  gap: 10px;
 }
 .footer-social-icons .icon-link {
   display: -webkit-inline-box;
@@ -1335,14 +1335,14 @@ body.modal-open {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
 .footer-social-icons .icon-link--invertable svg {
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
 }
 .footer-social-icons .icon-link--invertable svg .bg {
   fill: #fdfbf5;
