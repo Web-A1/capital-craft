@@ -9,6 +9,11 @@
 }
 @media only screen and (max-width: 767px) {
   .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
     margin: 0 20px;
     padding: 20px 0 10px 0;
   }
@@ -1462,6 +1467,11 @@ a {
 }
 .page-wrapper {
   background-color: #fdfbf5;
+}
+@media only screen and (max-width: 767px) {
+  .page-wrapper {
+    padding-top: 60px;
+  }
 }
 .magazine-frame {
   max-width: 1300px;
