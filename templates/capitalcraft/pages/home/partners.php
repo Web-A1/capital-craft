@@ -1,44 +1,38 @@
 <section class="partners">
     <div class="partners__divider partners__divider--top"></div>
-
-    <div class="container partners__inner">
+    <div class="partners__inner">
         <div class="partners__title">
             <div class="partners__title-text">
                 НАМ ДОВЕРЯЮТ КРУПНЕЙШИЕ БАНКИ И ЛИЗИНГОВЫЕ КОМПАНИИ
             </div>
         </div>
 
-        <div class="partners__logos">
-            <div class="partners__arrow partners__arrow--left">
-                <img src="../templates/capitalcraft/images/home/arrow_left.svg" alt="Назад" />
-            </div>
-
-            <div class="logos-track">
-                <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Альфа-Банк" class="partner-logo">
+        <div class="partners__carousel-wrapper">
+            <div class="partners__carousel embla">
+                <div class="embla__viewport">
+                    <div class="embla__container">
+                        <div class="embla__slide">
+                            <img src="/templates/capitalcraft/images/home/vtb.svg" class="partner-logo" alt="ВТБ" />
+                        </div>
+                        <div class="embla__slide">
+                            <img src="/templates/capitalcraft/images/home/gpbal.svg" class="partner-logo" alt="Газпромбанк Автолизинг" />
+                        </div>
+                        <div class="embla__slide">
+                            <img src="/templates/capitalcraft/images/home/alfa.svg" class="partner-logo" alt="Альфа Банк" />
+                        </div>
+                        <div class="embla__slide">
+                            <img src="/templates/capitalcraft/images/home/vtb.svg" class="partner-logo" alt="ВТБ" />
+                        </div>
+                        <div class="embla__slide">
+                            <img src="/templates/capitalcraft/images/home/gpbal.svg" class="partner-logo" alt="Газпромбанк Автолизинг" />
+                        </div>
+                        <div class="embla__slide">
+                            <img src="/templates/capitalcraft/images/home/alfa.svg" class="partner-logo" alt="Альфа Банк" />
+                        </div>
+                    </div>
                 </div>
-                <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/vtb.svg" alt="ВТБ" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/gpbal.svg" alt="ГПБ" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/alfa.svg" alt="Альфа-Банк" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/vtb.svg" alt="ВТБ" class="partner-logo">
-                </div>
-                <div class="logo-item">
-                    <img src="/templates/capitalcraft/images/home/gpbal.svg" alt="ГПБ" class="partner-logo">
-                </div>
-            </div>
-
-            <div class="partners__arrow partners__arrow--right">
-                <img src="../templates/capitalcraft/images/home/arrow_right.svg" alt="Вперёд" />
             </div>
         </div>
     </div>
-
     <div class="partners__divider partners__divider--bottom"></div>
 </section>

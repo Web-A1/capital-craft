@@ -1,176 +1,111 @@
-// out: false
 @import '../../variables.less';
 
 .partners {
+  padding: @section-padding 0;
   position: relative;
   width: 100%;
   max-width: @container-width;
   margin: 0 auto;
-  padding: @section-padding 0;
 
   .media(mobile, {
-    max-width: 100%;
     padding: 40px 0;
-    margin: 0;
-    border-left: none;
-    border-right: none;
   });
 
   &__divider {
     position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
+    left: 24px;
+    right: 24px;
     height: 1px;
     background-color: @section-divider-color;
 
-    .media(mobile, {
-       left: 24px;
-        right: 24px;
-        width: auto;
-     });
-  }
-
-  &__divider--top {
-    top: 0;
-  }
-
-  &__divider--bottom {
-    bottom: 0;
+    &--top {
+      top: 0;
+    }
+    &--bottom {
+      bottom: 0;
+    }
   }
 
   &__inner {
     display: flex;
-    width: 100%;
-    height: 100%;
     align-items: center;
     justify-content: space-between;
 
     .media(mobile, {
-      display: block;
+      flex-direction: column;
       padding: 0 15px;
     });
   }
 
   &__title {
-    display: flex;
-    align-items: center;
+    max-width: 260px;
     padding-right: 40px;
     border-right: 1px solid @section-divider-color;
-    flex-shrink: 0;
-    max-width: 260px;
 
     .media(mobile, {
-      max-width: unset;
-      border: none;
       padding: 0;
+      border: none;
       margin-bottom: 40px;
-      justify-content: center;
+      max-width: unset;
+      text-align: center;
     });
 
     &-text {
       color: @color-heading;
       font-family: @font-body;
       font-size: @font-size-text;
-      font-weight: 400;
       line-height: 160%;
 
       .media(mobile, {
-        width: 100%;
-        text-align: center;
         font-size: @font-size-sub;
         line-height: 140%;
       });
     }
   }
 
-  &__logos {
-    width: 900px;
-    padding-left: 40px;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 0;
-    box-sizing: content-box;
-    margin: 0 auto;
-
-    .media(tablet, {
-      width: 100%;
-      padding-left: 0;
-    });
+  &__carousel-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    flex: 1;
 
     .media(mobile, {
-      position: relative;
-      width: 70%;
-      padding-left: 0;
+      max-width: 100%;
     });
-
-    .logos-track {
-      display: inline-block;
-      white-space: nowrap;
-      transform: translateX(0);
-      transition: transform 0.5s ease;
-
-      &.transitioning {
-        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-
-      .logo-item {
-        display: inline-block;
-        width: 260px;
-        margin-right: 40px;
-        vertical-align: top;
-
-        &:last-child {
-          margin-right: 0;
-        }
-
-        .media(tablet, {
-          width: calc(50% - 20px);
-          margin-right: 40px;
-        });
-
-        .media(mobile, {
-          width: 100%;
-          margin-right: 0;
-        });
-
-        .partner-logo {
-          display: block;
-          max-width: 100%;
-          max-height: 55px;
-          height: auto;
-          margin: 0 auto;
-          object-fit: contain;
-
-          .media(mobile, {
-            max-width: 80%;
-            max-height: 60px;
-          });
-        }
-      }
-    }
   }
-  &__arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    z-index: 2;
-    opacity: 0.6;
-    cursor: pointer;
-    display: none;
 
-    .media(mobile, {
-      display: block;
-    });
+  .embla {
+    overflow: hidden;
+    width: 100%;
 
-    &--left {
-      left: 4px;
+    &__viewport {
+      overflow: hidden;
+      width: 100%;
     }
 
-    &--right {
-      right: 4px;
+    &__container {
+      display: flex;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -khtml-user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    &__slide {
+      flex: 0 0 33.3333%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+
+      .media(mobile, {
+      flex: 0 0 100%;
+      });
+
+      .partner-logo {
+        max-height: 45px;
+        object-fit: contain;
+      }
     }
   }
 }
