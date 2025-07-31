@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 const initBurger = () => {
   const burger = document.querySelector('.burger');
