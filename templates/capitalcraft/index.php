@@ -32,6 +32,13 @@ $isHome = $menu->getActive() == $menu->getDefault();
       <?php if ($isHome): ?>
         <?php include __DIR__ . '/pages/home/hero.php'; ?>
         <?php include __DIR__ . '/pages/home/partners.php'; ?>
+        <?php include __DIR__ . '/pages/home/philosophy.php'; ?>
+        <?php include __DIR__ . '/pages/home/team.php'; ?>
+        <?php include __DIR__ . '/pages/home/faq.php'; ?>
+        <?php include __DIR__ . '/pages/home/products.php'; ?>
+        <?php include __DIR__ . '/pages/home/show_case.php'; ?>
+        <?php include __DIR__ . '/pages/home/reviews.php'; ?>
+
 
         <!-- добавь другие секции по необходимости -->
       <?php else: ?>
