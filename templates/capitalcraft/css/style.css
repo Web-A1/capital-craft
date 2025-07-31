@@ -912,8 +912,8 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .partners__divider {
-    left: 24px;
-    right: 24px;
+    left: 20px;
+    right: 20px;
   }
 }
 .partners__divider--top {
@@ -939,7 +939,7 @@ body.modal-open {
     -webkit-box-direction: normal;
         -ms-flex-direction: column;
             flex-direction: column;
-    padding: 0 15px;
+    padding: 0 20px;
   }
 }
 .partners__title {
@@ -1040,7 +1040,7 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .footer .footer-container {
-    padding: 0 16px;
+    padding: 0 20px;
   }
 }
 .footer-top-block {
