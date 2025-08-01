@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
   const emblaNode = document.querySelector('.embla');

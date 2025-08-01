@@ -1014,7 +1014,7 @@ body.modal-open {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 10px;
+  padding: 0px 40px;
 }
 @media only screen and (max-width: 767px) {
   .partners .embla__slide {
@@ -1032,6 +1032,20 @@ body.modal-open {
   .partners .embla__slide .partner-logo {
     max-width: 220px;
   }
+}
+.partners .partner-logo {
+  -webkit-filter: grayscale(100%) brightness(0) opacity(0.8);
+          filter: grayscale(100%) brightness(0) opacity(0.8);
+  -webkit-transition: -webkit-filter 0.3s ease;
+  transition: -webkit-filter 0.3s ease;
+  transition: filter 0.3s ease;
+  transition: filter 0.3s ease, -webkit-filter 0.3s ease;
+}
+.partners .partner-logo:hover,
+.partners .partner-logo:active,
+.partners .partner-logo.no-filter {
+  -webkit-filter: none;
+          filter: none;
 }
 .footer {
   width: 100%;
