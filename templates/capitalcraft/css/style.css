@@ -892,7 +892,7 @@ body.modal-open {
   }
 }
 .partners {
-  padding: 40px 0;
+  padding: 80px 0;
   position: relative;
   width: 100%;
   max-width: 1170px;
@@ -1107,7 +1107,7 @@ body.modal-open {
 .footer {
   width: 100%;
   padding: 0;
-  margin: 40px 0;
+  margin: 80px 0;
 }
 .footer .footer-container {
   max-width: 1170px;
