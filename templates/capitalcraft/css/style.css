@@ -1002,6 +1002,8 @@ body.modal-open {
   -webkit-tap-highlight-color: transparent;
   -webkit-animation: partners-scroll 15s linear infinite;
           animation: partners-scroll 15s linear infinite;
+  -webkit-animation-delay: 10s;
+          animation-delay: 10s;
 }
 .partners .embla:hover .embla__container {
   -webkit-animation-play-state: paused;
