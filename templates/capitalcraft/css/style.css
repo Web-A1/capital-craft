@@ -1028,6 +1028,11 @@ body.modal-open {
   -o-object-fit: contain;
      object-fit: contain;
 }
+@media only screen and (max-width: 767px) {
+  .partners .embla__slide .partner-logo {
+    max-width: 220px;
+  }
+}
 .footer {
   width: 100%;
   padding: 0;

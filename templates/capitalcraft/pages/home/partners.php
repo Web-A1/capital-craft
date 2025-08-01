@@ -12,22 +12,22 @@
                 <div class="embla__viewport">
                     <div class="embla__container">
                         <div class="embla__slide">
-                            <img src="/templates/capitalcraft/images/home/vtb.svg" class="partner-logo" alt="ВТБ" />
+                            <img src="/templates/capitalcraft/images/home/partners/vtb_color.svg" class="partner-logo" alt="ВТБ" />
                         </div>
                         <div class="embla__slide">
-                            <img src="/templates/capitalcraft/images/home/gpbal.svg" class="partner-logo" alt="Газпромбанк Автолизинг" />
+                            <img src="/templates/capitalcraft/images/home/partners/gpbal_color.svg" class="partner-logo" alt="Газпромбанк Автолизинг" />
                         </div>
                         <div class="embla__slide">
-                            <img src="/templates/capitalcraft/images/home/alfa.svg" class="partner-logo" alt="Альфа Банк" />
+                            <img src="/templates/capitalcraft/images/home/partners/alfa_color.svg" class="partner-logo" alt="Альфа Бизнес" />
                         </div>
                         <div class="embla__slide">
-                            <img src="/templates/capitalcraft/images/home/vtb.svg" class="partner-logo" alt="ВТБ" />
+                            <img src="/templates/capitalcraft/images/home/partners/sber_color.svg" class="partner-logo" alt="Сбер Бизнес" />
                         </div>
                         <div class="embla__slide">
-                            <img src="/templates/capitalcraft/images/home/gpbal.svg" class="partner-logo" alt="Газпромбанк Автолизинг" />
+                            <img src="/templates/capitalcraft/images/home/partners/psb_color.svg" class="partner-logo" alt="Промсвязьбанк Бизнес" />
                         </div>
                         <div class="embla__slide">
-                            <img src="/templates/capitalcraft/images/home/alfa.svg" class="partner-logo" alt="Альфа Банк" />
+                            <img src="/templates/capitalcraft/images/home/partners/sovkom_color.svg" class="partner-logo" alt="Совкомбанк" />
                         </div>
                     </div>
                 </div>
