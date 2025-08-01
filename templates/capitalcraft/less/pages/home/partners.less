@@ -86,6 +86,13 @@
     &__viewport {
       overflow: hidden;
       width: 100%;
+
+      .media(mobile, {
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-x;
+      });
     }
 
     &__container {
@@ -96,6 +103,11 @@
       -webkit-tap-highlight-color: transparent;
       animation: partners-scroll 15s linear infinite;
       animation-delay: 10s;
+
+      .media(mobile, {
+        animation: none;
+        transform: none;
+      });
     }
 
     &:hover .embla__container {
@@ -110,7 +122,9 @@
       padding: 0px 40px;
 
       .media(mobile, {
-      flex: 0 0 100%;
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+        padding: 0 20px;
       });
 
       .partner-logo {
