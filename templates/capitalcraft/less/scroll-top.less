@@ -1,0 +1,41 @@
+// out: false
+@import 'variables.less';
+
+.scroll-top {
+  position: fixed;
+  right: calc((100vw - @container-width) / 2 - 40px);
+  bottom: 40px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid @color-heading;
+  background: fade(@color-bg-craft, 80%);
+  color: @color-heading;
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transform: rotate(-90deg);
+    path {
+      fill: currentColor;
+    }
+  }
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .media(mobile, {
+    right: @mobile-side-padding;
+    bottom: 20px;
+  });
+}
