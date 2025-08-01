@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.querySelector('.partners .embla__container');
   if (!viewport || !container) return;
 
-  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  const mobileQuery = window.matchMedia('(max-width: 767px)');
 
-  if (isMobile) {
+  const initMobileCarousel = () => {
     EmblaCarousel(
       viewport,
       {
@@ -24,6 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }),
       ]
     );
+  };
+
+  if (mobileQuery.matches) {
+    initMobileCarousel();
   } else {
     // Дублируем логотипы для плавной бесконечной прокрутки
     container.innerHTML += container.innerHTML;
@@ -54,12 +58,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  mobileQuery.addEventListener('change', (e) => {
+    if (e.matches) {
+      initMobileCarousel();
+    }
+  });
+
   container.querySelectorAll('.partner-logo').forEach((logo) => {
-    logo.addEventListener('touchstart', () => {
-      logo.classList.add('no-filter');
-    });
-    logo.addEventListener('touchend', () => {
-      logo.classList.remove('no-filter');
-    });
+    const highlight = () => logo.classList.add('no-filter');
+    const unhighlight = () => logo.classList.remove('no-filter');
+    logo.addEventListener('touchstart', highlight);
+    logo.addEventListener('touchend', unhighlight);
+    logo.addEventListener('pointerdown', highlight);
+    logo.addEventListener('pointerup', unhighlight);
   });
 });
