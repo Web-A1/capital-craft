@@ -986,8 +986,24 @@ body.modal-open {
   width: 100%;
 }
 .partners .embla__viewport {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
   width: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.partners .embla__viewport::-webkit-scrollbar {
+  display: none;
+}
+@media only screen and (max-width: 767px) {
+  .partners .embla__viewport {
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-x;
+  }
+}
+.partners .embla__viewport.dragging {
+  cursor: grabbing;
 }
 .partners .embla__container {
   display: -webkit-box;
@@ -1004,6 +1020,15 @@ body.modal-open {
           animation: partners-scroll 15s linear infinite;
   -webkit-animation-delay: 10s;
           animation-delay: 10s;
+}
+@media only screen and (max-width: 767px) {
+  .partners .embla__container {
+    -webkit-animation: none;
+            animation: none;
+    -webkit-transform: none;
+        -ms-transform: none;
+            transform: none;
+  }
 }
 .partners .embla:hover .embla__container {
   -webkit-animation-play-state: paused;
@@ -1029,6 +1054,8 @@ body.modal-open {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 100%;
             flex: 0 0 100%;
+    scroll-snap-align: start;
+    padding: 0 20px;
   }
 }
 .partners .embla__slide .partner-logo {

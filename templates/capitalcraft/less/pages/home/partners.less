@@ -84,15 +84,24 @@
     width: 100%;
 
     &__viewport {
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
       width: 100%;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       .media(mobile, {
-        overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-x;
       });
+
+      &.dragging {
+        cursor: grabbing;
+      }
     }
 
     &__container {

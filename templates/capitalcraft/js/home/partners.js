@@ -7,35 +7,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-  if (!isMobile) {
+  if (isMobile) {
+    EmblaCarousel(
+      viewport,
+      {
+        loop: true,
+        align: 'center',
+        skipSnaps: false,
+        containScroll: false,
+      },
+      [
+        EmblaCarouselAutoplay({
+          delay: 3000,
+          stopOnInteraction: false,
+          stopOnMouseEnter: false,
+        }),
+      ]
+    );
+  } else {
     // Дублируем логотипы для плавной бесконечной прокрутки
     container.innerHTML += container.innerHTML;
-  } else {
-    let index = 0;
-    const slides = container.children;
-    const slideCount = slides.length;
 
-    const startAuto = () =>
-      setInterval(() => {
-        index = (index + 1) % slideCount;
-        viewport.scrollTo({
-          left: viewport.offsetWidth * index,
-          behavior: 'smooth',
-        });
-      }, 3000);
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
 
-    let autoId = startAuto();
-
-    const restart = () => {
-      clearInterval(autoId);
-      autoId = startAuto();
+    const stopDrag = () => {
+      isDown = false;
+      viewport.classList.remove('dragging');
     };
 
-    viewport.addEventListener('touchstart', () => clearInterval(autoId));
-    viewport.addEventListener('touchend', restart);
-    window.addEventListener('resize', () => {
-      index = Math.round(viewport.scrollLeft / viewport.offsetWidth);
-      restart();
+    viewport.addEventListener('mousedown', (e) => {
+      isDown = true;
+      startX = e.pageX - viewport.offsetLeft;
+      scrollStart = viewport.scrollLeft;
+      viewport.classList.add('dragging');
+    });
+    viewport.addEventListener('mouseleave', stopDrag);
+    viewport.addEventListener('mouseup', stopDrag);
+    viewport.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - viewport.offsetLeft;
+      const walk = x - startX;
+      viewport.scrollLeft = scrollStart - walk;
     });
   }
 
