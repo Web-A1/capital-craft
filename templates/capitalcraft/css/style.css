@@ -997,12 +997,15 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .partners .embla__viewport {
-    scroll-snap-type: x mandatory;
+    -ms-scroll-snap-type: x mandatory;
+        scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
+    -ms-touch-action: pan-x;
+        touch-action: pan-x;
   }
 }
 .partners .embla__viewport.dragging {
+  cursor: -webkit-grabbing;
   cursor: grabbing;
 }
 .partners .embla__container {
@@ -1026,7 +1029,6 @@ body.modal-open {
     -webkit-animation: none;
             animation: none;
     -webkit-transform: none;
-        -ms-transform: none;
             transform: none;
   }
 }
