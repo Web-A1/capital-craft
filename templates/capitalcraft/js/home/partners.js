@@ -1,28 +1,13 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const emblaNode = document.querySelector('.embla');
-  if (!emblaNode) return;
+  const container = document.querySelector('.partners .embla__container');
+  if (!container) return;
 
-  const viewportNode = emblaNode.querySelector('.embla__viewport');
-  EmblaCarousel(
-    viewportNode,
-    {
-      loop: true,
-      align: 'center',
-      skipSnaps: false,
-      containScroll: false,
-    },
-    [
-      EmblaCarouselAutoplay({
-        delay: 4000,
-        stopOnInteraction: false,
-        stopOnMouseEnter: false,
-      }),
-    ]
-  );
+  // Дублируем логотипы для плавной бесконечной прокрутки
+  container.innerHTML += container.innerHTML;
 
-  document.querySelectorAll('.partner-logo').forEach((logo) => {
+  container.querySelectorAll('.partner-logo').forEach((logo) => {
     logo.addEventListener('touchstart', () => {
       logo.classList.add('no-filter');
     });
