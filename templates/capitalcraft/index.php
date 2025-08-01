@@ -12,6 +12,14 @@ $isHome = $menu->getActive() == $menu->getDefault();
 
 <head>
   <jdoc:include type="head" />
+
+  <!-- Фавиконки -->
+  <link rel="icon" type="image/x-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon.ico">
+  <link rel="icon" type="image/svg+xml" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon.svg">
+  <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
+  <link rel="mask-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon_black.svg" color="#000">
+
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Шрифты -->
