@@ -21,4 +21,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }),
     ]
   );
+
+  document.querySelectorAll('.partner-logo').forEach((logo) => {
+    logo.addEventListener('touchstart', () => {
+      logo.classList.add('no-filter');
+    });
+    logo.addEventListener('touchend', () => {
+      logo.classList.remove('no-filter');
+    });
+  });
 });

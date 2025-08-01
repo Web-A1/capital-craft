@@ -117,4 +117,15 @@
       }
     }
   }
+
+  .partner-logo {
+    filter: grayscale(100%) brightness(0);
+    transition: filter 0.3s ease;
+
+    &:hover,
+    &:active,
+    &.no-filter {
+      filter: none;
+    }
+  }
 }
