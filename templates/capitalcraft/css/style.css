@@ -1330,17 +1330,15 @@ body.modal-open {
       -ms-flex: 1;
           flex: 1;
 }
+@media only screen and (max-width: 767px) {
+  .show-case__image {
+    display: none;
+  }
+}
 .show-case__image img {
   display: block;
   width: 352px;
   height: auto;
-}
-@media only screen and (max-width: 767px) {
-  .show-case__image {
-    -webkit-box-ordinal-group: 3;
-        -ms-flex-order: 2;
-            order: 2;
-  }
 }
 .show-case__cases {
   width: 668px;

@@ -130,15 +130,15 @@
   &__image {
     flex: 1;
 
+    .media(mobile, {
+      display: none;
+    });
+
     img {
       display: block;
       width: 352px;
       height: auto;
     }
-
-    .media(mobile, {
-      order: 2;
-    });
   }
 
   &__cases {
