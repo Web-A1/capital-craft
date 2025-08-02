@@ -1332,7 +1332,7 @@ body.modal-open {
 }
 .show-case__image img {
   display: block;
-  width: 100%;
+  width: 352px;
   height: auto;
 }
 @media only screen and (max-width: 767px) {
@@ -1343,7 +1343,7 @@ body.modal-open {
   }
 }
 .show-case__cases {
-  width: 420px;
+  width: 668px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

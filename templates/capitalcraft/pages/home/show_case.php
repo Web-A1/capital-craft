@@ -49,7 +49,7 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE);
 
         <div class="show-case__content">
             <div class="show-case__image">
-                <img src="/templates/capitalcraft/images/main/handshake.webp" alt="Handshake business partnership" loading="lazy">
+                <img src="/templates/capitalcraft/images/home/handshake.webp" alt="Handshake business partnership" loading="lazy">
             </div>
             <div class="show-case__cases">
                 <div class="show-case__stack" id="show-case-stack">
