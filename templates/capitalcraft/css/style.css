@@ -1169,7 +1169,7 @@ body.modal-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 40px;
+  gap: 5px;
   max-width: 700px;
 }
 @media only screen and (max-width: 767px) {
@@ -1200,7 +1200,7 @@ body.modal-open {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 40px;
+  gap: 80px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__content {
@@ -1212,19 +1212,13 @@ body.modal-open {
   }
 }
 .show-case__image {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  width: 352px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 .show-case__image img {
   display: block;
-  width: 352px;
+  width: 100%;
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
@@ -1273,7 +1267,7 @@ body.modal-open {
 .show-case__card {
   position: absolute;
   width: 100%;
-  border-radius: 6px;
+  border-radius: 15px;
   border: 1px solid #000000;
   background: #fdfbf5;
   -webkit-box-sizing: border-box;
