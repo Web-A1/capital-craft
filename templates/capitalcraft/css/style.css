@@ -1279,17 +1279,20 @@ body.modal-open {
 }
 .show-case__card--1 {
   padding: 40px;
-  height: 550px;
+  height: auto;
+  min-height: 550px;
   z-index: 3;
   -webkit-transform: translateY(0) scale(1);
           transform: translateY(0) scale(1);
   -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
           box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--1 {
     padding: 20px;
-    height: 400px;
+    min-height: 400px;
+    height: auto;
   }
 }
 .show-case__card--2 {

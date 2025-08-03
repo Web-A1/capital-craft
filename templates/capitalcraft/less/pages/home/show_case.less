@@ -128,7 +128,7 @@
     &--1 {
       padding: 40px;
       height: auto;
-      min-height: 400px;
+      min-height: 550px;
       z-index: 3;
       transform: translateY(0) scale(1);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
@@ -136,8 +136,8 @@
 
       .media(mobile, {
         padding: 20px;
-        height: auto;
         min-height: 400px;
+        height: auto;
       });
     }
 
@@ -217,16 +217,10 @@
     flex-direction: column;
     gap: 20px;
     flex: 1;
-    overflow-y: auto;
 
     .media(mobile, {
       gap: 15px;
     });
-
-    //.show-case__card--2 &,
-    //.show-case__card--3 & {
-    //  display: none;
-    //}
   }
 
   &__detail-title {
