@@ -53,40 +53,33 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE);
             </div>
             <div class="show-case__cases">
                 <div class="show-case__stack" id="show-case-stack">
-                    <div class="show-case__card show-case__card--3" id="show-case-card3">
-                        <div class="show-case__card-content">
-                            <div class="show-case__card-title"></div>
-                        </div>
-                    </div>
-                    <div class="show-case__card show-case__card--2" id="show-case-card2">
-                        <div class="show-case__card-content">
-                            <div class="show-case__card-title"></div>
-                        </div>
-                    </div>
-                    <div class="show-case__card show-case__card--1 active" id="show-case-card1">
-                        <div class="show-case__card-content">
-                            <div class="show-case__card-title"></div>
-                            <div class="show-case__details">
-                                <div class="show-case__detail">
-                                    <div class="show-case__detail-title">Бизнес клиента</div>
-                                    <div class="show-case__detail-description show-case__business"></div>
-                                </div>
-                                <div class="show-case__detail">
-                                    <div class="show-case__detail-title">Задача</div>
-                                    <div class="show-case__detail-description show-case__task"></div>
-                                </div>
-                                <div class="show-case__detail">
-                                    <div class="show-case__detail-title">Стратегия</div>
-                                    <div class="show-case__detail-description show-case__strategy"></div>
-                                </div>
-                                <div class="show-case__detail">
-                                    <div class="show-case__detail-title">Результат</div>
-                                    <div class="show-case__detail-description show-case__result"></div>
+                    <?php for ($i = 0; $i < 3; $i++): ?>
+                        <div class="show-case__card show-case__card--<?= 3 - $i ?><?= $i === 2 ? ' active' : '' ?>" id="show-case-card<?= 3 - $i ?>">
+                            <div class="show-case__card-content">
+                                <div class="show-case__card-title"></div>
+                                <div class="show-case__details">
+                                    <div class="show-case__detail">
+                                        <div class="show-case__detail-title">Бизнес клиента</div>
+                                        <div class="show-case__detail-description show-case__business"></div>
+                                    </div>
+                                    <div class="show-case__detail">
+                                        <div class="show-case__detail-title">Задача</div>
+                                        <div class="show-case__detail-description show-case__task"></div>
+                                    </div>
+                                    <div class="show-case__detail">
+                                        <div class="show-case__detail-title">Стратегия</div>
+                                        <div class="show-case__detail-description show-case__strategy"></div>
+                                    </div>
+                                    <div class="show-case__detail">
+                                        <div class="show-case__detail-title">Результат</div>
+                                        <div class="show-case__detail-description show-case__result"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endfor; ?>
                 </div>
+
                 <div class="show-case__button-wrapper">
                     <a href="#" class="btn-main show-case__button">
                         <span>все кейсы</span>
@@ -97,8 +90,9 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE);
                 </div>
             </div>
         </div>
+    </div>
 </section>
 
 <script>
-    window.showcasesData = <?php echo $casesJson; ?>;
+    window.showcasesData = <?= $casesJson ?>;
 </script>

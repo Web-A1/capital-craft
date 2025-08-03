@@ -16,10 +16,15 @@ class ShowCases {
   }
 
   bindEvents() {
-    this.container.addEventListener('wheel', (e) => {
-      if (e.deltaY > 0) this.nextCase();
-      else this.prevCase();
-    });
+    this.container.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        if (e.deltaY > 0) this.nextCase();
+        else this.prevCase();
+      },
+      { passive: false }
+    );
 
     this.container.addEventListener('click', () => this.nextCase());
     window.addEventListener('resize', () => {
@@ -88,12 +93,12 @@ class ShowCases {
     const i2 = (i1 + 1) % this.cases.length;
     const i3 = (i1 + 2) % this.cases.length;
 
-    this.updateCardContent(card1, this.cases[i1], 1);
-    this.updateCardContent(card2, this.cases[i2], 2);
-    this.updateCardContent(card3, this.cases[i3], 3);
+    this.updateCardContent(card1, this.cases[i1]);
+    this.updateCardContent(card2, this.cases[i2]);
+    this.updateCardContent(card3, this.cases[i3]);
   }
 
-  updateCardContent(card, caseData, cardNumber) {
+  updateCardContent(card, caseData) {
     if (!card || !caseData) return;
 
     const titleElement = card.querySelector('.show-case__card-title');
@@ -104,17 +109,10 @@ class ShowCases {
     const strategyDesc = card.querySelector('.show-case__strategy');
     const resultDesc = card.querySelector('.show-case__result');
 
-    if (cardNumber === 1) {
-      if (businessDesc) businessDesc.textContent = caseData.business;
-      if (taskDesc) taskDesc.textContent = caseData.task;
-      if (strategyDesc) strategyDesc.textContent = caseData.strategy;
-      if (resultDesc) resultDesc.textContent = caseData.result;
-    } else {
-      if (businessDesc) businessDesc.textContent = '';
-      if (taskDesc) taskDesc.textContent = '';
-      if (strategyDesc) strategyDesc.textContent = '';
-      if (resultDesc) resultDesc.textContent = '';
-    }
+    if (businessDesc) businessDesc.textContent = caseData.business;
+    if (taskDesc) taskDesc.textContent = caseData.task;
+    if (strategyDesc) strategyDesc.textContent = caseData.strategy;
+    if (resultDesc) resultDesc.textContent = caseData.result;
   }
 
   startPulseAnimation() {

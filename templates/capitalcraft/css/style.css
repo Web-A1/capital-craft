@@ -1390,10 +1390,6 @@ body.modal-open {
     gap: 15px;
   }
 }
-.show-case__card--2 .show-case__details,
-.show-case__card--3 .show-case__details {
-  display: none;
-}
 .show-case__detail-title {
   color: #666666;
   font-family: 'Golos Text', sans-serif;
