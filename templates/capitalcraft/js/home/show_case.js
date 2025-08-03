@@ -8,6 +8,9 @@ class ShowCases {
     this.currentIndex = 0;
     this.isAnimating = false;
     this.animationDuration = 500;
+    this.touchStartX = 0;
+    this.touchStartY = 0;
+    this.minSwipeDistance = 50;
 
     this.updateCards();
     this.updateZIndex();
@@ -24,6 +27,18 @@ class ShowCases {
         else this.prevCase();
       },
       { passive: false }
+    );
+
+    this.container.addEventListener(
+      'touchstart',
+      (e) => this.handleTouchStart(e),
+      { passive: true }
+    );
+
+    this.container.addEventListener(
+      'touchend',
+      (e) => this.handleTouchEnd(e),
+      { passive: true }
     );
 
     this.container.addEventListener('click', () => this.nextCase());
@@ -62,6 +77,28 @@ class ShowCases {
     setTimeout(() => {
       this.isAnimating = false;
     }, this.animationDuration);
+  }
+
+  handleTouchStart(e) {
+    const touch = e.touches[0];
+    if (!touch) return;
+    this.touchStartX = touch.clientX;
+    this.touchStartY = touch.clientY;
+  }
+
+  handleTouchEnd(e) {
+    if (this.isAnimating) return;
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    const deltaX = touch.clientX - this.touchStartX;
+    const deltaY = touch.clientY - this.touchStartY;
+    if (
+      Math.abs(deltaX) > Math.abs(deltaY) &&
+      Math.abs(deltaX) > this.minSwipeDistance
+    ) {
+      if (deltaX < 0) this.nextCase();
+      else this.prevCase();
+    }
   }
 
   updateZIndex() {
