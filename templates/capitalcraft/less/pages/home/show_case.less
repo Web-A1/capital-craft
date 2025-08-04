@@ -106,6 +106,7 @@
     width: 100%;
     height: 495px;
     cursor: pointer;
+    overflow: hidden;
 
     .media(mobile, {
       height: 445px;
@@ -120,12 +121,13 @@
     background: @color-bg-craft;
     box-sizing: border-box;
     transition: transform 0.4s ease, box-shadow 0.4s ease;
+    top: 0;
+    left: 0;
+    transform-origin: top;
 
     &--1 {
       padding: 40px;
-      height: 100%;
-      top: 36px;
-      min-height: 450px;
+      height: 450px;
       z-index: 3;
       transform: translateY(0) scale(1);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
@@ -133,8 +135,7 @@
 
       .media(mobile, {
         padding: 20px;
-        min-height: 400px;
-        height: 100%;
+        height: 400px;
       });
     }
 
