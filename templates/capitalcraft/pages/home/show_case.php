@@ -32,6 +32,7 @@ $cases = [
 
 $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
 ?>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
 <section class="show-case" id="cases">
     <div class="show-case__inner">
@@ -45,42 +46,44 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
                 <img src="/templates/capitalcraft/images/home/handshake.webp" alt="Handshake business partnership" loading="lazy">
             </div>
             <div class="show-case__cases">
-                <div class="show-case__stack" id="show-case-stack">
-                    <?php foreach (array_slice($cases, 0, 3) as $index => $case): ?>
-                        <div class="show-case__card show-case__card--<?= $index + 1 ?><?= $index === 0 ? ' active' : '' ?>" id="show-case-card<?= $index + 1 ?>">
-                            <div class="show-case__card-content">
-                                <div class="show-case__card-title">
-                                    <?= htmlspecialchars($case['title'], ENT_QUOTES, 'UTF-8') ?>
-                                </div>
-                                <div class="show-case__details">
-                                    <div class="show-case__detail">
-                                        <div class="show-case__detail-title">Бизнес клиента</div>
-                                        <div class="show-case__detail-description show-case__business">
-                                            <?= htmlspecialchars($case['business'], ENT_QUOTES, 'UTF-8') ?>
-                                        </div>
+                <div class="show-case__stack swiper show-case-swiper">
+                    <div class="swiper-wrapper">
+                        <?php foreach ($cases as $case): ?>
+                            <div class="swiper-slide show-case__card">
+                                <div class="show-case__card-content">
+                                    <div class="show-case__card-title">
+                                        <?= htmlspecialchars($case['title'], ENT_QUOTES, 'UTF-8') ?>
                                     </div>
-                                    <div class="show-case__detail">
-                                        <div class="show-case__detail-title">Задача</div>
-                                        <div class="show-case__detail-description show-case__task">
-                                            <?= htmlspecialchars($case['task'], ENT_QUOTES, 'UTF-8') ?>
+                                    <div class="show-case__details">
+                                        <div class="show-case__detail">
+                                            <div class="show-case__detail-title">Бизнес клиента</div>
+                                            <div class="show-case__detail-description show-case__business">
+                                                <?= htmlspecialchars($case['business'], ENT_QUOTES, 'UTF-8') ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="show-case__detail">
-                                        <div class="show-case__detail-title">Стратегия</div>
-                                        <div class="show-case__detail-description show-case__strategy">
-                                            <?= htmlspecialchars($case['strategy'], ENT_QUOTES, 'UTF-8') ?>
+                                        <div class="show-case__detail">
+                                            <div class="show-case__detail-title">Задача</div>
+                                            <div class="show-case__detail-description show-case__task">
+                                                <?= htmlspecialchars($case['task'], ENT_QUOTES, 'UTF-8') ?>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="show-case__detail">
-                                        <div class="show-case__detail-title">Результат</div>
-                                        <div class="show-case__detail-description show-case__result">
-                                            <?= htmlspecialchars($case['result'], ENT_QUOTES, 'UTF-8') ?>
+                                        <div class="show-case__detail">
+                                            <div class="show-case__detail-title">Стратегия</div>
+                                            <div class="show-case__detail-description show-case__strategy">
+                                                <?= htmlspecialchars($case['strategy'], ENT_QUOTES, 'UTF-8') ?>
+                                            </div>
+                                        </div>
+                                        <div class="show-case__detail">
+                                            <div class="show-case__detail-title">Результат</div>
+                                            <div class="show-case__detail-description show-case__result">
+                                                <?= htmlspecialchars($case['result'], ENT_QUOTES, 'UTF-8') ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php endforeach; ?>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
 
                 <div class="show-case__button-wrapper">
@@ -95,7 +98,7 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE | JSON_HEX_TAG);
         </div>
     </div>
 </section>
-
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
     window.showcasesData = <?= $casesJson ?>;
 </script>

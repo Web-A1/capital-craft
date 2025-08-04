@@ -89,9 +89,7 @@
       gap: 30px;
     });
   }
-
   &__stack {
-    position: relative;
     width: 100%;
     min-height: 470px;
     cursor: pointer;
@@ -103,70 +101,33 @@
   }
 
   &__card {
-    position: absolute;
-    width: 100%;
     border-radius: 15px;
     border: 1px solid @color-heading;
     background: @color-bg-craft;
     box-sizing: border-box;
     overflow: hidden;
-    transition: transform 0.5s ease, box-shadow 0.5s ease, top 0.5s ease,
-      opacity 0.5s ease;
-    top: 0;
-    left: 0;
-    transform-origin: center;
-    will-change: transform;
+    padding: 40px;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow 0.5s ease;
 
-    &--1 {
-      padding: 40px;
-      min-height: 450px;
-      z-index: 3;
-      top: 1.25rem;
-      transform: scale(1);
+    &.swiper-slide-active {
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-      opacity: 1;
-
-      .media(mobile, {
-        padding: 20px;
-        min-height: 400px;
-      });
     }
 
-    &--2 {
-      padding: 40px;
-      min-height: 450px;
-      z-index: 2;
-      top: 0.5rem;
-      transform: scale(0.93);
+    &.swiper-slide-next {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      overflow: hidden;
-      opacity: 1;
-
-      .media(mobile, {
-        padding: 20px;
-        min-height: 400px;
-      });
     }
 
-    &--3 {
-      padding: 40px;
-      min-height: 450px;
-      top: 0;
-      z-index: 1;
-      transform: scale(0.85);
+    &.swiper-slide-prev {
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-      overflow: hidden;
-      opacity: 1;
-
-      .media(mobile, {
-        padding: 20px;
-        min-height: 400px;
-      });
     }
 
-    &.active {
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-    }
+    .media(mobile, {
+      padding: 20px;
+      min-height: 400px;
+    });
   }
 
   &__card-content {
@@ -182,30 +143,11 @@
     text-transform: uppercase;
     color: @color-heading;
     margin-bottom: 30px;
+    font-size: @font-size-text*1.5;
 
-    .show-case__card--1 & {
-      font-size: @font-size-text*1.5;
-
-      .media(mobile, {
-        font-size: @font-size-base * 1.375;
-      });
-    }
-
-    .show-case__card--2 & {
-      font-size: @font-size-base * 1.75;
-
-      .media(mobile, {
-        font-size: @font-size-base * 1.25;
-      });
-    }
-
-    .show-case__card--3 & {
-      font-size: @font-size-base * 1.625;
-
-      .media(mobile, {
-        font-size: @font-size-base * 1.125;
-      });
-    }
+    .media(mobile, {
+      font-size: @font-size-base * 1.375;
+    });
   }
 
   &__details {
