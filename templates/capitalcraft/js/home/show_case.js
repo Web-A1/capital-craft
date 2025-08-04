@@ -55,16 +55,25 @@ class ShowCases {
     exitingCard.classList.remove('active');
 
     if (this.cards[1]) {
-      this.cards[1].classList.replace('show-case__card--2', 'show-case__card--1');
+      this.cards[1].classList.replace(
+        'show-case__card--2',
+        'show-case__card--1'
+      );
       this.cards[1].classList.add('active');
     }
 
     if (this.cards[2]) {
-      this.cards[2].classList.replace('show-case__card--3', 'show-case__card--2');
+      this.cards[2].classList.replace(
+        'show-case__card--3',
+        'show-case__card--2'
+      );
     }
 
     setTimeout(() => {
-      exitingCard.classList.remove('show-case__card--exit', 'show-case__card--1');
+      exitingCard.classList.remove(
+        'show-case__card--exit',
+        'show-case__card--1'
+      );
       this.cards.push(this.cards.shift());
       this.currentIndex = (this.currentIndex + 1) % this.cases.length;
       exitingCard.classList.add('show-case__card--3');
