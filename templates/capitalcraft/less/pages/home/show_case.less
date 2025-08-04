@@ -120,6 +120,7 @@
     border: 1px solid @color-heading;
     background: @color-bg-craft;
     box-sizing: border-box;
+    overflow: hidden;
     transition: transform 0.5s ease, box-shadow 0.5s ease, top 0.5s ease,
       opacity 0.5s ease;
     top: 0;
@@ -217,6 +218,13 @@
       z-index: 4;
       transform: translateY(calc(100% + 40px));
       opacity: 0;
+    }
+
+    &--exit-back {
+      z-index: 0;
+      transform: translateY(calc(100% + 40px));
+      opacity: 0;
+      overflow: hidden;
     }
 
     &.active {

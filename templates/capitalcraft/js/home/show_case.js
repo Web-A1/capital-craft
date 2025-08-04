@@ -93,7 +93,7 @@ class ShowCases {
     const exitingCard = this.cards.pop();
 
     requestAnimationFrame(() => {
-      exitingCard.classList.add('show-case__card--exit-down');
+      exitingCard.classList.add('show-case__card--exit-back');
       exitingCard.classList.remove('show-case__card--3');
 
       const currentCard = this.cards[1];
