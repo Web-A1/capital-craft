@@ -33,11 +33,9 @@ class ShowCases {
       (e) => this.handleTouchStart(e),
       { passive: true }
     );
-    this.container.addEventListener(
-      'touchend',
-      (e) => this.handleTouchEnd(e),
-      { passive: true }
-    );
+    this.container.addEventListener('touchend', (e) => this.handleTouchEnd(e), {
+      passive: true,
+    });
     window.addEventListener('resize', () => {
       this.updateCards();
     });
