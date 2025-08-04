@@ -1111,8 +1111,8 @@ body.modal-open {
             transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
   }
 }
 @keyframes show-case-pulse {
@@ -1122,8 +1122,8 @@ body.modal-open {
             transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
   }
 }
 .show-case {
@@ -1251,13 +1251,13 @@ body.modal-open {
 .show-case__stack {
   position: relative;
   width: 100%;
-  height: 470px;
+  min-height: 470px;
   cursor: pointer;
   overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
   .show-case__stack {
-    height: 445px;
+    min-height: 445px;
   }
 }
 .show-case__card {
@@ -1278,40 +1278,28 @@ body.modal-open {
   -webkit-transform-origin: top;
           transform-origin: top;
 }
-.show-case__card--exit {
-  z-index: 4;
-  -webkit-transform: translateY(100%) scale(0.95);
-          transform: translateY(100%) scale(0.95);
-  opacity: 0;
-  -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
-  transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  transition: transform 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease;
-  pointer-events: none;
-}
 .show-case__card--1 {
   padding: 40px;
-  height: 450px;
+  min-height: 450px;
   z-index: 3;
-  top: 20px;
+  top: 1.25rem;
   -webkit-transform: scale(1);
           transform: scale(1);
   -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
           box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
   opacity: 1;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--1 {
     padding: 20px;
-    height: 400px;
+    min-height: 400px;
   }
 }
 .show-case__card--2 {
   padding: 40px;
-  height: 450px;
+  min-height: 450px;
   z-index: 2;
-  top: 8px;
+  top: 0.5rem;
   -webkit-transform: scale(0.93);
           transform: scale(0.93);
   -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
@@ -1322,12 +1310,12 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .show-case__card--2 {
     padding: 20px;
-    height: 400px;
+    min-height: 400px;
   }
 }
 .show-case__card--3 {
   padding: 40px;
-  height: 450px;
+  min-height: 450px;
   z-index: 1;
   -webkit-transform: scale(0.85);
           transform: scale(0.85);
@@ -1339,14 +1327,14 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .show-case__card--3 {
     padding: 20px;
-    height: 400px;
+    min-height: 400px;
   }
 }
 .show-case__card--4 {
   padding: 40px;
-  height: 450px;
+  min-height: 450px;
   z-index: 0;
-  top: -12px;
+  top: -0.75rem;
   -webkit-transform: scale(0.77);
           transform: scale(0.77);
   -webkit-box-shadow: none;
@@ -1357,14 +1345,14 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .show-case__card--4 {
     padding: 20px;
-    height: 400px;
+    min-height: 400px;
   }
 }
 .show-case__card--0 {
   padding: 40px;
-  height: 450px;
+  min-height: 450px;
   z-index: 0;
-  top: 32px;
+  top: 2rem;
   -webkit-transform: scale(1.07);
           transform: scale(1.07);
   -webkit-box-shadow: none;
@@ -1375,7 +1363,7 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .show-case__card--0 {
     padding: 20px;
-    height: 400px;
+    min-height: 400px;
   }
 }
 .show-case__card--exit-down {
