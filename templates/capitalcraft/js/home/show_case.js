@@ -8,6 +8,8 @@ class ShowCases {
     this.currentIndex = 0;
     this.isAnimating = false;
     this.animationDuration = 500;
+    this.touchStartY = 0;
+    this.minSwipeDistance = 30;
 
     this.updateCards();
     this.bindEvents();
@@ -26,6 +28,16 @@ class ShowCases {
     );
 
     this.container.addEventListener('click', () => this.nextCase());
+    this.container.addEventListener(
+      'touchstart',
+      (e) => this.handleTouchStart(e),
+      { passive: true }
+    );
+    this.container.addEventListener(
+      'touchend',
+      (e) => this.handleTouchEnd(e),
+      { passive: true }
+    );
     window.addEventListener('resize', () => {
       this.updateCards();
     });
@@ -116,7 +128,6 @@ class ShowCases {
   handleTouchStart(e) {
     const touch = e.touches[0];
     if (!touch) return;
-    this.touchStartX = touch.clientX;
     this.touchStartY = touch.clientY;
   }
 
@@ -124,13 +135,9 @@ class ShowCases {
     if (this.isAnimating) return;
     const touch = e.changedTouches[0];
     if (!touch) return;
-    const deltaX = touch.clientX - this.touchStartX;
     const deltaY = touch.clientY - this.touchStartY;
-    if (
-      Math.abs(deltaX) > Math.abs(deltaY) &&
-      Math.abs(deltaX) > this.minSwipeDistance
-    ) {
-      if (deltaX < 0) this.nextCase();
+    if (Math.abs(deltaY) > this.minSwipeDistance) {
+      if (deltaY < 0) this.nextCase();
       else this.prevCase();
     }
   }
@@ -171,10 +178,9 @@ class ShowCases {
   }
 
   startPulseAnimation() {
-    const activeCard = this.cards[0];
-    if (activeCard) {
-      activeCard.style.animationPlayState = 'running';
-    }
+    this.cards.forEach((card, index) => {
+      card.style.animationPlayState = index === 0 ? 'running' : 'paused';
+    });
   }
 }
 

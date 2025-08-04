@@ -46,8 +46,8 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE);
             </div>
             <div class="show-case__cases">
                 <div class="show-case__stack" id="show-case-stack">
-                    <?php for ($i = 0; $i < 3; $i++): ?>
-                        <div class="show-case__card show-case__card--<?= 3 - $i ?><?= $i === 2 ? ' active' : '' ?>" id="show-case-card<?= 3 - $i ?>">
+                    <?php for ($i = 1; $i <= 3; $i++): ?>
+                        <div class="show-case__card show-case__card--<?= $i ?><?= $i === 1 ? ' active' : '' ?>" id="show-case-card<?= $i ?>">
                             <div class="show-case__card-content">
                                 <div class="show-case__card-title"></div>
                                 <div class="show-case__details">
