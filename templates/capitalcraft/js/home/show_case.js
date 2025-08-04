@@ -155,7 +155,6 @@ class ShowCases {
     if (strategyDesc) strategyDesc.textContent = caseData.strategy;
     if (resultDesc) resultDesc.textContent = caseData.result;
   }
-
 }
 
 window.addEventListener('DOMContentLoaded', () => {

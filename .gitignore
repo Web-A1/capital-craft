@@ -25,3 +25,5 @@ Thumbs.db
 
 # отключаем автогенерируемый style.css
 templates/capitalcraft/css/style.css
+
+.env
