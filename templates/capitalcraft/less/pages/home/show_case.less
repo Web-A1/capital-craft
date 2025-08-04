@@ -140,7 +140,8 @@
       top: 20px;
       transform: scale(1);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-      //overflow-y: auto;
+      overflow-y: auto;
+      opacity: 1;
 
       .media(mobile, {
         padding: 20px;
@@ -155,7 +156,8 @@
       top: 8px;
       transform: scale(0.93);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-      //overflow: hidden;
+      overflow: hidden;
+      opacity: 1;
 
       .media(mobile, {
         padding: 20px;
@@ -169,9 +171,8 @@
       z-index: 1;
       transform: scale(0.85);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-      //overflow: hidden;
-
-      //top: -20px;
+      overflow: hidden;
+      opacity: 1;
 
       .media(mobile, {
         padding: 20px;
@@ -187,6 +188,7 @@
       transform: scale(0.77);
       box-shadow: none;
       overflow: hidden;
+      opacity: 0;
 
       .media(mobile, {
         padding: 20px;
@@ -202,36 +204,7 @@
       transform: scale(1.07);
       box-shadow: none;
       overflow: hidden;
-
-      .media(mobile, {
-        padding: 20px;
-        height: 400px;
-      });
-    }
-
-    &--4 {
-      padding: 40px;
-      height: 450px;
-      z-index: 0;
-      top: -12px;
-      transform: scale(0.77);
-      box-shadow: none;
-      overflow: hidden;
-
-      .media(mobile, {
-        padding: 20px;
-        height: 400px;
-      });
-    }
-
-    &--0 {
-      padding: 40px;
-      height: 450px;
-      z-index: 0;
-      top: 32px;
-      transform: scale(1.07);
-      box-shadow: none;
-      overflow: hidden;
+      opacity: 0;
 
       .media(mobile, {
         padding: 20px;
@@ -240,11 +213,13 @@
     }
 
     &--exit-down {
-      transform: scale(1) translateY(120%);
+      transform: scale(0.9) translateY(120%);
+      opacity: 0;
     }
 
     &--exit-up {
-      transform: scale(1) translateY(-120%);
+      transform: scale(0.9) translateY(-120%);
+      opacity: 0;
     }
 
     &.active {

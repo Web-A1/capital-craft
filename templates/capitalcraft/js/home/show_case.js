@@ -36,7 +36,8 @@ class ShowCases {
     if (this.isAnimating) return;
     this.isAnimating = true;
 
-    const nextIndex = (this.currentIndex + 3) % this.cases.length;
+    const nextIndex =
+      (this.currentIndex + this.cards.length) % this.cases.length;
     const incomingCard = this.createCard(nextIndex, 'show-case__card--4');
     this.cards.push(incomingCard);
 
@@ -60,18 +61,16 @@ class ShowCases {
       );
     });
 
-    setTimeout(() => {
-      exitingCard.classList.remove(
-        'show-case__card--exit-down',
-        'show-case__card--exit-up'
-      );
-      exitingCard.remove();
-      this.refreshCardsArray();
-      this.currentIndex = (this.currentIndex + 1) % this.cases.length;
-      this.startPulseAnimation();
-      this.isAnimating = false;
-      this.startPulseAnimation();
-    }, this.animationDuration);
+    exitingCard.addEventListener(
+      'transitionend',
+      () => {
+        exitingCard.remove();
+        this.currentIndex = (this.currentIndex + 1) % this.cases.length;
+        this.startPulseAnimation();
+        this.isAnimating = false;
+      },
+      { once: true }
+    );
   }
 
   prevCase() {
@@ -103,17 +102,16 @@ class ShowCases {
       incomingCard.classList.add('active');
     });
 
-    setTimeout(() => {
-      exitingCard.classList.remove(
-        'show-case__card--exit-down',
-        'show-case__card--exit-up'
-      );
-      exitingCard.remove();
-      this.refreshCardsArray();
-      this.currentIndex = prevIndex;
-      this.startPulseAnimation();
-      this.isAnimating = false;
-    }, this.animationDuration);
+    exitingCard.addEventListener(
+      'transitionend',
+      () => {
+        exitingCard.remove();
+        this.currentIndex = prevIndex;
+        this.startPulseAnimation();
+        this.isAnimating = false;
+      },
+      { once: true }
+    );
   }
 
   refreshCardsArray() {
