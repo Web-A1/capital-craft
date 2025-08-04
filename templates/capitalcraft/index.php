@@ -70,7 +70,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
   <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
   <?php if ($isHome): ?>
     <script src="templates/capitalcraft/js/home/partners.js"></script>
-    <script src="templates/capitalcraft/js/home/show_case.js"></script>
+    <script src="templates/capitalcraft/js/home/show_case_swiper.js"></script>
   <?php endif; ?>
 
   <script src="templates/capitalcraft/js/burger.js"></script>

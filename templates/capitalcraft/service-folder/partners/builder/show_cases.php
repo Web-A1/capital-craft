@@ -48,8 +48,6 @@ $cases = [
     ]
 ];
 
-// Convert to JSON for JavaScript
-$casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE);
 ?>
 
 <div class="show-cases-section">
@@ -127,14 +125,8 @@ $casesJson = json_encode($cases, JSON_UNESCAPED_UNICODE);
     </div>
 </div>
 
-<script type="text/javascript">
-    // Pass case data to JavaScript
-    window.showcasesData = <?php echo $casesJson; ?>;
-</script>
-
 <?php
-// Load the CSS and JS files
+// Load the CSS file
 $document = JFactory::getDocument();
 $document->addStyleSheet(JUri::root() . 'modules/mod_showcases/show_cases.css');
-$document->addScript(JUri::root() . 'modules/mod_showcases/show_cases.js');
 ?>
