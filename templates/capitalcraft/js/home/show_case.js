@@ -61,6 +61,10 @@ class ShowCases {
     });
 
     setTimeout(() => {
+      exitingCard.classList.remove(
+        'show-case__card--exit-down',
+        'show-case__card--exit-up'
+      );
       exitingCard.remove();
       this.refreshCardsArray();
       this.currentIndex = (this.currentIndex + 1) % this.cases.length;
@@ -100,6 +104,10 @@ class ShowCases {
     });
 
     setTimeout(() => {
+      exitingCard.classList.remove(
+        'show-case__card--exit-down',
+        'show-case__card--exit-up'
+      );
       exitingCard.remove();
       this.refreshCardsArray();
       this.currentIndex = prevIndex;
