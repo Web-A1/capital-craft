@@ -9,6 +9,7 @@ class ShowCases {
     this.isAnimating = false;
     this.animationDuration = 500;
 
+    this.refreshCardsArray();
     this.updateCards();
     this.bindEvents();
     this.startPulseAnimation();
@@ -61,6 +62,7 @@ class ShowCases {
 
     setTimeout(() => {
       exitingCard.remove();
+      this.refreshCardsArray();
       this.currentIndex = (this.currentIndex + 1) % this.cases.length;
       this.startPulseAnimation();
       this.isAnimating = false;
@@ -99,10 +101,19 @@ class ShowCases {
 
     setTimeout(() => {
       exitingCard.remove();
+      this.refreshCardsArray();
       this.currentIndex = prevIndex;
       this.startPulseAnimation();
       this.isAnimating = false;
     }, this.animationDuration);
+  }
+
+  refreshCardsArray() {
+    this.cards = [
+      this.container.querySelector('.show-case__card--1'),
+      this.container.querySelector('.show-case__card--2'),
+      this.container.querySelector('.show-case__card--3'),
+    ].filter(Boolean);
   }
 
   handleTouchStart(e) {
