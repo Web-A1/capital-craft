@@ -1296,6 +1296,8 @@ body.modal-open {
           transform: scale(1);
   -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
           box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  opacity: 1;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--1 {
@@ -1312,6 +1314,8 @@ body.modal-open {
           transform: scale(0.93);
   -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  opacity: 1;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--2 {
@@ -1327,6 +1331,8 @@ body.modal-open {
           transform: scale(0.85);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  opacity: 1;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--3 {
@@ -1344,6 +1350,7 @@ body.modal-open {
   -webkit-box-shadow: none;
           box-shadow: none;
   overflow: hidden;
+  opacity: 0;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--4 {
@@ -1361,40 +1368,7 @@ body.modal-open {
   -webkit-box-shadow: none;
           box-shadow: none;
   overflow: hidden;
-}
-@media only screen and (max-width: 767px) {
-  .show-case__card--0 {
-    padding: 20px;
-    height: 400px;
-  }
-}
-.show-case__card--4 {
-  padding: 40px;
-  height: 450px;
-  z-index: 0;
-  top: -12px;
-  -webkit-transform: scale(0.77);
-          transform: scale(0.77);
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  overflow: hidden;
-}
-@media only screen and (max-width: 767px) {
-  .show-case__card--4 {
-    padding: 20px;
-    height: 400px;
-  }
-}
-.show-case__card--0 {
-  padding: 40px;
-  height: 450px;
-  z-index: 0;
-  top: 32px;
-  -webkit-transform: scale(1.07);
-          transform: scale(1.07);
-  -webkit-box-shadow: none;
-          box-shadow: none;
-  overflow: hidden;
+  opacity: 0;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--0 {
@@ -1403,12 +1377,14 @@ body.modal-open {
   }
 }
 .show-case__card--exit-down {
-  -webkit-transform: scale(1) translateY(120%);
-          transform: scale(1) translateY(120%);
+  -webkit-transform: scale(0.9) translateY(120%);
+          transform: scale(0.9) translateY(120%);
+  opacity: 0;
 }
 .show-case__card--exit-up {
-  -webkit-transform: scale(1) translateY(-120%);
-          transform: scale(1) translateY(-120%);
+  -webkit-transform: scale(0.9) translateY(-120%);
+          transform: scale(0.9) translateY(-120%);
+  opacity: 0;
 }
 .show-case__card.active {
   -webkit-animation: show-case-pulse 3s ease-in-out infinite;
