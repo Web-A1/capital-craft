@@ -3,5 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     mousewheel: true,
     slidesPerView: 1,
     direction: 'vertical',
+    pagination: {
+      el: '.show-case__pagination',
+      clickable: true,
+    },
   });
 });

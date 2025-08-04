@@ -81,6 +81,7 @@ $cases = [
                             </div>
                         <?php endforeach; ?>
                     </div>
+                    <div class="show-case__pagination swiper-pagination"></div>
                 </div>
 
                 <div class="show-case__button-wrapper">

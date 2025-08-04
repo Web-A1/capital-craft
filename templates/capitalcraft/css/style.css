@@ -1241,6 +1241,13 @@ body.modal-open {
 .show-case__swiper .swiper-slide {
   height: 100%;
 }
+.show-case__pagination .swiper-pagination-bullet {
+  background: #000000;
+  opacity: 0.3;
+}
+.show-case__pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+}
 .show-case__card {
   border-radius: 15px;
   border: 1px solid #000000;
