@@ -1253,6 +1253,7 @@ body.modal-open {
   width: 100%;
   height: 495px;
   cursor: pointer;
+  overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
   .show-case__stack {
@@ -1377,13 +1378,14 @@ body.modal-open {
   }
 }
 .show-case__card--exit-down {
-  -webkit-transform: scale(0.9) translateY(120%);
-          transform: scale(0.9) translateY(120%);
+  z-index: 4;
+  -webkit-transform: translateY(calc(100% + 40px));
+          transform: translateY(calc(100% + 40px));
   opacity: 0;
 }
 .show-case__card--exit-up {
-  -webkit-transform: scale(0.9) translateY(-120%);
-          transform: scale(0.9) translateY(-120%);
+  -webkit-transform: translateY(calc(-100% - 40px));
+          transform: translateY(calc(-100% - 40px));
   opacity: 0;
 }
 .show-case__card.active {
