@@ -1,13 +1,20 @@
 class ShowCases {
   constructor() {
     this.container = document.getElementById('show-case-stack');
+    this.cases = Array.isArray(window.showcasesData)
+      ? window.showcasesData
+      : [];
+
+    if (!this.container || this.cases.length < 3) {
+      console.warn('ShowCases: контейнер или данные не найдены');
+      return;
+    }
+
     this.cards = Array.from(
       this.container.querySelectorAll('.show-case__card')
     );
-    this.cases = window.showcasesData || [];
     this.currentIndex = 0;
     this.isAnimating = false;
-    this.animationDuration = 500;
     this.touchStartY = 0;
     this.minSwipeDistance = 30;
 
@@ -183,5 +190,12 @@ class ShowCases {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-  window.showcasesInstance = new ShowCases();
+  const container = document.getElementById('show-case-stack');
+  if (
+    container &&
+    Array.isArray(window.showcasesData) &&
+    window.showcasesData.length >= 3
+  ) {
+    window.showcasesInstance = new ShowCases();
+  }
 });
