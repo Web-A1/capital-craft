@@ -1107,8 +1107,8 @@ body.modal-open {
 @-webkit-keyframes show-case-pulse {
   0%,
   100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
   }
   50% {
     -webkit-transform: scale(1);
@@ -1118,8 +1118,8 @@ body.modal-open {
 @keyframes show-case-pulse {
   0%,
   100% {
-    -webkit-transform: scale(1);
-            transform: scale(1);
+    -webkit-transform: scale(1.02);
+            transform: scale(1.02);
   }
   50% {
     -webkit-transform: scale(1);
