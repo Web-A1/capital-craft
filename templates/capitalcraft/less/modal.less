@@ -71,7 +71,7 @@
   }
   &__title {
     font-family: @font-title;
-    font-size: 24px;
+    font-size: @font-size-base * 1.5;
     color: @color-heading;
   }
   &__description {
@@ -96,7 +96,7 @@
         margin: 0;
       }
       span {
-        font-size: 12px;
+        font-size: @font-size-base * 0.75;
       }
     }
     .modal__btn {
@@ -123,12 +123,12 @@
     }
     .form-error {
       color: @color-accent;
-      font-size: 13px;
+      font-size: @font-size-base * 0.8125;
       display: none;
     }
     .consent-error {
       color: @color-accent;
-      font-size: 13px;
+      font-size: @font-size-base * 0.8125;
       display: none;
     }
     .form-result {
