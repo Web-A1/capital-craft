@@ -1267,14 +1267,25 @@ body.modal-open {
   background: #fdfbf5;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  -webkit-transition: -webkit-transform 0.4s ease, -webkit-box-shadow 0.4s ease;
-  transition: -webkit-transform 0.4s ease, -webkit-box-shadow 0.4s ease;
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-  transition: transform 0.4s ease, box-shadow 0.4s ease, -webkit-transform 0.4s ease, -webkit-box-shadow 0.4s ease;
+  -webkit-transition: top 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease, -webkit-box-shadow 0.5s ease;
+  transition: top 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease, -webkit-box-shadow 0.5s ease;
+  transition: transform 0.5s ease, box-shadow 0.5s ease, top 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.5s ease, box-shadow 0.5s ease, top 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease, -webkit-box-shadow 0.5s ease;
   top: 0;
   left: 0;
   -webkit-transform-origin: top;
           transform-origin: top;
+}
+.show-case__card--exit {
+  z-index: 4;
+  -webkit-transform: translateY(100%) scale(0.95);
+          transform: translateY(100%) scale(0.95);
+  opacity: 0;
+  -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+  transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease;
+  pointer-events: none;
 }
 .show-case__card--1 {
   padding: 40px;
@@ -1285,7 +1296,6 @@ body.modal-open {
           transform: scale(1);
   -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
           box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--1 {
@@ -1302,7 +1312,6 @@ body.modal-open {
           transform: scale(0.93);
   -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--2 {
@@ -1318,13 +1327,26 @@ body.modal-open {
           transform: scale(0.85);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-  overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--3 {
     padding: 20px;
     height: 400px;
   }
+}
+.show-case__card--exit {
+  top: 20px;
+  z-index: 4;
+  position: absolute;
+  -webkit-transform: translateY(150%) scale(0.95);
+          transform: translateY(150%) scale(0.95);
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+  transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease;
+  will-change: transform, opacity;
 }
 .show-case__card.active {
   -webkit-animation: show-case-pulse 3s ease-in-out infinite;

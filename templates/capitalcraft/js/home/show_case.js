@@ -8,9 +8,6 @@ class ShowCases {
     this.currentIndex = 0;
     this.isAnimating = false;
     this.animationDuration = 500;
-    this.touchStartX = 0;
-    this.touchStartY = 0;
-    this.minSwipeDistance = 50;
 
     this.updateCards();
     this.updateZIndex();
@@ -29,21 +26,7 @@ class ShowCases {
       { passive: false }
     );
 
-    this.container.addEventListener(
-      'touchstart',
-      (e) => this.handleTouchStart(e),
-      { passive: true }
-    );
-
-    this.container.addEventListener('touchend', (e) => this.handleTouchEnd(e), {
-      passive: true,
-    });
-
     this.container.addEventListener('click', () => this.nextCase());
-    window.addEventListener('resize', () => {
-      this.updateCards();
-      this.updateZIndex();
-    });
   }
 
   nextCase() {
@@ -52,16 +35,14 @@ class ShowCases {
 
     const exitingCard = this.cards[0];
     exitingCard.classList.add('show-case__card--exit');
-    exitingCard.classList.remove('active');
 
+    // Смещаем карточки вниз
     if (this.cards[1]) {
       this.cards[1].classList.replace(
         'show-case__card--2',
         'show-case__card--1'
       );
-      this.cards[1].classList.add('active');
     }
-
     if (this.cards[2]) {
       this.cards[2].classList.replace(
         'show-case__card--3',
@@ -69,57 +50,38 @@ class ShowCases {
       );
     }
 
+    // Сдвигаем массив
+    this.cards.push(this.cards.shift());
+    this.currentIndex = (this.currentIndex + 1) % this.cases.length;
+
+    // Добавляем новую карточку сверху
+    const newCard = this.cards[2];
+    newCard.classList.add('show-case__card--3');
+    newCard.style.opacity = '0';
+    this.updateCardContent(
+      newCard,
+      this.cases[(this.currentIndex + 2) % this.cases.length]
+    );
+
+    // Обновляем классы и z-index
+    this.updateZIndex();
+
+    requestAnimationFrame(() => {
+      newCard.style.opacity = '1';
+    });
+
     setTimeout(() => {
       exitingCard.classList.remove(
         'show-case__card--exit',
         'show-case__card--1'
       );
-      this.cards.push(this.cards.shift());
-      this.currentIndex = (this.currentIndex + 1) % this.cases.length;
-      exitingCard.classList.add('show-case__card--3');
-      this.updateCards();
-      this.startPulseAnimation();
       this.isAnimating = false;
+      this.startPulseAnimation();
     }, this.animationDuration);
   }
 
   prevCase() {
-    if (this.isAnimating) return;
-    this.isAnimating = true;
-
-    this.cards.unshift(this.cards.pop());
-    this.currentIndex =
-      (this.currentIndex - 1 + this.cases.length) % this.cases.length;
-
-    this.updateCards();
-    this.updateZIndex();
-    this.startPulseAnimation();
-
-    setTimeout(() => {
-      this.isAnimating = false;
-    }, this.animationDuration);
-  }
-
-  handleTouchStart(e) {
-    const touch = e.touches[0];
-    if (!touch) return;
-    this.touchStartX = touch.clientX;
-    this.touchStartY = touch.clientY;
-  }
-
-  handleTouchEnd(e) {
-    if (this.isAnimating) return;
-    const touch = e.changedTouches[0];
-    if (!touch) return;
-    const deltaX = touch.clientX - this.touchStartX;
-    const deltaY = touch.clientY - this.touchStartY;
-    if (
-      Math.abs(deltaX) > Math.abs(deltaY) &&
-      Math.abs(deltaX) > this.minSwipeDistance
-    ) {
-      if (deltaX < 0) this.nextCase();
-      else this.prevCase();
-    }
+    // not implemented yet
   }
 
   updateZIndex() {
@@ -130,18 +92,9 @@ class ShowCases {
         'show-case__card--3',
         'active'
       );
-      card.style.zIndex = '';
-      card.style.opacity = '';
-      if (i === 0) {
-        card.classList.add('show-case__card--1', 'active');
-      } else if (i === 1) {
-        card.classList.add('show-case__card--2');
-      } else if (i === 2) {
-        card.classList.add('show-case__card--3');
-      } else {
-        card.style.zIndex = -1;
-        card.style.opacity = 0;
-      }
+      if (i === 0) card.classList.add('show-case__card--1', 'active');
+      if (i === 1) card.classList.add('show-case__card--2');
+      if (i === 2) card.classList.add('show-case__card--3');
     });
   }
 
@@ -158,10 +111,8 @@ class ShowCases {
 
   updateCardContent(card, caseData) {
     if (!card || !caseData) return;
-
     const titleElement = card.querySelector('.show-case__card-title');
     if (titleElement) titleElement.textContent = caseData.title;
-
     const businessDesc = card.querySelector('.show-case__business');
     const taskDesc = card.querySelector('.show-case__task');
     const strategyDesc = card.querySelector('.show-case__strategy');
