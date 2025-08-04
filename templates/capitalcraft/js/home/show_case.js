@@ -50,13 +50,26 @@ class ShowCases {
     if (this.isAnimating) return;
     this.isAnimating = true;
 
-    this.cards.push(this.cards.shift());
-    this.currentIndex = (this.currentIndex + 1) % this.cases.length;
+    const exitingCard = this.cards[0];
+    exitingCard.classList.add('show-case__card--exit');
+    exitingCard.classList.remove('active');
 
-    this.updateCards();
-    this.updateZIndex();
+    if (this.cards[1]) {
+      this.cards[1].classList.replace('show-case__card--2', 'show-case__card--1');
+      this.cards[1].classList.add('active');
+    }
+
+    if (this.cards[2]) {
+      this.cards[2].classList.replace('show-case__card--3', 'show-case__card--2');
+    }
 
     setTimeout(() => {
+      exitingCard.classList.remove('show-case__card--exit', 'show-case__card--1');
+      this.cards.push(this.cards.shift());
+      this.currentIndex = (this.currentIndex + 1) % this.cases.length;
+      exitingCard.classList.add('show-case__card--3');
+      this.updateCards();
+      this.startPulseAnimation();
       this.isAnimating = false;
     }, this.animationDuration);
   }
@@ -71,6 +84,7 @@ class ShowCases {
 
     this.updateCards();
     this.updateZIndex();
+    this.startPulseAnimation();
 
     setTimeout(() => {
       this.isAnimating = false;
