@@ -1383,11 +1383,6 @@ body.modal-open {
           transform: translateY(calc(100% + 40px));
   opacity: 0;
 }
-.show-case__card--exit-up {
-  -webkit-transform: translateY(calc(-100% - 40px));
-          transform: translateY(calc(-100% - 40px));
-  opacity: 0;
-}
 .show-case__card.active {
   -webkit-animation: show-case-pulse 3s ease-in-out infinite;
           animation: show-case-pulse 3s ease-in-out infinite;
