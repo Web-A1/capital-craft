@@ -90,7 +90,7 @@
 }
 .site-header .header__inner .header-right .main-nav .mod-menu a {
   font-family: 'Golos Text', sans-serif;
-  font-size: 14px;
+  font-size: 12.8px;
   text-transform: uppercase;
   font-weight: 400;
   color: #333333;
@@ -221,7 +221,7 @@
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 12.8px;
 }
 .site-header .header__inner .header-right .header-controls__inner .btn--primary:hover {
   background-color: transparent;
@@ -238,7 +238,7 @@
 @media only screen and (max-width: 767px) {
   .site-header .header__inner .header-right .header-controls__inner .btn--primary {
     padding: 8px 12px;
-    font-size: 11.9px;
+    font-size: 12px;
     height: 36px;
   }
 }
@@ -831,7 +831,7 @@ body.modal-open {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  min-height: 710px;
+  min-height: 600px;
   background: url('/templates/capitalcraft/images/home/waves.webp');
 }
 @media only screen and (max-width: 767px) {
@@ -867,7 +867,7 @@ body.modal-open {
 .hero__title {
   color: #000000;
   font-family: 'Onest', sans-serif;
-  font-size: 55px;
+  font-size: 44.2px;
   font-weight: 700;
   line-height: 100%;
 }
@@ -892,7 +892,7 @@ body.modal-open {
   }
 }
 .partners {
-  padding: 80px 0;
+  padding: 60px 0;
   position: relative;
   width: 100%;
   max-width: 1170px;
@@ -1111,8 +1111,8 @@ body.modal-open {
             transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1.02);
-            transform: scale(1.02);
+    -webkit-transform: scale(1.01);
+            transform: scale(1.01);
   }
 }
 @keyframes show-case-pulse {
@@ -1122,12 +1122,12 @@ body.modal-open {
             transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1.02);
-            transform: scale(1.02);
+    -webkit-transform: scale(1.01);
+            transform: scale(1.01);
   }
 }
 .show-case {
-  padding: 80px 0;
+  padding: 60px 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1154,7 +1154,7 @@ body.modal-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 40px;
+  gap: 60px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__inner {
@@ -1251,7 +1251,7 @@ body.modal-open {
 .show-case__stack {
   position: relative;
   width: 100%;
-  height: 550px;
+  height: 450px;
   cursor: pointer;
 }
 @media only screen and (max-width: 767px) {
@@ -1274,8 +1274,8 @@ body.modal-open {
 }
 .show-case__card--1 {
   padding: 40px;
-  height: auto;
-  min-height: 550px;
+  height: 100%;
+  min-height: 450px;
   z-index: 3;
   -webkit-transform: translateY(0) scale(1);
           transform: translateY(0) scale(1);
@@ -1287,17 +1287,18 @@ body.modal-open {
   .show-case__card--1 {
     padding: 20px;
     min-height: 400px;
-    height: auto;
+    height: 100%;
   }
 }
 .show-case__card--2 {
   padding: 40px;
-  height: 550px;
+  height: 450px;
   z-index: 2;
   -webkit-transform: translateY(-25px) scale(0.96);
           transform: translateY(-25px) scale(0.96);
   -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--2 {
@@ -1307,12 +1308,13 @@ body.modal-open {
 }
 .show-case__card--3 {
   padding: 40px;
-  height: 550px;
+  height: 450px;
   z-index: 1;
   -webkit-transform: translateY(-45px) scale(0.92);
           transform: translateY(-45px) scale(0.92);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--3 {
@@ -1344,10 +1346,10 @@ body.modal-open {
   font-weight: 400;
   text-transform: uppercase;
   color: #000000;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 .show-case__card--1 .show-case__card-title {
-  font-size: 30px;
+  font-size: 24px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card--1 .show-case__card-title {
@@ -1378,7 +1380,7 @@ body.modal-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -1389,10 +1391,10 @@ body.modal-open {
   }
 }
 .show-case__detail-title {
-  color: #666666;
+  color: #999999;
   font-family: 'Golos Text', sans-serif;
-  font-size: 14px;
-  letter-spacing: 3.5px;
+  font-size: 10.4px;
+  letter-spacing: 2px;
   text-transform: uppercase;
 }
 .show-case__detail-description {
@@ -1542,7 +1544,7 @@ body.modal-open {
 .footer {
   width: 100%;
   padding: 0;
-  margin: 80px 0;
+  margin: 60px 0;
 }
 .footer .footer-container {
   max-width: 1170px;

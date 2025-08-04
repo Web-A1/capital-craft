@@ -35,11 +35,9 @@ class ShowCases {
       { passive: true }
     );
 
-    this.container.addEventListener(
-      'touchend',
-      (e) => this.handleTouchEnd(e),
-      { passive: true }
-    );
+    this.container.addEventListener('touchend', (e) => this.handleTouchEnd(e), {
+      passive: true,
+    });
 
     this.container.addEventListener('click', () => this.nextCase());
     window.addEventListener('resize', () => {

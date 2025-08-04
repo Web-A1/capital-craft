@@ -5,11 +5,11 @@
 .btn-header() {
   .btn-base();
   border-radius: 6px;
-  font-size: @font-size-sub;
+  font-size: @font-size-text*0.8;
 
   .media(mobile, {
     padding: 8px 12px;
-    font-size: @font-size-sub * 0.85;
+    font-size: @font-size-text * 0.75;
     height: 36px; //для выравнивания всех элементов header
   });
 }
@@ -85,7 +85,7 @@
 
           a {
             font-family: 'Golos Text', sans-serif;
-            font-size: 14px;
+            font-size: @font-size-text * 0.8;
             text-transform: uppercase;
             font-weight: 400;
             color: @color-text;
