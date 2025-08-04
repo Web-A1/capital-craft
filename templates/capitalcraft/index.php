@@ -66,10 +66,15 @@ $isHome = $menu->getActive() == $menu->getDefault();
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
   <?php if ($isHome): ?>
+    <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
     <script src="templates/capitalcraft/js/home/partners.js"></script>
+    <!-- Swiper styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Swiper script -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="templates/capitalcraft/js/home/show_case_swiper.js"></script>
   <?php endif; ?>
 
