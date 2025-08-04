@@ -1,14 +1,6 @@
 @import '../../variables.less';
 
-@keyframes show-case-pulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
+
 
 .show-case {
   padding: @section-padding 0;
@@ -91,7 +83,6 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     gap: (@section-padding / 2);
 
     .media(mobile, {
@@ -125,7 +116,8 @@
       opacity 0.5s ease;
     top: 0;
     left: 0;
-    transform-origin: top;
+    transform-origin: center;
+    will-change: transform;
 
     &--1 {
       padding: 40px;
@@ -173,54 +165,8 @@
       });
     }
 
-    &--4 {
-      padding: 40px;
-      min-height: 450px;
-      z-index: 0;
-      top: -0.75rem;
-      transform: scale(0.77);
-      box-shadow: none;
-      overflow: hidden;
-      opacity: 0;
-
-      .media(mobile, {
-        padding: 20px;
-        min-height: 400px;
-      });
-    }
-
-    &--0 {
-      padding: 40px;
-      min-height: 450px;
-      z-index: 0;
-      top: 2rem;
-      transform: scale(1.07);
-      box-shadow: none;
-      overflow: hidden;
-      opacity: 0;
-
-      .media(mobile, {
-        padding: 20px;
-        min-height: 400px;
-      });
-    }
-
-    &--exit-down {
-      z-index: 4;
-      transform: translateY(calc(100% + 40px));
-      opacity: 0;
-    }
-
-    &--exit-back {
-      z-index: 0;
-      transform: translateY(calc(100% + 40px));
-      opacity: 0;
-      overflow: hidden;
-    }
-
     &.active {
-      animation: show-case-pulse 3s ease-in-out infinite;
-      animation-play-state: paused;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
     }
   }
 
