@@ -10,7 +10,6 @@ class ShowCases {
     this.animationDuration = 500;
 
     this.updateCards();
-    this.updateZIndex();
     this.bindEvents();
     this.startPulseAnimation();
   }
@@ -27,75 +26,105 @@ class ShowCases {
     );
 
     this.container.addEventListener('click', () => this.nextCase());
+    window.addEventListener('resize', () => {
+      this.updateCards();
+    });
   }
 
   nextCase() {
     if (this.isAnimating) return;
     this.isAnimating = true;
 
-    const exitingCard = this.cards[0];
-    exitingCard.classList.add('show-case__card--exit');
+    const nextIndex = (this.currentIndex + 3) % this.cases.length;
+    const incomingCard = this.createCard(nextIndex, 'show-case__card--4');
+    this.cards.push(incomingCard);
 
-    // Смещаем карточки вниз
-    if (this.cards[1]) {
-      this.cards[1].classList.replace(
-        'show-case__card--2',
-        'show-case__card--1'
-      );
-    }
-    if (this.cards[2]) {
-      this.cards[2].classList.replace(
-        'show-case__card--3',
-        'show-case__card--2'
-      );
-    }
-
-    // Сдвигаем массив
-    this.cards.push(this.cards.shift());
-    this.currentIndex = (this.currentIndex + 1) % this.cases.length;
-
-    // Добавляем новую карточку сверху
-    const newCard = this.cards[2];
-    newCard.classList.add('show-case__card--3');
-    newCard.style.opacity = '0';
-    this.updateCardContent(
-      newCard,
-      this.cases[(this.currentIndex + 2) % this.cases.length]
-    );
-
-    // Обновляем классы и z-index
-    this.updateZIndex();
+    const exitingCard = this.cards.shift();
 
     requestAnimationFrame(() => {
-      newCard.style.opacity = '1';
+      exitingCard.classList.add('show-case__card--exit-down');
+      exitingCard.classList.remove('show-case__card--1', 'active');
+
+      const currentCard = this.cards[0];
+      const nextCard = this.cards[1];
+
+      currentCard.classList.replace('show-case__card--2', 'show-case__card--1');
+      currentCard.classList.add('active');
+
+      nextCard.classList.replace('show-case__card--3', 'show-case__card--2');
+
+      incomingCard.classList.replace(
+        'show-case__card--4',
+        'show-case__card--3'
+      );
     });
 
     setTimeout(() => {
-      exitingCard.classList.remove(
-        'show-case__card--exit',
-        'show-case__card--1'
-      );
+      exitingCard.remove();
+      this.currentIndex = (this.currentIndex + 1) % this.cases.length;
+      this.startPulseAnimation();
       this.isAnimating = false;
       this.startPulseAnimation();
     }, this.animationDuration);
   }
 
   prevCase() {
-    // not implemented yet
+    if (this.isAnimating) return;
+    this.isAnimating = true;
+
+    const prevIndex =
+      (this.currentIndex - 1 + this.cases.length) % this.cases.length;
+    const incomingCard = this.createCard(prevIndex, 'show-case__card--0');
+    this.cards.unshift(incomingCard);
+    const exitingCard = this.cards.pop();
+
+    requestAnimationFrame(() => {
+      exitingCard.classList.add('show-case__card--exit-up');
+      exitingCard.classList.remove('show-case__card--3');
+
+      const currentCard = this.cards[1];
+      const nextCard = this.cards[2];
+
+      currentCard.classList.remove('active');
+      currentCard.classList.replace('show-case__card--1', 'show-case__card--2');
+
+      nextCard.classList.replace('show-case__card--2', 'show-case__card--3');
+
+      incomingCard.classList.replace(
+        'show-case__card--0',
+        'show-case__card--1'
+      );
+      incomingCard.classList.add('active');
+    });
+
+    setTimeout(() => {
+      exitingCard.remove();
+      this.currentIndex = prevIndex;
+      this.startPulseAnimation();
+      this.isAnimating = false;
+    }, this.animationDuration);
   }
 
-  updateZIndex() {
-    this.cards.forEach((card, i) => {
-      card.classList.remove(
-        'show-case__card--1',
-        'show-case__card--2',
-        'show-case__card--3',
-        'active'
-      );
-      if (i === 0) card.classList.add('show-case__card--1', 'active');
-      if (i === 1) card.classList.add('show-case__card--2');
-      if (i === 2) card.classList.add('show-case__card--3');
-    });
+  handleTouchStart(e) {
+    const touch = e.touches[0];
+    if (!touch) return;
+    this.touchStartX = touch.clientX;
+    this.touchStartY = touch.clientY;
+  }
+
+  handleTouchEnd(e) {
+    if (this.isAnimating) return;
+    const touch = e.changedTouches[0];
+    if (!touch) return;
+    const deltaX = touch.clientX - this.touchStartX;
+    const deltaY = touch.clientY - this.touchStartY;
+    if (
+      Math.abs(deltaX) > Math.abs(deltaY) &&
+      Math.abs(deltaX) > this.minSwipeDistance
+    ) {
+      if (deltaX < 0) this.nextCase();
+      else this.prevCase();
+    }
   }
 
   updateCards() {
@@ -107,6 +136,15 @@ class ShowCases {
     this.updateCardContent(card1, this.cases[i1]);
     this.updateCardContent(card2, this.cases[i2]);
     this.updateCardContent(card3, this.cases[i3]);
+  }
+
+  createCard(index, className) {
+    const card = this.cards[0].cloneNode(true);
+    card.className = `show-case__card ${className}`;
+    card.removeAttribute('id');
+    this.updateCardContent(card, this.cases[index]);
+    this.container.appendChild(card);
+    return card;
   }
 
   updateCardContent(card, caseData) {
