@@ -1368,6 +1368,40 @@ body.modal-open {
     height: 400px;
   }
 }
+.show-case__card--4 {
+  padding: 40px;
+  height: 450px;
+  z-index: 0;
+  top: -12px;
+  -webkit-transform: scale(0.77);
+          transform: scale(0.77);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  overflow: hidden;
+}
+@media only screen and (max-width: 767px) {
+  .show-case__card--4 {
+    padding: 20px;
+    height: 400px;
+  }
+}
+.show-case__card--0 {
+  padding: 40px;
+  height: 450px;
+  z-index: 0;
+  top: 32px;
+  -webkit-transform: scale(1.07);
+          transform: scale(1.07);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  overflow: hidden;
+}
+@media only screen and (max-width: 767px) {
+  .show-case__card--0 {
+    padding: 20px;
+    height: 400px;
+  }
+}
 .show-case__card--exit-down {
   -webkit-transform: scale(1) translateY(120%);
           transform: scale(1) translateY(120%);
