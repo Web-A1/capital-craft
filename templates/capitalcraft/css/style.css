@@ -1334,19 +1334,47 @@ body.modal-open {
     height: 400px;
   }
 }
-.show-case__card--exit {
-  top: 20px;
-  z-index: 4;
-  position: absolute;
-  -webkit-transform: translateY(150%) scale(0.95);
-          transform: translateY(150%) scale(0.95);
-  opacity: 0;
-  pointer-events: none;
-  -webkit-transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
-  transition: opacity 0.5s ease, -webkit-transform 0.5s ease;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  transition: transform 0.5s ease, opacity 0.5s ease, -webkit-transform 0.5s ease;
-  will-change: transform, opacity;
+.show-case__card--4 {
+  padding: 40px;
+  height: 450px;
+  z-index: 0;
+  top: -12px;
+  -webkit-transform: scale(0.77);
+          transform: scale(0.77);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  overflow: hidden;
+}
+@media only screen and (max-width: 767px) {
+  .show-case__card--4 {
+    padding: 20px;
+    height: 400px;
+  }
+}
+.show-case__card--0 {
+  padding: 40px;
+  height: 450px;
+  z-index: 0;
+  top: 32px;
+  -webkit-transform: scale(1.07);
+          transform: scale(1.07);
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  overflow: hidden;
+}
+@media only screen and (max-width: 767px) {
+  .show-case__card--0 {
+    padding: 20px;
+    height: 400px;
+  }
+}
+.show-case__card--exit-down {
+  -webkit-transform: scale(1) translateY(120%);
+          transform: scale(1) translateY(120%);
+}
+.show-case__card--exit-up {
+  -webkit-transform: scale(1) translateY(-120%);
+          transform: scale(1) translateY(-120%);
 }
 .show-case__card.active {
   -webkit-animation: show-case-pulse 3s ease-in-out infinite;
