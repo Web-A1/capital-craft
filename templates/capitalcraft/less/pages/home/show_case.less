@@ -96,14 +96,22 @@
     height: 495px;
 
     .media(mobile, {
-      height: 445px;
+      height: auto;
     });
 
     .swiper-wrapper {
       height: 100%;
+
+      .media(mobile, {
+        height: auto;
+      });
     }
     .swiper-slide {
       height: 100%;
+
+      .media(mobile, {
+        height: auto;
+      });
     }
   }
 

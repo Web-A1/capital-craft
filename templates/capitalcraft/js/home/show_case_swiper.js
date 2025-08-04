@@ -7,5 +7,15 @@ document.addEventListener('DOMContentLoaded', () => {
       el: '.show-case__pagination',
       clickable: true,
     },
+    breakpoints: {
+      0: {
+        direction: 'horizontal',
+        mousewheel: false,
+      },
+      768: {
+        direction: 'vertical',
+        mousewheel: true,
+      },
+    },
   });
 });
