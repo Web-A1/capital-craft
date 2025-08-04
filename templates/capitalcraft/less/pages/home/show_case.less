@@ -108,6 +108,8 @@
   }
 
   &__pagination {
+    right: 20px !important;
+
     .swiper-pagination-bullet {
       background: @color-heading;
       opacity: 0.3;
@@ -119,11 +121,11 @@
   }
 
   &__card {
-    border-radius: 15px;
+    border-radius: @radius;
     border: 1px solid @color-heading;
     background: @color-bg-craft;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 40px 80px 40px 40px;
     height: 100%;
     overflow-y: auto;
 
@@ -176,7 +178,7 @@
     font-size: @font-size-text;
     line-height: 140%;
     color: @color-heading;
-    text-align: justify;
+    //text-align: justify;
 
     .media(mobile, {
       font-size: @font-size-text;

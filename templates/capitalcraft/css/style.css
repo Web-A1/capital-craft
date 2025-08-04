@@ -1241,6 +1241,9 @@ body.modal-open {
 .show-case__swiper .swiper-slide {
   height: 100%;
 }
+.show-case__pagination {
+  right: 20px !important;
+}
 .show-case__pagination .swiper-pagination-bullet {
   background: #000000;
   opacity: 0.3;
@@ -1249,12 +1252,12 @@ body.modal-open {
   opacity: 1;
 }
 .show-case__card {
-  border-radius: 15px;
+  border-radius: 6px;
   border: 1px solid #000000;
   background: #fdfbf5;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  padding: 40px;
+  padding: 40px 80px 40px 40px;
   height: 100%;
   overflow-y: auto;
 }
@@ -1319,7 +1322,6 @@ body.modal-open {
   font-size: 16px;
   line-height: 140%;
   color: #000000;
-  text-align: justify;
 }
 @media only screen and (max-width: 767px) {
   .show-case__detail-description {
