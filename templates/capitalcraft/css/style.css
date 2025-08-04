@@ -1111,8 +1111,8 @@ body.modal-open {
             transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1.01);
-            transform: scale(1.01);
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
 }
 @keyframes show-case-pulse {
@@ -1122,8 +1122,8 @@ body.modal-open {
             transform: scale(1);
   }
   50% {
-    -webkit-transform: scale(1.01);
-            transform: scale(1.01);
+    -webkit-transform: scale(1);
+            transform: scale(1);
   }
 }
 .show-case {
@@ -1135,7 +1135,7 @@ body.modal-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 40px;
+  gap: 60px;
 }
 @media only screen and (max-width: 767px) {
   .show-case {
@@ -1237,7 +1237,7 @@ body.modal-open {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  gap: 40px;
+  gap: 30px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__cases {
@@ -1271,15 +1271,18 @@ body.modal-open {
   transition: -webkit-transform 0.4s ease, -webkit-box-shadow 0.4s ease;
   transition: transform 0.4s ease, box-shadow 0.4s ease;
   transition: transform 0.4s ease, box-shadow 0.4s ease, -webkit-transform 0.4s ease, -webkit-box-shadow 0.4s ease;
+  top: 0;
+  left: 0;
+  -webkit-transform-origin: top;
+          transform-origin: top;
 }
 .show-case__card--1 {
   padding: 40px;
-  height: 100%;
-  top: 36px;
-  min-height: 450px;
+  height: 450px;
   z-index: 3;
-  -webkit-transform: translateY(0) scale(1);
-          transform: translateY(0) scale(1);
+  top: 20px;
+  -webkit-transform: scale(1);
+          transform: scale(1);
   -webkit-box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
           box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
@@ -1287,17 +1290,16 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .show-case__card--1 {
     padding: 20px;
-    min-height: 400px;
-    height: 100%;
+    height: 400px;
   }
 }
 .show-case__card--2 {
   padding: 40px;
   height: 450px;
   z-index: 2;
-  top: 25px;
-  -webkit-transform: scale(0.96);
-          transform: scale(0.96);
+  top: 8px;
+  -webkit-transform: scale(0.93);
+          transform: scale(0.93);
   -webkit-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   overflow: hidden;
@@ -1312,9 +1314,8 @@ body.modal-open {
   padding: 40px;
   height: 450px;
   z-index: 1;
-  top: 45px;
-  -webkit-transform: scale(0.92);
-          transform: scale(0.92);
+  -webkit-transform: scale(0.85);
+          transform: scale(0.85);
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
   overflow: hidden;

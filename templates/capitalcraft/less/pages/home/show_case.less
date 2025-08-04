@@ -6,7 +6,7 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.01);
+    transform: scale(1);
   }
 }
 
@@ -14,7 +14,7 @@
   padding: @section-padding 0;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: @section-padding;
 
   .media(mobile, {
     padding: 40px @mobile-side-padding;
@@ -92,7 +92,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 40px;
+    gap: (@section-padding / 2);
 
     .media(mobile, {
       width: 100%;
@@ -106,7 +106,6 @@
     width: 100%;
     height: 495px;
     cursor: pointer;
-    overflow: hidden;
 
     .media(mobile, {
       height: 445px;
@@ -129,7 +128,8 @@
       padding: 40px;
       height: 450px;
       z-index: 3;
-      transform: translateY(0) scale(1);
+      top: 20px;
+      transform: scale(1);
       box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
       overflow-y: auto;
 
@@ -143,8 +143,8 @@
       padding: 40px;
       height: 450px;
       z-index: 2;
-      top: 25px;
-      transform: scale(0.96);
+      top: 8px;
+      transform: scale(0.93);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
       overflow: hidden;
 
@@ -158,8 +158,7 @@
       padding: 40px;
       height: 450px;
       z-index: 1;
-      top: 45px;
-      transform: scale(0.92);
+      transform: scale(0.85);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
       overflow: hidden;
 
