@@ -25,47 +25,6 @@
   }
 
   &__title-block {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    max-width: 700px;
-  }
-
-  &__subtitle {
-    color: lighten(@color-text, 20%);
-    font-family: @font-body;
-    font-size: @font-size-sub;
-    letter-spacing: 2.8px;
-    text-transform: uppercase;
-  }
-
-  &__title {
-    font-family: @font-title;
-    font-size: @font-size-title;
-    font-weight: 700;
-    line-height: 100%;
-    color: @color-heading;
-
-    .media(mobile, {
-      font-size: 26px;
-    });
-  }
-
-  &__content {
-    display: flex;
-    gap: 80px;
-
-    .media(mobile, {
-      flex-direction: column;
-      gap: 30px;
-    });
-  }
-
-  &__image {
-    width: 352px;
-    flex-shrink: 0;
-
-    img {
       display: block;
       width: 100%;
       height: 100%;
@@ -90,19 +49,14 @@
       gap: 30px;
     });
   }
-
-  &__swiper {
+&__swiper {
     width: 100%;
     height: 495px;
-
     .media(mobile, {
       height: 445px;
     });
 
     .swiper-wrapper {
-      height: 100%;
-    }
-    .swiper-slide {
       height: 100%;
     }
   }
@@ -112,10 +66,9 @@
     border: 1px solid @color-heading;
     background: @color-bg-craft;
     box-sizing: border-box;
-    padding: 40px;
+     padding: 40px;
     height: 100%;
     overflow-y: auto;
-
     .media(mobile, {
       padding: 20px;
     });
@@ -135,51 +88,4 @@
     color: @color-heading;
     margin-bottom: 30px;
     font-size: @font-size-text*1.5;
-
-    .media(mobile, {
-      font-size: 22px;
-    });
-  }
-
-  &__details {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    flex: 1;
-
-    .media(mobile, {
-      gap: 15px;
-    });
-  }
-
-  &__detail-title {
-    color: lighten(@color-text, 40%);
-    font-family: @font-body;
-    font-size: @font-size-text*0.65;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  &__detail-description {
-    font-family: @font-body;
-    font-size: @font-size-text;
-    line-height: 140%;
-    color: @color-heading;
-    text-align: justify;
-
-    .media(mobile, {
-      font-size: @font-size-text;
-    });
-  }
-
-  &__button-wrapper {
-    .media(mobile, {
-      display: flex;
-      justify-content: center;
-    });
-  }
-
-  &__button {
-    .btn-main();
-  }
-}
+    
