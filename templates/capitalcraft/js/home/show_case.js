@@ -45,7 +45,7 @@ class ShowCases {
 
     requestAnimationFrame(() => {
       exitingCard.classList.add('show-case__card--exit-down');
-      exitingCard.classList.remove('show-case__card--1', 'active');
+      exitingCard.classList.remove('active');
 
       const currentCard = this.cards[0];
       const nextCard = this.cards[1];
@@ -112,14 +112,6 @@ class ShowCases {
       },
       { once: true }
     );
-  }
-
-  refreshCardsArray() {
-    this.cards = [
-      this.container.querySelector('.show-case__card--1'),
-      this.container.querySelector('.show-case__card--2'),
-      this.container.querySelector('.show-case__card--3'),
-    ].filter(Boolean);
   }
 
   handleTouchStart(e) {
