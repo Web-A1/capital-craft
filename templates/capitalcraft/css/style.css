@@ -1920,7 +1920,7 @@ body.modal-open {
 }
 .scroll-top {
   position: fixed;
-  right: calc((100vw - 1170px) / 2 - 150px);
+  right: calc((100vw - 1170px) / 2 + 20px);
   bottom: 40px;
   width: 40px;
   height: 40px;
@@ -1935,7 +1935,9 @@ body.modal-open {
           justify-content: center;
   border-radius: 50%;
   border: 1px solid #000000;
-  background: rgba(253, 251, 245, 0.8);
+  background: rgba(253, 251, 245, 0.7);
+  -webkit-backdrop-filter: blur(5px);
+          backdrop-filter: blur(5px);
   color: #000000;
   cursor: pointer;
   visibility: hidden;
@@ -1956,8 +1958,45 @@ body.modal-open {
 .scroll-top.visible {
   visibility: visible;
   opacity: 1;
+  -webkit-animation: pulse 2s infinite;
+          animation: pulse 2s infinite;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+            box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+            box-shadow: 0 0 0 10px rgba(0, 0, 0, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+            box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
 }
 @media only screen and (max-width: 767px) {
+  .scroll-top {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
   .scroll-top {
     right: 20px;
     bottom: 20px;
