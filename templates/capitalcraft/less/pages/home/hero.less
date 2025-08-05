@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   min-height: 600px;
-  background: url('/templates/capitalcraft/images/home/sphere.webp');
+  background: none;
 
   .media(mobile, {
     padding: 80px @mobile-side-padding;
@@ -19,6 +19,9 @@
     width: 100%;
     margin: 0 auto;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__content {
@@ -57,6 +60,21 @@
       font-size: @font-size-text;
       line-height: 150%;
       text-align: left;
+    });
+  }
+
+  &__image {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .media(mobile, {
+      display: none;
     });
   }
 }
