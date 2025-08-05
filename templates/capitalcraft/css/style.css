@@ -130,6 +130,10 @@
   color: #8d222c;
   font-weight: 600;
 }
+.site-header .header__inner .header-right .main-nav .mod-menu .item-active > a::after {
+  -webkit-transform: scaleX(1);
+          transform: scaleX(1);
+}
 .site-header .header__inner .header-right .burger {
   display: none;
   width: 24px;
