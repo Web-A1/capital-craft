@@ -1232,14 +1232,24 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .show-case__swiper {
-    height: 445px;
+    height: auto;
   }
 }
 .show-case__swiper .swiper-wrapper {
   height: 100%;
 }
+@media only screen and (max-width: 767px) {
+  .show-case__swiper .swiper-wrapper {
+    height: auto;
+  }
+}
 .show-case__swiper .swiper-slide {
   height: 100%;
+}
+@media only screen and (max-width: 767px) {
+  .show-case__swiper .swiper-slide {
+    height: auto;
+  }
 }
 .show-case__pagination {
   right: 20px !important;
@@ -1254,7 +1264,6 @@ body.modal-open {
 .show-case__card {
   border-radius: 6px;
   border: 1px solid #000000;
-  background: #fdfbf5;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   padding: 40px 80px 40px 40px;
