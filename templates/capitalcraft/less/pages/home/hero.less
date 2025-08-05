@@ -6,7 +6,8 @@
   display: flex;
   align-items: center;
   min-height: 600px;
-  background: none;
+  background: url('/templates/capitalcraft/images/home/points-hero.webp');
+  background-size: contain;
 
   .media(mobile, {
     padding: 80px @mobile-side-padding;
@@ -64,9 +65,10 @@
   }
 
   &__image {
-    flex: 1;
+    display: none;
+    /*flex: 1;
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end;*/
 
     img {
       display: block;
