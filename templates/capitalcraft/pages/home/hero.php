@@ -11,7 +11,7 @@
             </a>
         </div>
         <div class="hero__image">
-            <img src="https://via.placeholder.com/600x400.svg" alt="Hero image">
+            <img src="/templates/capitalcraft/images/home/sphere.svg" alt="Сфера capital craft">
         </div>
     </div>
 </section>
