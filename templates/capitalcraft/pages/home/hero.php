@@ -10,5 +10,8 @@
                 </svg>
             </a>
         </div>
+        <div class="hero__image">
+            <img src="https://via.placeholder.com/600x400.svg" alt="Hero image">
+        </div>
     </div>
 </section>
