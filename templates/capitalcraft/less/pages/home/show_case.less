@@ -93,7 +93,7 @@
 
   &__swiper {
     width: 100%;
-    height: 495px;
+    height: 450px;
 
     .media(mobile, {
       height: auto;
@@ -116,7 +116,7 @@
   }
 
   &__pagination {
-    right: 20px !important;
+    right: 30px !important;
 
     .swiper-pagination-bullet {
       background: @color-heading;
@@ -129,17 +129,12 @@
   }
 
   &__card {
-    border-radius: @radius;
+    border-radius: 15px;
     border: 1px solid @color-heading;
     background: #f8f6f2;
     box-sizing: border-box;
-    padding: 40px 80px 40px 40px;
     height: 100%;
     overflow-y: auto;
-
-    .media(mobile, {
-      padding: 20px 20px 60px 20px;
-    });
   }
 
   &__card-content {
@@ -147,6 +142,11 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    padding: 30px 60px 30px 40px;
+
+    .media(mobile, {
+      padding: 30px 30px 60px 30px;
+    });
   }
 
   &__card-title {
@@ -158,7 +158,7 @@
     font-size: @font-size-text*1.5;
 
     .media(mobile, {
-      font-size: 22px;
+      font-size: @font-size-title*0.7;
     });
   }
 
