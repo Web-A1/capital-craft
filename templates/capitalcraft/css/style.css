@@ -13,7 +13,7 @@
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 49;
     margin: 0 20px;
     padding: 20px 0 10px 0;
     background: #fdfbf5;
@@ -720,12 +720,6 @@ body.menu-open {
 }
 body.modal-open {
   overflow: hidden;
-}
-@media only screen and (max-width: 767px) {
-  .modal__body {
-    width: 90%;
-    padding: 20px;
-  }
 }
 @-webkit-keyframes arrow-pulse {
   0%,
@@ -1920,7 +1914,7 @@ body.modal-open {
 }
 .scroll-top {
   position: fixed;
-  right: calc((100vw - 1170px) / 2 + 20px);
+  right: calc((100vw - 1300px) / 2);
   bottom: 40px;
   width: 40px;
   height: 40px;
