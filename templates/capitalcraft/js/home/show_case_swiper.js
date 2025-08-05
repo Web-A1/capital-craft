@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   new Swiper('.show-case__swiper', {
-    direction: 'horizontal',
-    mousewheel: false,
     slidesPerView: 1,
+    direction: 'horizontal',
+    mousewheel: { enabled: false }, // базовый вариант для мобильных
     pagination: {
       el: '.show-case__pagination',
       clickable: true,
@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     breakpoints: {
       768: {
         direction: 'vertical',
-        mousewheel: true,
+        mousewheel: { enabled: true }, // включаем колесо и вертикальное направление
       },
     },
   });
