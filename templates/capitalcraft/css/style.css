@@ -85,10 +85,26 @@
   padding: 0;
   margin: 0;
 }
+.site-header .header__inner .header-right .main-nav .mod-menu li.current > a,
+.site-header .header__inner .header-right .main-nav .mod-menu li.active > a {
+  position: relative;
+}
 .site-header .header__inner .header-right .main-nav .mod-menu li.current > a::after,
 .site-header .header__inner .header-right .main-nav .mod-menu li.active > a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 100%;
+  height: 1.3px;
+  background: #8d222c;
   -webkit-transform: scaleX(1);
           transform: scaleX(1);
+  -webkit-transform-origin: left;
+          transform-origin: left;
+  /* Обрезаем форму: слева 1.5px, справа ~0.5px (≈33% от высоты) */
+  -webkit-clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
+          clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
 }
 .site-header .header__inner .header-right .main-nav .mod-menu a {
   font-family: 'Golos Text', sans-serif;
@@ -107,7 +123,7 @@
   left: 0;
   bottom: -5px;
   width: 100%;
-  height: 1.5px;
+  height: 1.3px;
   background-color: #8d222c;
   -webkit-transform: scaleX(0);
           transform: scaleX(0);
@@ -117,6 +133,8 @@
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
   transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
+          clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
 }
 .site-header .header__inner .header-right .main-nav .mod-menu a:hover {
   color: #000;
@@ -849,7 +867,7 @@ body.modal-open {
           justify-content: space-between;
 }
 .hero__content {
-  max-width: 396px;
+  max-width: 500px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1685,6 +1703,8 @@ body.modal-open {
   transition: -webkit-transform 0.3s ease;
   transition: transform 0.3s ease;
   transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+  -webkit-clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
+          clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
 }
 .footer-navigation .footer-navigation-links .footer-nav-item a:hover {
   color: #000000;
