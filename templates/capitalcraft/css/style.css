@@ -1226,6 +1226,7 @@ body.modal-open {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+  border-radius: 6px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__image {
