@@ -1,7 +1,7 @@
 <section class="hero">
     <div class="container hero__inner">
         <div class="hero__content">
-            <h1 class="hero__title">Мы создаем <br> точные решения для вашего капитала</h1>
+            <h1 class="hero__title">Мы создаем <br> точные решения <br> для вашего капитала</h1>
             <p class="hero__text">CAPITAL CRAFT — бутиковое агентство инвестиционных решений, специализирующееся на привлечении финансирования для бизнеса. Мы помогаем компаниям найти оптимальные стратегии роста и максимально реализовать их потенциал</p>
             <a href="#cases" class="btn-main hero__btn">
                 <span>кейсы</span>

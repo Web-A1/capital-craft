@@ -1,6 +1,9 @@
+/*
+// Скрываем пункт "Главная" на главной
 .main-nav .item-101.default.current {
   display: none;
 }
+  */
 .site-header {
   max-width: 1170px;
   margin: 0 auto;
@@ -851,7 +854,7 @@ body.modal-open {
           justify-content: space-between;
 }
 .hero__content {
-  width: 566px;
+  max-width: 396px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1938,7 +1941,7 @@ body.modal-open {
   opacity: 0;
   -webkit-transition: opacity 0.3s ease, visibility 0.3s ease;
   transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1000;
+  z-index: 49;
 }
 .scroll-top svg {
   width: 16px;
