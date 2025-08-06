@@ -32,18 +32,50 @@
     });
   }
 
-  &__swiper {
-    flex: 1 1 0;
-    max-width: 415px;
-
-    .media(mobile, {
-      order:2;
+    &__swiper {
+      flex: 1 1 0;
+      max-width: 415px;
       width: 100%;
-      padding: 0 0 40px 0;
-    });
-  }
+      height: 450px;
 
-  &__slide {
+      .media(mobile, {
+        order:2;
+        width: 100%;
+        padding: 0 0 40px 0;
+        height: auto;
+      });
+
+      .swiper-wrapper {
+        height: 100%;
+
+        .media(mobile, {
+          height: auto;
+        });
+      }
+
+      .swiper-slide {
+        height: 100%;
+
+        .media(mobile, {
+          height: auto;
+        });
+      }
+    }
+
+    &__pagination {
+      right: 30px !important;
+
+      .swiper-pagination-bullet {
+        background: @color-heading;
+        opacity: 0.3;
+      }
+
+      .swiper-pagination-bullet-active {
+        opacity: 1;
+      }
+    }
+
+    &__slide {
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     row-gap: 20px;
