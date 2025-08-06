@@ -1190,9 +1190,12 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .faq__slider {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid #000000;
+    border-top: 1px solid #000000;
     padding: 0 0 40px 0;
   }
 }
@@ -1268,6 +1271,9 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .faq__content {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
     max-width: 100%;
   }
 }

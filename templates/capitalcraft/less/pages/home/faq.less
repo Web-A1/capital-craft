@@ -22,10 +22,12 @@
     gap: 40px;
     border-right: 1px solid @section-divider-color;
     padding-right: 90px;
+
     .media(mobile, {
+      order:2;
       width: 100%;
       border-right: none;
-      border-bottom: 1px solid @section-divider-color;
+      border-top: 1px solid @section-divider-color;
       padding: 0 0 40px 0;
     });
   }
@@ -87,6 +89,7 @@
     max-width: 500px;
 
     .media(mobile, {
+      order:1;
       max-width: 100%;
     });
   }
