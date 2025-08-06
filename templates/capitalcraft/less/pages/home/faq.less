@@ -76,9 +76,13 @@
   }
 
   &__slide {
-    display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    row-gap: 20px;
+    ul {
+      margin: 0;
+      padding: 0;
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      row-gap: 20px;
+    }
   }
 
   &__item {
@@ -88,7 +92,7 @@
     line-height: 140%;
     color: @color-text;
     font-style: italic;
-    margin: 25px 0;
+    grid-row: span 1;
 
     .media(mobile, {
       font-size: (@font-size-base * 1.125); // 18px
