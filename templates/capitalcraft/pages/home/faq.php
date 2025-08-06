@@ -15,7 +15,7 @@ $faqGroups = array_chunk($faqQuestions, 3);
 
 <section class="faq" id="faq">
     <div class="container faq__inner">
-        <div class="faq__slider swiper">
+        <div class="faq__swiper swiper">
             <div class="swiper-wrapper">
                 <?php foreach ($faqGroups as $group): ?>
                     <div class="faq__slide swiper-slide">
@@ -44,4 +44,3 @@ $faqGroups = array_chunk($faqQuestions, 3);
         </div>
     </div>
 </section>
-

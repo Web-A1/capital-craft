@@ -1192,14 +1192,14 @@ body.modal-open {
     display: none;
   }
 }
-.faq__slider {
+.faq__swiper {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0px;
           flex: 1 1 0;
   max-width: 415px;
 }
 @media only screen and (max-width: 767px) {
-  .faq__slider {
+  .faq__swiper {
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;
