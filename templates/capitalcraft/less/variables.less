@@ -42,13 +42,6 @@
   }
 }
 
-@screen-desktop: ~'only screen and (min-width: 1024px)';
-.media(@breakpoint, @rules) when (@breakpoint = desktop) {
-  @media @screen-desktop {
-    @rules();
-  }
-}
-
 //Инверсия svg
 .invertable-icon(@size: 40px) {
   display: inline-flex;
