@@ -159,4 +159,18 @@
     line-height: 110%;
     max-width: 363px;
   }
+
+  &__btn {
+    &--desktop {
+      .media(mobile, {
+        display: none;
+      });
+    }
+
+    &--mobile {
+      .media(desktop, {
+        display: none;
+      });
+    }
+  }
 }
