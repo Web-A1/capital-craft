@@ -1202,12 +1202,16 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .faq__swiper {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
     -webkit-box-ordinal-group: 3;
         -ms-flex-order: 2;
             order: 2;
     width: 100%;
     padding: 0 0 40px 0;
     height: auto;
+    max-height: none;
   }
 }
 .faq__swiper .swiper-wrapper {
@@ -1236,7 +1240,9 @@ body.modal-open {
 .faq__pagination .swiper-pagination-bullet-active {
   opacity: 1;
 }
-.faq__slide {
+.faq__slide ul {
+  margin: 0;
+  padding: 0;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
   row-gap: 20px;
@@ -1248,7 +1254,7 @@ body.modal-open {
   line-height: 140%;
   color: #333333;
   font-style: italic;
-  margin: 25px 0;
+  grid-row: span 1;
 }
 @media only screen and (max-width: 767px) {
   .faq__item {
