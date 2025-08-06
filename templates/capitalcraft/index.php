@@ -86,6 +86,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
     <!-- Swiper script -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="templates/capitalcraft/js/home/show_case_swiper.js"></script>
+    <script src="templates/capitalcraft/js/home/faq_swiper.js"></script>
   <?php endif; ?>
 
   <script src="templates/capitalcraft/js/burger.js"></script>

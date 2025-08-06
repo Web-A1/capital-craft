@@ -1,20 +1,35 @@
+<?php
+$faqQuestions = [
+    '«С какими суммами вы работаете?»',
+    '«А что, если банк откажет?»',
+    '«Вы работаете только с юрлицами или можно как ИП/физлицо?»',
+    '«Сколько стоит ваша работа?»',
+    '«Сколько времени занимает привлечение финансирования?»',
+    '«Работаете ли вы с региональными проектами?»',
+    '«Какие документы нужны для старта?»',
+    '«Можно ли получить консультацию бесплатно?»',
+    '«Сопровождаете ли вы сделки после привлечения средств?»',
+];
+$faqGroups = array_chunk($faqQuestions, 3);
+?>
+
 <section class="faq" id="faq">
     <div class="container faq__inner">
-        <div class="faq__slider">
-            <div class="faq__progress">
-                <span class="faq__count">04</span>
-                <div class="faq__line">
-                    <div class="faq__line-fill"></div>
-                </div>
-                <span class="faq__count">13</span>
+        <div class="faq__slider swiper">
+            <div class="swiper-wrapper">
+                <?php foreach ($faqGroups as $group): ?>
+                    <div class="faq__slide swiper-slide">
+                        <ul>
+                            <?php foreach ($group as $question): ?>
+                                <li class="faq__item"><?= htmlspecialchars($question, ENT_QUOTES, 'UTF-8') ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <div class="faq__questions">
-                <p class="faq__question">&laquo;С какими суммами вы работаете?&raquo;</p>
-                <p class="faq__question">&laquo;А что, если банк откажет?&raquo;</p>
-                <p class="faq__question">&laquo;Вы работаете только с юрлицами или можно как ИП/физлицо?&raquo;</p>
-                <p class="faq__question">&laquo;Сколько стоит ваша работа?&raquo;</p>
-            </div>
+            <div class="faq__pagination swiper-pagination"></div>
         </div>
+
         <div class="faq__content">
             <div class="faq__title-block">
                 <div class="faq__subtitle">часто задаваемые вопросы</div>
@@ -29,3 +44,4 @@
         </div>
     </div>
 </section>
+
