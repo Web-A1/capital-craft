@@ -1186,7 +1186,7 @@ body.modal-open {
           align-items: center;
   gap: 40px;
   border-right: 1px solid #000000;
-  padding-right: 40px;
+  padding-right: 90px;
 }
 @media only screen and (max-width: 767px) {
   .faq__slider {
@@ -1270,6 +1270,16 @@ body.modal-open {
   .faq__content {
     max-width: 100%;
   }
+}
+.faq__title-block {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 5px;
 }
 .faq__subtitle {
   color: #333333;

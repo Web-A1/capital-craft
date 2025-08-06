@@ -16,8 +16,10 @@
             </div>
         </div>
         <div class="faq__content">
-            <div class="faq__subtitle">часто задаваемые вопросы</div>
-            <h2 class="faq__title">Сильные решения начинаются с неудобных вопросов</h2>
+            <div class="faq__title-block">
+                <div class="faq__subtitle">часто задаваемые вопросы</div>
+                <h2 class="faq__title">Сильные решения начинаются с неудобных вопросов</h2>
+            </div>
             <a href="#" class="btn-main faq__btn">
                 <span>все вопросы</span>
                 <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">

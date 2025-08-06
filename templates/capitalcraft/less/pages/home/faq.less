@@ -21,7 +21,7 @@
     align-items: center;
     gap: 40px;
     border-right: 1px solid @section-divider-color;
-    padding-right: 40px;
+    padding-right: 90px;
     .media(mobile, {
       width: 100%;
       border-right: none;
@@ -89,6 +89,12 @@
     .media(mobile, {
       max-width: 100%;
     });
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 
   &__subtitle {
