@@ -6,41 +6,42 @@
 
   &__inner {
     display: flex;
-    flex-direction: column;
-    gap: 40px;
-    padding: 0 @mobile-side-padding;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    gap: 120px;
+    padding: 0;
 
-    .faq__content {
-      order: 1;
-    }
-    .faq__swiper {
-      order: 2;
-    }
-    .faq__btn {
-      order: 3;
+    .faq__content { order: 2; }
+    .faq__btn     { order: 3; }
+    .faq__swiper  { order: 1; }
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: @section-divider-color;
+      transform: translateX(-50%);
     }
 
-    .media(desktop, {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-start;
-      position: relative;
-      gap: 120px;
-      padding: 0;
+    .media(mobile, {
+      flex-direction: column;
+      gap: 40px;
+      padding: 0 @mobile-side-padding;
+      justify-content: flex-start;
+      align-items: stretch;
+      position: static;
 
-      .faq__content { order: 2; }
+      .faq__content { order: 1; }
+      .faq__swiper  { order: 2; }
       .faq__btn     { order: 3; }
-      .faq__swiper  { order: 1; }
 
       &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        background: @section-divider-color;
-        transform: translateX(-50%);
+        display: none;
       }
     });
   }
@@ -168,8 +169,10 @@
     }
 
     &--mobile {
-      .media(desktop, {
-        display: none;
+      display: none;
+
+      .media(mobile, {
+        display: inline-flex;
       });
     }
   }
