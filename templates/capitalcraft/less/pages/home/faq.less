@@ -35,7 +35,7 @@
   &__swiper {
     flex: 1 1 0;
     width: 100%;
-    max-height: 200px;
+    height: 200px;
     padding-left: 60px !important;
     box-sizing: border-box;
 
@@ -86,14 +86,16 @@
     ul {
       margin: 0;
       padding: 0;
-      display: grid;
-      grid-template-rows: repeat(3, 1fr);
-      row-gap: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      height: 100%;
 
       .media(mobile, {
-          row-gap: 10px;
+          gap: 10px;
           padding: 20px;
-          grid-template-rows:none;
+          height: auto;
+          justify-content: flex-start;
         });
     }
   }
@@ -105,7 +107,6 @@
     line-height: 140%;
     color: @color-text;
     font-style: italic;
-    grid-row: span 1;
 
     .media(mobile, {
       font-size: (@font-size-base * 1.125); // 18px
