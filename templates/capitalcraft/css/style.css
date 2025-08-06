@@ -1197,8 +1197,8 @@ body.modal-open {
       -ms-flex: 1 1 0px;
           flex: 1 1 0;
   width: 100%;
-  max-height: 233px;
-  padding: 0 60px !important;
+  max-height: 200px;
+  padding-left: 60px !important;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
 }
@@ -1211,9 +1211,12 @@ body.modal-open {
         -ms-flex-order: 2;
             order: 2;
     width: 100%;
-    padding: 0 0 40px 0 !important;
+    padding: 0 !important;
     height: auto;
     max-height: none;
+    border-radius: 15px;
+    border: 1px solid #000000;
+    background: #f8f6f2;
   }
 }
 .faq__swiper .swiper-wrapper {
@@ -1222,6 +1225,7 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .faq__swiper .swiper-wrapper {
     height: auto;
+    padding-bottom: 20px;
   }
 }
 .faq__swiper .swiper-slide {
@@ -1247,7 +1251,14 @@ body.modal-open {
   padding: 0;
   display: grid;
   grid-template-rows: repeat(3, 1fr);
-  row-gap: 20px;
+  row-gap: 10px;
+}
+@media only screen and (max-width: 767px) {
+  .faq__slide ul {
+    row-gap: 10px;
+    padding: 20px;
+    grid-template-rows: none;
+  }
 }
 .faq__item {
   list-style: none;
@@ -1271,7 +1282,7 @@ body.modal-open {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 40px;
+  gap: 30px;
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0px;
           flex: 1 1 0;
@@ -1307,7 +1318,7 @@ body.modal-open {
   font-family: 'Onest', sans-serif;
   font-size: 28.8px;
   font-weight: 600;
-  line-height: 140%;
+  line-height: 110%;
   max-width: 400px;
 }
 .show-case {
@@ -1367,7 +1378,7 @@ body.modal-open {
   font-family: 'Onest', sans-serif;
   font-size: 28.8px;
   font-weight: 700;
-  line-height: 100%;
+  line-height: 110%;
   color: #000000;
 }
 @media only screen and (max-width: 767px) {
