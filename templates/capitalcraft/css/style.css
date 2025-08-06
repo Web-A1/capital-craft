@@ -1187,6 +1187,45 @@ body.modal-open {
   -webkit-box-ordinal-group: 2;
       -ms-flex-order: 1;
           order: 1;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0px;
+          flex: 1 1 0;
+  width: 100%;
+  height: 200px;
+  padding-left: 60px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.faq__inner .faq__swiper .swiper-wrapper {
+  height: 100%;
+}
+@media only screen and (max-width: 767px) {
+  .faq__inner .faq__swiper .swiper-wrapper {
+    height: auto;
+    padding-bottom: 20px;
+  }
+}
+.faq__inner .faq__swiper .swiper-slide {
+  height: 100%;
+}
+@media only screen and (max-width: 767px) {
+  .faq__inner .faq__swiper .swiper-slide {
+    height: auto;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .faq__inner .faq__swiper {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 0 auto;
+            flex: 0 0 auto;
+    width: 100%;
+    padding: 0;
+    height: auto;
+    max-height: none;
+    border-radius: 15px;
+    border: 1px solid #000000;
+    background: #f8f6f2;
+  }
 }
 .faq__inner::before {
   content: '';
@@ -1232,47 +1271,6 @@ body.modal-open {
   }
   .faq__inner::before {
     display: none;
-  }
-}
-.faq__swiper {
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 0px;
-          flex: 1 1 0;
-  width: 100%;
-  height: 200px;
-  padding-left: 60px !important;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-@media only screen and (max-width: 767px) {
-  .faq__swiper {
-    -webkit-box-flex: 0;
-        -ms-flex: 0 0 auto;
-            flex: 0 0 auto;
-    width: 100%;
-    padding: 0 !important;
-    height: auto;
-    max-height: none;
-    border-radius: 15px;
-    border: 1px solid #000000;
-    background: #f8f6f2;
-  }
-}
-.faq__swiper .swiper-wrapper {
-  height: 100%;
-}
-@media only screen and (max-width: 767px) {
-  .faq__swiper .swiper-wrapper {
-    height: auto;
-    padding-bottom: 20px;
-  }
-}
-.faq__swiper .swiper-slide {
-  height: 100%;
-}
-@media only screen and (max-width: 767px) {
-  .faq__swiper .swiper-slide {
-    height: auto;
   }
 }
 .faq__pagination {
