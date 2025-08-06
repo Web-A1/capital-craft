@@ -1159,37 +1159,69 @@ body.modal-open {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: start;
-      -ms-flex-align: start;
-          align-items: flex-start;
-  position: relative;
-  gap: 120px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 40px;
+  padding: 0 20px;
 }
-.faq__inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-  background: #000000;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
+.faq__inner .faq__content {
+  -webkit-box-ordinal-group: 2;
+      -ms-flex-order: 1;
+          order: 1;
 }
-@media only screen and (max-width: 767px) {
+.faq__inner .faq__swiper {
+  -webkit-box-ordinal-group: 3;
+      -ms-flex-order: 2;
+          order: 2;
+}
+.faq__inner .faq__btn {
+  -webkit-box-ordinal-group: 4;
+      -ms-flex-order: 3;
+          order: 3;
+}
+@media only screen and (min-width: 1024px) {
   .faq__inner {
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
-    gap: 40px;
-    padding: 0 20px;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    position: relative;
+    gap: 120px;
+    padding: 0;
+  }
+  .faq__inner .faq__content {
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+  }
+  .faq__inner .faq__btn {
+    -webkit-box-ordinal-group: 4;
+        -ms-flex-order: 3;
+            order: 3;
+  }
+  .faq__inner .faq__swiper {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
   }
   .faq__inner::before {
-    display: none;
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: #000000;
+    -webkit-transform: translateX(-50%);
+            transform: translateX(-50%);
   }
 }
 .faq__swiper {
@@ -1207,9 +1239,6 @@ body.modal-open {
     -webkit-box-flex: 0;
         -ms-flex: 0 0 auto;
             flex: 0 0 auto;
-    -webkit-box-ordinal-group: 3;
-        -ms-flex-order: 2;
-            order: 2;
     width: 100%;
     padding: 0 !important;
     height: auto;
@@ -1299,9 +1328,6 @@ body.modal-open {
 }
 @media only screen and (max-width: 767px) {
   .faq__content {
-    -webkit-box-ordinal-group: 2;
-        -ms-flex-order: 1;
-            order: 1;
     width: 100%;
     max-width: 100%;
   }
