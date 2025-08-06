@@ -1357,6 +1357,16 @@ body.modal-open {
   line-height: 110%;
   max-width: 363px;
 }
+@media only screen and (max-width: 767px) {
+  .faq__btn--desktop {
+    display: none;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .faq__btn--mobile {
+    display: none;
+  }
+}
 .show-case {
   padding: 60px 0;
   display: -webkit-box;
