@@ -21,6 +21,39 @@
     }
     .faq__swiper {
       order: 1;
+      flex: 1 1 0;
+      width: 100%;
+      height: 200px;
+      padding-left: 60px;
+      box-sizing: border-box;
+
+      .swiper-wrapper {
+        height: 100%;
+
+        .media(mobile, {
+          height: auto;
+          padding-bottom: 20px;
+        });
+      }
+
+      .swiper-slide {
+        height: 100%;
+
+        .media(mobile, {
+          height: auto;
+        });
+      }
+
+      .media(mobile, {
+        flex: 0 0 auto;
+        width: 100%;
+        padding: 0;
+        height: auto;
+        max-height: none;
+        border-radius: 15px;
+        border: 1px solid @color-heading;
+        background: #f8f6f2;
+      });
     }
 
     &::before {
@@ -50,42 +83,6 @@
         display: none;
       }
     });
-  }
-
-  &__swiper {
-    flex: 1 1 0;
-    width: 100%;
-    height: 200px;
-    padding-left: 60px !important;
-    box-sizing: border-box;
-
-    .media(mobile, {
-        flex: 0 0 auto;
-        width: 100%;
-        padding: 0 !important;
-        height: auto;
-        max-height:none;
-        border-radius: 15px;
-        border: 1px solid @color-heading;
-        background: #f8f6f2;
-      });
-
-    .swiper-wrapper {
-      height: 100%;
-
-      .media(mobile, {
-          height: auto;
-          padding-bottom: 20px;
-        });
-    }
-
-    .swiper-slide {
-      height: 100%;
-
-      .media(mobile, {
-          height: auto;
-        });
-    }
   }
 
   &__pagination {
