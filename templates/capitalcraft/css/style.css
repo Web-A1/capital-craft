@@ -1197,7 +1197,7 @@ body.modal-open {
       -ms-flex: 1 1 0px;
           flex: 1 1 0;
   width: 100%;
-  max-height: 200px;
+  height: 200px;
   padding-left: 60px !important;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -1249,15 +1249,26 @@ body.modal-open {
 .faq__slide ul {
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
-  row-gap: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 100%;
 }
 @media only screen and (max-width: 767px) {
   .faq__slide ul {
-    row-gap: 10px;
+    gap: 20px;
     padding: 20px;
-    grid-template-rows: none;
+    height: auto;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
   }
 }
 .faq__item {
@@ -1267,7 +1278,6 @@ body.modal-open {
   line-height: 140%;
   color: #333333;
   font-style: italic;
-  grid-row: span 1;
 }
 @media only screen and (max-width: 767px) {
   .faq__item {
@@ -1319,7 +1329,7 @@ body.modal-open {
   font-size: 28.8px;
   font-weight: 600;
   line-height: 110%;
-  max-width: 400px;
+  max-width: 363px;
 }
 .show-case {
   padding: 60px 0;
