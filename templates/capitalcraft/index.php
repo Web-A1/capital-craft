@@ -11,11 +11,11 @@ $isFaq  = $active && $active->alias === 'faq';
 $document = JFactory::getDocument();
 
 if ($isHome) {
-    $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/home.css');
+  $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/home.css');
 }
 
 if ($isFaq) {
-    $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/faq.css');
+  $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/faq.css');
 }
 ?>
 
@@ -23,6 +23,9 @@ if ($isFaq) {
 <html lang="ru">
 
 <head>
+  <!-- Критические стили -->
+  <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
+
   <jdoc:include type="head" />
 
   <!-- Фавикон по умолчанию -->
@@ -37,15 +40,11 @@ if ($isFaq) {
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
   <link rel="mask-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon_black.svg" color="#000">
 
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Шрифты -->
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700&display=swap" rel="stylesheet">
-
-  <!-- Основные стили -->
-  <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
 
 </head>
 
@@ -66,13 +65,11 @@ if ($isFaq) {
         <?php include __DIR__ . '/pages/home/partners.php'; ?>
         <?php include __DIR__ . '/pages/home/philosophy.php'; ?>
         <?php include __DIR__ . '/pages/home/team.php'; ?>
-        <?php include __DIR__ . '/pages/home/faq.php'; ?>
+        <?php include __DIR__ . '/pages/home/faq-home.php'; ?>
         <?php include __DIR__ . '/pages/home/products.php'; ?>
         <?php include __DIR__ . '/pages/home/show_case.php'; ?>
         <?php include __DIR__ . '/pages/home/reviews.php'; ?>
 
-
-        <!-- добавь другие секции по необходимости -->
       <?php else: ?>
         <main>
           <jdoc:include type="component" />
