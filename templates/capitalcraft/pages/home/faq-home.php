@@ -1,16 +1,6 @@
 <?php
-$faqQuestions = [
-    '«С какими суммами вы работаете?»',
-    '«А что, если банк откажет?»',
-    '«Вы работаете только с юрлицами или можно как ИП/физлицо?»',
-    '«Сколько стоит ваша работа?»',
-    '«Сколько времени занимает привлечение финансирования?»',
-    '«Работаете ли вы с региональными проектами?»',
-    '«Какие документы нужны для старта?»',
-    '«Можно ли получить консультацию бесплатно?»',
-    '«Сопровождаете ли вы сделки после привлечения средств?»',
-];
-$faqGroups = array_chunk($faqQuestions, 3);
+require __DIR__ . '/../../data/faq.php';
+$faqGroups = array_chunk($faq, 3);
 ?>
 
 <section class="faq" id="faq">
@@ -20,8 +10,8 @@ $faqGroups = array_chunk($faqQuestions, 3);
                 <?php foreach ($faqGroups as $group): ?>
                     <div class="faq__slide swiper-slide">
                         <ul>
-                            <?php foreach ($group as $question): ?>
-                                <li class="faq__item"><?= htmlspecialchars($question, ENT_QUOTES, 'UTF-8') ?></li>
+                            <?php foreach ($group as $item): ?>
+                                <li class="faq__item"><?= htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8') ?></li>
                             <?php endforeach; ?>
                         </ul>
                     </div>
