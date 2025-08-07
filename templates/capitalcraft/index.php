@@ -43,6 +43,12 @@ $isHome = $menu->getActive() == $menu->getDefault();
 
       <?php include __DIR__ . '/header.php'; ?>
 
+      <?php if ($this->countModules('breadcrumbs')) : ?>
+        <div class="breadcrumbs">
+          <jdoc:include type="modules" name="breadcrumbs" style="none" />
+        </div>
+      <?php endif; ?>
+
       <?php if ($isHome): ?>
         <?php include __DIR__ . '/pages/home/hero.php'; ?>
         <?php include __DIR__ . '/pages/home/partners.php'; ?>

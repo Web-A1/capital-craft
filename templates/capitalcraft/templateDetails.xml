@@ -8,6 +8,7 @@
   <positions>
     <position>header-menu</position>
     <position>mobile-menu</position>
+    <position>breadcrumbs</position>
   </positions>
 
   <files>
