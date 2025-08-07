@@ -1,6 +1,6 @@
 'use strict';
 
-const initModal = () => {
+export const initModal = () => {
   const openBtn = document.querySelector('.js-open-modal');
   const modal = document.getElementById('contact-modal');
   if (!modal) return;
@@ -50,5 +50,3 @@ const initModal = () => {
     }
   });
 };
-
-window.initModal = initModal;

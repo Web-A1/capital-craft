@@ -2,9 +2,11 @@
 defined('_JEXEC') or die;
 
 // Получаем объект меню и проверяем: активный пункт = главный?
-$app   = JFactory::getApplication();
-$menu  = $app->getMenu();
-$isHome = $menu->getActive() == $menu->getDefault();
+$app    = JFactory::getApplication();
+$menu   = $app->getMenu();
+$active = $menu->getActive();
+$isHome = $active == $menu->getDefault();
+$isFaq  = $active && $active->alias === 'faq';
 ?>
 
 <!DOCTYPE html>
@@ -42,7 +44,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
   <div class="page-wrapper">
     <div class="magazine-frame">
 
-        <?php include __DIR__ . '/partials/_header.php'; ?>
+      <?php include __DIR__ . '/partials/_header.php'; ?>
 
       <?php if ($this->countModules('breadcrumbs')) : ?>
         <div class="breadcrumbs">
@@ -85,23 +87,22 @@ $isHome = $menu->getActive() == $menu->getDefault();
     <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
 
-    <script src="templates/capitalcraft/js/home/partners.js"></script>
+    <script src="templates/capitalcraft/js/pages/home/partners.js"></script>
 
     <!-- Swiper styles -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <!-- Swiper script -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="templates/capitalcraft/js/home/show_case_swiper.js"></script>
-    <script src="templates/capitalcraft/js/home/faq_swiper.js"></script>
+    <script src="templates/capitalcraft/js/pages/home/show_case_swiper.js"></script>
+    <script src="templates/capitalcraft/js/pages/home/faq_swiper.js"></script>
   <?php endif; ?>
 
-  <script src="templates/capitalcraft/js/burger.js"></script>
-  <script src="templates/capitalcraft/js/modal.js"></script>
-  <script src="templates/capitalcraft/js/phone-mask.js"></script>
-  <script src="templates/capitalcraft/js/form-submit.js"></script>
-  <script src="templates/capitalcraft/js/scroll-top.js"></script>
-  <script src="templates/capitalcraft/js/script.js"></script>
+  <?php if ($isFaq): ?>
+    <script src="templates/capitalcraft/js/pages/faq/faq.js"></script>
+  <?php endif; ?>
+
+  <script type="module" src="templates/capitalcraft/js/global/script.js"></script>
 
 </body>
 

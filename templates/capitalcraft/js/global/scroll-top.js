@@ -1,6 +1,6 @@
 'use strict';
 
-const initScrollTop = () => {
+export const initScrollTop = () => {
   const btn = document.querySelector('.scroll-top');
   if (!btn) return;
 
@@ -20,5 +20,3 @@ const initScrollTop = () => {
   window.addEventListener('scroll', toggleVisibility);
   toggleVisibility();
 };
-
-window.initScrollTop = initScrollTop;

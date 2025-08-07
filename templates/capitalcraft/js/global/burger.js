@@ -1,6 +1,6 @@
 'use strict';
 
-const initBurger = () => {
+export const initBurger = () => {
   const burger = document.querySelector('.burger');
   const mobileNav = document.querySelector('.mobile-nav');
   if (!burger || !mobileNav) return;
@@ -22,5 +22,3 @@ const initBurger = () => {
     link.addEventListener('click', closeMenu);
   });
 };
-
-window.initBurger = initBurger;

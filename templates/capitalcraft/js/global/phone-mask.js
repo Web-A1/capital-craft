@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const initPhoneMask = () => {
+export const initPhoneMask = () => {
   const form = document.getElementById('contactForm');
   const phoneInput = form ? form.querySelector('input[name="phone"]') : null;
   if (!phoneInput) return;
@@ -32,5 +32,3 @@ const initPhoneMask = () => {
     if (errEl) errEl.style.display = 'none';
   });
 };
-
-window.initPhoneMask = initPhoneMask;

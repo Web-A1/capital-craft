@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const initFormSubmit = () => {
+export const initFormSubmit = () => {
   const form = document.getElementById('contactForm');
   if (!form) return;
 
@@ -44,10 +44,13 @@ const initFormSubmit = () => {
 
     const fd = new FormData(form);
     try {
-        const response = await fetch('templates/capitalcraft/partials/_send_to_telegram.php', {
-        method: 'POST',
-        body: fd,
-      });
+      const response = await fetch(
+        'templates/capitalcraft/partials/_send_to_telegram.php',
+        {
+          method: 'POST',
+          body: fd,
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Network error: ${response.status}`);
@@ -70,5 +73,3 @@ const initFormSubmit = () => {
     }
   });
 };
-
-window.initFormSubmit = initFormSubmit;
