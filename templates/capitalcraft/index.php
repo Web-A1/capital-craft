@@ -56,7 +56,9 @@ if ($isFaq) {
 
       <?php if ($this->countModules('breadcrumbs')) : ?>
         <div class="breadcrumbs">
-          <jdoc:include type="modules" name="breadcrumbs" style="none" />
+          <div class="container">
+            <jdoc:include type="modules" name="breadcrumbs" style="none" />
+          </div>
         </div>
       <?php endif; ?>
 
