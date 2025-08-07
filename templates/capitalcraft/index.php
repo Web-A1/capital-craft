@@ -7,6 +7,16 @@ $menu   = $app->getMenu();
 $active = $menu->getActive();
 $isHome = $active == $menu->getDefault();
 $isFaq  = $active && $active->alias === 'faq';
+
+$document = JFactory::getDocument();
+
+if ($isHome) {
+    $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/home.css');
+}
+
+if ($isFaq) {
+    $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/faq.css');
+}
 ?>
 
 <!DOCTYPE html>
@@ -36,7 +46,6 @@ $isFaq  = $active && $active->alias === 'faq';
 
   <!-- Основные стили -->
   <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
-  <link rel="stylesheet" href="templates/capitalcraft/css/home.css">
 
 </head>
 
