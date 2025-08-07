@@ -33,7 +33,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Основные стили -->
-  <link rel="stylesheet" href="templates/capitalcraft/css/style.css">
+  <link rel="stylesheet" href="templates/capitalcraft/css/home.css">
 
 </head>
 
