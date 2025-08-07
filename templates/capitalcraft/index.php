@@ -23,6 +23,10 @@ if ($isFaq) {
 <html lang="ru">
 
 <head>
+  <!-- Шрифты -->
+  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700&display=swap" rel="stylesheet">
+
   <!-- Критические стили -->
   <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
 
@@ -41,10 +45,6 @@ if ($isFaq) {
   <link rel="mask-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon_black.svg" color="#000">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Шрифты -->
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700&display=swap" rel="stylesheet">
 
 </head>
 
