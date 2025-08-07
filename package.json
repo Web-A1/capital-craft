@@ -7,7 +7,7 @@
     "less:critical": "lessc templates/capitalcraft/less/critical.less templates/capitalcraft/css/critical.css",
     "less:home": "lessc templates/capitalcraft/less/home.less templates/capitalcraft/css/home.css",
     "less:faq": "lessc templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
-    "less:watch": "chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:critical && npm run less:home && npm run less:faq\"",
+    "less:watch": "chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:critical && npm run less:home && npm run less:faq\" --initial",
     "test": "npm run less:critical && npm run less:home && npm run less:faq"
   },
   "keywords": [],
