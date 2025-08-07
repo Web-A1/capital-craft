@@ -18,4 +18,3 @@ $doc->addScript('templates/capitalcraft/js/faq.js');
         </figure>
     </div>
 </section>
-
