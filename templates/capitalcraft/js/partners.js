@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Function to start auto-scrolling
   function startAutoScroll() {
     stopAutoScroll(); // Clear any existing interval
-    autoScrollInterval = setInterval(nextLogo, 5000); // 5 seconds
+    autoScrollInterval = setInterval(nextLogo, 3000); // 3 seconds
   }
 
   // Function to stop auto-scrolling
