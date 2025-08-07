@@ -44,7 +44,7 @@ const initFormSubmit = () => {
 
     const fd = new FormData(form);
     try {
-      const response = await fetch('templates/capitalcraft/send_to_telegram.php', {
+        const response = await fetch('templates/capitalcraft/partials/_send_to_telegram.php', {
         method: 'POST',
         body: fd,
       });

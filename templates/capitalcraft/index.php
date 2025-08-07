@@ -42,7 +42,7 @@ $isHome = $menu->getActive() == $menu->getDefault();
   <div class="page-wrapper">
     <div class="magazine-frame">
 
-      <?php include __DIR__ . '/header.php'; ?>
+        <?php include __DIR__ . '/partials/_header.php'; ?>
 
       <?php if ($this->countModules('breadcrumbs')) : ?>
         <div class="breadcrumbs">
@@ -68,8 +68,8 @@ $isHome = $menu->getActive() == $menu->getDefault();
         </main>
       <?php endif; ?>
 
-      <?php include __DIR__ . '/footer.php'; ?>
-      <?php include __DIR__ . '/modal.php'; ?>
+      <?php include __DIR__ . '/partials/_footer.php'; ?>
+      <?php include __DIR__ . '/partials/_modal.php'; ?>
       <div class="container">
         <button class="scroll-top" aria-label="Наверх">
           <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
