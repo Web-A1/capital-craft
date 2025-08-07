@@ -1,7 +1,6 @@
 <?php defined('_JEXEC') or die;
 $doc = JFactory::getDocument();
 $doc->addStyleSheet('templates/capitalcraft/css/faq.css');
-$doc->addScript('templates/capitalcraft/js/pages/faq/faq.js');
 
 $questions = [
     '«С какими суммами вы работаете?»',
