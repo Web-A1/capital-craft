@@ -1,7 +1,7 @@
 <?php defined('_JEXEC') or die;
 $doc = JFactory::getDocument();
 $doc->addStyleSheet('templates/capitalcraft/css/faq.css');
-$doc->addScript('templates/capitalcraft/js/faq.js');
+$doc->addScript('templates/capitalcraft/js/pages/faq/faq.js');
 ?>
 
 <section class="faq">
