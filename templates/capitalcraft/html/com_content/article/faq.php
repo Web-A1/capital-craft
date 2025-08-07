@@ -40,7 +40,7 @@ for ($i = 10; $i <= 20; $i++) {
             <?php endforeach; ?>
         </div>
         <figure class="faq__image">
-            <img src="/templates/capitalcraft/images/faq.webp" alt="FAQ">
+            <img src="/templates/capitalcraft/images/faq/faq_hand.webp" alt="FAQ">
         </figure>
     </div>
 </section>
