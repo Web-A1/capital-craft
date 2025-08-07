@@ -2,19 +2,42 @@
 @import '../../_variables.less';
 
 .faq {
-  padding: 30px 0;
-
   &__container {
     max-width: 1170px;
     width: 100%;
     margin: 0 auto;
     display: flex;
     gap: 30px;
+    justify-content: space-between;
 
     .media(mobile, {
       flex-direction: column;
       gap: 20px;
     });
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 40px;
+  }
+
+  &__subtitle {
+    color: @color-text;
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    letter-spacing: 0.175em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    color: @color-heading;
+    font-family: @font-title;
+    font-size: @font-size-title;
+    font-weight: 600;
+    line-height: 110%;
+    max-width: 361px;
   }
 
   &__accordion {
@@ -37,18 +60,26 @@
   &__question {
     cursor: pointer;
     font-weight: 600;
+    font-size: @font-size-text;
   }
 
   &__answer {
     display: none;
     margin-top: 10px;
+    font-size: @font-size-text;
+    font-weight: 400;
+    margin-left: 30px;
   }
 
   &__image {
     flex: 0 0 30%;
+    max-width: 100%;
+    img {
+      max-width: 100%;
+    }
 
     .media(mobile, {
-      flex-basis: 100%;
+      display: none;
     });
   }
 }
