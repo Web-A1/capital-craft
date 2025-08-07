@@ -1,0 +1,27 @@
+// out: ../css/critical.css
+@import '_variables.less';
+@import '_header.less';
+@import '_buttons.less';
+
+/* Сброс отступов и box-sizing */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Базовая типографика */
+body {
+  font-family: @font-body;
+  font-size: @font-size-text;
+  background-color: @color-bg-craft;
+  color: @color-text;
+  line-height: 1.5;
+}
+
+a {
+  color: @color-accent;
+  text-decoration: none;
+}
