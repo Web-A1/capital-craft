@@ -1,17 +1,15 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const items = document.querySelectorAll('.faq__item');
+    const questions = document.querySelectorAll('.faq__question');
 
-    items.forEach(function (item) {
-        const question = item.querySelector('.faq__question');
-
+    questions.forEach(function (question) {
         question.addEventListener('click', function () {
-            const activeItem = document.querySelector('.faq__item.active');
+            const isExpanded = question.getAttribute('aria-expanded') === 'true';
 
-            if (activeItem && activeItem !== item) {
-                activeItem.classList.remove('active');
-            }
+            questions.forEach(function (q) {
+                q.setAttribute('aria-expanded', 'false');
+            });
 
-            item.classList.toggle('active');
+            question.setAttribute('aria-expanded', String(!isExpanded));
         });
     });
 });
