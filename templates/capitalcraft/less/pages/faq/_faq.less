@@ -7,7 +7,7 @@
     width: 100%;
     margin: 0 auto;
     display: flex;
-    gap: 30px;
+    gap: @section-padding;
     justify-content: space-between;
 
     .media(mobile, {
@@ -58,20 +58,21 @@
     border: none;
     width: 100%;
     text-align: left;
-    font-weight: 600;
+    font-weight: 400;
     font-size: @font-size-text;
     color: @color-heading;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    transition: color .3s ease;
+    transition: color 0.3s ease;
+    gap: 60px;
 
     &:hover {
       color: @color-accent;
     }
 
-    &[aria-expanded="true"] .faq__icon {
+    &[aria-expanded='true'] .faq__icon {
       transform: rotate(45deg);
     }
   }
@@ -79,20 +80,22 @@
   &__icon {
     font-size: 24px;
     line-height: 1;
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
   }
 
   &__answer {
     max-height: 0;
     overflow: hidden;
     opacity: 0;
-    transition: max-height .3s ease, opacity .3s ease, padding-top .3s ease;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding-top 0.3s ease;
     font-size: @font-size-text;
     font-weight: 400;
     padding-top: 0;
+    padding-left: 30px;
+    color: @color-text;
   }
 
-  &__question[aria-expanded="true"] + .faq__answer {
+  &__question[aria-expanded='true'] + .faq__answer {
     max-height: 300px;
     opacity: 1;
     padding-top: 12px;
