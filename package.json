@@ -4,10 +4,11 @@
   "description": "Шаблон сайта **Capital Craft** на **Joomla 5.3.2** с LESS и нативным JavaScript.   Codex генерирует код через Pull Requests на GitHub, а изменения автоматически подтягиваются в VS Code и заливаются на сервер через SFTP-синхронизацию.",
   "main": "index.js",
   "scripts": {
+    "less:critical": "lessc templates/capitalcraft/less/critical.less templates/capitalcraft/css/critical.css",
     "less:home": "lessc templates/capitalcraft/less/home.less templates/capitalcraft/css/home.css",
     "less:faq": "lessc templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
-    "less:watch": "chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:home && npm run less:faq\"",
-    "test": "npm run less:home && npm run less:faq"
+    "less:watch": "chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:critical && npm run less:home && npm run less:faq\"",
+    "test": "npm run less:critical && npm run less:home && npm run less:faq"
   },
   "keywords": [],
   "author": "",
