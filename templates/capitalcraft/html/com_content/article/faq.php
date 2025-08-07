@@ -15,8 +15,13 @@ require __DIR__ . '/../../../data/faq.php';
             <div class="faq__accordion">
                 <?php foreach ($faq as $item): ?>
                     <div class="faq__item">
-                        <h3 class="faq__question"><?= htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?></h3>
-                        <div class="faq__answer"><?= htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?></div>
+                        <button class="faq__question" aria-expanded="false">
+                            <?= htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
+                            <span class="faq__icon">+</span>
+                        </button>
+                        <div class="faq__answer">
+                            <?= htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
