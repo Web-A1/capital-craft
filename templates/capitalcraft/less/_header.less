@@ -15,9 +15,7 @@
 }
 
 .site-header {
-  max-width: @container-width;
-  margin: 0 auto;
-  padding: 25px 0;
+  padding: 20px 0 10px;
   border-bottom: 1px solid #000;
 
   .media(mobile, {
@@ -26,17 +24,19 @@
     left: 0;
     right: 0;
     z-index: 49;
-    padding: 20px 0 10px 0;
     background: @color-bg-craft;
   });
 
   .header__inner {
-    max-width: 1170px;
+    max-width: @container-width;
+    width: 100%;
+    margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     .media(mobile, {
+       padding: 0 @mobile-side-padding;
        margin: 0;
        height: 60px;
        align-items: center;
