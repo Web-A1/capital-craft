@@ -1,6 +1,7 @@
 <?php
 require __DIR__ . '/../../data/faq.php';
-$faqGroups = array_chunk($faq, 3);
+$faqHome   = array_slice($faq, 0, 9);
+$faqGroups = array_chunk($faqHome, 3);
 ?>
 
 <section class="faq" id="faq">
