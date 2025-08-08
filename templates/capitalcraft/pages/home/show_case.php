@@ -30,7 +30,7 @@ $cases = [
 <section class="show-case" id="cases">
     <div class="show-case__inner">
         <div class="show-case__title-block">
-            <div class="show-case__subtitle">завершенные проекты</div>
+            <div class="show-case__subtitle">завершенные кейсы</div>
             <h2 class="show-case__title">Когда стратегия становится результатом</h2>
         </div>
 
