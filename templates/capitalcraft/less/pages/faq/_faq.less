@@ -69,6 +69,11 @@
     transition: color 0.3s ease;
     gap: 60px;
 
+    .media(mobile, {
+       gap: 20px;
+       padding-right: 10px;
+       });
+
     &:hover {
       color: @color-accent;
     }
@@ -79,7 +84,7 @@
   }
 
   &__icon {
-    font-size: 24px;
+    font-size: 30px;
     line-height: 1;
     transition: transform 0.3s ease;
   }
