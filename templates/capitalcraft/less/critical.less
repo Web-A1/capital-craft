@@ -30,6 +30,9 @@ a {
   max-width: @container-width;
   width: 100%;
   margin: 0 auto;
+  .media(mobile, {
+    padding: 0 @mobile-side-padding;
+  });
 }
 
 .page-wrapper {
