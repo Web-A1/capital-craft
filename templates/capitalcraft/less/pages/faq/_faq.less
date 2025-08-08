@@ -63,16 +63,11 @@
     font-size: @font-size-text;
     color: @color-heading;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     cursor: pointer;
     transition: color 0.3s ease;
-    gap: 60px;
-
-    .media(mobile, {
-       gap: 20px;
-       padding-right: 10px;
-       });
+    gap: 20px;
 
     &:hover {
       color: @color-accent;
@@ -84,7 +79,7 @@
   }
 
   &__icon {
-    font-size: 30px;
+    font-size: 24px;
     line-height: 1;
     transition: transform 0.3s ease;
   }
@@ -92,7 +87,8 @@
   &__answer {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s, opacity 0.3s, padding-top 0.3s, padding-bottom 0.3s;
+    transition: max-height 0.3s, opacity 0.3s, padding-top 0.3s,
+      padding-bottom 0.3s;
     font-size: @font-size-text;
     font-weight: 400;
     padding: 0 20px 0 30px;
@@ -106,8 +102,12 @@
   &__image {
     flex: 0 0 30%;
     max-width: 100%;
+    border-radius: 10px;
+    clip-path: border-box;
+
     img {
       max-width: 100%;
+      border-radius: ;
     }
 
     .media(mobile, {

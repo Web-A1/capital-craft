@@ -16,8 +16,10 @@ require __DIR__ . '/../../../data/faq.php';
                 <?php foreach ($faq as $item): ?>
                     <div class="faq__item">
                         <button class="faq__question" aria-expanded="false">
-                            <?= htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
                             <span class="faq__icon">+</span>
+                            <span class="faq__text">
+                                <?= htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
+                            </span>
                         </button>
                         <div class="faq__answer">
                             <?= htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?>
