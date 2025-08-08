@@ -92,19 +92,11 @@
   &__answer {
     max-height: 0;
     overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding-top 0.3s ease;
+    transition: max-height 0.3s, opacity 0.3s, padding-top 0.3s;
     font-size: @font-size-text;
     font-weight: 400;
-    padding-top: 0;
     padding-left: 30px;
     color: @color-text;
-  }
-
-  &__question[aria-expanded='true'] + .faq__answer {
-    max-height: 300px;
-    opacity: 1;
-    padding-top: 12px;
   }
 
   &__image {
