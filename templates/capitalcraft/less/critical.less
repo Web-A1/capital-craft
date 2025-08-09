@@ -42,13 +42,31 @@ a {
   });
 }
 
-.magazine-frame {
+.frame {
   max-width: 1300px;
   width: 100%;
-  margin: 20px auto;
-  border: 1px solid @color-text;
+  margin: 0 auto;
+  border-left: 1px solid @color-text;
+  border-right: 1px solid @color-text;
 
   .media(mobile, {
-    margin: 0 auto;
-    border: none;});
+    border-left: none;
+    border-right: none;
+  });
+}
+
+.frame--header {
+  border-top: 1px solid @color-text;
+
+  .media(mobile, {
+    border-top: none;
+  });
+}
+
+.frame--footer {
+  border-bottom: 1px solid @color-text;
+
+  .media(mobile, {
+    border-bottom: none;
+  });
 }
