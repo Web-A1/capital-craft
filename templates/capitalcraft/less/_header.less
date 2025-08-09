@@ -16,6 +16,7 @@
 
 .site-header {
   position: relative;
+  transition: transform 0.3s ease, background-color 0.3s;
 
   .media(mobile, {
     position: fixed;
@@ -226,6 +227,10 @@
       }
     }
   }
+}
+
+.site-header--hidden {
+  transform: translateY(-100%);
 }
 
 body.menu-open {

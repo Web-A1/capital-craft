@@ -3,6 +3,7 @@ import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
 import { initFormSubmit } from './form-submit.js';
 import { initScrollTop } from './scroll-top.js';
+import { initHeaderScroll } from './header-scroll.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initBurger();
@@ -10,4 +11,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initPhoneMask();
   initFormSubmit();
   initScrollTop();
+  initHeaderScroll();
 });
