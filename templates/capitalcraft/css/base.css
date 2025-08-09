@@ -275,28 +275,29 @@ body.menu-open {
   position: absolute;
   top: 20px;
   right: 20px;
-  width: 24px;
-  height: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
   cursor: pointer;
   z-index: 51;
 }
-.mobile-nav__close span {
-  display: block;
+.mobile-nav__close::before,
+.mobile-nav__close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
   height: 2px;
   background-color: #000;
-  transition: 0.3s ease;
+  transform-origin: center;
 }
-.mobile-nav__close span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+.mobile-nav__close::before {
+  transform: translate(-50%, -50%) rotate(45deg);
 }
-.mobile-nav__close span:nth-child(2) {
-  opacity: 0;
-}
-.mobile-nav__close span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+.mobile-nav__close::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
 }
 .mobile-nav .mod-menu {
   display: flex;
