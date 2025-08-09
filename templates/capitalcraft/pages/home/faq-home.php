@@ -24,7 +24,7 @@ $faqGroups = array_chunk($faqHome, 3);
         <div class="faq__content">
             <div class="faq__title-block">
                 <div class="faq__subtitle">часто задаваемые вопросы</div>
-                <h2 class="faq__title">Сильные решения начинаются с неудобных вопросов</h2>
+                <h2 class="faq__title">Сильные решения начинаются с вопросов</h2>
             </div>
             <a href="/faq" class="btn-main faq__btn faq__btn--desktop">
                 <span>вопросы - ответы</span>

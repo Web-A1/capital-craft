@@ -10,7 +10,7 @@ require __DIR__ . '/../../../data/faq_data.php';
         <div class="faq__content">
             <div class="faq__title-block">
                 <div class="faq__subtitle">часто задаваемые вопросы</div>
-                <h1 class="faq__title">Сильные решения начинаются с неудобных вопросов</h1>
+                <h1 class="faq__title">Сильные решения начинаются с вопросов</h1>
             </div>
             <div class="faq__accordion">
                 <?php foreach ($faq_data as $item): ?>
