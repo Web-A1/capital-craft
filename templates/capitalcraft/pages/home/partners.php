@@ -1,6 +1,6 @@
-<section class="partners">
+<section class="partners frame">
     <div class="partners__divider partners__divider--top"></div>
-    <div class="partners__inner">
+    <div class="container partners__inner">
         <div class="partners__title">
             <div class="partners__title-text">
                 НАМ ДОВЕРЯЮТ КРУПНЕЙШИЕ БАНКИ И ЛИЗИНГОВЫЕ КОМПАНИИ
