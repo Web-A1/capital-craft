@@ -3,7 +3,7 @@ import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
 import { initFormSubmit } from './form-submit.js';
 import { initScrollTop } from './scroll-top.js';
-import { initStickyHeader } from './sticky-header.js';
+import Headroom from 'headroom.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initBurger();
@@ -11,5 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
   initPhoneMask();
   initFormSubmit();
   initScrollTop();
-  initStickyHeader();
+
+  const header = document.querySelector('.site-header');
+  if (header) {
+    const headroom = new Headroom(header, {
+      classes: {
+        pinned: 'pinned',
+        unpinned: 'unpinned',
+      },
+    });
+    headroom.init();
+  }
 });

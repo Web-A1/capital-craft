@@ -17,5 +17,8 @@
   "devDependencies": {
     "chokidar-cli": "^3.0.0",
     "less": "^4.2.0"
+  },
+  "dependencies": {
+    "headroom.js": "^0.12.0"
   }
 }

@@ -28,6 +28,10 @@
     will-change: transform;
   });
 
+  &.unpinned {
+    transform: translateY(-100%);
+  }
+
   & .header__inner {
     max-width: @container-width;
     width: 100%;
@@ -220,9 +224,6 @@
   }
 }
 
-.site-header--hidden {
-  transform: translateY(-100%);
-}
 
 body.menu-open {
   overflow: hidden;
