@@ -1,4 +1,4 @@
-<header class="site-header">
+<header class="site-header frame frame--header">
     <div class="container header__inner">
 
         <div class="header-logo">
