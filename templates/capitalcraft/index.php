@@ -54,8 +54,8 @@ if ($isFaq) {
     <?php include __DIR__ . '/partials/_header.php'; ?>
 
     <?php if ($this->countModules('breadcrumbs')) : ?>
-      <div class="breadcrumbs">
-        <div class="container">
+      <div class="breadcrumbs-wrapper">
+        <div class="frame">
           <jdoc:include type="modules" name="breadcrumbs" style="none" />
         </div>
       </div>
