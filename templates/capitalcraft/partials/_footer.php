@@ -39,7 +39,7 @@
                             <a href="#team">Команда</a>
                         </div>
                         <div class="footer-nav-item">
-                            <a href="#faq">FAQ</a>
+                            <a href="/faq">FAQ</a>
                         </div>
                         <div class="footer-nav-item">
                             <a href="#products">Продукты</a>
