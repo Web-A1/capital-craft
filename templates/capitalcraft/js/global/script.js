@@ -3,7 +3,6 @@ import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
 import { initFormSubmit } from './form-submit.js';
 import { initScrollTop } from './scroll-top.js';
-import Headroom from '../vendor/headroom.min.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initBurger();
@@ -14,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const header = document.querySelector('.site-header');
   if (header) {
-    const headroom = new Headroom(header, {
+    const headroom = new window.Headroom(header, {
       classes: {
         pinned: 'pinned',
         unpinned: 'unpinned',
