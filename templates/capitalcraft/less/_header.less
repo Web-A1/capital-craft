@@ -26,15 +26,14 @@
     background: @color-bg-craft;
     transition: transform 0.3s ease;
     will-change: transform;
-  });
 
-  &.unpinned {
-    transform: translateY(-100%);
-  }
-
-  &.pinned {
+    &.unpinned {
+      transform: translateY(-100%);
+    }
+    &.pinned {
     transform: translateY(0);
-  }
+    }
+  });
 
   & .header__inner {
     max-width: @container-width;
