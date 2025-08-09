@@ -9,7 +9,7 @@
     "less:faq": "lessc templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
     "less:base": "lessc templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
     "less:all": "npm-run-all less:base less:critical less:home less:faq",
-    "less:watch": "chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:all\" --initial",
+    "less:watch": "SHELL=/bin/bash chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:all\" --initial",
     "test": "npm run less:all"
   },
   "keywords": [],
