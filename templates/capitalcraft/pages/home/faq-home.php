@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../data/faq.php';
+require __DIR__ . '/../../data/faq_data.php';
 $faqHome   = array_slice($faq, 0, 9);
 $faqGroups = array_chunk($faqHome, 3);
 ?>
