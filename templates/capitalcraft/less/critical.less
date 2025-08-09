@@ -42,6 +42,11 @@ a {
   });
 }
 
+section,
+.frame {
+  position: relative;
+}
+
 .frame {
   max-width: 1300px;
   width: 100%;
@@ -70,5 +75,35 @@ a {
 
   .media(mobile, {
     border-bottom: none;
+  });
+}
+
+.section-with-divider {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: @container-width;
+    height: 1px;
+    background: @section-divider-color;
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  .media(mobile, {
+    &::before,
+    &::after {
+      width: calc(100% - (@mobile-side-padding * 2));
+    }
   });
 }
