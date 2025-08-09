@@ -3,7 +3,7 @@ import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
 import { initFormSubmit } from './form-submit.js';
 import { initScrollTop } from './scroll-top.js';
-import Headroom from 'headroom.js';
+import Headroom from '../vendor/headroom.min.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   initBurger();

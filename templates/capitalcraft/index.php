@@ -107,6 +107,7 @@ if ($isFaq) {
     <script src="templates/capitalcraft/js/pages/faq/faq.js"></script>
   <?php endif; ?>
 
+  <script src="templates/capitalcraft/js/vendor/headroom.min.js"></script>
   <script type="module" src="templates/capitalcraft/js/global/script.js"></script>
 
 </body>
