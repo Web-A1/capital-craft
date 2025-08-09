@@ -80,8 +80,6 @@ section,
 
 .section-with-divider {
   position: relative;
-
-  &::before,
   &::after {
     content: '';
     position: absolute;
@@ -90,18 +88,10 @@ section,
     width: @container-width;
     height: 1px;
     background: @section-divider-color;
-  }
-
-  &::before {
-    top: 0;
-  }
-
-  &::after {
     bottom: 0;
   }
 
   .media(mobile, {
-    &::before,
     &::after {
       width: calc(100% - (@mobile-side-padding * 2));
     }
