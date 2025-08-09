@@ -1,5 +1,4 @@
-<section class="partners frame">
-    <div class="partners__divider partners__divider--top"></div>
+<section class="partners frame section-with-divider">
     <div class="container partners__inner">
         <div class="partners__title">
             <div class="partners__title-text">
@@ -35,5 +34,4 @@
             </div>
         </div>
     </div>
-    <div class="partners__divider partners__divider--bottom"></div>
 </section>

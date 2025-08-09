@@ -4,7 +4,7 @@ $faqHome   = array_slice($faq, 0, 9);
 $faqGroups = array_chunk($faqHome, 3);
 ?>
 
-<section class="faq" id="faq">
+<section class="faq frame section-with-divider" id="faq">
     <div class="container faq__inner">
         <div class="faq__swiper swiper">
             <div class="swiper-wrapper">

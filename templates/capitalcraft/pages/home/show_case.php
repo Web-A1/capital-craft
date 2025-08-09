@@ -27,7 +27,7 @@ $cases = [
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-<section class="show-case" id="cases">
+<section class="show-case frame section-with-divider" id="cases">
     <div class="show-case__inner">
         <div class="show-case__title-block">
             <div class="show-case__subtitle">завершенные кейсы</div>
