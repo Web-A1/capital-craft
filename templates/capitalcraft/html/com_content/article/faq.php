@@ -5,7 +5,7 @@ $doc->addStyleSheet('templates/capitalcraft/css/faq.css');
 require __DIR__ . '/../../../data/faq_data.php';
 ?>
 
-<section class="faq">
+<section class="faq frame section-with-divider">
     <div class="faq__container">
         <div class="faq__content">
             <div class="faq__title-block">
