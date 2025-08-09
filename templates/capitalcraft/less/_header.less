@@ -242,6 +242,36 @@ body.menu-open {
   transition: transform 0.3s ease;
   z-index: 50;
 
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 24px;
+    height: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 51;
+
+    span {
+      display: block;
+      height: 2px;
+      background-color: #000;
+      transition: 0.3s ease;
+    }
+
+    span:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    span:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+
   .mod-menu {
     display: flex;
     flex-direction: column;

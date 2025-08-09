@@ -21,4 +21,9 @@ export const initBurger = () => {
   navLinks.forEach((link) => {
     link.addEventListener('click', closeMenu);
   });
+
+  const closeBtn = mobileNav.querySelector('.mobile-nav__close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
 };
