@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../../data/faq_data.php';
-$faqHome   = array_slice($faq, 0, 9);
+$faqHome   = array_slice($faq_data, 0, 9);
 $faqGroups = array_chunk($faqHome, 3);
 ?>
 
