@@ -29,7 +29,7 @@ require __DIR__ . '/../../../data/faq_data.php';
             </div>
         </div>
         <figure class="faq__image">
-            <img src="/templates/capitalcraft/images/faq/faq_hand.webp" alt="FAQ">
+            <img src="/templates/capitalcraft/images/faq/faq_hand.webp" alt="FAQ" loading="lazy">
         </figure>
     </div>
 </section>
