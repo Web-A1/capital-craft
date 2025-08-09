@@ -2,7 +2,7 @@
 $doc = JFactory::getDocument();
 $doc->addStyleSheet('templates/capitalcraft/css/faq.css');
 
-require __DIR__ . '/../../../data/faq.php';
+require __DIR__ . '/../../../data/faq_data.php';
 ?>
 
 <section class="faq">
@@ -13,13 +13,13 @@ require __DIR__ . '/../../../data/faq.php';
                 <h1 class="faq__title">Сильные решения начинаются с неудобных вопросов</h1>
             </div>
             <div class="faq__accordion">
-                <?php foreach ($faq as $item): ?>
+                <?php foreach ($faq_data as $item): ?>
                     <div class="faq__item">
                         <button class="faq__question" aria-expanded="false">
-                            <span class="faq__icon">+</span>
                             <span class="faq__text">
                                 <?= htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
                             </span>
+                            <span class="faq__icon">+</span>
                         </button>
                         <div class="faq__answer">
                             <?= htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?>
