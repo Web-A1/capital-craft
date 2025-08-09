@@ -9,6 +9,7 @@ $isHome = $active == $menu->getDefault();
 $isFaq  = $active && $active->alias === 'faq';
 
 $document = JFactory::getDocument();
+$document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/base.css');
 
 if ($isHome) {
   $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/home.css');
