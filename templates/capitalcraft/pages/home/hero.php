@@ -1,4 +1,4 @@
-<section class="hero">
+<section class="hero frame">
     <div class="container hero__inner">
         <div class="hero__content">
             <h1 class="hero__title">Мы создаем <br> точные решения <br> для вашего капитала</h1>
