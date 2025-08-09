@@ -1,4 +1,4 @@
-<footer class="footer" id="contacts">
+<footer class="footer frame frame--footer" id="contacts">
     <div class="footer-container">
         <!-- Top Block -->
         <div class="footer-top-block">
