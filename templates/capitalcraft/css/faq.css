@@ -15,7 +15,7 @@
 }
 .breadcrumbs__item {
   color: #333333;
-  font-size: 27px;
+  font-size: 16px;
 }
 .breadcrumbs__item a {
   color: #333333;
@@ -51,14 +51,14 @@
 .faq__subtitle {
   color: #333333;
   font-family: 'Golos Text', sans-serif;
-  font-size: 21.6px;
+  font-size: 12.8px;
   letter-spacing: 0.175em;
   text-transform: uppercase;
 }
 .faq__title {
   color: #000000;
   font-family: 'Onest', sans-serif;
-  font-size: 48.6px;
+  font-size: 28.8px;
   font-weight: 600;
   line-height: 110%;
 }
@@ -84,7 +84,7 @@
   text-align: left;
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   color: #333333;
   display: flex;
   justify-content: space-between;
@@ -109,7 +109,7 @@
   overflow: hidden;
   transition: max-height 0.3s, opacity 0.3s, padding-top 0.3s, padding-bottom 0.3s;
   font-family: 'Golos Text', sans-serif;
-  font-size: 27px;
+  font-size: 16px;
   font-weight: 400;
   padding: 0 20px 0 30px;
   color: #333333;

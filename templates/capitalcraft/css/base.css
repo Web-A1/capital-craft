@@ -95,7 +95,7 @@
 }
 .site-header .header__inner .header-right .main-nav .mod-menu a {
   font-family: 'Golos Text', sans-serif;
-  font-size: 21.6px;
+  font-size: 12.8px;
   text-transform: uppercase;
   font-weight: 400;
   color: #333333;
@@ -182,7 +182,7 @@
   background-color: #8d222c;
   color: #ffffff;
   font-family: 'Golos Text', sans-serif;
-  font-size: 21.6px;
+  font-size: 12.8px;
   font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
@@ -204,7 +204,7 @@
 @media only screen and (max-width: 767px) {
   .site-header .header__inner .header-right .header-controls__inner .btn.btn--primary {
     padding: 8px 12px;
-    font-size: 20.25px;
+    font-size: 12px;
     font-weight: 500;
     height: 36px;
   }
@@ -414,18 +414,18 @@ body.menu-open {
 }
 .modal__subtitle {
   font-family: 'Golos Text', sans-serif;
-  font-size: 21.6px;
+  font-size: 12.8px;
   text-transform: uppercase;
   color: #333333;
 }
 .modal__title {
   font-family: 'Onest', sans-serif;
-  font-size: 40.5px;
+  font-size: 24px;
   color: #000000;
 }
 .modal__description {
   font-family: 'Golos Text', sans-serif;
-  font-size: 27px;
+  font-size: 16px;
   color: #333333;
 }
 .modal__form {
@@ -447,7 +447,7 @@ body.menu-open {
   margin: 0;
 }
 .modal__form .personal-data span {
-  font-size: 20.25px;
+  font-size: 12px;
 }
 .modal__form .modal__btn {
   width: fit-content;
@@ -459,7 +459,7 @@ body.menu-open {
   background-color: #8d222c;
   color: #ffffff;
   font-family: 'Golos Text', sans-serif;
-  font-size: 27px;
+  font-size: 16px;
   font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
@@ -484,7 +484,7 @@ body.menu-open {
 @media only screen and (max-width: 767px) {
   .modal__form .modal__btn {
     padding: 8px 12px;
-    font-size: 20.25px;
+    font-size: 12px;
     font-weight: 500;
     height: auto;
   }
@@ -537,7 +537,7 @@ body.menu-open {
 @media only screen and (max-width: 767px) {
   .modal__form .modal__btn {
     padding: 8px 12px;
-    font-size: 20.25px;
+    font-size: 12px;
     font-weight: 500;
     height: auto;
   }
@@ -580,7 +580,7 @@ body.menu-open {
   width: 100%;
   padding: 10px;
   font-family: 'Golos Text', sans-serif;
-  font-size: 21.6px;
+  font-size: 12.8px;
   border-radius: 6px;
   border: none;
   background: #ededed;
@@ -588,7 +588,7 @@ body.menu-open {
 @media only screen and (max-width: 767px) {
   .modal__form input,
   .modal__form textarea {
-    font-size: 27px;
+    font-size: 16px;
   }
 }
 .modal__form textarea {
@@ -597,17 +597,17 @@ body.menu-open {
 }
 .modal__form .form-error {
   color: #8d222c;
-  font-size: 21.9375px;
+  font-size: 13px;
   display: none;
 }
 .modal__form .consent-error {
   color: #8d222c;
-  font-size: 21.9375px;
+  font-size: 13px;
   display: none;
 }
 .modal__form .form-result {
   text-align: center;
-  font-size: 21.6px;
+  font-size: 12.8px;
   margin-top: 10px;
   display: none;
 }
@@ -780,7 +780,7 @@ body.modal-open {
 .footer-left-block .footer-logo-tagline .footer-tagline span {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: 140%;
   color: #333333;
 }
@@ -795,7 +795,7 @@ body.modal-open {
 .footer-left-block .footer-copyright span {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 21.6px;
+  font-size: 12.8px;
   line-height: normal;
   color: #333333;
 }
@@ -818,7 +818,7 @@ body.modal-open {
 .footer-section-title span {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: 100%;
   color: #000000;
   text-transform: uppercase;
@@ -839,7 +839,7 @@ body.modal-open {
 .footer-navigation-links .footer-nav-item a {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: 100%;
   color: #333333;
   text-decoration: none;
@@ -881,7 +881,7 @@ body.modal-open {
 .footer-contacts .footer-contact-address span {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: 140%;
   color: #333333;
 }
@@ -893,7 +893,7 @@ body.modal-open {
 .footer-contacts .footer-contact-email a {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: 100%;
   color: #333333;
   text-decoration: none;
@@ -929,7 +929,7 @@ body.modal-open {
 .footer-messengers .footer-messenger-item .footer-messenger-number a {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: 100%;
   color: #333333;
   text-decoration: none;
@@ -1016,7 +1016,7 @@ body.modal-open {
 .footer-legal-terms a {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: normal;
   color: #333333;
   text-decoration: none;
@@ -1032,7 +1032,7 @@ body.modal-open {
 .footer-legal-policy a {
   font-family: 'Golos Text', sans-serif;
   font-weight: 400;
-  font-size: 27px;
+  font-size: 16px;
   line-height: normal;
   color: #333333;
   text-decoration: none;
@@ -1050,7 +1050,7 @@ body.modal-open {
   background-color: #8d222c;
   color: #ffffff;
   font-family: 'Golos Text', sans-serif;
-  font-size: 27px;
+  font-size: 16px;
   font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
@@ -1074,7 +1074,7 @@ body.modal-open {
 @media only screen and (max-width: 767px) {
   .btn-main {
     padding: 8px 12px;
-    font-size: 20.25px;
+    font-size: 12px;
     font-weight: 500;
     height: auto;
   }
