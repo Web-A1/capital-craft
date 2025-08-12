@@ -1,7 +1,7 @@
 name: Deploy DEV on push
 on:
   push:
-    branches: [ "dev" ]
+    branches: ['dev']
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -12,7 +12,4 @@ jobs:
           host: tdsta.beget.tech
           username: tdsta
           key: ${{ secrets.BEGET_SSH_KEY }}
-          script: |
-            cd ~/capital-craft.ru/public_html
-            git fetch origin
-            git reset --hard origin/dev
+          script: bash ~/deploy_dev.sh
