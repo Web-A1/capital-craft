@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="4.0" type="template" client="site">
+  <name>capitalcraft</name>
+  <version>1.0.0</version>
+  <author>A1_dev</author>
+  <description>Шаблон Capital Craft</description>
+
+  <positions>
+    <position>header-menu</position>
+    <position>mobile-menu</position>
+    <position>breadcrumbs</position>
+  </positions>
+
+  <files>
+      <folder>partials</folder>
+      <folder>pages</folder>
+      <filename>index.php</filename>
+      <filename>templateDetails.xml</filename>
+      <folder>css</folder>
+      <folder>js</folder>
+      <folder>html</folder>
+  </files>
+
+  <layoutfiles>
+    <layout folder="com_content/article">
+      <filename>faq.php</filename>
+    </layout>
+  </layoutfiles>
+</extension>

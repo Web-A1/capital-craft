@@ -1,0 +1,29 @@
+{
+  "name": "capital-craft",
+  "version": "1.0.0",
+  "description": "Шаблон сайта **Capital Craft** на **Joomla 5.3.2** с LESS и нативным JavaScript.   Codex генерирует код через Pull Requests на GitHub, а изменения автоматически подтягиваются в VS Code и заливаются на сервер через SFTP-синхронизацию.",
+  "main": "index.js",
+  "scripts": {
+    "less:critical": "lessc templates/capitalcraft/less/critical.less templates/capitalcraft/css/critical.css",
+    "less:home": "lessc templates/capitalcraft/less/home.less templates/capitalcraft/css/home.css",
+    "less:faq": "lessc templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
+    "less:base": "lessc templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
+    "less:all": "npm-run-all less:base less:critical less:home less:faq",
+    "less:watch": "SHELL=/bin/bash chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:all\" --initial",
+    "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --outfile=templates/capitalcraft/js/global/bundle.js",
+    "test": "npm run less:all"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "esbuild": "^0.25.8",
+    "less": "^4.2.0",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "headroom.js": "^0.12.0"
+  }
+}

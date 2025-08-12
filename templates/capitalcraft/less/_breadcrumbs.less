@@ -1,0 +1,31 @@
+// out: false
+
+.breadcrumbs {
+  padding: 30px 0;
+  max-width: @container-width;
+  margin: 0 auto;
+
+  .media(mobile, {
+        width: 100%;
+        padding:30px @mobile-side-padding;
+      });
+
+  &__list {
+    display: flex;
+    list-style: none;
+  }
+
+  &__item {
+    color: @color-text;
+    font-size: @font-size-text;
+
+    a {
+      color: @color-text;
+    }
+
+    & + &::before {
+      content: '/';
+      margin: 0 5px;
+    }
+  }
+}

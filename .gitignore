@@ -1,0 +1,29 @@
+# игнор системных и временных файлов
+*.map
+.DS_Store
+Thumbs.db
+*.log
+*.zip
+
+# node
+/node_modules
+
+# кэш Joomla
+/cache/
+/tmp/
+/administrator/cache/
+/logs/
+
+# IDE / редакторы
+.vscode/
+.idea/
+
+# резервные файлы
+*.bak
+*.swp
+*.swo
+
+/templates/capitalcraft/telegram_config.php
+/administrator/components/com_akeebabackup/backup/
+site-*.jpa
+kickstart.php

@@ -1,0 +1,7 @@
+# игнор системных и временных файлов
+*.map
+.DS_Store
+/node_modules
+/cache
+/tmp
+*.zip

@@ -1,0 +1,39 @@
+// out: false
+@btn-arrow-shift: 5px;
+
+@keyframes arrow-pulse {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(@btn-arrow-shift, -@btn-arrow-shift);
+  }
+}
+
+.btn-main() {
+  .btn-base(@mobile-font-size: @font-size-text * 0.75);
+  display: inline-flex;
+  gap: 10px;
+  .btn-arrow(24px, 24px);
+
+  svg {
+    transition: transform 0.3s;
+  }
+
+  @media (hover: hover) {
+    &:hover svg {
+      animation: arrow-pulse 0.6s infinite ease-in-out;
+    }
+  }
+
+  @media (hover: none) {
+    svg {
+      transition: none;
+    }
+  }
+
+  .media(mobile, {
+    .btn-arrow(20px, 20px);
+  });
+}

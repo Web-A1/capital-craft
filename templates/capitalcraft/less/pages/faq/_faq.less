@@ -1,0 +1,122 @@
+// out: false
+
+.faq {
+  padding-bottom: @section-padding;
+
+  &__container {
+    max-width: 1170px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    gap: @section-padding;
+    justify-content: space-between;
+
+    .media(mobile, {
+      padding: 0 @mobile-side-padding;
+      flex-direction: column;
+      gap: 0;
+    });
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 40px;
+  }
+
+  &__subtitle {
+    color: @color-text;
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    letter-spacing: 0.175em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    color: @color-heading;
+    font-family: @font-title;
+    font-size: @font-size-title;
+    font-weight: 600;
+    line-height: 110%;
+  }
+
+  &__accordion {
+    flex: 0 0 70%;
+    padding: 0 30px;
+    border-radius: @radius;
+    box-shadow: 0 2px 8px fade(@color-heading, 10%);
+
+    .media(mobile, {
+      flex-basis: 100%;
+    });
+  }
+
+  &__item {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px 0;
+  }
+
+  &__question {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-family: @font-body;
+    font-weight: 400;
+    font-size: @font-size-text;
+    color: @color-text;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    gap: 20px;
+
+    &:hover {
+      color: @color-accent;
+    }
+
+    &[aria-expanded='true'] .faq__icon {
+      transform: rotate(45deg);
+    }
+  }
+
+  &__icon {
+    font-size: 24px;
+    line-height: 1;
+    transition: transform 0.3s ease;
+  }
+
+  &__answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s, opacity 0.3s, padding-top 0.3s,
+      padding-bottom 0.3s;
+    font-family: @font-body;
+    font-size: @font-size-text;
+    font-weight: 400;
+    padding: 0 20px 0 30px;
+    color: @color-text;
+  }
+
+  &__question[aria-expanded='true'] + .faq__answer {
+    padding: 15px 20px 20px 30px;
+  }
+
+  &__image {
+    flex: 0 0 30%;
+    max-width: 100%;
+    border-radius: @radius;
+    clip-path: border-box;
+
+    img {
+      max-width: 100%;
+      border-radius: @radius;
+    }
+
+    .media(mobile, {
+      display: none;
+    });
+  }
+}

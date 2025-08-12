@@ -1,0 +1,131 @@
+// out: false
+
+// Цвета
+@color-accent: #8d222c;
+@color-heading: #000000;
+@color-text: #333333;
+@color-bg-craft: #fdfbf5;
+@color-white: #ffffff;
+@section-divider-color: #000000;
+@color-outside: #dcd8cf;
+
+// Шрифты
+@font-body: 'Golos Text', sans-serif;
+@font-title: 'Onest', sans-serif;
+
+// Типографика
+@font-size-base: 16px;
+@font-size-text: @font-size-base;
+@font-size-sub: @font-size-base * 0.8;
+@font-size-title: @font-size-base * 1.8;
+
+// Размеры
+@container-width: 1170px;
+@gap: 30px;
+@padding-button: 10px 20px;
+@section-padding: 60px;
+@radius: 6px;
+
+//Адаптация для мобильных
+@mobile-side-padding: 20px;
+@screen-mobile: ~'only screen and (max-width: 767px)';
+.media(@breakpoint, @rules) when (@breakpoint = mobile) {
+  @media @screen-mobile {
+    @rules();
+  }
+}
+
+@screen-tablet: ~'only screen and (min-width: 768px) and (max-width: 1023px)';
+.media(@breakpoint, @rules) when (@breakpoint = tablet) {
+  @media @screen-tablet {
+    @rules();
+  }
+}
+
+//Инверсия svg
+.invertable-icon(@size: 40px) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: @size;
+  height: @size;
+  transition: all 0.3s ease;
+
+  svg {
+    width: @size;
+    height: @size;
+
+    .bg {
+      fill: @color-bg-craft;
+      transition: fill 0.3s ease;
+    }
+
+    .icon {
+      fill: #000;
+      transition: fill 0.3s ease;
+    }
+  }
+
+  &:hover svg {
+    .bg {
+      fill: #000;
+    }
+
+    .icon {
+      fill: @color-bg-craft;
+    }
+  }
+}
+
+// Базовые стили для кнопок
+.btn-base(@color: @color-accent, @font-size: @font-size-text, @mobile-font-size: @font-size-sub * 0.85, @mobile-height: auto) {
+  width: fit-content;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: @padding-button;
+  border-radius: @radius;
+  border: 2px solid transparent;
+  background-color: @color;
+  color: @color-white;
+  font-family: @font-body;
+  font-size: @font-size;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: transparent;
+      color: @color;
+      border-color: @color;
+    }
+  }
+
+  @media (hover: none) {
+    transition: none;
+  }
+
+  .media(mobile, {
+    padding: 8px 12px;
+    font-size: @mobile-font-size;
+    font-weight: 500;
+    height: @mobile-height;
+  });
+}
+
+// Стили для стрелки в кнопках
+.btn-arrow(@w: 24px, @h: 24px, @rotate: 0deg) {
+  svg {
+    width: @w;
+    height: @h;
+    transform: rotate(@rotate);
+
+    path {
+      fill: none;
+      stroke: currentColor;
+    }
+  }
+}

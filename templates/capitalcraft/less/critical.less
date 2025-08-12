@@ -1,0 +1,102 @@
+// out: ../css/critical.css
+@import '_variables.less';
+@import '_header.less';
+@import '_buttons.less';
+
+/* Сброс отступов и box-sizing */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Базовая типографика */
+body {
+  font-family: @font-body;
+  font-size: @font-size-text;
+  background-color: @color-bg-craft;
+  color: @color-text;
+  line-height: 1.5;
+}
+
+a {
+  color: @color-accent;
+  text-decoration: none;
+}
+
+.container {
+  max-width: @container-width;
+  width: 100%;
+  margin: 0 auto;
+  .media(mobile, {
+    padding: 0 @mobile-side-padding;
+  });
+}
+
+.page-wrapper {
+  background-color: @color-bg-craft;
+}
+
+section,
+.frame {
+  position: relative;
+}
+
+.frame {
+  max-width: 1300px;
+  width: 100%;
+  margin: 0 auto;
+  border-left: 1px solid @color-text;
+  border-right: 1px solid @color-text;
+
+  .media(mobile, {
+    border-left: none;
+    border-right: none;
+  });
+}
+
+.frame--header {
+  border-top: 1px solid @color-text;
+  margin-top: 20px;
+  border-radius: @radius @radius 0 0;
+
+  .media(mobile, {
+    border-top: none;
+    margin-top: 0;
+  });
+}
+
+.frame--footer {
+  border-bottom: 1px solid @color-text;
+  border-radius: 0 0 @radius @radius;
+
+  .media(mobile, {
+    border-bottom: none;
+  });
+}
+
+.section-with-divider {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: @container-width;
+    height: 1px;
+    background: @section-divider-color;
+    bottom: 0;
+  }
+
+  .media(mobile, {
+    &::after {
+      width: calc(100% - (@mobile-side-padding * 2));
+    }
+  });
+}
+
+.btn-main {
+  .btn-main();
+}
