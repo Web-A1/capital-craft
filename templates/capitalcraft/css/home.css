@@ -47,13 +47,13 @@
 .hero__title {
   color: #000000;
   font-family: 'Onest', sans-serif;
-  font-size: 60.84px;
+  font-size: 63.18px;
   font-weight: 700;
   line-height: 100%;
 }
 @media only screen and (max-width: 767px) {
   .hero__title {
-    font-size: 48.75px;
+    font-size: 50.625px;
     line-height: 110%;
   }
 }
@@ -61,12 +61,12 @@
   color: #333333;
   text-align: justify;
   font-family: 'Golos Text', sans-serif;
-  font-size: 26px;
+  font-size: 27px;
   line-height: 140%;
 }
 @media only screen and (max-width: 767px) {
   .hero__text {
-    font-size: 26px;
+    font-size: 27px;
     line-height: 150%;
     text-align: left;
   }
@@ -129,12 +129,12 @@
 .partners__title-text {
   color: #000000;
   font-family: 'Golos Text', sans-serif;
-  font-size: 26px;
+  font-size: 27px;
   line-height: 160%;
 }
 @media only screen and (max-width: 767px) {
   .partners__title-text {
-    font-size: 20.8px;
+    font-size: 21.6px;
     line-height: 140%;
   }
 }
@@ -346,14 +346,14 @@
 .faq__item {
   list-style: none;
   font-family: 'Golos Text', sans-serif;
-  font-size: 35.75px;
+  font-size: 37.125px;
   line-height: 140%;
   color: #333333;
   font-style: italic;
 }
 @media only screen and (max-width: 767px) {
   .faq__item {
-    font-size: 29.25px;
+    font-size: 30.375px;
   }
 }
 .faq__content {
@@ -376,14 +376,14 @@
 .faq__subtitle {
   color: #333333;
   font-family: 'Golos Text', sans-serif;
-  font-size: 20.8px;
+  font-size: 21.6px;
   letter-spacing: 0.175em;
   text-transform: uppercase;
 }
 .faq__title {
   color: #000000;
   font-family: 'Onest', sans-serif;
-  font-size: 46.8px;
+  font-size: 48.6px;
   font-weight: 600;
   line-height: 110%;
   max-width: 363px;
@@ -435,13 +435,13 @@
 .show-case__subtitle {
   color: #666666;
   font-family: 'Golos Text', sans-serif;
-  font-size: 20.8px;
+  font-size: 21.6px;
   letter-spacing: 0.175em;
   text-transform: uppercase;
 }
 .show-case__title {
   font-family: 'Onest', sans-serif;
-  font-size: 46.8px;
+  font-size: 48.6px;
   font-weight: 700;
   line-height: 110%;
   color: #000000;
@@ -550,11 +550,11 @@
   text-transform: uppercase;
   color: #000000;
   margin-bottom: 30px;
-  font-size: 39px;
+  font-size: 40.5px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__card-title {
-    font-size: 32.76px;
+    font-size: 34.02px;
   }
 }
 .show-case__details {
@@ -571,19 +571,19 @@
 .show-case__detail-title {
   color: #999999;
   font-family: 'Golos Text', sans-serif;
-  font-size: 16.9px;
+  font-size: 17.55px;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
 .show-case__detail-description {
   font-family: 'Golos Text', sans-serif;
-  font-size: 26px;
+  font-size: 27px;
   line-height: 140%;
   color: #000000;
 }
 @media only screen and (max-width: 767px) {
   .show-case__detail-description {
-    font-size: 26px;
+    font-size: 27px;
   }
 }
 @media only screen and (max-width: 767px) {
