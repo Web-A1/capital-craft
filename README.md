@@ -1,49 +1,55 @@
-# Capital Craft Joomla Template
+# Структура проекта Capital Craft
 
-Шаблон сайта **Capital Craft** на **Joomla 5.3.2** с LESS и нативным JavaScript.  
-Codex генерирует код через Pull Requests на GitHub, а изменения автоматически подтягиваются в VS Code и заливаются на сервер через SFTP-синхронизацию.
+## Общий обзор
+- CMS: **Joomla 5.3.2**
+- Пользовательский шаблон: `templates/capitalcraft`
+- Сборка: Node.js scripts (`npm run less:all`, `npm run js:build`)
+- Все стили пишутся на **Less**, все скрипты — нативный **JavaScript**.
 
----
+## Основные директории шаблона
+| Путь | Назначение |
+| --- | --- |
+| `css/` | Скомпилированные стили. Не редактировать вручную. |
+| `data/` | Вспомогательные данные. |
+| `html/` | Override'ы стандартных компонентов Joomla (`com_content`, `mod_breadcrumbs` и т.п.). |
+| `images/<страница>/` | Изображения страниц (`home`, `faq`, `favicon`). Новые папки не создавать без крайней необходимости. |
+| `js/global/` | Глобальные модули (`script.js` — точка входа, собирается в `bundle.js`). |
+| `js/pages/<page>/` | Локальные скрипты страниц. |
+| `less/` | Исходники стилей. Частичные файлы начинаются с `_`. Основные: `base.less`, `critical.less`, `home.less`, `faq.less`. |
+| `less/pages/<page>/` | Подключаемые стили блоков страниц. |
+| `pages/<page>/` | PHP‑шаблоны блоков страниц. |
+| `partials/` | Общие части шаблона (`_header.php`, `_footer.php`, `_modal.php`). |
+| `index.php` | Точка сборки страниц. Подключает блоки и стили по условиям (`$isHome`, `$isFaq`, …). |
 
-## Требования
+## Правила разработки
+- **CSS**:
+  - Использовать существующие переменные из `less/_variables.less`.
+  - Вложенность только через `&`; медиазапросы сразу после класса с миксином `.media(@breakpoint, @rules)`.
+- **JavaScript**:
+  - Структура модульная: `js/global/` для общих модулей, `js/pages/<page>/` для конкретных страниц.
+  - Для глобальных изменений пересоберите бандл: `npm run js:build`.
+- **Изображения**: складывать в `images/<page>/`, новых папок избегать.
 
-- **CMS:** Joomla 5.3.2.
-- **PHP:** 8.3 или выше.
-- **Сборка стилей:** автоматическая (LESS → CSS).
-- Для кросс-браузерной совместимости рекомендуется использовать **Babel** и **Autoprefixer** при сборке.
+## Чек‑лист нового блока
+1. PHP: `templates/capitalcraft/pages/<page>/<block>.php`
+2. Less: `templates/capitalcraft/less/pages/<page>/_<block>.less` и `@import` в `<page>.less`
+3. JS: `templates/capitalcraft/js/pages/<page>/<block>.js`
+4. Изображения: `templates/capitalcraft/images/<page>/`
+5. Подключение в `templates/capitalcraft/index.php`
+6. После правок выполнить `npm run less:all` (и при необходимости `npm run js:build`)
 
----
+## Добавление новой страницы
+1. Создать PHP‑блоки в `pages/<page>/`.
+2. Создать стили `less/<page>.less` и папку `less/pages/<page>/` для блоков.
+3. JS: `js/pages/<page>/`.
+4. Изображения: `images/<page>/`.
+5. В `index.php` добавить условие `$is<Page>` и подключить CSS/JS.
 
-## Основные папки
+## Текущие страницы и блоки
+- **home**: `hero`, `partners`, `philosophy`, `team`, `faq-home`, `products`, `show_case`, `reviews`
+- **faq**: стили и JS есть, PHP‑блоков нет (используется компонент содержимого).
 
-- `css/` – готовые стили (`home.css`, `faq.css` генерируются автоматически из LESS).
-- `less/` – исходные LESS-файлы.
-- `js/` – скрипты и логика интерфейса.
-
-## Структура шаблона
-
-- `templates/capitalcraft/partials/` – общие PHP-фрагменты с префиксом `_` (`_header.php`, `_footer.php`, `_modal.php`, `_send_to_telegram.php`).
-- `templates/capitalcraft/pages/<page>/` – секции конкретных страниц, например `pages/home/hero.php`.
-
-## Сборка стилей
-
-- `npm run less:home` – компиляция стилей главной страницы.
-- `npm run less:faq` – компиляция стилей страницы FAQ.
-- `npm run less:watch` – наблюдение за всеми `.less` и пересборка при изменениях.
-
----
-
-## Работа с Codex
-
-1. Codex создаёт Pull Request на GitHub.
-2. Ты проверяешь и мержишь изменения.
-3. Файлы из VS Code автоматически заливаются на сервер при сохранении.
-
----
-
-## Важное для Codex
-
-- Все изменения в стилях вносить **только в файлы в папке `less/`**, затем CSS компилируется автоматически.
-- Файлы `css/home.css` и `css/faq.css` **не изменять вручную**.
-- ## Работа с веткой main
-- Основная ветка разработки — `main`. Все изменения (включая Pull Requests от Codex) должны сливаться только в `main`.
+## Сборка и проверка
+- Скомпилировать все стили: `npm run less:all`
+- Пересобрать глобальный JS: `npm run js:build`
+- Тесты (запускают компиляцию less): `npm test`
