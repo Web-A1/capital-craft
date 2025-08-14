@@ -1,230 +1,49 @@
 // out: false
 
-// Миксин для кнопки в хедере
-.btn-header() {
-  .btn-base(@font-size: @font-size-text * 0.8, @mobile-font-size: @font-size-text * 0.75, @mobile-height: 36px);
-}
+// Стили только для мобильного меню и бургера
 
-.site-header {
+// Стили бургера
+.site-header .header__inner .header-right .burger {
+  display: none;
+  width: 3.25em;
+  height: 3.25em;
   position: relative;
+  margin: 0;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  z-index: 52;
+  background: none;
+  border: none;
+  padding: 0;
 
-  .media(mobile, {
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 49;
-    background: @color-bg-craft;
-    transition: transform 0.2s ease;
-    will-change: transform;
+  .media(mobile, { display: block; });
 
-    &.unpinned {
-      transform: translateY(-100%);
-    }
-    &.pinned {
-    transform: translateY(0);
-    }
-  });
+  &:hover {
+    cursor: pointer;
+    opacity: 0.45;
+  }
 
-  & .header__inner {
-    max-width: @container-width;
+  span {
     width: 100%;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #000;
-    padding: 20px 0;
+    height: 2px;
+    background-color: #000;
+    position: absolute;
+    top: 50%;
+    margin-top: -1px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    transform: translateY(0);
 
-    .media(mobile, {
-       padding: @mobile-side-padding;
-       align-items: center;
-       border-bottom: none;
-       });
-
-    & .header-logo {
-      .media(mobile, {
-         width: 44%;
-        });
-      img {
-        display: block;
-        height: 48px;
-
-        .media(mobile, {
-         height: 36px;
-         object-fit: contain;
-        });
-      }
+    &:first-child {
+      transform: translateY(-3.75px);
     }
-    & .header-right {
-      display: flex;
-      align-items: center;
-      gap: 30px;
 
-      .media(mobile, {
-       gap: 16px;
-       flex: 1;
-       justify-content: space-between;
-       });
-
-      & .main-nav {
-        .media(mobile, {display: none;});
-
-        .mod-menu {
-          display: flex;
-          gap: 15px;
-          list-style: none;
-          padding: 0;
-          margin: 0;
-
-          li.current > a,
-          li.active > a {
-            position: relative; // для позиционирования псевдоэлемента
-
-            &::after {
-              content: '';
-              position: absolute;
-              left: 0;
-              bottom: -5px;
-              width: 100%;
-              height: 1.3px; // максимальная высота
-              background: @color-accent;
-              transform: scaleX(
-                1
-              ); // используйте transform, если нужна анимация
-              transform-origin: left;
-
-              /* Обрезаем форму: слева 1.5px, справа ~0.5px (≈33% от высоты) */
-              clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
-            }
-          }
-
-          a {
-            font-family: 'Golos Text', sans-serif;
-            font-size: @font-size-text * 0.8;
-            text-transform: uppercase;
-            font-weight: 400;
-            color: @color-text;
-            text-decoration: none;
-            position: relative;
-            transition: color 0.3s ease;
-
-            &::after {
-              content: '';
-              position: absolute;
-              left: 0;
-              bottom: -5px;
-              width: 100%;
-              height: 1.3px;
-              background-color: @color-accent;
-              transform: scaleX(0);
-              transform-origin: left;
-              transition: transform 0.3s ease;
-              clip-path: polygon(0 0, 100% 0.65px, 100% 0.85px, 0 100%);
-            }
-
-            &:hover {
-              color: #000;
-
-              &::after {
-                transform: scaleX(1);
-              }
-            }
-          }
-        }
-      }
-
-      & .burger {
-        display: none;
-        width: 3.25em;
-        height: 3.25em;
-        position: relative;
-        margin: 0;
-        transition: all 0.5s ease;
-        cursor: pointer;
-        z-index: 52;
-        background: none;
-        border: none;
-        padding: 0;
-
-        .media(mobile, { display: block; });
-
-        &:hover {
-          cursor: pointer;
-          opacity: 0.45;
-        }
-
-        span {
-          width: 100%;
-          height: 2px;
-          background-color: #000;
-          position: absolute;
-          top: 50%;
-          margin-top: -1px;
-          transition: transform 0.3s ease, background-color 0.3s ease;
-          transform: translateY(0);
-
-          &:first-child {
-            transform: translateY(-3.75px);
-          }
-
-          &:last-child {
-            transform: translateY(3.75px);
-          }
-        }
-      }
-
-
-      & .header-controls__inner {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-
-        .divider {
-          .media(mobile, {display: none;});
-
-          width: 1px;
-          height: 25px;
-          background-color: #000;
-          opacity: 1;
-        }
-
-        .btn.btn--primary {
-          .btn-header();
-        }
-
-        & .header-controls__icons {
-          .media(mobile, {display: none;});
-
-          display: flex;
-          align-items: center;
-          gap: 10px;
-
-          .icon-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            transition: color 0.3s ease;
-            color: #000;
-
-            svg {
-              width: 40px;
-              height: 40px;
-              transition: fill 0.3s ease;
-            }
-            &--invertable {
-              padding: 3px;
-              .invertable-icon();
-            }
-          }
-        }
-      }
+    &:last-child {
+      transform: translateY(3.75px);
     }
   }
 }
 
+// Состояние открытого меню
 body.menu-open {
   overflow: hidden;
   
@@ -261,6 +80,8 @@ body.menu-open {
     z-index: 47;
   }
 }
+
+// Мобильное меню
 .mobile-nav {
   position: fixed;
   top: 0;
@@ -323,6 +144,7 @@ body.menu-open {
   }
 }
 
+// Медиа-запрос для reduced motion
 @media (prefers-reduced-motion: reduce) {
   .burger span,
   .mobile-nav,

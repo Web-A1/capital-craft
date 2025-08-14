@@ -122,44 +122,6 @@
 .site-header .header__inner .header-right .main-nav .mod-menu a:hover::after {
   transform: scaleX(1);
 }
-.site-header .header__inner .header-right .burger {
-  display: none;
-  width: 3.25em;
-  height: 3.25em;
-  position: relative;
-  margin: 0;
-  transition: all 0.5s ease;
-  cursor: pointer;
-  z-index: 52;
-  background: none;
-  border: none;
-  padding: 0;
-}
-@media only screen and (max-width: 767px) {
-  .site-header .header__inner .header-right .burger {
-    display: block;
-  }
-}
-.site-header .header__inner .header-right .burger:hover {
-  cursor: pointer;
-  opacity: 0.45;
-}
-.site-header .header__inner .header-right .burger span {
-  width: 100%;
-  height: 2px;
-  background-color: #000;
-  position: absolute;
-  top: 50%;
-  margin-top: -1px;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-  transform: translateY(0);
-}
-.site-header .header__inner .header-right .burger span:first-child {
-  transform: translateY(-3.75px);
-}
-.site-header .header__inner .header-right .burger span:last-child {
-  transform: translateY(3.75px);
-}
 .site-header .header__inner .header-right .header-controls__inner {
   display: flex;
   align-items: center;
@@ -264,6 +226,44 @@
 }
 .site-header .header__inner .header-right .header-controls__inner .header-controls__icons .icon-link--invertable:hover svg .icon {
   fill: #fdfbf5;
+}
+.site-header .header__inner .header-right .burger {
+  display: none;
+  width: 3.25em;
+  height: 3.25em;
+  position: relative;
+  margin: 0;
+  transition: all 0.5s ease;
+  cursor: pointer;
+  z-index: 52;
+  background: none;
+  border: none;
+  padding: 0;
+}
+@media only screen and (max-width: 767px) {
+  .site-header .header__inner .header-right .burger {
+    display: block;
+  }
+}
+.site-header .header__inner .header-right .burger:hover {
+  cursor: pointer;
+  opacity: 0.45;
+}
+.site-header .header__inner .header-right .burger span {
+  width: 100%;
+  height: 2px;
+  background-color: #000;
+  position: absolute;
+  top: 50%;
+  margin-top: -1px;
+  transition: transform 0.3s ease, background-color 0.3s ease;
+  transform: translateY(0);
+}
+.site-header .header__inner .header-right .burger span:first-child {
+  transform: translateY(-3.75px);
+}
+.site-header .header__inner .header-right .burger span:last-child {
+  transform: translateY(3.75px);
 }
 body.menu-open {
   overflow: hidden;
