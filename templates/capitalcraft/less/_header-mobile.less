@@ -3,18 +3,18 @@
 // Стили только для мобильного меню и бургера
 
 // Стили бургера
-.site-header .header__inner .header-right .burger {
-  display: none;
-  width: 3.25em;
-  height: 3.25em;
-  position: relative;
-  margin: 0;
-  transition: all 0.5s ease;
-  cursor: pointer;
-  z-index: 52;
-  background: none;
-  border: none;
-  padding: 0;
+.site-header .header__inner .header-right   .burger {
+    display: none;
+    width: 2.5em;
+    height: 2.5em;
+    position: relative;
+    margin: 0;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    z-index: 52;
+    background: none;
+    border: none;
+    padding: 0;
 
   .media(mobile, { display: block; });
 
@@ -24,21 +24,23 @@
   }
 
   span {
-    width: 100%;
+    width: 20px;
     height: 2px;
     background-color: #000;
     position: absolute;
     top: 50%;
+    left: 50%;
+    margin-left: -10px;
     margin-top: -1px;
     transition: transform 0.3s ease, background-color 0.3s ease;
     transform: translateY(0);
 
     &:first-child {
-      transform: translateY(-3.75px);
+      transform: translateY(-8px);
     }
 
     &:last-child {
-      transform: translateY(3.75px);
+      transform: translateY(8px);
     }
   }
 }
@@ -60,6 +62,9 @@ body.menu-open {
 
     span {
       background-color: @color-text;
+      width: 20px;
+      left: 50%;
+      margin-left: -10px;
       transform: rotate(45deg);
 
       &:last-child {
