@@ -199,13 +199,17 @@
 
         .media(mobile, { display: block; });
 
+        &.active {
+          opacity: 1; // активный бургер полностью видимый
+          
+          &:hover {
+            opacity: 1; // остается черным даже при hover
+          }
+        }
+        
         &:hover {
           cursor: pointer;
           opacity: 0.45;
-        }
-        
-        &.active {
-          opacity: 1; // активный бургер полностью видимый
         }
 
         span {
@@ -240,10 +244,10 @@ body.menu-open {
   .site-header {
     .media(mobile, {
       // Header остается нормального размера, меню позиционируется поверх
-      // УБИРАЕМ transform: none !important - позволяем Headroom работать
       position: relative; // обычное позиционирование
       z-index: 49; // под мобильным меню
       overflow: visible !important; // УБИРАЕМ overflow: hidden чтобы показать меню
+      // УБИРАЕМ остальные стили - позволяем Headroom работать на всех устройствах
     });
   }
 
@@ -251,12 +255,13 @@ body.menu-open {
   .site-header .burger {
     .media(mobile, {
       z-index: 51;
-      transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+      // убрана transition у родителя - анимируем только span
 
       span {
         background-color: #000; // ЧЕРНЫЙ во всех состояниях
-        transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-        transition-delay: 0.1s;
+        transition: transform 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99), 
+                   opacity 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+        // УБРАНА задержка - мгновенная реакция
 
         &:first-child {
           transform: translateY(0px) rotate(-45deg) !important; // ПРОВЕРЕНО в DevTools
@@ -295,7 +300,10 @@ body.menu-open {
     pointer-events: none;
   z-index: 50;
     background: transparent; // прозрачный фон по умолчанию
-    transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transform: translateY(-100%); // СКРЫТО под header
+    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+               opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    // Быстрее и только нужные свойства
     
     &__menu {
       position: relative;
@@ -355,7 +363,10 @@ body.menu-open .mobile-nav {
     opacity: 1;
     pointer-events: auto;
     background: fade(@color-bg-craft, 97%); // светлый фон с прозрачностью
-    transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transform: translateY(0); // ВЫЕЗЖАЕТ на позицию
+    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+               opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    // Быстрее и только нужные свойства
     
     &__menu {
       padding: 20px; // упрощенные отступы

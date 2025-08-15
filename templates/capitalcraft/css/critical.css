@@ -247,12 +247,15 @@
     display: block;
   }
 }
+.site-header .header__inner .header-right .burger.active {
+  opacity: 1;
+}
+.site-header .header__inner .header-right .burger.active:hover {
+  opacity: 1;
+}
 .site-header .header__inner .header-right .burger:hover {
   cursor: pointer;
   opacity: 0.45;
-}
-.site-header .header__inner .header-right .burger.active {
-  opacity: 1;
 }
 .site-header .header__inner .header-right .burger span {
   width: 20px;
@@ -285,12 +288,10 @@ body.menu-open {
 @media only screen and (max-width: 767px) {
   body.menu-open .site-header .burger {
     z-index: 51;
-    transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .site-header .burger span {
     background-color: #000;
-    transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-    transition-delay: 0.1s;
+    transition: transform 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .site-header .burger span:first-child {
     transform: translateY(0px) rotate(-45deg) !important;
@@ -320,7 +321,8 @@ body.menu-open {
     pointer-events: none;
     z-index: 50;
     background: transparent;
-    transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transform: translateY(-100%);
+    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   .mobile-nav__menu {
     position: relative;
@@ -383,7 +385,8 @@ body.menu-open {
     opacity: 1;
     pointer-events: auto;
     background: rgba(253, 251, 245, 0.97);
-    transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transform: translateY(0);
+    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .mobile-nav__menu {
     padding: 20px;
