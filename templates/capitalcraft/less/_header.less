@@ -249,12 +249,12 @@ body.menu-open {
       transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
 
       span {
-        background-color: #000; // остается черным (header не темнеет)
+        // цвет остается как у обычного бургера
         transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
         transition-delay: 0.1s;
 
         &:first-child {
-          transform: translateY(6px) rotate(45deg) !important; // ТОЧНОЕ пересечение в центре
+          transform: translateY(0px) rotate(-45deg) !important; // ПРОВЕРЕНО в DevTools
         }
 
         &:nth-child(2) {
@@ -263,7 +263,7 @@ body.menu-open {
         }
 
         &:last-child {
-          transform: translateY(-6px) rotate(-45deg) !important; // ТОЧНОЕ пересечение в центре
+          transform: translateY(0px) rotate(45deg) !important; // ПРОВЕРЕНО в DevTools
         }
       }
     });
