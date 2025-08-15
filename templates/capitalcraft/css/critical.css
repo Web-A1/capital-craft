@@ -283,7 +283,6 @@ body.menu-open .burger {
   top: 20px;
   right: 20px;
   z-index: 51;
-  transform: rotate(90deg);
   transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
 }
 body.menu-open .burger span {
@@ -295,21 +294,22 @@ body.menu-open .burger span {
   transition-delay: 0.1s;
 }
 body.menu-open .burger span:first-child {
-  transform: translateY(3px) rotate(45deg);
+  transform: translateY(6px) rotate(45deg);
 }
 body.menu-open .burger span:nth-child(2) {
   opacity: 0;
   transform: scaleX(0);
 }
 body.menu-open .burger span:last-child {
-  transform: translateY(3px) rotate(-45deg);
+  transform: translateY(-6px) rotate(-45deg);
 }
 .mobile-nav {
   display: none;
 }
 @media only screen and (max-width: 767px) {
   .mobile-nav {
-    position: absolute;
+    display: block;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -319,6 +319,7 @@ body.menu-open .burger span:last-child {
     opacity: 0;
     pointer-events: none;
     z-index: 50;
+    background: transparent;
   }
   .mobile-nav__menu {
     position: relative;
