@@ -213,23 +213,11 @@ var init_burger = __esm({
         burger.classList.remove("active");
         burger.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
-        if (window.headroom && window.Headroom) {
-          const header2 = document.querySelector(".site-header");
-          if (header2) {
-            window.headroom = new window.Headroom(header2, {
-              classes: { pinned: "pinned", unpinned: "unpinned" }
-            });
-            window.headroom.init();
-          }
-        }
       };
       const openMenu = () => {
         burger.classList.add("active");
         burger.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
-        if (window.headroom) {
-          window.headroom.destroy();
-        }
       };
       burger.addEventListener("click", () => {
         const isMenuOpen = document.body.classList.contains("menu-open");

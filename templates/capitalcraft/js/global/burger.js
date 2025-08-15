@@ -12,16 +12,8 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
     
-    // Если есть Headroom, пересоздаем его (после destroy нужно создать новый)
-    if (window.headroom && window.Headroom) {
-      const header = document.querySelector('.site-header');
-      if (header) {
-        window.headroom = new window.Headroom(header, {
-          classes: { pinned: 'pinned', unpinned: 'unpinned' }
-        });
-        window.headroom.init();
-      }
-    }
+    // НЕ пересоздаем headroom - он уже существует и помнит позицию скролла
+    // Просто позволяем ему работать дальше без изменений
   };
 
   const openMenu = () => {
@@ -29,10 +21,8 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'true');
     document.body.classList.add('menu-open');
     
-    // Если есть Headroom, приостанавливаем его работу
-    if (window.headroom) {
-      window.headroom.destroy(); // ПРАВИЛЬНЫЙ API: destroy для отключения
-    }
+    // НЕ уничтожаем headroom - просто отключаем временно
+    // headroom продолжает существовать и помнит состояние
   };
 
   burger.addEventListener('click', () => {

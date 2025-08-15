@@ -201,6 +201,9 @@
           opacity: 1; // базовая opacity для мобильного
         });
 
+        // Базовый стиль в закрытом состоянии - черный
+        opacity: 1; // всегда черный по умолчанию
+        
         &.active {
           opacity: 1; // активный бургер полностью видимый
           
@@ -209,9 +212,10 @@
           }
         }
         
+        // Убираем hover эффект - бургер всегда должен быть черным
         &:hover {
           cursor: pointer;
-          opacity: 0.45;
+          // НЕ меняем opacity - остается черным
         }
 
         span {
@@ -296,15 +300,15 @@ body.menu-open {
     left: 0;
     right: 0;
   width: 100%;
-    height: 0; // нулевая высота в закрытом состоянии
+    max-height: 0; // нулевая высота в закрытом состоянии - ЧИСЛОВОЕ значение для анимации
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
   z-index: 50;
     background: transparent; // прозрачный фон по умолчанию
     // УБИРАЕМ transform - меню всегда ПОД header
-    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
-               opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+               opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
     // Анимируем высоту, а не позицию
     
     &__menu {
@@ -359,15 +363,15 @@ body.menu-open {
 // Состояние открытого мобильного меню
 body.menu-open .mobile-nav {
   .media(mobile, {
-    // Показываем меню ПОД header - изменяем только height
+    // Показываем меню ПОД header - изменяем только max-height
     top: 76px; // ОСТАЕТСЯ под header (не анимируется)
-    height: auto; // только по высоте контента
+    max-height: 500px; // достаточно для 7-8 пунктов меню - ЧИСЛОВОЕ значение для анимации
     opacity: 1;
     pointer-events: auto;
     background: fade(@color-bg-craft, 97%); // светлый фон с прозрачностью
     // УБИРАЕМ transform - меню остается ПОД header
-    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
-               opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+               opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
     // Анимируем высоту, а не позицию
     
     &__menu {

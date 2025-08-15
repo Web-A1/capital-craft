@@ -240,6 +240,7 @@
   background: none;
   border: none;
   padding: 0;
+  opacity: 1;
 }
 @media only screen and (max-width: 767px) {
   .site-header .header__inner .header-right .burger {
@@ -255,7 +256,6 @@
 }
 .site-header .header__inner .header-right .burger:hover {
   cursor: pointer;
-  opacity: 0.45;
 }
 .site-header .header__inner .header-right .burger span {
   width: 20px;
@@ -315,13 +315,13 @@ body.menu-open {
     left: 0;
     right: 0;
     width: 100%;
-    height: 0;
+    max-height: 0;
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
     z-index: 50;
     background: transparent;
-    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   .mobile-nav__menu {
     position: relative;
@@ -380,11 +380,11 @@ body.menu-open {
 @media only screen and (max-width: 767px) {
   body.menu-open .mobile-nav {
     top: 76px;
-    height: auto;
+    max-height: 500px;
     opacity: 1;
     pointer-events: auto;
     background: rgba(253, 251, 245, 0.97);
-    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .mobile-nav__menu {
     padding: 20px;
