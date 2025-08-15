@@ -242,8 +242,8 @@ body.menu-open {
     });
   }
 
-  // Стили бургера для открытого состояния - ТОЛЬКО НА МОБИЛЬНОМ
-  .burger {
+  // Стили бургера для открытого состояния - ВЫСОКАЯ СПЕЦИФИЧНОСТЬ
+  .site-header .burger {
     .media(mobile, {
       z-index: 51;
       transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
@@ -254,7 +254,7 @@ body.menu-open {
         transition-delay: 0.1s;
 
         &:first-child {
-          transform: translateY(5px) rotate(45deg); // смещаем точно в центр
+          transform: translateY(5px) rotate(45deg) !important; // максимальная специфичность
         }
 
         &:nth-child(2) {
@@ -263,7 +263,7 @@ body.menu-open {
         }
 
         &:last-child {
-          transform: translateY(-5px) rotate(-45deg); // смещаем точно в центр
+          transform: translateY(-5px) rotate(-45deg) !important; // максимальная специфичность
         }
       }
     });
@@ -280,7 +280,7 @@ body.menu-open {
     // Показываем элемент но делаем невидимым
     display: block;
     position: fixed;
-    top: 0; // СКРЫТО полностью (НЕ под header)
+    top: 76px; // ВСЕГДА под header
     left: 0;
     right: 0;
   width: 100%;
@@ -343,8 +343,8 @@ body.menu-open {
 // Состояние открытого мобильного меню
 body.menu-open .mobile-nav {
   .media(mobile, {
-    // Показываем меню ПОД header - изменяем top и height
-    top: 76px !important; // ПОЯВЛЯЕТСЯ под header
+    // Показываем меню ПОД header - изменяем только height
+    top: 76px; // ОСТАЕТСЯ под header (не анимируется)
     height: calc(100vh - 76px) !important; // от header до низа экрана
     opacity: 1;
     pointer-events: auto;

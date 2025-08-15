@@ -280,24 +280,24 @@ body.menu-open {
   }
 }
 @media only screen and (max-width: 767px) {
-  body.menu-open .burger {
+  body.menu-open .site-header .burger {
     z-index: 51;
     transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
-  body.menu-open .burger span {
+  body.menu-open .site-header .burger span {
     background-color: #000;
     transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
     transition-delay: 0.1s;
   }
-  body.menu-open .burger span:first-child {
-    transform: translateY(5px) rotate(45deg);
+  body.menu-open .site-header .burger span:first-child {
+    transform: translateY(5px) rotate(45deg) !important;
   }
-  body.menu-open .burger span:nth-child(2) {
+  body.menu-open .site-header .burger span:nth-child(2) {
     opacity: 0;
     transform: scaleX(0);
   }
-  body.menu-open .burger span:last-child {
-    transform: translateY(-5px) rotate(-45deg);
+  body.menu-open .site-header .burger span:last-child {
+    transform: translateY(-5px) rotate(-45deg) !important;
   }
 }
 .mobile-nav {
@@ -307,7 +307,7 @@ body.menu-open {
   .mobile-nav {
     display: block;
     position: fixed;
-    top: 0;
+    top: 76px;
     left: 0;
     right: 0;
     width: 100%;
@@ -374,7 +374,7 @@ body.menu-open {
 }
 @media only screen and (max-width: 767px) {
   body.menu-open .mobile-nav {
-    top: 76px !important;
+    top: 76px;
     height: calc(100vh - 76px) !important;
     opacity: 1;
     pointer-events: auto;
