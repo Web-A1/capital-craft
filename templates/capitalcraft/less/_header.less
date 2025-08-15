@@ -235,7 +235,7 @@ body.menu-open {
   .site-header {
     .media(mobile, {
       // Header остается нормального размера, меню позиционируется поверх
-      transform: none !important; // отменяем Headroom анимации
+      // УБИРАЕМ transform: none !important - позволяем Headroom работать
       position: relative; // обычное позиционирование
       z-index: 49; // под мобильным меню
       overflow: visible !important; // УБИРАЕМ overflow: hidden чтобы показать меню
@@ -249,7 +249,7 @@ body.menu-open {
       transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
 
       span {
-        // цвет остается как у обычного бургера
+        background-color: #000; // ЧЕРНЫЙ во всех состояниях
         transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
         transition-delay: 0.1s;
 
@@ -313,6 +313,7 @@ body.menu-open {
           opacity 0.6s cubic-bezier(0.4, 0.01, 0.165, 0.99),
           transform 0.5s cubic-bezier(0.4, 0.01, 0.165, 0.99);
         text-align: right; // выравнивание по правому краю
+        margin-right: 20px; // дополнительный отступ справа
 
         // Задержки для staggered анимации (в закрытом состоянии)
         &:nth-child(1) { transition-delay: 0.35s; }
@@ -345,15 +346,15 @@ body.menu-open .mobile-nav {
   .media(mobile, {
     // Показываем меню ПОД header - изменяем только height
     top: 76px; // ОСТАЕТСЯ под header (не анимируется)
-    height: calc(100vh - 76px) !important; // от header до низа экрана
+    height: auto; // только по высоте контента
     opacity: 1;
     pointer-events: auto;
-    background: @color-bg-craft; // светлый фон
+    background: fade(@color-bg-craft, 97%); // светлый фон с прозрачностью
     transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
     
     &__menu {
       padding: 40px @mobile-side-padding @mobile-side-padding; // уменьшенный отступ сверху
-      min-height: calc(100vh - 76px - 40px); // высота с учетом header и padding
+      // убираем min-height - пусть подстраивается под контент
     }
     
     .mod-menu li {
