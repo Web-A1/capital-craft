@@ -41,12 +41,12 @@
                 <span></span>
             </button>
         </div>
+    </div>
 
-        <!-- Мобильное меню теперь внутри header -->
-        <div class="mobile-nav">
-            <nav class="mobile-nav__menu">
-                <jdoc:include type="modules" name="mobile-menu" style="none" />
-            </nav>
-        </div>
+    <!-- Мобильное меню ВНЕ header__inner для правильного позиционирования -->
+    <div class="mobile-nav">
+        <nav class="mobile-nav__menu">
+            <jdoc:include type="modules" name="mobile-menu" style="none" />
+        </nav>
     </div>
 </header>
