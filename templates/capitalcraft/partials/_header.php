@@ -41,11 +41,12 @@
                 <span></span>
             </button>
         </div>
+
+        <!-- Мобильное меню теперь внутри header -->
+        <div class="mobile-nav">
+            <nav class="mobile-nav__menu">
+                <jdoc:include type="modules" name="mobile-menu" style="none" />
+            </nav>
+        </div>
     </div>
 </header>
-<div id="mobile-nav" class="mobile-nav">
-    <button type="button" class="mobile-nav__close" aria-label="Закрыть меню"></button>
-    <nav class="mobile-nav__menu">
-        <jdoc:include type="modules" name="mobile-menu" style="none" />
-    </nav>
-</div>

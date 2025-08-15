@@ -17,12 +17,13 @@
     background: @color-bg-craft;
     transition: transform 0.2s ease;
     will-change: transform;
+    overflow: hidden; // ключевое для скрытия меню
 
     &.unpinned {
       transform: translateY(-100%);
     }
     &.pinned {
-    transform: translateY(0);
+      transform: translateY(0);
     }
   });
 
@@ -211,20 +212,15 @@
           left: 50%;
           margin-left: -10px;
           margin-top: -1px;
-          transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: all 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99);
           transform: translateY(0);
 
           &:first-child {
-            transform: translateY(-8px);
-          }
-
-          &:nth-child(2) {
-            opacity: 1;
-            transform: scaleX(1);
+            transform: translateY(-6px);
           }
 
           &:last-child {
-            transform: translateY(8px);
+            transform: translateY(6px);
           }
         }
       }
@@ -237,8 +233,13 @@ body.menu-open {
   overflow: hidden;
   
   .site-header {
-    z-index: auto;
-    transform: none;
+    .media(mobile, {
+      height: 100vh !important; // растягиваем header на весь экран
+      transform: none !important; // отменяем Headroom анимации
+      z-index: 50;
+      background: #111; // темный фон как в Apple
+      transition: all 0.45s ease-out, background 0.8s ease-out;
+    });
   }
 
   .burger {
@@ -246,15 +247,19 @@ body.menu-open {
     top: @mobile-side-padding;
     right: @mobile-side-padding;
     z-index: 51;
+    transform: rotate(90deg); // Apple-style поворот всей кнопки
+    transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
 
     span {
-      background-color: @color-text;
+      background-color: #fff; // белый на темном фоне
       width: 20px;
       left: 50%;
       margin-left: -10px;
+      transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+      transition-delay: 0.1s;
 
       &:first-child {
-        transform: translateY(0) rotate(45deg);
+        transform: translateY(3px) rotate(45deg);
       }
 
       &:nth-child(2) {
@@ -263,88 +268,83 @@ body.menu-open {
       }
 
       &:last-child {
-        transform: translateY(0) rotate(-45deg);
+        transform: translateY(3px) rotate(-45deg);
       }
     }
   }
 
-  &::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: fade(@color-white, 60%);
-    backdrop-filter: blur(16px);
-    z-index: 47;
-  }
 }
 
-// Мобильное меню
+// Мобильное меню внутри header
 .mobile-nav {
-  position: fixed;
-  top: 76px; // под header (высота header + padding)
-  left: 0;
-  right: 0;
-  width: 100%;
-  max-height: calc(100vh - 76px);
-  padding: @mobile-side-padding;
-  background: fade(@color-bg-craft, 95%);
-  backdrop-filter: saturate(180%) blur(20px);
-  transform: translateY(-100%);
-  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  z-index: 50;
-  overflow-y: auto;
-
-  &__close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 51;
-    transition: transform 0.2s ease;
-
-    &::before,
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 2px;
-      background-color: #000;
-      transform-origin: center;
+  .media(mobile, {
+    clear: both;
+    
+    &__menu {
+      position: relative;
+      display: block;
+      padding: 80px @mobile-side-padding 0; // отступ от верха под header
+      height: 100vh;
+      overflow-y: auto;
     }
 
-    &::before {
-      transform: translate(-50%, -50%) rotate(45deg);
-    }
-    &::after {
-      transform: translate(-50%, -50%) rotate(-45deg);
-    }
-    @media (hover: hover) {
-      &:hover {
-        transform: rotate(90deg);
+    .mod-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        border-bottom: 1px solid #333;
+        margin-top: 5px;
+        opacity: 0; // скрыты по умолчанию
+        transform: translateY(20px);
+        transition: 
+          opacity 0.6s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+          transform 0.5s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+
+        // Задержки для staggered анимации (в закрытом состоянии)
+        &:nth-child(1) { transition-delay: 0.35s; }
+        &:nth-child(2) { transition-delay: 0.3s; }
+        &:nth-child(3) { transition-delay: 0.25s; }
+        &:nth-child(4) { transition-delay: 0.2s; }
+        &:nth-child(5) { transition-delay: 0.15s; }
+        &:nth-child(6) { transition-delay: 0.1s; }
+        &:nth-child(7) { transition-delay: 0.05s; }
+
+        a {
+          display: block;
+          position: relative;
+          color: #fff;
+          text-decoration: none;
+          font-size: 18px;
+          line-height: 2.8;
+          width: 100%;
+          font-family: @font-body;
+          text-transform: uppercase;
+          -webkit-tap-highlight-color: transparent;
+        }
       }
     }
-  }
+  });
+}
 
-  .mod-menu {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  &.open {
-    transform: translateY(0);
-  }
+// Анимация появления пунктов меню при открытии
+body.menu-open .mobile-nav {
+  .media(mobile, {
+    .mod-menu li {
+      opacity: 1;
+      transform: translateY(0);
+
+      // Задержки для staggered анимации (в открытом состоянии - обратный порядок)
+      &:nth-child(1) { transition-delay: 0.05s; }
+      &:nth-child(2) { transition-delay: 0.1s; }
+      &:nth-child(3) { transition-delay: 0.15s; }
+      &:nth-child(4) { transition-delay: 0.2s; }
+      &:nth-child(5) { transition-delay: 0.25s; }
+      &:nth-child(6) { transition-delay: 0.3s; }
+      &:nth-child(7) { transition-delay: 0.35s; }
+    }
+  });
 }
 
 // Медиа-запрос для reduced motion
