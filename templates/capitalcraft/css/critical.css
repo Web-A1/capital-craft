@@ -9,7 +9,7 @@
     right: 0;
     z-index: 49;
     background: #fdfbf5;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, height 0.45s ease-out;
     will-change: transform;
     overflow: hidden;
   }
@@ -272,9 +272,20 @@ body.menu-open {
   overflow: hidden;
 }
 @media only screen and (max-width: 767px) {
+  body.menu-open .container:not(.header__inner),
+  body.menu-open main,
+  body.menu-open .content {
+    display: none;
+  }
+}
+@media only screen and (max-width: 767px) {
   body.menu-open .site-header {
+    position: fixed !important;
     height: 100vh !important;
     transform: none !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
     z-index: 50;
     background: #111;
     transition: all 0.45s ease-out, background 0.8s ease-out;
@@ -306,15 +317,19 @@ body.menu-open .burger span:nth-child(2) {
 body.menu-open .burger span:last-child {
   transform: translateY(3px) rotate(-45deg);
 }
+.mobile-nav {
+  display: none;
+}
 @media only screen and (max-width: 767px) {
   .mobile-nav {
+    display: block;
     clear: both;
   }
   .mobile-nav__menu {
     position: relative;
     display: block;
-    padding: 80px 20px 0;
-    height: 100vh;
+    padding: 100px 20px 20px;
+    min-height: calc(100vh - 100px);
     overflow-y: auto;
   }
   .mobile-nav .mod-menu {

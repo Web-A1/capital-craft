@@ -15,7 +15,7 @@
     right: 0;
     z-index: 49;
     background: @color-bg-craft;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, height 0.45s ease-out;
     will-change: transform;
     overflow: hidden; // ключевое для скрытия меню
 
@@ -232,10 +232,23 @@
 body.menu-open {
   overflow: hidden;
   
+  // Скрываем основной контент страницы
+  .container:not(.header__inner),
+  main,
+  .content {
+    .media(mobile, {
+      display: none;
+    });
+  }
+  
   .site-header {
     .media(mobile, {
+      position: fixed !important; // фиксируем позицию
       height: 100vh !important; // растягиваем header на весь экран
       transform: none !important; // отменяем Headroom анимации
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
       z-index: 50;
       background: #111; // темный фон как в Apple
       transition: all 0.45s ease-out, background 0.8s ease-out;
@@ -277,14 +290,18 @@ body.menu-open {
 
 // Мобильное меню внутри header
 .mobile-nav {
+  // По умолчанию скрыто на всех устройствах
+  display: none;
+  
   .media(mobile, {
+    display: block; // показываем только на мобильном
     clear: both;
     
     &__menu {
       position: relative;
       display: block;
-      padding: 80px @mobile-side-padding 0; // отступ от верха под header
-      height: 100vh;
+      padding: 100px @mobile-side-padding @mobile-side-padding; // больше отступ сверху
+      min-height: calc(100vh - 100px); // минимальная высота для всего контента
       overflow-y: auto;
     }
 
