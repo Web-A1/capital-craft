@@ -300,10 +300,10 @@ body.menu-open {
     pointer-events: none;
   z-index: 50;
     background: transparent; // прозрачный фон по умолчанию
-    transform: translateY(-100%); // СКРЫТО под header
-    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+    // УБИРАЕМ transform - меню всегда ПОД header
+    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
                opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-    // Быстрее и только нужные свойства
+    // Анимируем высоту, а не позицию
     
     &__menu {
       position: relative;
@@ -363,10 +363,10 @@ body.menu-open .mobile-nav {
     opacity: 1;
     pointer-events: auto;
     background: fade(@color-bg-craft, 97%); // светлый фон с прозрачностью
-    transform: translateY(0); // ВЫЕЗЖАЕТ на позицию
-    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
+    // УБИРАЕМ transform - меню остается ПОД header
+    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99),
                opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-    // Быстрее и только нужные свойства
+    // Анимируем высоту, а не позицию
     
     &__menu {
       padding: 20px; // упрощенные отступы

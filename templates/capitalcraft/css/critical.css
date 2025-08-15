@@ -321,8 +321,7 @@ body.menu-open {
     pointer-events: none;
     z-index: 50;
     background: transparent;
-    transform: translateY(-100%);
-    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   .mobile-nav__menu {
     position: relative;
@@ -385,8 +384,7 @@ body.menu-open {
     opacity: 1;
     pointer-events: auto;
     background: rgba(253, 251, 245, 0.97);
-    transform: translateY(0);
-    transition: transform 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: height 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.35s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .mobile-nav__menu {
     padding: 20px;
