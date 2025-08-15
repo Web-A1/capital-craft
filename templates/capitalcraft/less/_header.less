@@ -254,7 +254,7 @@ body.menu-open {
         transition-delay: 0.1s;
 
         &:first-child {
-          transform: translateY(5px) rotate(45deg) !important; // максимальная специфичность
+          transform: translateY(6px) rotate(45deg) !important; // ТОЧНОЕ пересечение в центре
         }
 
         &:nth-child(2) {
@@ -263,7 +263,7 @@ body.menu-open {
         }
 
         &:last-child {
-          transform: translateY(-5px) rotate(-45deg) !important; // максимальная специфичность
+          transform: translateY(-6px) rotate(-45deg) !important; // ТОЧНОЕ пересечение в центре
         }
       }
     });

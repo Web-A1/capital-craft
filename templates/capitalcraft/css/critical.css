@@ -290,14 +290,14 @@ body.menu-open {
     transition-delay: 0.1s;
   }
   body.menu-open .site-header .burger span:first-child {
-    transform: translateY(5px) rotate(45deg) !important;
+    transform: translateY(6px) rotate(45deg) !important;
   }
   body.menu-open .site-header .burger span:nth-child(2) {
     opacity: 0;
     transform: scaleX(0);
   }
   body.menu-open .site-header .burger span:last-child {
-    transform: translateY(-5px) rotate(-45deg) !important;
+    transform: translateY(-6px) rotate(-45deg) !important;
   }
 }
 .mobile-nav {
