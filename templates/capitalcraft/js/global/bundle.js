@@ -213,8 +213,14 @@ var init_burger = __esm({
         burger.classList.remove("active");
         burger.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
-        if (window.headroom) {
-          window.headroom.enable();
+        if (window.headroom && window.Headroom) {
+          const header2 = document.querySelector(".site-header");
+          if (header2) {
+            window.headroom = new window.Headroom(header2, {
+              classes: { pinned: "pinned", unpinned: "unpinned" }
+            });
+            window.headroom.init();
+          }
         }
       };
       const openMenu = () => {
@@ -222,7 +228,7 @@ var init_burger = __esm({
         burger.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
         if (window.headroom) {
-          window.headroom.disable();
+          window.headroom.destroy();
         }
       };
       burger.addEventListener("click", () => {
@@ -573,6 +579,7 @@ var require_script = __commonJS({
     initPhoneMask();
     initFormSubmit();
     initScrollTop();
+    window.Headroom = import_headroom_min.default;
     var header = document.querySelector(".site-header");
     if (header) {
       const headroom = new import_headroom_min.default(header, {

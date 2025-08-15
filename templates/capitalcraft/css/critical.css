@@ -60,7 +60,6 @@
 @media only screen and (max-width: 767px) {
   .site-header .header__inner .header-right {
     gap: 7px;
-    gap: 16px;
     flex: 1;
     justify-content: space-between;
   }
@@ -245,6 +244,7 @@
 @media only screen and (max-width: 767px) {
   .site-header .header__inner .header-right .burger {
     display: block;
+    opacity: 1;
   }
 }
 .site-header .header__inner .header-right .burger.active {
@@ -344,25 +344,25 @@ body.menu-open {
     margin-right: 20px;
   }
   .mobile-nav .mod-menu li:nth-child(1) {
-    transition-delay: 0.35s;
-  }
-  .mobile-nav .mod-menu li:nth-child(2) {
-    transition-delay: 0.3s;
-  }
-  .mobile-nav .mod-menu li:nth-child(3) {
-    transition-delay: 0.25s;
-  }
-  .mobile-nav .mod-menu li:nth-child(4) {
-    transition-delay: 0.2s;
-  }
-  .mobile-nav .mod-menu li:nth-child(5) {
     transition-delay: 0.15s;
   }
+  .mobile-nav .mod-menu li:nth-child(2) {
+    transition-delay: 0.12s;
+  }
+  .mobile-nav .mod-menu li:nth-child(3) {
+    transition-delay: 0.09s;
+  }
+  .mobile-nav .mod-menu li:nth-child(4) {
+    transition-delay: 0.06s;
+  }
+  .mobile-nav .mod-menu li:nth-child(5) {
+    transition-delay: 0.03s;
+  }
   .mobile-nav .mod-menu li:nth-child(6) {
-    transition-delay: 0.1s;
+    transition-delay: 0.02s;
   }
   .mobile-nav .mod-menu li:nth-child(7) {
-    transition-delay: 0.05s;
+    transition-delay: 0.01s;
   }
   .mobile-nav .mod-menu li a {
     display: block;
@@ -395,25 +395,25 @@ body.menu-open {
     transform: translateY(0);
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(1) {
-    transition-delay: 0.05s;
+    transition-delay: 0.01s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(2) {
-    transition-delay: 0.1s;
+    transition-delay: 0.02s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(3) {
-    transition-delay: 0.15s;
+    transition-delay: 0.03s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(4) {
-    transition-delay: 0.2s;
+    transition-delay: 0.06s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(5) {
-    transition-delay: 0.25s;
+    transition-delay: 0.09s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(6) {
-    transition-delay: 0.3s;
+    transition-delay: 0.12s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(7) {
-    transition-delay: 0.35s;
+    transition-delay: 0.15s;
   }
 }
 @media (prefers-reduced-motion: reduce) {

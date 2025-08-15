@@ -11,6 +11,9 @@ initPhoneMask();
 initFormSubmit();
 initScrollTop();
 
+// Делаем Headroom доступным глобально
+window.Headroom = Headroom;
+
 const header = document.querySelector('.site-header');
 if (header) {
   const headroom = new Headroom(header, {

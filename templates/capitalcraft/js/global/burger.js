@@ -12,9 +12,15 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
     
-    // Если есть Headroom, возобновляем его работу
-    if (window.headroom) {
-      window.headroom.enable(); // ИСПРАВЛЕНО: enable вместо init
+    // Если есть Headroom, пересоздаем его (после destroy нужно создать новый)
+    if (window.headroom && window.Headroom) {
+      const header = document.querySelector('.site-header');
+      if (header) {
+        window.headroom = new window.Headroom(header, {
+          classes: { pinned: 'pinned', unpinned: 'unpinned' }
+        });
+        window.headroom.init();
+      }
     }
   };
 
@@ -25,7 +31,7 @@ export const initBurger = () => {
     
     // Если есть Headroom, приостанавливаем его работу
     if (window.headroom) {
-      window.headroom.disable(); // ИСПРАВЛЕНО: disable вместо destroy
+      window.headroom.destroy(); // ПРАВИЛЬНЫЙ API: destroy для отключения
     }
   };
 

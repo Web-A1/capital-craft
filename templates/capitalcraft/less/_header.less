@@ -64,10 +64,9 @@
 
       .media(mobile, {
         gap: 7px; // более компактное расположение на мобильном
-       gap: 16px;
-       flex: 1;
-       justify-content: space-between;
-       });
+        flex: 1;
+        justify-content: space-between;
+      });
 
       & .main-nav {
         .media(mobile, {display: none;});
@@ -197,7 +196,10 @@
         border: none;
         padding: 0;
 
-        .media(mobile, { display: block; });
+        .media(mobile, { 
+          display: block; 
+          opacity: 1; // базовая opacity для мобильного
+        });
 
         &.active {
           opacity: 1; // активный бургер полностью видимый
@@ -328,14 +330,14 @@ body.menu-open {
         text-align: right; // выравнивание по правому краю
         margin-right: 20px; // дополнительный отступ справа
 
-        // Задержки для staggered анимации (в закрытом состоянии)
-        &:nth-child(1) { transition-delay: 0.35s; }
-        &:nth-child(2) { transition-delay: 0.3s; }
-        &:nth-child(3) { transition-delay: 0.25s; }
-        &:nth-child(4) { transition-delay: 0.2s; }
-        &:nth-child(5) { transition-delay: 0.15s; }
-        &:nth-child(6) { transition-delay: 0.1s; }
-        &:nth-child(7) { transition-delay: 0.05s; }
+        // БЫСТРЫЕ задержки для staggered анимации (в закрытом состоянии)
+        &:nth-child(1) { transition-delay: 0.15s; }
+        &:nth-child(2) { transition-delay: 0.12s; }
+        &:nth-child(3) { transition-delay: 0.09s; }
+        &:nth-child(4) { transition-delay: 0.06s; }
+        &:nth-child(5) { transition-delay: 0.03s; }
+        &:nth-child(6) { transition-delay: 0.02s; }
+        &:nth-child(7) { transition-delay: 0.01s; }
 
         a {
           display: block;
@@ -377,14 +379,14 @@ body.menu-open .mobile-nav {
       opacity: 1;
       transform: translateY(0);
 
-      // Задержки для staggered анимации (в открытом состоянии - обратный порядок)
-      &:nth-child(1) { transition-delay: 0.05s; }
-      &:nth-child(2) { transition-delay: 0.1s; }
-      &:nth-child(3) { transition-delay: 0.15s; }
-      &:nth-child(4) { transition-delay: 0.2s; }
-      &:nth-child(5) { transition-delay: 0.25s; }
-      &:nth-child(6) { transition-delay: 0.3s; }
-      &:nth-child(7) { transition-delay: 0.35s; }
+      // БЫСТРЫЕ задержки для staggered анимации (в открытом состоянии - обратный порядок)
+      &:nth-child(1) { transition-delay: 0.01s; }
+      &:nth-child(2) { transition-delay: 0.02s; }
+      &:nth-child(3) { transition-delay: 0.03s; }
+      &:nth-child(4) { transition-delay: 0.06s; }
+      &:nth-child(5) { transition-delay: 0.09s; }
+      &:nth-child(6) { transition-delay: 0.12s; }
+      &:nth-child(7) { transition-delay: 0.15s; }
     }
   });
 }
