@@ -14,7 +14,7 @@ export const initBurger = () => {
     
     // Если есть Headroom, возобновляем его работу
     if (window.headroom) {
-      window.headroom.init();
+      window.headroom.enable(); // ИСПРАВЛЕНО: enable вместо init
     }
   };
 
@@ -25,7 +25,7 @@ export const initBurger = () => {
     
     // Если есть Headroom, приостанавливаем его работу
     if (window.headroom) {
-      window.headroom.destroy();
+      window.headroom.disable(); // ИСПРАВЛЕНО: disable вместо destroy
     }
   };
 

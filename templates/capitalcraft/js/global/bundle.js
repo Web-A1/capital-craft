@@ -214,7 +214,7 @@ var init_burger = __esm({
         burger.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
         if (window.headroom) {
-          window.headroom.init();
+          window.headroom.enable();
         }
       };
       const openMenu = () => {
@@ -222,7 +222,7 @@ var init_burger = __esm({
         burger.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
         if (window.headroom) {
-          window.headroom.destroy();
+          window.headroom.disable();
         }
       };
       burger.addEventListener("click", () => {
