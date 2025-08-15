@@ -242,15 +242,13 @@ body.menu-open {
   }
 
   .burger {
-    position: fixed;
-    top: @mobile-side-padding;
-    right: @mobile-side-padding;
+    // УБИРАЕМ position: fixed чтобы бургер не смещался
+    // Оставляем его в обычном position внутри header-right
     z-index: 51;
-    // Убираем поворот родителя - он конфликтует с поворотами полосок
     transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
 
     span {
-      background-color: #fff; // белый на темном фоне
+      background-color: #000; // остается черным (header не темнеет)
       width: 20px;
       left: 50%;
       margin-left: -10px;
@@ -279,11 +277,11 @@ body.menu-open {
   // Скрыто на всех устройствах
   display: none;
   
-  .media(mobile, {
+    .media(mobile, {
     // Показываем элемент но делаем невидимым
     display: block;
-    position: fixed; // fixed вместо absolute для лучшего позиционирования
-    top: 0;
+    position: fixed;
+    top: 76px; // ПОД header (20px + 36px + 20px)
     left: 0;
     right: 0;
   width: 100%;
@@ -344,16 +342,16 @@ body.menu-open {
 // Состояние открытого мобильного меню
 body.menu-open .mobile-nav {
   .media(mobile, {
-    // Показываем меню поверх всего экрана
-    height: 100vh !important;
+    // Показываем меню ПОД header
+    height: calc(100vh - 76px) !important; // от header до низа экрана
     opacity: 1;
     pointer-events: auto;
     background: #111; // темный фон как в Apple
     transition: all 0.45s ease-out, background 0.8s ease-out;
     
     &__menu {
-      padding: 100px @mobile-side-padding @mobile-side-padding; // отступы только при открытии
-      min-height: calc(100vh - 100px); // высота только при открытии
+      padding: 40px @mobile-side-padding @mobile-side-padding; // уменьшенный отступ сверху
+      min-height: calc(100vh - 76px - 40px); // высота с учетом header и padding
     }
     
     .mod-menu li {
