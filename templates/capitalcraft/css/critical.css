@@ -279,27 +279,26 @@ body.menu-open {
     overflow: visible !important;
   }
 }
-body.menu-open .burger {
-  z-index: 51;
-  transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-}
-body.menu-open .burger span {
-  background-color: #000;
-  width: 20px;
-  left: 50%;
-  margin-left: -10px;
-  transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-  transition-delay: 0.1s;
-}
-body.menu-open .burger span:first-child {
-  transform: translateY(5px) rotate(45deg);
-}
-body.menu-open .burger span:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-body.menu-open .burger span:last-child {
-  transform: translateY(-5px) rotate(-45deg);
+@media only screen and (max-width: 767px) {
+  body.menu-open .burger {
+    z-index: 51;
+    transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+  }
+  body.menu-open .burger span {
+    background-color: #000;
+    transition: all 0.4s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition-delay: 0.1s;
+  }
+  body.menu-open .burger span:first-child {
+    transform: translateY(5px) rotate(45deg);
+  }
+  body.menu-open .burger span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  body.menu-open .burger span:last-child {
+    transform: translateY(-5px) rotate(-45deg);
+  }
 }
 .mobile-nav {
   display: none;
@@ -308,7 +307,7 @@ body.menu-open .burger span:last-child {
   .mobile-nav {
     display: block;
     position: fixed;
-    top: 76px;
+    top: 0;
     left: 0;
     right: 0;
     width: 100%;
@@ -318,7 +317,6 @@ body.menu-open .burger span:last-child {
     pointer-events: none;
     z-index: 50;
     background: transparent;
-    transform: translateY(-100%);
     transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   .mobile-nav__menu {
@@ -376,11 +374,11 @@ body.menu-open .burger span:last-child {
 }
 @media only screen and (max-width: 767px) {
   body.menu-open .mobile-nav {
+    top: 76px !important;
     height: calc(100vh - 76px) !important;
     opacity: 1;
     pointer-events: auto;
     background: #fdfbf5;
-    transform: translateY(0);
     transition: all 0.45s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .mobile-nav__menu {
