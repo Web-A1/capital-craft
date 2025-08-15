@@ -276,6 +276,7 @@ body.menu-open {
     transform: none !important;
     position: relative;
     z-index: 49;
+    overflow: visible !important;
   }
 }
 body.menu-open .burger {
