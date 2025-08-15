@@ -328,8 +328,7 @@ body.menu-open .burger span:last-child {
   .mobile-nav__menu {
     position: relative;
     display: block;
-    padding: 100px 20px 20px;
-    min-height: calc(100vh - 100px);
+    padding: 0 20px;
     overflow-y: auto;
   }
   .mobile-nav .mod-menu {
@@ -379,6 +378,10 @@ body.menu-open .burger span:last-child {
   }
 }
 @media only screen and (max-width: 767px) {
+  body.menu-open .mobile-nav__menu {
+    padding: 100px 20px 20px;
+    min-height: calc(100vh - 100px);
+  }
   body.menu-open .mobile-nav .mod-menu li {
     opacity: 1;
     transform: translateY(0);

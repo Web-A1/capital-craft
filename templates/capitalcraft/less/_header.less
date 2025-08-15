@@ -300,8 +300,7 @@ body.menu-open {
     &__menu {
       position: relative;
       display: block;
-      padding: 100px @mobile-side-padding @mobile-side-padding; // больше отступ сверху
-      min-height: calc(100vh - 100px); // минимальная высота для всего контента
+      padding: 0 @mobile-side-padding; // убираем большой padding и min-height
       overflow-y: auto;
     }
 
@@ -348,6 +347,11 @@ body.menu-open {
 // Анимация появления пунктов меню при открытии
 body.menu-open .mobile-nav {
   .media(mobile, {
+    &__menu {
+      padding: 100px @mobile-side-padding @mobile-side-padding; // отступы только при открытии
+      min-height: calc(100vh - 100px); // высота только при открытии
+    }
+    
     .mod-menu li {
       opacity: 1;
       transform: translateY(0);
