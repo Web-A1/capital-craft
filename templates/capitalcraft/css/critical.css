@@ -324,15 +324,15 @@ body.menu-open {
     top: 76px;
     left: 0;
     right: 0;
-    bottom: 0;
     width: 100%;
+    height: 0;
     max-height: 0;
     overflow: hidden;
     opacity: 0;
     pointer-events: none;
     z-index: 50;
     background: transparent;
-    transition: max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   .mobile-nav__menu {
     position: relative;
@@ -390,13 +390,12 @@ body.menu-open {
 }
 @media only screen and (max-width: 767px) {
   body.menu-open .mobile-nav {
-    top: 76px;
-    bottom: 0;
-    max-height: 100vh;
+    height: calc(100vh - 76px);
+    max-height: calc(100vh - 76px);
     opacity: 1;
     pointer-events: auto;
     background: rgba(253, 251, 245, 0.97);
-    transition: max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
+    transition: height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .mobile-nav__menu {
     padding: 20px;
