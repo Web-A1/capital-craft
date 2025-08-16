@@ -324,6 +324,7 @@ body.menu-open {
     top: 76px;
     left: 0;
     right: 0;
+    bottom: 0;
     width: 100%;
     max-height: 0;
     overflow: hidden;
@@ -390,7 +391,8 @@ body.menu-open {
 @media only screen and (max-width: 767px) {
   body.menu-open .mobile-nav {
     top: 76px;
-    max-height: 500px;
+    bottom: 0;
+    max-height: 100vh;
     opacity: 1;
     pointer-events: auto;
     background: rgba(253, 251, 245, 0.97);

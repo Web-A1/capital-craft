@@ -311,6 +311,7 @@ body.menu-open {
     top: 76px; // ВСЕГДА под header
     left: 0;
     right: 0;
+    bottom: 0;
   width: 100%;
     max-height: 0; // нулевая высота в закрытом состоянии - ЧИСЛОВОЕ значение для анимации
     overflow: hidden;
@@ -375,9 +376,10 @@ body.menu-open {
 // Состояние открытого мобильного меню
 body.menu-open .mobile-nav {
   .media(mobile, {
-    // Показываем меню ПОД header - изменяем только max-height
+    // Показываем меню ПОД header на всю высоту экрана
     top: 76px; // ОСТАЕТСЯ под header (не анимируется)
-    max-height: 500px; // достаточно для 7-8 пунктов меню - ЧИСЛОВОЕ значение для анимации
+    bottom: 0;
+    max-height: 100vh; // растягиваем до низа экрана
     opacity: 1;
     pointer-events: auto;
     background: fade(@color-bg-craft, 97%); // светлый фон с прозрачностью
