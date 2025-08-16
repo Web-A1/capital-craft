@@ -467,7 +467,7 @@ a {
   background-color: #fdfbf5;
 }
 section,
-.frame {
+.frame:not(.site-header) {
   position: relative;
 }
 .frame {
@@ -503,10 +503,10 @@ section,
     border-bottom: none;
   }
 }
-.section-with-divider {
+.section-with-divider:not(.site-header) {
   position: relative;
 }
-.section-with-divider::after {
+.section-with-divider:not(.site-header)::after {
   content: '';
   position: absolute;
   left: 50%;
@@ -517,7 +517,7 @@ section,
   bottom: 0;
 }
 @media only screen and (max-width: 767px) {
-  .section-with-divider::after {
+  .section-with-divider:not(.site-header)::after {
     width: calc(100% - (20px * 2));
   }
 }
