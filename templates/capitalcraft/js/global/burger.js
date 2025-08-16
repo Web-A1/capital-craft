@@ -12,8 +12,12 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
     
-    // НЕ пересоздаем headroom - он уже существует и помнит позицию скролла
-    // Просто позволяем ему работать дальше без изменений
+    // Восстанавливаем работу headroom после закрытия мобильного меню
+    if (window.headroom) {
+      setTimeout(() => {
+        window.headroom.enable();
+      }, 100);
+    }
   };
 
   const openMenu = () => {
@@ -21,8 +25,10 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'true');
     document.body.classList.add('menu-open');
     
-    // НЕ уничтожаем headroom - просто отключаем временно
-    // headroom продолжает существовать и помнит состояние
+    // Временно отключаем headroom при открытии мобильного меню
+    if (window.headroom) {
+      window.headroom.disable();
+    }
   };
 
   burger.addEventListener('click', () => {

@@ -21,7 +21,21 @@ if (header) {
       pinned: 'pinned',
       unpinned: 'unpinned',
     },
+    offset: 0,
+    tolerance: {
+      up: 5,
+      down: 10
+    }
   });
+  
   headroom.init();
   window.headroom = headroom;
+  
+  // Настройки для мобильных устройств
+  if (window.innerWidth <= 767) {
+    headroom.options.tolerance = {
+      up: 3,
+      down: 5
+    };
+  }
 }

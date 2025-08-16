@@ -280,9 +280,9 @@ body.menu-open {
 }
 @media only screen and (max-width: 767px) {
   body.menu-open .site-header {
-    position: relative;
     z-index: 49;
     overflow: visible !important;
+    transform: translateY(0) !important;
   }
 }
 @media only screen and (max-width: 767px) {

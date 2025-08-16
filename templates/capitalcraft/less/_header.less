@@ -249,11 +249,12 @@ body.menu-open {
   
   .site-header {
     .media(mobile, {
-      // Header остается нормального размера, меню позиционируется поверх
-      position: relative; // обычное позиционирование
+      // НЕ МЕНЯЕМ position - оставляем sticky для работы headroom
+      // position: relative; // ❌ УБРАНО - это ломало headroom
       z-index: 49; // под мобильным меню
       overflow: visible !important; // УБИРАЕМ overflow: hidden чтобы показать меню
-      // УБИРАЕМ остальные стили - позволяем Headroom работать на всех устройствах
+      // Принудительно показываем header при открытом мобильном меню
+      transform: translateY(0) !important;
     });
   }
 

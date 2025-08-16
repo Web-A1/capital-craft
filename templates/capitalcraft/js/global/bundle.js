@@ -213,11 +213,19 @@ var init_burger = __esm({
         burger.classList.remove("active");
         burger.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
+        if (window.headroom) {
+          setTimeout(() => {
+            window.headroom.enable();
+          }, 100);
+        }
       };
       const openMenu = () => {
         burger.classList.add("active");
         burger.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
+        if (window.headroom) {
+          window.headroom.disable();
+        }
       };
       burger.addEventListener("click", () => {
         const isMenuOpen = document.body.classList.contains("menu-open");
@@ -574,10 +582,21 @@ var require_script = __commonJS({
         classes: {
           pinned: "pinned",
           unpinned: "unpinned"
+        },
+        offset: 0,
+        tolerance: {
+          up: 5,
+          down: 10
         }
       });
       headroom.init();
       window.headroom = headroom;
+      if (window.innerWidth <= 767) {
+        headroom.options.tolerance = {
+          up: 3,
+          down: 5
+        };
+      }
     }
   }
 });
