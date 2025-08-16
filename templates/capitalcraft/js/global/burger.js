@@ -12,10 +12,10 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
     
-    // Восстанавливаем работу headroom после закрытия мобильного меню
-    if (window.headroom) {
+    // Восстанавливаем реакцию хедера на скролл после закрытия меню
+    if (window.headerControl) {
       setTimeout(() => {
-        window.headroom.enable();
+        window.headerControl.unfreeze();
       }, 100);
     }
   };
@@ -25,9 +25,9 @@ export const initBurger = () => {
     burger.setAttribute('aria-expanded', 'true');
     document.body.classList.add('menu-open');
     
-    // Временно отключаем headroom при открытии мобильного меню
-    if (window.headroom) {
-      window.headroom.disable();
+    // Временно блокируем реакцию хедера на скролл при открытии меню
+    if (window.headerControl) {
+      window.headerControl.freeze();
     }
   };
 

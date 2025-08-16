@@ -28,8 +28,8 @@ export const initModal = () => {
     },
     onClose: () => {
       document.body.classList.remove('modal-open');
-      if (window.headroom) {
-        window.headroom.pin();
+      if (window.headerControl) {
+        window.headerControl.pin();
       }
     },
   });

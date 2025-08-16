@@ -1,203 +1,10 @@
-var __create = Object.create;
-var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
-var __getProtoOf = Object.getPrototypeOf;
-var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __esm = (fn, res) => function __init() {
   return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
 };
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
-  // If the importer is in node compatibility mode or this is not an ESM
-  // file that has been converted to a CommonJS file using a Babel-
-  // compatible transform (i.e. "__esModule" has not been set), then set
-  // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
-  mod
-));
-
-// templates/capitalcraft/js/vendor/headroom.min.js
-var require_headroom_min = __commonJS({
-  "templates/capitalcraft/js/vendor/headroom.min.js"(exports, module) {
-    !function(t2, n2) {
-      "object" == typeof exports && "undefined" != typeof module ? module.exports = n2() : "function" == typeof define && define.amd ? define(n2) : (t2 = t2 || self).Headroom = n2();
-    }(exports, function() {
-      "use strict";
-      function t2() {
-        return "undefined" != typeof window;
-      }
-      function d(t3) {
-        return function(t4) {
-          return t4 && t4.document && function(t5) {
-            return 9 === t5.nodeType;
-          }(t4.document);
-        }(t3) ? function(t4) {
-          var n3 = t4.document, o3 = n3.body, s3 = n3.documentElement;
-          return {
-            scrollHeight: function() {
-              return Math.max(
-                o3.scrollHeight,
-                s3.scrollHeight,
-                o3.offsetHeight,
-                s3.offsetHeight,
-                o3.clientHeight,
-                s3.clientHeight
-              );
-            },
-            height: function() {
-              return t4.innerHeight || s3.clientHeight || o3.clientHeight;
-            },
-            scrollY: function() {
-              return void 0 !== t4.pageYOffset ? t4.pageYOffset : (s3 || o3.parentNode || o3).scrollTop;
-            }
-          };
-        }(t3) : /* @__PURE__ */ function(t4) {
-          return {
-            scrollHeight: function() {
-              return Math.max(t4.scrollHeight, t4.offsetHeight, t4.clientHeight);
-            },
-            height: function() {
-              return Math.max(t4.offsetHeight, t4.clientHeight);
-            },
-            scrollY: function() {
-              return t4.scrollTop;
-            }
-          };
-        }(t3);
-      }
-      function n2(t3, s3, e2) {
-        var n3, o3 = function() {
-          var n4 = false;
-          try {
-            var t4 = {
-              get passive() {
-                n4 = true;
-              }
-            };
-            window.addEventListener("test", t4, t4), window.removeEventListener("test", t4, t4);
-          } catch (t5) {
-            n4 = false;
-          }
-          return n4;
-        }(), i2 = false, r2 = d(t3), l2 = r2.scrollY(), a2 = {};
-        function c() {
-          var t4 = Math.round(r2.scrollY()), n4 = r2.height(), o4 = r2.scrollHeight();
-          a2.scrollY = t4, a2.lastScrollY = l2, a2.direction = l2 < t4 ? "down" : "up", a2.distance = Math.abs(t4 - l2), a2.isOutOfBounds = t4 < 0 || o4 < t4 + n4, a2.top = t4 <= s3.offset[a2.direction], a2.bottom = o4 <= t4 + n4, a2.toleranceExceeded = a2.distance > s3.tolerance[a2.direction], e2(a2), l2 = t4, i2 = false;
-        }
-        function h() {
-          i2 || (i2 = true, n3 = requestAnimationFrame(c));
-        }
-        var u = !!o3 && { passive: true, capture: false };
-        return t3.addEventListener("scroll", h, u), c(), {
-          destroy: function() {
-            cancelAnimationFrame(n3), t3.removeEventListener("scroll", h, u);
-          }
-        };
-      }
-      function o2(t3) {
-        return t3 === Object(t3) ? t3 : { down: t3, up: t3 };
-      }
-      function s2(t3, n3) {
-        n3 = n3 || {}, Object.assign(this, s2.options, n3), this.classes = Object.assign({}, s2.options.classes, n3.classes), this.elem = t3, this.tolerance = o2(this.tolerance), this.offset = o2(this.offset), this.initialised = false, this.frozen = false;
-      }
-      return s2.prototype = {
-        constructor: s2,
-        init: function() {
-          return s2.cutsTheMustard && !this.initialised && (this.addClass("initial"), this.initialised = true, setTimeout(
-            function(t3) {
-              t3.scrollTracker = n2(
-                t3.scroller,
-                { offset: t3.offset, tolerance: t3.tolerance },
-                t3.update.bind(t3)
-              );
-            },
-            100,
-            this
-          )), this;
-        },
-        destroy: function() {
-          this.initialised = false, Object.keys(this.classes).forEach(this.removeClass, this), this.scrollTracker.destroy();
-        },
-        unpin: function() {
-          !this.hasClass("pinned") && this.hasClass("unpinned") || (this.addClass("unpinned"), this.removeClass("pinned"), this.onUnpin && this.onUnpin.call(this));
-        },
-        pin: function() {
-          this.hasClass("unpinned") && (this.addClass("pinned"), this.removeClass("unpinned"), this.onPin && this.onPin.call(this));
-        },
-        freeze: function() {
-          this.frozen = true, this.addClass("frozen");
-        },
-        unfreeze: function() {
-          this.frozen = false, this.removeClass("frozen");
-        },
-        top: function() {
-          this.hasClass("top") || (this.addClass("top"), this.removeClass("notTop"), this.onTop && this.onTop.call(this));
-        },
-        notTop: function() {
-          this.hasClass("notTop") || (this.addClass("notTop"), this.removeClass("top"), this.onNotTop && this.onNotTop.call(this));
-        },
-        bottom: function() {
-          this.hasClass("bottom") || (this.addClass("bottom"), this.removeClass("notBottom"), this.onBottom && this.onBottom.call(this));
-        },
-        notBottom: function() {
-          this.hasClass("notBottom") || (this.addClass("notBottom"), this.removeClass("bottom"), this.onNotBottom && this.onNotBottom.call(this));
-        },
-        shouldUnpin: function(t3) {
-          return "down" === t3.direction && !t3.top && t3.toleranceExceeded;
-        },
-        shouldPin: function(t3) {
-          return "up" === t3.direction && t3.toleranceExceeded || t3.top;
-        },
-        addClass: function(t3) {
-          this.elem.classList.add.apply(
-            this.elem.classList,
-            this.classes[t3].split(" ")
-          );
-        },
-        removeClass: function(t3) {
-          this.elem.classList.remove.apply(
-            this.elem.classList,
-            this.classes[t3].split(" ")
-          );
-        },
-        hasClass: function(t3) {
-          return this.classes[t3].split(" ").every(function(t4) {
-            return this.classList.contains(t4);
-          }, this.elem);
-        },
-        update: function(t3) {
-          t3.isOutOfBounds || true !== this.frozen && (t3.top ? this.top() : this.notTop(), t3.bottom ? this.bottom() : this.notBottom(), this.shouldUnpin(t3) ? this.unpin() : this.shouldPin(t3) && this.pin());
-        }
-      }, s2.options = {
-        tolerance: { up: 0, down: 0 },
-        offset: 0,
-        scroller: t2() ? window : null,
-        classes: {
-          frozen: "headroom--frozen",
-          pinned: "headroom--pinned",
-          unpinned: "headroom--unpinned",
-          top: "headroom--top",
-          notTop: "headroom--not-top",
-          bottom: "headroom--bottom",
-          notBottom: "headroom--not-bottom",
-          initial: "headroom"
-        }
-      }, s2.cutsTheMustard = !!(t2() && function() {
-      }.bind && "classList" in document.documentElement && Object.assign && Object.keys && requestAnimationFrame), s2;
-    });
-  }
-});
 
 // templates/capitalcraft/js/global/burger.js
 var initBurger;
@@ -213,9 +20,9 @@ var init_burger = __esm({
         burger.classList.remove("active");
         burger.setAttribute("aria-expanded", "false");
         document.body.classList.remove("menu-open");
-        if (window.headroom) {
+        if (window.headerControl) {
           setTimeout(() => {
-            window.headroom.enable();
+            window.headerControl.unfreeze();
           }, 100);
         }
       };
@@ -223,8 +30,8 @@ var init_burger = __esm({
         burger.classList.add("active");
         burger.setAttribute("aria-expanded", "true");
         document.body.classList.add("menu-open");
-        if (window.headroom) {
-          window.headroom.disable();
+        if (window.headerControl) {
+          window.headerControl.freeze();
         }
       };
       burger.addEventListener("click", () => {
@@ -415,8 +222,8 @@ var init_modal = __esm({
         },
         onClose: () => {
           document.body.classList.remove("modal-open");
-          if (window.headroom) {
-            window.headroom.pin();
+          if (window.headerControl) {
+            window.headerControl.pin();
           }
         }
       });
@@ -564,7 +371,6 @@ var init_scroll_top = __esm({
 // templates/capitalcraft/js/global/script.js
 var require_script = __commonJS({
   "templates/capitalcraft/js/global/script.js"() {
-    var import_headroom_min = __toESM(require_headroom_min());
     init_burger();
     init_modal();
     init_phone_mask();
@@ -575,34 +381,37 @@ var require_script = __commonJS({
     initPhoneMask();
     initFormSubmit();
     initScrollTop();
-    window.Headroom = import_headroom_min.default;
     var header = document.querySelector(".site-header");
     if (header) {
-      const headroom = new import_headroom_min.default(header, {
-        classes: {
-          pinned: "pinned",
-          unpinned: "unpinned"
-        },
-        offset: 0,
-        tolerance: {
-          up: 5,
-          down: 10
+      let lastScrollY = window.pageYOffset;
+      let frozen = false;
+      const tolerance = window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
+      const onScroll = () => {
+        if (frozen) return;
+        const currentScrollY = window.pageYOffset;
+        if (currentScrollY > lastScrollY && currentScrollY - lastScrollY > tolerance.down) {
+          header.classList.remove("pinned");
+          header.classList.add("unpinned");
+        } else if (currentScrollY < lastScrollY && lastScrollY - currentScrollY > tolerance.up) {
+          header.classList.remove("unpinned");
+          header.classList.add("pinned");
         }
-      });
-      headroom.init();
-      window.headroom = headroom;
-      if (window.innerWidth <= 767) {
-        headroom.options.tolerance = {
-          up: 3,
-          down: 5
-        };
-      }
+        lastScrollY = currentScrollY;
+      };
+      window.addEventListener("scroll", onScroll);
+      window.headerControl = {
+        freeze() {
+          frozen = true;
+        },
+        unfreeze() {
+          frozen = false;
+        },
+        pin() {
+          header.classList.remove("unpinned");
+          header.classList.add("pinned");
+        }
+      };
     }
   }
 });
 export default require_script();
-/*!
- * headroom.js v0.12.0 - Give your page some headroom. Hide your header until you need it
- * Copyright (c) 2020 Nick Williams - http://wicky.nillia.ms/headroom.js
- * License: MIT
- */

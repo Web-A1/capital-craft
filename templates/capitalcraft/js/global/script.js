@@ -1,4 +1,3 @@
-import Headroom from '../vendor/headroom.min.js';
 import { initBurger } from './burger.js';
 import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
@@ -11,31 +10,41 @@ initPhoneMask();
 initFormSubmit();
 initScrollTop();
 
-// Делаем Headroom доступным глобально
-window.Headroom = Headroom;
-
 const header = document.querySelector('.site-header');
+
 if (header) {
-  const headroom = new Headroom(header, {
-    classes: {
-      pinned: 'pinned',
-      unpinned: 'unpinned',
-    },
-    offset: 0,
-    tolerance: {
-      up: 5,
-      down: 10
+  let lastScrollY = window.pageYOffset;
+  let frozen = false;
+  const tolerance = window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
+
+  const onScroll = () => {
+    if (frozen) return;
+    const currentScrollY = window.pageYOffset;
+
+    if (currentScrollY > lastScrollY && currentScrollY - lastScrollY > tolerance.down) {
+      header.classList.remove('pinned');
+      header.classList.add('unpinned');
+    } else if (currentScrollY < lastScrollY && lastScrollY - currentScrollY > tolerance.up) {
+      header.classList.remove('unpinned');
+      header.classList.add('pinned');
     }
-  });
-  
-  headroom.init();
-  window.headroom = headroom;
-  
-  // Настройки для мобильных устройств
-  if (window.innerWidth <= 767) {
-    headroom.options.tolerance = {
-      up: 3,
-      down: 5
-    };
-  }
+
+    lastScrollY = currentScrollY;
+  };
+
+  window.addEventListener('scroll', onScroll);
+
+  window.headerControl = {
+    freeze() {
+      frozen = true;
+    },
+    unfreeze() {
+      frozen = false;
+    },
+    pin() {
+      header.classList.remove('unpinned');
+      header.classList.add('pinned');
+    }
+  };
 }
+

@@ -249,8 +249,6 @@ body.menu-open {
   
   .site-header {
     .media(mobile, {
-      // НЕ МЕНЯЕМ position - оставляем sticky для работы headroom
-      // position: relative; // ❌ УБРАНО - это ломало headroom
       z-index: 49; // под мобильным меню
       overflow: visible !important; // УБИРАЕМ overflow: hidden чтобы показать меню
       // Принудительно показываем header при открытом мобильном меню
