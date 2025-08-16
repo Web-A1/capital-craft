@@ -8,6 +8,7 @@
 .site-header {
   position: relative;
 
+  // Добавляем горизонтальную линию под header на мобильных
   .media(mobile, {
     position: sticky;
     top: 0;
@@ -23,7 +24,19 @@
       transform: translateY(-100%);
     }
     &.pinned {
-    transform: translateY(0);
+      transform: translateY(0);
+    }
+
+    // Восстанавливаем горизонтальную линию под header
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - (@mobile-side-padding * 2));
+      height: 1px;
+      background: @section-divider-color;
+      bottom: 0;
     }
   });
 

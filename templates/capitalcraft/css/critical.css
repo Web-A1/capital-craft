@@ -19,6 +19,16 @@
   .site-header.pinned {
     transform: translateY(0);
   }
+  .site-header::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - (20px * 2));
+    height: 1px;
+    background: #000000;
+    bottom: 0;
+  }
 }
 .site-header .header__inner {
   max-width: 1170px;
