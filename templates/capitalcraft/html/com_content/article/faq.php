@@ -1,6 +1,5 @@
 <?php defined('_JEXEC') or die;
 $doc = JFactory::getDocument();
-$doc->addStyleSheet('templates/capitalcraft/css/faq.css');
 
 require __DIR__ . '/../../../data/faq_data.php';
 ?>
