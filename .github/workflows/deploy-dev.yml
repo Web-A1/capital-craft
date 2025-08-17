@@ -24,14 +24,41 @@ jobs:
             # Запускаем основной скрипт деплоя
             bash ~/deploy_dev.sh
             
-            # Определяем путь к проекту (можно настроить под ваш сервер)
-            PROJECT_PATH="~/domains/tdsta.beget.tech/public_html"
+            # Определяем путь к проекту (исправляем для сервера Beget)
+            PROJECT_PATH="$HOME/domains/tdsta.beget.tech/public_html"
             CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
+            
+            # Отладочная информация о путях
+            echo "Current working directory: $(pwd)"
+            echo "Home directory: $HOME"
+            echo "Looking for project at: ${PROJECT_PATH}"
+            echo "Contents of home directory:"
+            ls -la $HOME/
+            echo "Contents of domains (if exists):"
+            ls -la $HOME/domains/ 2>/dev/null || echo "domains directory not found"
             
             # Проверяем, что директория существует
             if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
               echo "ERROR: Directory ${PROJECT_PATH}/templates/capitalcraft not found!"
-              exit 1
+              echo "Trying alternative paths..."
+              
+              # Возможные альтернативные пути на Beget
+              for alt_path in "/home/tdsta/domains/tdsta.beget.tech/public_html" \
+                              "/home/tdsta/public_html" \
+                              "$HOME/public_html" \
+                              "$(pwd)"; do
+                if [ -d "${alt_path}/templates/capitalcraft" ]; then
+                  echo "Found project at: ${alt_path}"
+                  PROJECT_PATH="${alt_path}"
+                  CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
+                  break
+                fi
+              done
+              
+              if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
+                echo "ERROR: Could not find project directory anywhere!"
+                exit 1
+              fi
             fi
             
             # Создаем telegram_config.php с актуальными секретами
