@@ -361,11 +361,10 @@ body.menu-open {
           position: relative;
           color: @color-text;
           text-decoration: none;
-          font-size: 18px;
+          font-size: @font-size-text;
           line-height: 2.8;
           width: 100%;
           font-family: @font-body;
-          text-transform: uppercase;
           -webkit-tap-highlight-color: transparent;
         }
       }
@@ -381,7 +380,7 @@ body.menu-open .mobile-nav {
     max-height: calc(100vh - 76px); // подтверждающее ограничение
     opacity: 1;
     pointer-events: auto;
-    background: fade(@color-bg-craft, 97%); // светлый фон с прозрачностью
+    background: fade(@color-bg-craft, 100%); // светлый фон с прозрачностью
     transition: height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99),
                max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99),
                opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);

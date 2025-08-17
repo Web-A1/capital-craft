@@ -380,11 +380,10 @@ body.menu-open {
     position: relative;
     color: #333333;
     text-decoration: none;
-    font-size: 18px;
+    font-size: 16px;
     line-height: 2.8;
     width: 100%;
     font-family: 'Golos Text', sans-serif;
-    text-transform: uppercase;
     -webkit-tap-highlight-color: transparent;
   }
 }
@@ -394,7 +393,7 @@ body.menu-open {
     max-height: calc(100vh - 76px);
     opacity: 1;
     pointer-events: auto;
-    background: rgba(253, 251, 245, 0.97);
+    background: #fdfbf5;
     transition: height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
   body.menu-open .mobile-nav__menu {
