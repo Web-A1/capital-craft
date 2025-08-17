@@ -1,38 +1,48 @@
 'use strict';
 
-import IMask from 'imask';
-
 export const initPhoneMask = () => {
   const form = document.getElementById('contactForm');
   const phoneInput = form ? form.querySelector('input[name="phone"]') : null;
   if (!phoneInput) return;
 
-  // Создаем маску для телефона в формате +7 (XXX) XXX-XX-XX
-  const phoneMask = IMask(phoneInput, {
-    mask: '+{7} (000) 000-00-00',
-    lazy: false, // Показываем маску сразу
-    placeholderChar: '_', // Символ-заполнитель
-    definitions: {
-      '0': {
-        validator: '[0-9]',
-        cardinality: 1
+  // Проверяем, что IMask доступен
+  if (typeof window.IMask === 'undefined') {
+    console.error('IMask не загружен');
+    return;
+  }
+
+  try {
+    // Создаем маску для телефона в формате +7 (XXX) XXX-XX-XX
+    const phoneMask = window.IMask(phoneInput, {
+      mask: '+{7} (000) 000-00-00',
+      lazy: false,
+      placeholderChar: '_',
+      definitions: {
+        '0': {
+          validator: '[0-9]',
+          cardinality: 1
+        }
       }
-    }
-  });
+    });
 
-  // Обработчик изменения значения для скрытия ошибки
-  phoneMask.on('accept', function() {
-    const errEl = form ? form.querySelector('.form-error') : null;
-    if (errEl) errEl.style.display = 'none';
-  });
+    // Обработчик изменения значения для скрытия ошибки
+    phoneMask.on('accept', function() {
+      const errEl = form ? form.querySelector('.form-error') : null;
+      if (errEl) errEl.style.display = 'none';
+    });
 
-  // Обработчик неполного ввода для показа ошибки
-  phoneMask.on('complete', function() {
-    // Маска полностью заполнена - номер корректен
-  });
+    // Обработчик полного заполнения
+    phoneMask.on('complete', function() {
+      // Маска полностью заполнена - номер корректен
+    });
 
-  // Обработчик неполного ввода
-  phoneMask.on('incomplete', function() {
-    // Маска не полностью заполнена - можно показать подсказку
-  });
+    // Обработчик неполного заполнения
+    phoneMask.on('incomplete', function() {
+      // Маска не полностью заполнена
+    });
+
+    console.log('Маска телефона успешно инициализирована');
+  } catch (error) {
+    console.error('Ошибка инициализации маски телефона:', error);
+  }
 };

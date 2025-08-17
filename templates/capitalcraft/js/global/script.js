@@ -1,8 +1,12 @@
+import IMask from 'imask';
 import { initBurger } from './burger.js';
 import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
 import { initFormSubmit } from './form-submit.js';
 import { initScrollTop } from './scroll-top.js';
+
+// Делаем IMask доступным глобально
+window.IMask = IMask;
 
 initBurger();
 initModal();
