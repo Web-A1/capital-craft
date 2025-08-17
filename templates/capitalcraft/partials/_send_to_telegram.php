@@ -31,8 +31,8 @@ $phone   = $clean($phone);
 $name    = $clean($name);
 $message = $clean($message);
 
-// 3) Ключи (временно возвращаем старый путь)
-$configPath = __DIR__ . '/../telegram_config.php';
+// 3) Ключи (файл в корне проекта)
+$configPath = dirname(__DIR__, 2) . '/telegram_config.php';
 
 // Подробная диагностика для отладки
 if (!is_file($configPath)) {
