@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-  new Swiper('.faq__swiper', {
+  new Swiper('.faq-home__swiper', {
     slidesPerView: 1,
     pagination: {
-      el: '.faq__pagination',
+      el: '.faq-home__pagination',
       clickable: true,
     },
     breakpoints: {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  const faqBtn = document.querySelector('.faq__btn--mobile');
+  const faqBtn = document.querySelector('.faq-home__btn--mobile');
   if (faqBtn) {
     faqBtn.addEventListener('click', (e) => {
       e.preventDefault();
