@@ -16,6 +16,7 @@
     "less:all:prod": "npm-run-all less:base:prod less:critical:prod less:home:prod less:faq:prod",
     "less:watch": "SHELL=/bin/bash chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:all\" --initial",
     "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --outfile=templates/capitalcraft/js/global/bundle.js",
+    "js:build:prod": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --minify --target=es2019 --outfile=templates/capitalcraft/js/global/bundle.js",
     "test": "npm run less:all"
   },
   "keywords": [],
