@@ -8,8 +8,41 @@ jobs:
     steps:
       - name: SSH to Beget and deploy
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         with:
           host: tdsta.beget.tech
           username: tdsta
           key: ${{ secrets.BEGET_SSH_KEY }}
-          script: bash ~/deploy_dev.sh
+          envs: TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID
+          script: |
+            # Сохраняем секреты в переменные на сервере
+            export TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN}"
+            export TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID}"
+            
+            # Запускаем основной скрипт деплоя
+            bash ~/deploy_dev.sh
+            
+            # Определяем путь к проекту (можно настроить под ваш сервер)
+            PROJECT_PATH="~/domains/tdsta.beget.tech/public_html"
+            CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
+            
+            # Проверяем, что директория существует
+            if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
+              echo "ERROR: Directory ${PROJECT_PATH}/templates/capitalcraft not found!"
+              exit 1
+            fi
+            
+            # Создаем telegram_config.php с актуальными секретами
+            echo "Creating telegram_config.php..."
+            echo '<?php' > "${CONFIG_PATH}"
+            echo 'return [' >> "${CONFIG_PATH}"
+            echo "    'TELEGRAM_TOKEN' => '${TELEGRAM_BOT_TOKEN}'," >> "${CONFIG_PATH}"
+            echo "    'CHAT_ID' => '${TELEGRAM_CHAT_ID}'" >> "${CONFIG_PATH}"
+            echo '];' >> "${CONFIG_PATH}"
+            
+            # Устанавливаем правильные права доступа
+            chmod 644 "${CONFIG_PATH}"
+            
+            echo "telegram_config.php created successfully at ${CONFIG_PATH}"

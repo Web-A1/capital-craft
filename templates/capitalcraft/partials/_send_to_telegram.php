@@ -33,15 +33,45 @@ $message = $clean($message);
 
 // 3) Ключи
 $configPath = dirname(__DIR__) . '/telegram_config.php';
+
+// Подробная диагностика для отладки
 if (!is_file($configPath)) {
+    error_log("[TELEGRAM_CONFIG] Файл не найден: " . $configPath);
+    error_log("[TELEGRAM_CONFIG] Текущая директория: " . getcwd());
+    error_log("[TELEGRAM_CONFIG] dirname(__DIR__): " . dirname(__DIR__));
+    
     http_response_code(500);
-    echo json_encode(['status' => 'error', 'message' => 'Файл конфигурации не найден'], JSON_UNESCAPED_UNICODE);
+    echo json_encode([
+        'status' => 'error', 
+        'message' => 'Файл конфигурации не найден',
+        'debug' => 'Путь: ' . $configPath
+    ], JSON_UNESCAPED_UNICODE);
     exit;
 }
+
+// Проверяем, что файл читаемый
+if (!is_readable($configPath)) {
+    error_log("[TELEGRAM_CONFIG] Файл не читаемый: " . $configPath);
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'Файл конфигурации недоступен для чтения'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 $config = include $configPath;
+
+// Проверяем структуру конфига
+if (!is_array($config)) {
+    error_log("[TELEGRAM_CONFIG] Конфиг не является массивом");
+    http_response_code(500);
+    echo json_encode(['status' => 'error', 'message' => 'Неверный формат конфигурации'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 $token  = $config['TELEGRAM_TOKEN'] ?? '';
 $chatId = $config['CHAT_ID'] ?? '';
+
 if ($token === '' || $chatId === '') {
+    error_log("[TELEGRAM_CONFIG] Пустые TOKEN или CHAT_ID. TOKEN: " . (empty($token) ? 'пустой' : 'есть') . ", CHAT_ID: " . (empty($chatId) ? 'пустой' : 'есть'));
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Отсутствуют TELEGRAM_TOKEN/CHAT_ID'], JSON_UNESCAPED_UNICODE);
     exit;
