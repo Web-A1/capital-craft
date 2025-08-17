@@ -32,7 +32,7 @@ if (header) {
     lastScrollY = currentScrollY;
   };
 
-  window.addEventListener('scroll', onScroll);
+  window.addEventListener('scroll', onScroll, { passive: true });
 
   window.headerControl = {
     freeze() {

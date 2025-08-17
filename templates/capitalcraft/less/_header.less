@@ -307,6 +307,11 @@ body.menu-open {
     .media(mobile, {
     // Показываем элемент но скрываем через height и max-height
     display: block;
+    
+    // Скрытие для скринридеров
+    &[aria-hidden="true"] {
+      visibility: hidden;
+    }
     position: fixed;
     top: 76px; // ВСЕГДА под header
     left: 0;

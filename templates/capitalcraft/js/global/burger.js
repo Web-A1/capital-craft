@@ -6,11 +6,20 @@ export const initBurger = () => {
   const mobileNav = document.querySelector('.mobile-nav');
   
   if (!burger || !header || !mobileNav) return;
+  
+  // Сохраняем элемент, который имел фокус до открытия меню
+  let previouslyFocusedElement = null;
 
   const closeMenu = () => {
     burger.classList.remove('active');
     burger.setAttribute('aria-expanded', 'false');
     document.body.classList.remove('menu-open');
+    
+    // Управление доступностью
+    mobileNav.setAttribute('aria-hidden', 'true');
+    
+    // Возвращаем фокус на кнопку бургера
+    burger.focus();
     
     // Восстанавливаем реакцию хедера на скролл после закрытия меню
     if (window.headerControl) {
@@ -24,6 +33,18 @@ export const initBurger = () => {
     burger.classList.add('active');
     burger.setAttribute('aria-expanded', 'true');
     document.body.classList.add('menu-open');
+    
+    // Управление доступностью
+    mobileNav.setAttribute('aria-hidden', 'false');
+    
+    // Сохраняем текущий фокус
+    previouslyFocusedElement = document.activeElement;
+    
+    // Переводим фокус на первый пункт меню
+    const firstMenuItem = mobileNav.querySelector('a');
+    if (firstMenuItem) {
+      firstMenuItem.focus();
+    }
     
     // Временно блокируем реакцию хедера на скролл при открытии меню
     if (window.headerControl) {
@@ -40,10 +61,18 @@ export const initBurger = () => {
       openMenu();
     }
   });
+  
+  // Обработка клавиши Escape для закрытия меню
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
+      closeMenu();
+    }
+  });
 
-  // Закрытие при клике на ссылку меню
-  const navLinks = mobileNav.querySelectorAll('a');
-  navLinks.forEach((link) => {
-    link.addEventListener('click', closeMenu);
+  // Закрытие при клике на ссылку меню (делегирование событий)
+  mobileNav.addEventListener('click', (e) => {
+    if (e.target.matches('a')) {
+      closeMenu();
+    }
   });
 };
