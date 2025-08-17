@@ -355,25 +355,25 @@ body.menu-open {
     margin-right: 20px;
   }
   .mobile-nav .mod-menu li:nth-child(1) {
-    transition-delay: 0.15s;
+    transition-delay: 0.56s;
   }
   .mobile-nav .mod-menu li:nth-child(2) {
-    transition-delay: 0.12s;
+    transition-delay: 0.48s;
   }
   .mobile-nav .mod-menu li:nth-child(3) {
-    transition-delay: 0.09s;
+    transition-delay: 0.4s;
   }
   .mobile-nav .mod-menu li:nth-child(4) {
-    transition-delay: 0.06s;
+    transition-delay: 0.32s;
   }
   .mobile-nav .mod-menu li:nth-child(5) {
-    transition-delay: 0.03s;
+    transition-delay: 0.24s;
   }
   .mobile-nav .mod-menu li:nth-child(6) {
-    transition-delay: 0.02s;
+    transition-delay: 0.16s;
   }
   .mobile-nav .mod-menu li:nth-child(7) {
-    transition-delay: 0.01s;
+    transition-delay: 0.08s;
   }
   .mobile-nav .mod-menu li a {
     display: block;
@@ -404,25 +404,25 @@ body.menu-open {
     transform: translateY(0);
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(1) {
-    transition-delay: 0.01s;
+    transition-delay: 0.08s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(2) {
-    transition-delay: 0.02s;
+    transition-delay: 0.16s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(3) {
-    transition-delay: 0.03s;
+    transition-delay: 0.24s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(4) {
-    transition-delay: 0.06s;
+    transition-delay: 0.32s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(5) {
-    transition-delay: 0.09s;
+    transition-delay: 0.4s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(6) {
-    transition-delay: 0.12s;
+    transition-delay: 0.48s;
   }
   body.menu-open .mobile-nav .mod-menu li:nth-child(7) {
-    transition-delay: 0.15s;
+    transition-delay: 0.56s;
   }
 }
 @media (prefers-reduced-motion: reduce) {
