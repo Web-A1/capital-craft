@@ -231,10 +231,10 @@
     transform: translateX(-50%);
   }
 }
-.faq {
+.faq-home {
   padding: 60px 0;
 }
-.faq__inner {
+.faq-home__inner {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -243,13 +243,13 @@
   gap: 120px;
   padding: 0;
 }
-.faq__inner .faq__content {
+.faq-home__inner .faq-home__content {
   order: 2;
 }
-.faq__inner .faq__btn {
+.faq-home__inner .faq-home__btn {
   order: 3;
 }
-.faq__inner .faq__swiper {
+.faq-home__inner .faq-home__swiper {
   order: 1;
   flex: 1 1 0;
   width: 100%;
@@ -257,25 +257,25 @@
   padding-left: 60px;
   box-sizing: border-box;
 }
-.faq__inner .faq__swiper .swiper-wrapper {
+.faq-home__inner .faq-home__swiper .swiper-wrapper {
   height: 100%;
 }
 @media only screen and (max-width: 767px) {
-  .faq__inner .faq__swiper .swiper-wrapper {
+  .faq-home__inner .faq-home__swiper .swiper-wrapper {
     height: auto;
     padding-bottom: 20px;
   }
 }
-.faq__inner .faq__swiper .swiper-slide {
+.faq-home__inner .faq-home__swiper .swiper-slide {
   height: 100%;
 }
 @media only screen and (max-width: 767px) {
-  .faq__inner .faq__swiper .swiper-slide {
+  .faq-home__inner .faq-home__swiper .swiper-slide {
     height: auto;
   }
 }
 @media only screen and (max-width: 767px) {
-  .faq__inner .faq__swiper {
+  .faq-home__inner .faq-home__swiper {
     flex: 0 0 auto;
     width: 100%;
     padding: 0;
@@ -285,7 +285,7 @@
     border: 1px solid #000000;
   }
 }
-.faq__inner::before {
+.faq-home__inner::before {
   content: '';
   position: absolute;
   top: 0;
@@ -296,7 +296,7 @@
   transform: translateX(-50%);
 }
 @media only screen and (max-width: 767px) {
-  .faq__inner {
+  .faq-home__inner {
     flex-direction: column;
     gap: 40px;
     padding: 0 20px;
@@ -304,30 +304,30 @@
     align-items: stretch;
     position: static;
   }
-  .faq__inner .faq__content {
+  .faq-home__inner .faq-home__content {
     order: 1;
   }
-  .faq__inner .faq__swiper {
+  .faq-home__inner .faq-home__swiper {
     order: 2;
   }
-  .faq__inner .faq__btn {
+  .faq-home__inner .faq-home__btn {
     order: 3;
   }
-  .faq__inner::before {
+  .faq-home__inner::before {
     display: none;
   }
 }
-.faq__pagination {
+.faq-home__pagination {
   left: 0px !important;
 }
-.faq__pagination .swiper-pagination-bullet {
+.faq-home__pagination .swiper-pagination-bullet {
   background: #000000;
   opacity: 0.3;
 }
-.faq__pagination .swiper-pagination-bullet-active {
+.faq-home__pagination .swiper-pagination-bullet-active {
   opacity: 1;
 }
-.faq__slide ul {
+.faq-home__slide ul {
   margin: 0;
   padding: 0;
   display: flex;
@@ -336,14 +336,14 @@
   height: 100%;
 }
 @media only screen and (max-width: 767px) {
-  .faq__slide ul {
+  .faq-home__slide ul {
     gap: 20px;
     padding: 20px;
     height: auto;
     justify-content: flex-start;
   }
 }
-.faq__item {
+.faq-home__item {
   list-style: none;
   font-family: 'Golos Text', sans-serif;
   font-size: 22px;
@@ -352,35 +352,35 @@
   font-style: italic;
 }
 @media only screen and (max-width: 767px) {
-  .faq__item {
+  .faq-home__item {
     font-size: 18px;
   }
 }
-.faq__content {
+.faq-home__content {
   display: flex;
   flex-direction: column;
   gap: 30px;
   flex: 1 1 0;
 }
 @media only screen and (max-width: 767px) {
-  .faq__content {
+  .faq-home__content {
     width: 100%;
     max-width: 100%;
   }
 }
-.faq__title-block {
+.faq-home__title-block {
   display: flex;
   flex-direction: column;
   gap: 5px;
 }
-.faq__subtitle {
+.faq-home__subtitle {
   color: #333333;
   font-family: 'Golos Text', sans-serif;
   font-size: 12.8px;
   letter-spacing: 0.175em;
   text-transform: uppercase;
 }
-.faq__title {
+.faq-home__title {
   color: #000000;
   font-family: 'Onest', sans-serif;
   font-size: 28.8px;
@@ -389,15 +389,15 @@
   max-width: 363px;
 }
 @media only screen and (max-width: 767px) {
-  .faq__btn--desktop {
+  .faq-home__btn--desktop {
     display: none;
   }
 }
-.faq__btn--mobile {
+.faq-home__btn--mobile {
   display: none;
 }
 @media only screen and (max-width: 767px) {
-  .faq__btn--mobile {
+  .faq-home__btn--mobile {
     display: inline-flex;
   }
 }
