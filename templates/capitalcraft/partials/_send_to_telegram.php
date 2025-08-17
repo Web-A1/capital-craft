@@ -32,7 +32,7 @@ $name    = $clean($name);
 $message = $clean($message);
 
 // 3) Ключи
-$configPath = dirname(__DIR__) . '/telegram_config.php';
+$configPath = __DIR__ . '/../telegram_config.php';
 
 // Подробная диагностика для отладки
 if (!is_file($configPath)) {
