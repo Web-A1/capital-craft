@@ -17,6 +17,10 @@ jobs:
           key: ${{ secrets.BEGET_SSH_KEY }}
           envs: TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID
           script: |
+            # Сохраняем секреты в переменные на сервере
+            export TELEGRAM_BOT_TOKEN="${TELEGRAM_BOT_TOKEN}"
+            export TELEGRAM_CHAT_ID="${TELEGRAM_CHAT_ID}"
+            
             # Запускаем основной скрипт деплоя
             bash ~/deploy_dev.sh
             
@@ -24,20 +28,48 @@ jobs:
             PROJECT_PATH="$HOME/div.capital-craft.ru/public_html"
             CONFIG_PATH="${PROJECT_PATH}/telegram_config.php"
             
-            # Проверка существования проекта
+            # Отладочная информация о путях
+            echo "Current working directory: $(pwd)"
+            echo "Home directory: $HOME"
+            echo "Looking for project at: ${PROJECT_PATH}"
+            echo "Contents of home directory:"
+            ls -la $HOME/
+            echo "Contents of div.capital-craft.ru (if exists):"
+            ls -la $HOME/div.capital-craft.ru/ 2>/dev/null || echo "div.capital-craft.ru directory not found"
+            
+            # Проверяем, что директория проекта существует
             if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
-              echo "ERROR: Project directory not found at ${PROJECT_PATH}"
-              exit 1
+              echo "ERROR: Project directory ${PROJECT_PATH} not found!"
+              echo "Trying alternative paths..."
+              
+              # Возможные альтернативные пути на Beget
+              for alt_path in "$HOME/div.capital-craft.ru/public_html" \
+                              "$HOME/capital-craft.ru/public_html" \
+                              "$HOME/public_html" \
+                              "$(pwd)"; do
+                if [ -d "${alt_path}/templates/capitalcraft" ]; then
+                  echo "Found project at: ${alt_path}"
+                  PROJECT_PATH="${alt_path}"
+                  CONFIG_PATH="${PROJECT_PATH}/telegram_config.php"
+                  break
+                fi
+              done
+              
+              if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
+                echo "ERROR: Could not find project directory anywhere!"
+                exit 1
+              fi
             fi
             
-            # Создаем telegram_config.php с секретами
+            # Создаем telegram_config.php с актуальными секретами
             echo "Creating telegram_config.php..."
-            cat > "${CONFIG_PATH}" << EOF
-<?php
-return [
-    'TELEGRAM_TOKEN' => '${TELEGRAM_BOT_TOKEN}',
-    'CHAT_ID' => '${TELEGRAM_CHAT_ID}'
-];
-EOF
+            echo '<?php' > "${CONFIG_PATH}"
+            echo 'return [' >> "${CONFIG_PATH}"
+            echo "    'TELEGRAM_TOKEN' => '${TELEGRAM_BOT_TOKEN}'," >> "${CONFIG_PATH}"
+            echo "    'CHAT_ID' => '${TELEGRAM_CHAT_ID}'" >> "${CONFIG_PATH}"
+            echo '];' >> "${CONFIG_PATH}"
+            
+            # Устанавливаем правильные права доступа
             chmod 644 "${CONFIG_PATH}"
-            echo "telegram_config.php created successfully"
+            
+            echo "telegram_config.php created successfully at ${CONFIG_PATH}"
