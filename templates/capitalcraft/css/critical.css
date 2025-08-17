@@ -277,13 +277,13 @@
   transform: translateY(0);
 }
 .site-header .header__inner .header-right .burger span:first-child {
-  transform: translateY(-13px);
+  transform: translateY(-10px);
 }
 .site-header .header__inner .header-right .burger span:nth-child(2) {
   transform: translateY(0px);
 }
 .site-header .header__inner .header-right .burger span:last-child {
-  transform: translateY(13px);
+  transform: translateY(10px);
 }
 body.menu-open {
   overflow: hidden;
