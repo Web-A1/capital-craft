@@ -61,12 +61,6 @@ jobs:
               fi
             fi
             
-            # Удаляем старые файлы telegram_config.php чтобы не копился мусор
-            echo "Cleaning up old telegram_config.php files..."
-            rm -f "${PROJECT_PATH}/telegram_config.php"
-            rm -f "${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
-            rm -f "${PROJECT_PATH}/templates/telegram_config.php"
-            
             # Создаем telegram_config.php с актуальными секретами
             echo "Creating telegram_config.php..."
             echo '<?php' > "${CONFIG_PATH}"
