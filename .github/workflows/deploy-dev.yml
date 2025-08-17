@@ -24,8 +24,8 @@ jobs:
             # Запускаем основной скрипт деплоя
             bash ~/deploy_dev.sh
             
-            # Определяем путь к проекту (исправляем для сервера Beget)
-            PROJECT_PATH="$HOME/domains/tdsta.beget.tech/public_html"
+            # Определяем путь к проекту (точный путь для dev ветки на Beget)
+            PROJECT_PATH="$HOME/div.capital-craft.ru/public_html"
             CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
             
             # Отладочная информация о путях
@@ -34,8 +34,8 @@ jobs:
             echo "Looking for project at: ${PROJECT_PATH}"
             echo "Contents of home directory:"
             ls -la $HOME/
-            echo "Contents of domains (if exists):"
-            ls -la $HOME/domains/ 2>/dev/null || echo "domains directory not found"
+            echo "Contents of div.capital-craft.ru (if exists):"
+            ls -la $HOME/div.capital-craft.ru/ 2>/dev/null || echo "div.capital-craft.ru directory not found"
             
             # Проверяем, что директория существует
             if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
@@ -43,8 +43,8 @@ jobs:
               echo "Trying alternative paths..."
               
               # Возможные альтернативные пути на Beget
-              for alt_path in "/home/tdsta/domains/tdsta.beget.tech/public_html" \
-                              "/home/tdsta/public_html" \
+              for alt_path in "$HOME/div.capital-craft.ru/public_html" \
+                              "$HOME/capital-craft.ru/public_html" \
                               "$HOME/public_html" \
                               "$(pwd)"; do
                 if [ -d "${alt_path}/templates/capitalcraft" ]; then
