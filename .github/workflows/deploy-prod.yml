@@ -8,12 +8,51 @@ jobs:
     steps:
       - name: SSH to Beget and deploy PROD
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          PROD_PROJECT_PATH: ${{ secrets.PROD_PROJECT_PATH }}
         with:
           host: tdsta.beget.tech
           username: tdsta
           port: 22
           key: ${{ secrets.BEGET_SSH_KEY }}
-          script: bash ~/deploy.sh
+          envs: TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID,PROD_PROJECT_PATH
+          script: |
+            set -e
+            # Основной деплой
+            bash ~/deploy.sh
+
+            # Определяем путь проекта на проде
+            if [ -n "$PROD_PROJECT_PATH" ]; then
+              PROJECT_PATH="$PROD_PROJECT_PATH"
+            else
+              # Пытаемся угадать путь для прод-домена
+              CANDIDATE=$(find "$HOME" -type d -path "*/capital-craft.ru/public_html" -print -quit)
+              if [ -n "$CANDIDATE" ]; then
+                PROJECT_PATH="$CANDIDATE"
+              else
+                # Резервный вариант: ищем шаблон без каталога dev (div.)
+                CANDIDATE=$(find "$HOME" -type d -path "*/public_html/templates/capitalcraft" -not -path "*/div.*" -print -quit)
+                if [ -n "$CANDIDATE" ]; then
+                  PROJECT_PATH="${CANDIDATE%/templates/capitalcraft}"
+                else
+                  echo "Project path not found. Set PROD_PROJECT_PATH secret." >&2
+                  exit 1
+                fi
+              fi
+            fi
+
+            CONFIG_PATH="$PROJECT_PATH/templates/capitalcraft/telegram_config.php"
+            {
+              echo '<?php'
+              echo 'return ['
+              echo "    'TELEGRAM_TOKEN' => '${TELEGRAM_BOT_TOKEN}',"
+              echo "    'CHAT_ID'        => '${TELEGRAM_CHAT_ID}',"
+              echo '];'
+            } > "$CONFIG_PATH"
+            chmod 644 "$CONFIG_PATH"
+            echo "telegram_config.php created at $CONFIG_PATH"
           host_verification: false
           timeout: 60s
           command_timeout: 10m
