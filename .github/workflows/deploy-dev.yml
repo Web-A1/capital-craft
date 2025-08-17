@@ -20,9 +20,9 @@ jobs:
             # Запускаем основной скрипт деплоя
             bash ~/deploy_dev.sh
             
-            # Создаем telegram_config.php
+            # Создаем telegram_config.php в папке шаблона (где PHP его ищет)
             PROJECT_PATH="$HOME/div.capital-craft.ru/public_html"
-            CONFIG_PATH="${PROJECT_PATH}/telegram_config.php"
+            CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
             
             echo '<?php' > "${CONFIG_PATH}"
             echo 'return [' >> "${CONFIG_PATH}"
