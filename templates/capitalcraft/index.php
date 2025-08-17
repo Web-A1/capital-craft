@@ -28,6 +28,8 @@ if ($isFaq) {
   <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;700&display=swap" rel="stylesheet">
 
+  <!-- Базовые стили -->
+  <link rel="stylesheet" href="templates/capitalcraft/css/base.css">
   <!-- Критические стили -->
   <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
 

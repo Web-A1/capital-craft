@@ -17,6 +17,6 @@ export const initScrollTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  window.addEventListener('scroll', toggleVisibility);
+  window.addEventListener('scroll', toggleVisibility, { passive: true });
   toggleVisibility();
 };

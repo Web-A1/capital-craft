@@ -40,7 +40,7 @@ a {
 }
 
 section,
-.frame {
+.frame:not(.site-header) {
   position: relative;
 }
 
@@ -77,7 +77,7 @@ section,
   });
 }
 
-.section-with-divider {
+.section-with-divider:not(.site-header) {
   position: relative;
   &::after {
     content: '';

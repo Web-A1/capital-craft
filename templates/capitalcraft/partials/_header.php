@@ -42,10 +42,11 @@
             </button>
         </div>
     </div>
+
+    <!-- Мобильное меню ВНЕ header__inner для правильного позиционирования -->
+    <div class="mobile-nav" id="mobile-nav">
+        <nav class="mobile-nav__menu">
+            <jdoc:include type="modules" name="mobile-menu" style="none" />
+        </nav>
+    </div>
 </header>
-<div id="mobile-nav" class="mobile-nav">
-    <button type="button" class="mobile-nav__close" aria-label="Закрыть меню"></button>
-    <nav class="mobile-nav__menu">
-        <jdoc:include type="modules" name="mobile-menu" style="none" />
-    </nav>
-</div>

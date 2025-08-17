@@ -2,33 +2,80 @@
 
 export const initBurger = () => {
   const burger = document.querySelector('.burger');
-  const mobileNav = document.getElementById('mobile-nav');
-  if (!burger || !mobileNav) return;
+  const header = document.querySelector('.site-header');
+  const mobileNav = document.querySelector('.mobile-nav');
+  
+  if (!burger || !header || !mobileNav) return;
+  
+  // Сохраняем элемент, который имел фокус до открытия меню
+  let previouslyFocusedElement = null;
+  
+  // Инициализация: меню скрыто для скринридеров по умолчанию
+  mobileNav.setAttribute('aria-hidden', 'true');
 
   const closeMenu = () => {
     burger.classList.remove('active');
     burger.setAttribute('aria-expanded', 'false');
-    mobileNav.classList.remove('open');
     document.body.classList.remove('menu-open');
+    
+    // Управление доступностью
+    mobileNav.setAttribute('aria-hidden', 'true');
+    
+    // Возвращаем фокус на кнопку бургера
+    burger.focus();
+    
+    // Восстанавливаем реакцию хедера на скролл после закрытия меню
+    if (window.headerControl) {
+      setTimeout(() => {
+        window.headerControl.unfreeze();
+      }, 100);
+    }
+  };
+
+  const openMenu = () => {
+    burger.classList.add('active');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.classList.add('menu-open');
+    
+    // Управление доступностью
+    mobileNav.setAttribute('aria-hidden', 'false');
+    
+    // Сохраняем текущий фокус
+    previouslyFocusedElement = document.activeElement;
+    
+    // Переводим фокус на первый пункт меню
+    const firstMenuItem = mobileNav.querySelector('a');
+    if (firstMenuItem) {
+      firstMenuItem.focus();
+    }
+    
+    // Временно блокируем реакцию хедера на скролл при открытии меню
+    if (window.headerControl) {
+      window.headerControl.freeze();
+    }
   };
 
   burger.addEventListener('click', () => {
-    const isActive = burger.classList.toggle('active');
-    burger.setAttribute('aria-expanded', isActive);
-    mobileNav.classList.toggle('open');
-    document.body.classList.toggle('menu-open');
-  });
-
-  const navLinks = mobileNav.querySelectorAll('a');
-  navLinks.forEach((link) => {
-    link.addEventListener('click', closeMenu);
-  });
-
-  const closeBtn = mobileNav.querySelector('.mobile-nav__close');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', (e) => {
-      e.preventDefault();
+    const isMenuOpen = document.body.classList.contains('menu-open');
+    
+    if (isMenuOpen) {
       closeMenu();
-    });
-  }
+    } else {
+      openMenu();
+    }
+  });
+  
+  // Обработка клавиши Escape для закрытия меню
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
+      closeMenu();
+    }
+  });
+
+  // Закрытие при клике на ссылку меню (делегирование событий)
+  mobileNav.addEventListener('click', (e) => {
+    if (e.target.matches('a')) {
+      closeMenu();
+    }
+  });
 };
