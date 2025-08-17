@@ -241,15 +241,15 @@
           transform: translateY(0);
 
           &:first-child {
-            transform: translateY(0); // верхний край
+            transform: translateY(-13px); // верхний край
           }
 
           &:nth-child(2) {
-            transform: translateY(13px); // центр (26px / 2)
+            transform: translateY(0px); // центр (26px / 2)
           }
 
           &:last-child {
-            transform: translateY(26px); // нижний край
+            transform: translateY(13px); // нижний край
           }
         }
       }
@@ -391,7 +391,7 @@ body.menu-open .mobile-nav {
     // Анимируем height, max-height и opacity
     
     &__menu {
-      padding: 20px; // упрощенные отступы
+      padding: 0 20px; // упрощенные отступы
     }
     
     .mod-menu li {
