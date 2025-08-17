@@ -334,9 +334,6 @@ body.menu-open {
     background: transparent;
     transition: height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), max-height 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99), opacity 0.25s cubic-bezier(0.4, 0.01, 0.165, 0.99);
   }
-  .mobile-nav[aria-hidden="true"] {
-    visibility: hidden;
-  }
   .mobile-nav__menu {
     position: relative;
     display: block;

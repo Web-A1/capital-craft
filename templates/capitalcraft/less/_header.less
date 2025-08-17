@@ -308,10 +308,8 @@ body.menu-open {
     // Показываем элемент но скрываем через height и max-height
     display: block;
     
-    // Скрытие для скринридеров
-    &[aria-hidden="true"] {
-      visibility: hidden;
-    }
+    // aria-hidden управляет только доступностью, не видимостью
+    // Видимость контролируется через height/opacity/pointer-events
     position: fixed;
     top: 76px; // ВСЕГДА под header
     left: 0;

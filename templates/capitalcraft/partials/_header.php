@@ -44,7 +44,7 @@
     </div>
 
     <!-- Мобильное меню ВНЕ header__inner для правильного позиционирования -->
-    <div class="mobile-nav" id="mobile-nav" aria-hidden="true">
+    <div class="mobile-nav" id="mobile-nav">
         <nav class="mobile-nav__menu">
             <jdoc:include type="modules" name="mobile-menu" style="none" />
         </nav>

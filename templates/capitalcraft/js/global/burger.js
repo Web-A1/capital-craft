@@ -9,6 +9,9 @@ export const initBurger = () => {
   
   // Сохраняем элемент, который имел фокус до открытия меню
   let previouslyFocusedElement = null;
+  
+  // Инициализация: меню скрыто для скринридеров по умолчанию
+  mobileNav.setAttribute('aria-hidden', 'true');
 
   const closeMenu = () => {
     burger.classList.remove('active');
