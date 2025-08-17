@@ -26,7 +26,7 @@ jobs:
             
             # Определяем путь к проекту (точный путь для dev ветки на Beget)
             PROJECT_PATH="$HOME/div.capital-craft.ru/public_html"
-            CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
+            CONFIG_PATH="${PROJECT_PATH}/telegram_config.php"
             
             # Отладочная информация о путях
             echo "Current working directory: $(pwd)"
@@ -37,9 +37,9 @@ jobs:
             echo "Contents of div.capital-craft.ru (if exists):"
             ls -la $HOME/div.capital-craft.ru/ 2>/dev/null || echo "div.capital-craft.ru directory not found"
             
-            # Проверяем, что директория существует
+            # Проверяем, что директория проекта существует
             if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
-              echo "ERROR: Directory ${PROJECT_PATH}/templates/capitalcraft not found!"
+              echo "ERROR: Project directory ${PROJECT_PATH} not found!"
               echo "Trying alternative paths..."
               
               # Возможные альтернативные пути на Beget
@@ -50,7 +50,7 @@ jobs:
                 if [ -d "${alt_path}/templates/capitalcraft" ]; then
                   echo "Found project at: ${alt_path}"
                   PROJECT_PATH="${alt_path}"
-                  CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
+                  CONFIG_PATH="${PROJECT_PATH}/telegram_config.php"
                   break
                 fi
               done
