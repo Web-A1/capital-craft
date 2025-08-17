@@ -22,7 +22,7 @@ jobs:
             
             # Определяем путь к проекту (точный путь для dev ветки на Beget)
             PROJECT_PATH="$HOME/div.capital-craft.ru/public_html"
-            CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
+            CONFIG_PATH="${PROJECT_PATH}/telegram_config.php"
             
             # Проверка существования проекта
             if [ ! -d "${PROJECT_PATH}/templates/capitalcraft" ]; then
