@@ -9,6 +9,11 @@
     "less:faq": "lessc templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
     "less:base": "lessc templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
     "less:all": "npm-run-all less:base less:critical less:home less:faq",
+    "less:base:prod": "lessc -x templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
+    "less:critical:prod": "lessc -x templates/capitalcraft/less/critical.less templates/capitalcraft/css/critical.css",
+    "less:home:prod": "lessc -x templates/capitalcraft/less/home.less templates/capitalcraft/css/home.css",
+    "less:faq:prod": "lessc -x templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
+    "less:all:prod": "npm-run-all less:base:prod less:critical:prod less:home:prod less:faq:prod",
     "less:watch": "SHELL=/bin/bash chokidar \"templates/capitalcraft/less/**/*.less\" -c \"npm run less:all\" --initial",
     "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --outfile=templates/capitalcraft/js/global/bundle.js",
     "test": "npm run less:all"
