@@ -18,7 +18,7 @@
                     <!-- Content items -->
                     <article class="philosophy-item philosophy-item--1">
                         <div class="philosophy-item__icon" aria-hidden="true">
-                            <img src="images/home/ph_item1.svg" alt="Уверенность" class="philosophy-item__svg">
+                            <img src="/templates/capitalcraft/images/home/ph_item1.svg" alt="Уверенность" class="philosophy-item__svg">
                         </div>
                         <div class="philosophy-item__content">
                             <h3 class="philosophy-item__title">уверенность</h3>
@@ -28,7 +28,7 @@
 
                     <article class="philosophy-item philosophy-item--2">
                         <div class="philosophy-item__icon" aria-hidden="true">
-                            <img src="images/home/ph_item2.svg" alt="Ответственность" class="philosophy-item__svg">
+                            <img src="/templates/capitalcraft/images/home/ph_item2.svg" alt="Ответственность" class="philosophy-item__svg">
                         </div>
                         <div class="philosophy-item__content">
                             <h3 class="philosophy-item__title">ОТВЕТСТВЕННОСТЬ</h3>
@@ -38,7 +38,7 @@
 
                     <article class="philosophy-item philosophy-item--3">
                         <div class="philosophy-item__icon" aria-hidden="true">
-                            <img src="images/home/ph_item3.svg" alt="Доверие" class="philosophy-item__svg">
+                            <img src="/templates/capitalcraft/images/home/ph_item3.svg" alt="Доверие" class="philosophy-item__svg">
                         </div>
                         <div class="philosophy-item__content">
                             <h3 class="philosophy-item__title">доверие</h3>
@@ -48,7 +48,7 @@
 
                     <article class="philosophy-item philosophy-item--4">
                         <div class="philosophy-item__icon" aria-hidden="true">
-                            <img src="images/home/ph_item4.svg" alt="Стратегия" class="philosophy-item__svg">
+                            <img src="/templates/capitalcraft/images/home/ph_item4.svg" alt="Стратегия" class="philosophy-item__svg">
                         </div>
                         <div class="philosophy-item__content">
                             <h3 class="philosophy-item__title">стратегия</h3>
