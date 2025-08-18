@@ -622,7 +622,7 @@
 @media only screen and (max-width: 767px) {
   .philosophy__wrapper {
     flex-direction: column;
-    gap: 40px;
+    gap: 30px;
   }
 }
 .philosophy__left {
@@ -687,37 +687,31 @@
   gap: 30px;
   position: relative;
 }
-.philosophy__grid .philosophy__line--top {
-  grid-area: line-top;
+.philosophy__grid .philosophy__line--top,
+.philosophy__grid .philosophy__line--bottom {
   height: auto;
   width: 1px;
   background: #000000;
   justify-self: stretch;
-  z-index: 1;
+}
+.philosophy__grid .philosophy__line--top {
+  grid-area: line-top;
 }
 .philosophy__grid .philosophy__line--bottom {
   grid-area: line-bottom;
-  height: auto;
-  width: 1px;
+}
+.philosophy__grid .philosophy__line--left,
+.philosophy__grid .philosophy__line--right {
+  width: auto;
+  height: 1px;
   background: #000000;
-  justify-self: stretch;
-  z-index: 1;
+  align-self: stretch;
 }
 .philosophy__grid .philosophy__line--left {
   grid-area: line-left;
-  width: auto;
-  height: 1px;
-  background: #000000;
-  align-self: stretch;
-  z-index: 1;
 }
 .philosophy__grid .philosophy__line--right {
   grid-area: line-right;
-  width: auto;
-  height: 1px;
-  background: #000000;
-  align-self: stretch;
-  z-index: 1;
 }
 .philosophy__grid .philosophy-item--1 {
   grid-area: item1;
@@ -813,13 +807,54 @@
   color: #333333;
 }
 @media only screen and (max-width: 767px) {
+  .philosophy {
+    padding: 40px 20px;
+    gap: 30px;
+  }
+  .philosophy__wrapper {
+    flex-direction: column;
+    gap: 30px;
+  }
+  .philosophy__left {
+    max-width: none;
+    gap: 16px;
+  }
+  .philosophy__title {
+    font-size: 26px;
+    line-height: 120%;
+  }
+  .philosophy__desc {
+    text-align: left;
+    line-height: 150%;
+  }
+  .philosophy__grid {
+    grid-template-areas: "item1" "item2" "item3" "item4";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 30px;
+  }
+  .philosophy__grid .philosophy__line,
+  .philosophy__grid .center-gap {
+    display: none;
+  }
+  .philosophy-item {
+    gap: 30px;
+    padding: 12px 0;
+    padding: 0;
+  }
+  .philosophy-item__icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+  .philosophy-item__content {
+    gap: 5px;
+  }
+  .philosophy-item__title {
+    font-size: 22px;
+  }
   .philosophy-item__text {
     font-size: 15px;
     line-height: 150%;
-  }
-}
-@media only screen and (max-width: 767px) {
-  .philosophy-item {
-    padding: 0;
   }
 }
