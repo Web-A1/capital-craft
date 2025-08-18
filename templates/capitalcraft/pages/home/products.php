@@ -1,4 +1,4 @@
-<section class="products" id="products">
+<section class="products frame section-with-divider" id="products">
     <div class="products__container">
         <div class="products__wrapper">
             <div class="products__left">
@@ -17,7 +17,7 @@
             <div class="products__right">
                 <div class="products__item">
                     <div class="products__number">
-                        <img src="/templates/capitalcraft/images/home/number1.svg" alt="01" loading="lazy">
+                        <img src="/templates/capitalcraft/images/home/number_1.svg" alt="01" loading="lazy">
                     </div>
                     <div class="products__content">
                         <div class="products__item-title">
@@ -30,7 +30,7 @@
                 </div>
                 <div class="products__item">
                     <div class="products__number">
-                        <img src="/templates/capitalcraft/images/home/number2.svg" alt="02" loading="lazy">
+                        <img src="/templates/capitalcraft/images/home/number_2.svg" alt="02" loading="lazy">
                     </div>
                     <div class="products__content">
                         <div class="products__item-title">
@@ -43,7 +43,7 @@
                 </div>
                 <div class="products__item">
                     <div class="products__number">
-                        <img src="/templates/capitalcraft/images/home/number3.svg" alt="03" loading="lazy">
+                        <img src="/templates/capitalcraft/images/home/number_3.svg" alt="03" loading="lazy">
                     </div>
                     <div class="products__content">
                         <div class="products__item-title">
