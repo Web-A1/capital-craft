@@ -735,20 +735,41 @@
   content: '';
   position: absolute;
   top: 0;
+  left: 50%;
+  width: 1px;
+  background: #000000;
+  transform: translateX(-0.5px);
+  height: calc(50% - 12px);
+}
+.philosophy__grid::after {
+  content: '';
+  position: absolute;
   bottom: 0;
   left: 50%;
   width: 1px;
   background: #000000;
   transform: translateX(-0.5px);
+  height: calc(50% - 12px);
 }
-.philosophy__grid::after {
+.philosophy__grid .philosophy-item:nth-child(1)::after {
   content: '';
   position: absolute;
-  top: calc(50% - 0.5px);
+  top: 50%;
   left: 0;
-  right: 0;
+  width: calc(50% - 10.5px);
   height: 1px;
-  background: linear-gradient(#000000, #000000) left / 278px 1px no-repeat, linear-gradient(#000000, #000000) right / 350px 1px no-repeat;
+  background: #000000;
+  transform: translateY(-0.5px);
+}
+.philosophy__grid .philosophy-item:nth-child(2)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: calc(50% - 10.5px);
+  height: 1px;
+  background: #000000;
+  transform: translateY(-0.5px);
 }
 @media only screen and (max-width: 767px) {
   .philosophy__grid {
@@ -756,7 +777,8 @@
     row-gap: 30px;
   }
   .philosophy__grid::before,
-  .philosophy__grid::after {
+  .philosophy__grid::after,
+  .philosophy__grid .philosophy-item::after {
     display: none;
   }
 }

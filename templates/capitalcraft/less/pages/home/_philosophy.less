@@ -132,33 +132,58 @@
   &__grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 21px; // соответствие межкарточному gap
+    column-gap: 21px;
     row-gap: 24px;
     position: relative;
 
-    // Вертикальная разделительная линия по центру (только десктоп)
+    // Вертикальная линия - верхняя часть (от верха до центра)
     &::before {
       content: '';
       position: absolute;
       top: 0;
+      left: 50%;
+      width: 1px;
+      background: @color-heading;
+      transform: translateX(-0.5px);
+      // Высота = максимальная высота из (item1, item2)
+      height: calc(50% - 12px); // половина высоты минус половина row-gap
+    }
+
+    // Вертикальная линия - нижняя часть (от центра до низа)
+    &::after {
+      content: '';
+      position: absolute;
       bottom: 0;
       left: 50%;
       width: 1px;
       background: @color-heading;
       transform: translateX(-0.5px);
+      // Высота = максимальная высота из (item3, item4)
+      height: calc(50% - 12px); // половина высоты минус половина row-gap
     }
 
-    // Горизонтальная линия из двух частей, как в макете
-    &::after {
+    // Горизонтальная линия - левая часть (от левого края до центра)
+    .philosophy-item:nth-child(1)::after {
       content: '';
       position: absolute;
-      top: calc(50% - 0.5px);
+      top: 50%;
       left: 0;
-      right: 0;
+      width: calc(50% - 10.5px); // половина ширины минус половина column-gap
       height: 1px;
-      background:
-        linear-gradient(@color-heading, @color-heading) left / 278px 1px no-repeat,
-        linear-gradient(@color-heading, @color-heading) right / 350px 1px no-repeat;
+      background: @color-heading;
+      transform: translateY(-0.5px);
+    }
+
+    // Горизонтальная линия - правая часть (от центра до правого края)
+    .philosophy-item:nth-child(2)::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: calc(50% - 10.5px); // половина ширины минус половина column-gap
+      height: 1px;
+      background: @color-heading;
+      transform: translateY(-0.5px);
     }
 
     .media(mobile, {
@@ -166,7 +191,8 @@
       row-gap: 30px;
 
       &::before,
-      &::after { display: none; }
+      &::after,
+      .philosophy-item::after { display: none; }
     });
   }
 }
