@@ -848,20 +848,20 @@
   }
 }
 .philosophy-item:nth-child(1) {
-  padding-left: 60px;
-  padding-top: 60px;
+  padding-right: 60px;
+  padding-bottom: 60px;
 }
 .philosophy-item:nth-child(2) {
-  padding-right: 60px;
-  padding-top: 60px;
-}
-.philosophy-item:nth-child(3) {
   padding-left: 60px;
   padding-bottom: 60px;
 }
-.philosophy-item:nth-child(4) {
+.philosophy-item:nth-child(3) {
+  padding-top: 60px;
   padding-right: 60px;
-  padding-bottom: 60px;
+}
+.philosophy-item:nth-child(4) {
+  padding-top: 60px;
+  padding-left: 60px;
 }
 @media only screen and (max-width: 767px) {
   .philosophy-item {
