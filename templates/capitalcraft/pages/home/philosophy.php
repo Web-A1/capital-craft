@@ -10,10 +10,8 @@
             <div class="philosophy__right">
                 <div class="philosophy__grid">
                     <!-- Grid areas for lines and content -->
-                    <div class="philosophy__line philosophy__line--top"></div>
-                    <div class="philosophy__line philosophy__line--right"></div>
-                    <div class="philosophy__line philosophy__line--bottom"></div>
-                    <div class="philosophy__line philosophy__line--left"></div>
+                    <div class="philosophy__line philosophy__line--vertical"></div>
+                    <div class="philosophy__line philosophy__line--horizontal"></div>
                     
                     <!-- Центральная "дыра" для broken cross -->
                     <div class="center-gap"></div>

@@ -130,63 +130,28 @@
 
   &__grid {
     display: grid;
-    // Создаем сетку 3x3 с центральной "дырой" для broken cross
+    // Создаем сетку 3x3 для broken cross
     grid-template-areas: 
-      "top-left top-left top-right top-right"
-      "left-top item1 center-gap item2"
-      "left-bottom item3 center-gap item4"
-      "bottom-left bottom-left bottom-right bottom-right";
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr 1fr auto;
+      "item1 line-vertical item2"
+      "line-horizontal empty line-horizontal"
+      "item3 line-vertical item4";
+    grid-template-columns: 1fr auto 1fr;  // auto для центральной линии
+    grid-template-rows: auto auto auto;    // auto для центральной линии
     gap: 0;
     position: relative;
 
-    // Линии как отдельные Grid-элементы для broken cross
-    .philosophy__line {
-      background: @color-heading;
-      
-      &--top {
-        grid-area: top-left; // Верхняя линия: левый сегмент
-        height: 1px;
-        width: 100%;
-        justify-self: stretch;
-      }
-      
-      &--right {
-        grid-area: top-right; // Верхняя линия: правый сегмент
-        height: 1px;
-        width: 100%;
-        justify-self: stretch;
-      }
-      
-      &--bottom {
-        grid-area: bottom-left; // Нижняя линия: левый сегмент
-        height: 1px;
-        width: 100%;
-        justify-self: stretch;
-      }
-      
-      &--left {
-        grid-area: left-top; // Левая линия: верхний сегмент
-        width: 1px;
-        height: 100%;
-        align-self: stretch;
-      }
-    }
-
-    // Дополнительные линии для полного broken cross
-    &::before {
-      content: '';
-      grid-area: left-bottom; // Левая линия: нижний сегмент
+    // Вертикальная линия (2 сегмента)
+    .philosophy__line--vertical {
+      grid-area: line-vertical;
       width: 1px;
       height: 100%;
       background: @color-heading;
       align-self: stretch;
     }
 
-    &::after {
-      content: '';
-      grid-area: bottom-right; // Нижняя линия: правый сегмент
+    // Горизонтальные линии (2 сегмента)
+    .philosophy__line--horizontal {
+      grid-area: line-horizontal;
       height: 1px;
       width: 100%;
       background: @color-heading;
@@ -203,7 +168,7 @@
 
     // Центральная "дыра" - пустая область
     .center-gap {
-      grid-area: center-gap;
+      grid-area: empty;
       // Пустая область для создания разрыва в линиях
     }
 
@@ -218,8 +183,7 @@
       gap: 30px;
 
       .philosophy__line,
-      &::before,
-      &::after { display: none; }
+      .center-gap { display: none; }
     });
   }
 }
