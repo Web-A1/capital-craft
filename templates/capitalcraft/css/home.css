@@ -622,11 +622,10 @@
 @media only screen and (max-width: 767px) {
   .philosophy__wrapper {
     flex-direction: column;
-    gap: 40px;
   }
 }
 .philosophy__left {
-  max-width: 354px;
+  max-width: 290px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -682,7 +681,7 @@
   grid-template-areas: "item1 line-top item2" "line-left empty line-right" "item3 line-bottom item4";
   grid-template-columns: 1fr 1px 1fr;
   grid-template-rows: auto 1px auto;
-  gap: 40px;
+  gap: 30px;
   position: relative;
 }
 .philosophy__grid .philosophy__line--top {
