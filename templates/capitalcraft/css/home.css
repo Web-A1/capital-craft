@@ -622,6 +622,7 @@
 @media only screen and (max-width: 767px) {
   .philosophy__wrapper {
     flex-direction: column;
+    gap: 40px;
   }
 }
 .philosophy__left {
@@ -784,6 +785,11 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+@media only screen and (max-width: 767px) {
+  .philosophy-item__content {
+    gap: 5px;
+  }
 }
 .philosophy-item__title {
   margin: 0;
