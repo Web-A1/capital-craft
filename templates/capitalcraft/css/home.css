@@ -688,63 +688,44 @@
     gap: 40px;
   }
 }
-.philosophy__row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  gap: 24px;
-  width: 100%;
-}
-@media only screen and (max-width: 767px) {
-  .philosophy__row {
-    flex-direction: column;
-    gap: 30px;
-  }
-}
-.philosophy__divider {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-}
-@media only screen and (max-width: 767px) {
-  .philosophy__divider {
-    display: none;
-  }
-}
-.philosophy__divider-line {
-  height: 1px;
-  background: #000000;
-  display: block;
-}
-.philosophy__divider-line--left {
-  width: 278px;
-}
-.philosophy__divider-line--right {
-  width: 350px;
-}
 .philosophy__grid {
   display: grid;
-  grid-template-areas: "item1 line-vertical item2" "line-horizontal empty line-horizontal" "item3 line-vertical item4";
+  grid-template-areas: "item1 line-top item2" "line-left empty line-right" "item3 line-bottom item4";
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto auto auto;
   gap: 40px;
   position: relative;
 }
-.philosophy__grid .philosophy__line--vertical {
-  grid-area: line-vertical;
+.philosophy__grid .philosophy__line--top {
+  grid-area: line-top;
+  height: 2px;
+  width: 100%;
+  background: #000000;
+  justify-self: stretch;
+  z-index: 1;
+}
+.philosophy__grid .philosophy__line--bottom {
+  grid-area: line-bottom;
+  height: 2px;
+  width: 100%;
+  background: #000000;
+  justify-self: stretch;
+  z-index: 1;
+}
+.philosophy__grid .philosophy__line--left {
+  grid-area: line-left;
   width: 2px;
   height: 100%;
   background: #000000;
   align-self: stretch;
   z-index: 1;
 }
-.philosophy__grid .philosophy__line--horizontal {
-  grid-area: line-horizontal;
-  height: 2px;
-  width: 100%;
+.philosophy__grid .philosophy__line--right {
+  grid-area: line-right;
+  width: 2px;
+  height: 100%;
   background: #000000;
-  justify-self: stretch;
+  align-self: stretch;
   z-index: 1;
 }
 .philosophy__grid .philosophy-item--1 {

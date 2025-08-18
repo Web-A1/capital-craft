@@ -95,69 +95,56 @@
     });
   }
 
-  &__row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 24px;
-    width: 100%;
-
-    .media(mobile, {
-      flex-direction: column;
-      gap: 30px;
-    });
-  }
-
-  &__divider {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-
-    .media(mobile, {
-      display: none;
-    });
-  }
-
-  &__divider-line {
-    height: 1px;
-    background: @color-heading;
-    display: block;
-
-    &--left { width: 278px; }
-    &--right { width: 350px; }
-  }
-
   &__grid {
     display: grid;
-    // Создаем сетку 3x3 для broken cross
+    // Правильная сетка 3x3 для broken cross - 4 items в углах
     grid-template-areas: 
-      "item1 line-vertical item2"
-      "line-horizontal empty line-horizontal"
-      "item3 line-vertical item4";
-    grid-template-columns: 1fr auto 1fr;  // auto для центральной линии
-    grid-template-rows: auto auto auto;    // auto для центральной линии
+      "item1 line-top item2"
+      "line-left empty line-right"
+      "item3 line-bottom item4";
+    grid-template-columns: 1fr auto 1fr;  // auto для центральных линий
+    grid-template-rows: auto auto auto;    // auto для центральных линий
     gap: 40px;  // Добавляем gap между элементами
     position: relative;
 
-    // Вертикальная линия (2 сегмента)
-    .philosophy__line--vertical {
-      grid-area: line-vertical;
-      width: 2px;  // Увеличиваем толщину для видимости
-      height: 100%;
-      background: @color-heading;
-      align-self: stretch;
-      z-index: 1;  // Поднимаем над другими элементами
-    }
-
-    // Горизонтальные линии (2 сегмента)
-    .philosophy__line--horizontal {
-      grid-area: line-horizontal;
-      height: 2px;  // Увеличиваем толщину для видимости
+    // Верхняя горизонтальная линия
+    .philosophy__line--top {
+      grid-area: line-top;
+      height: 2px;
       width: 100%;
       background: @color-heading;
       justify-self: stretch;
-      z-index: 1;  // Поднимаем над другими элементами
+      z-index: 1;
+    }
+
+    // Нижняя горизонтальная линия
+    .philosophy__line--bottom {
+      grid-area: line-bottom;
+      height: 2px;
+      width: 100%;
+      background: @color-heading;
+      justify-self: stretch;
+      z-index: 1;
+    }
+
+    // Левая вертикальная линия
+    .philosophy__line--left {
+      grid-area: line-left;
+      width: 2px;
+      height: 100%;
+      background: @color-heading;
+      align-self: stretch;
+      z-index: 1;
+    }
+
+    // Правая вертикальная линия
+    .philosophy__line--right {
+      grid-area: line-right;
+      width: 2px;
+      height: 100%;
+      background: @color-heading;
+      align-self: stretch;
+      z-index: 1;
     }
 
     // Content items positioned in grid areas
