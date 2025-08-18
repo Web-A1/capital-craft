@@ -143,19 +143,21 @@
     // Вертикальная линия (2 сегмента)
     .philosophy__line--vertical {
       grid-area: line-vertical;
-      width: 1px;
+      width: 2px;  // Увеличиваем толщину для видимости
       height: 100%;
       background: @color-heading;
       align-self: stretch;
+      z-index: 1;  // Поднимаем над другими элементами
     }
 
     // Горизонтальные линии (2 сегмента)
     .philosophy__line--horizontal {
       grid-area: line-horizontal;
-      height: 1px;
+      height: 2px;  // Увеличиваем толщину для видимости
       width: 100%;
       background: @color-heading;
       justify-self: stretch;
+      z-index: 1;  // Поднимаем над другими элементами
     }
 
     // Content items positioned in grid areas

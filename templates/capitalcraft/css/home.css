@@ -733,17 +733,19 @@
 }
 .philosophy__grid .philosophy__line--vertical {
   grid-area: line-vertical;
-  width: 1px;
+  width: 2px;
   height: 100%;
   background: #000000;
   align-self: stretch;
+  z-index: 1;
 }
 .philosophy__grid .philosophy__line--horizontal {
   grid-area: line-horizontal;
-  height: 1px;
+  height: 2px;
   width: 100%;
   background: #000000;
   justify-self: stretch;
+  z-index: 1;
 }
 .philosophy__grid .philosophy-item--1 {
   grid-area: item1;
