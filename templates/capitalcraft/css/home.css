@@ -691,8 +691,8 @@
 .philosophy__grid {
   display: grid;
   grid-template-areas: "item1 line-top item2" "line-left empty line-right" "item3 line-bottom item4";
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: auto auto auto;
+  grid-template-columns: 1fr 1px 1fr;
+  grid-template-rows: auto 1px auto;
   gap: 40px;
   position: relative;
 }
