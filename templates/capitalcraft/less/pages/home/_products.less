@@ -116,10 +116,7 @@
     }
 
     .media(mobile, {
-      width: 100%;
-      height: auto;
-      max-width: 300px;
-      align-self: center;
+      display: none;
     });
   }
 
@@ -142,10 +139,9 @@
     align-items: flex-start;
 
     .media(mobile, {
-      flex-direction: column;
-      gap: 20px;
-      align-items: center;
-      text-align: center;
+      flex-direction: row;
+      gap: 30px;
+      align-items: flex-start;
     });
   }
 
@@ -213,7 +209,7 @@
     }
 
     .media(mobile, {
-      text-align: left;
+      text-align: start;
       line-height: 150%;
     });
   }
@@ -245,10 +241,7 @@
     }
 
     &__icon {
-      width: 100%;
-      height: auto;
-      max-width: 300px;
-      align-self: center;
+      display: none;
     }
 
     &__right {
@@ -257,10 +250,9 @@
     }
 
     &__item {
-      flex-direction: column;
-      gap: 20px;
-      align-items: center;
-      text-align: center;
+      flex-direction: row;
+      gap: 30px;
+      align-items: flex-start;
     }
 
     &__number {
@@ -278,7 +270,7 @@
     }
 
     &__item-description {
-      text-align: left;
+      text-align: start;
       line-height: 150%;
     }
   }
