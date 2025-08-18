@@ -1,5 +1,5 @@
 <section class="products frame section-with-divider" id="products">
-    <div class="products__container">
+    <div class="container products__container">
         <div class="products__wrapper">
             <div class="products__left">
                 <div class="products__title-block">
