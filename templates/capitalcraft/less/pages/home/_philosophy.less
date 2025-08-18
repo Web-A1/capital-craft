@@ -110,8 +110,8 @@
     // Верхняя горизонтальная линия
     .philosophy__line--top {
       grid-area: line-top;
-      height: 2px;
-      width: 100%;
+      height: auto;
+      width: 1px;
       background: @color-heading;
       justify-self: stretch;
       z-index: 1;
@@ -120,8 +120,8 @@
     // Нижняя горизонтальная линия
     .philosophy__line--bottom {
       grid-area: line-bottom;
-      height: 2px;
-      width: 100%;
+      height: auto;
+      width: 1px;
       background: @color-heading;
       justify-self: stretch;
       z-index: 1;
@@ -130,8 +130,8 @@
     // Левая вертикальная линия
     .philosophy__line--left {
       grid-area: line-left;
-      width: 2px;
-      height: 100%;
+      width: auto;
+      height: 1px;
       background: @color-heading;
       align-self: stretch;
       z-index: 1;
@@ -140,8 +140,8 @@
     // Правая вертикальная линия
     .philosophy__line--right {
       grid-area: line-right;
-      width: 2px;
-      height: 100%;
+      width: auto;
+      height: 1px;
       background: @color-heading;
       align-self: stretch;
       z-index: 1;
@@ -179,14 +179,14 @@
 
 .philosophy-item {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 16px;
   padding: 20px;  // Добавляем padding для читаемости
   position: relative;
 
   .media(mobile, {
-    gap: 16px;
-    padding: 12px 0;
+    gap: 30px;
+    padding: 0;
   });
 
   &__icon {
