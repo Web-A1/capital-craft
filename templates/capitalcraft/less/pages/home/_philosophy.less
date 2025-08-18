@@ -130,7 +130,6 @@
       &--4 { grid-area: item4; }
     }
 
-    // Центральная пустая область для разрыва линий
     .center-gap {
       grid-area: empty;
     }
@@ -215,19 +214,73 @@
     font-size: @font-size-text;
     line-height: 140%;
     color: @color-text;
+  }
+}
 
-    .media(mobile, {
+// Мобильные стили
+.media(mobile, {
+  .philosophy {
+    padding: 40px @mobile-side-padding;
+    gap: @gap;
+
+    &__wrapper {
+      flex-direction: column;
+      gap: @gap;
+    }
+
+    &__left {
+      max-width: none;
+      gap: 16px;
+    }
+
+    &__title {
+      font-size: 26px;
+      line-height: 120%;
+    }
+
+    &__desc {
+      text-align: left;
+      line-height: 150%;
+    }
+
+    &__grid {
+      grid-template-areas: 
+        "item1"
+        "item2" 
+        "item3"
+        "item4";
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      gap: @gap;
+
+      .philosophy__line,
+      .center-gap { display: none; }
+    }
+  }
+
+  .philosophy-item {
+    gap: @gap;
+    padding: 12px 0;
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      flex-basis: 44px;
+    }
+
+    &__content {
+      gap: 5px;
+    }
+
+    &__title {
+      font-size: 22px;
+    }
+
+    &__text {
       font-size: 15px;
       line-height: 150%;
-    });
-  }
+    }
 
-  // Убираем анимацию при наведении
-  &:hover {
-    // Убираем все hover эффекты
+    padding: 0;
   }
-
-  .media(mobile, {
-    padding: 0; // убираем отступы на мобильных
-  });
-}
+});
