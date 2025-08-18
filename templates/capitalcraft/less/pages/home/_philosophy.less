@@ -130,51 +130,67 @@
 
   &__grid {
     display: grid;
+    // Создаем сетку 3x3 с центральной "дырой" для broken cross
     grid-template-areas: 
-      "top-line top-line top-line top-line"
-      "left-line item1 top-right-line item2"
-      "left-line item3 bottom-right-line item4"
-      "bottom-line bottom-line bottom-line bottom-line";
+      "top-left top-left top-right top-right"
+      "left-top item1 center-gap item2"
+      "left-bottom item3 center-gap item4"
+      "bottom-left bottom-left bottom-right bottom-right";
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: auto 1fr 1fr auto;
     gap: 0;
     position: relative;
 
-    // Линии как отдельные Grid-элементы с автоматической адаптацией
+    // Линии как отдельные Grid-элементы для broken cross
     .philosophy__line {
       background: @color-heading;
       
       &--top {
-        grid-area: top-line;
+        grid-area: top-left; // Верхняя линия: левый сегмент
         height: 1px;
         width: 100%;
-        // Автоматически адаптируется под ширину контента
         justify-self: stretch;
       }
       
       &--right {
-        grid-area: top-right-line;
-        width: 1px;
-        height: 100%;
-        // Автоматически адаптируется под высоту контента
-        align-self: stretch;
+        grid-area: top-right; // Верхняя линия: правый сегмент
+        height: 1px;
+        width: 100%;
+        justify-self: stretch;
       }
       
       &--bottom {
-        grid-area: bottom-line;
+        grid-area: bottom-left; // Нижняя линия: левый сегмент
         height: 1px;
         width: 100%;
-        // Автоматически адаптируется под ширину контента
         justify-self: stretch;
       }
       
       &--left {
-        grid-area: left-line;
+        grid-area: left-top; // Левая линия: верхний сегмент
         width: 1px;
         height: 100%;
-        // Автоматически адаптируется под высоту контента
         align-self: stretch;
       }
+    }
+
+    // Дополнительные линии для полного broken cross
+    &::before {
+      content: '';
+      grid-area: left-bottom; // Левая линия: нижний сегмент
+      width: 1px;
+      height: 100%;
+      background: @color-heading;
+      align-self: stretch;
+    }
+
+    &::after {
+      content: '';
+      grid-area: bottom-right; // Нижняя линия: правый сегмент
+      height: 1px;
+      width: 100%;
+      background: @color-heading;
+      justify-self: stretch;
     }
 
     // Content items positioned in grid areas
@@ -183,6 +199,12 @@
       &--2 { grid-area: item2; }
       &--3 { grid-area: item3; }
       &--4 { grid-area: item4; }
+    }
+
+    // Центральная "дыра" - пустая область
+    .center-gap {
+      grid-area: center-gap;
+      // Пустая область для создания разрыва в линиях
     }
 
     .media(mobile, {
@@ -195,7 +217,9 @@
       grid-template-rows: auto auto auto auto;
       gap: 30px;
 
-      .philosophy__line { display: none; }
+      .philosophy__line,
+      &::before,
+      &::after { display: none; }
     });
   }
 }

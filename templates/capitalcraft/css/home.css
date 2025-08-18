@@ -725,7 +725,7 @@
 }
 .philosophy__grid {
   display: grid;
-  grid-template-areas: "top-line top-line top-line top-line" "left-line item1 top-right-line item2" "left-line item3 bottom-right-line item4" "bottom-line bottom-line bottom-line bottom-line";
+  grid-template-areas: "top-left top-left top-right top-right" "left-top item1 center-gap item2" "left-bottom item3 center-gap item4" "bottom-left bottom-left bottom-right bottom-right";
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: auto 1fr 1fr auto;
   gap: 0;
@@ -735,28 +735,44 @@
   background: #000000;
 }
 .philosophy__grid .philosophy__line--top {
-  grid-area: top-line;
+  grid-area: top-left;
   height: 1px;
   width: 100%;
   justify-self: stretch;
 }
 .philosophy__grid .philosophy__line--right {
-  grid-area: top-right-line;
-  width: 1px;
-  height: 100%;
-  align-self: stretch;
+  grid-area: top-right;
+  height: 1px;
+  width: 100%;
+  justify-self: stretch;
 }
 .philosophy__grid .philosophy__line--bottom {
-  grid-area: bottom-line;
+  grid-area: bottom-left;
   height: 1px;
   width: 100%;
   justify-self: stretch;
 }
 .philosophy__grid .philosophy__line--left {
-  grid-area: left-line;
+  grid-area: left-top;
   width: 1px;
   height: 100%;
   align-self: stretch;
+}
+.philosophy__grid::before {
+  content: '';
+  grid-area: left-bottom;
+  width: 1px;
+  height: 100%;
+  background: #000000;
+  align-self: stretch;
+}
+.philosophy__grid::after {
+  content: '';
+  grid-area: bottom-right;
+  height: 1px;
+  width: 100%;
+  background: #000000;
+  justify-self: stretch;
 }
 .philosophy__grid .philosophy-item--1 {
   grid-area: item1;
@@ -770,6 +786,9 @@
 .philosophy__grid .philosophy-item--4 {
   grid-area: item4;
 }
+.philosophy__grid .center-gap {
+  grid-area: center-gap;
+}
 @media only screen and (max-width: 767px) {
   .philosophy__grid {
     grid-template-areas: "item1" "item2" "item3" "item4";
@@ -777,7 +796,9 @@
     grid-template-rows: auto auto auto auto;
     gap: 30px;
   }
-  .philosophy__grid .philosophy__line {
+  .philosophy__grid .philosophy__line,
+  .philosophy__grid::before,
+  .philosophy__grid::after {
     display: none;
   }
 }

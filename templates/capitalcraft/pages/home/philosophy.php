@@ -15,6 +15,9 @@
                     <div class="philosophy__line philosophy__line--bottom"></div>
                     <div class="philosophy__line philosophy__line--left"></div>
                     
+                    <!-- Центральная "дыра" для broken cross -->
+                    <div class="center-gap"></div>
+                    
                     <!-- Content items -->
                     <article class="philosophy-item philosophy-item--1">
                         <div class="philosophy-item__icon" aria-hidden="true">
