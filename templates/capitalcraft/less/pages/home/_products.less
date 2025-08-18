@@ -19,7 +19,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch; // Изменено с flex-start на stretch
     gap: @gap * 2;
     position: relative;
 
@@ -49,10 +49,14 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
+    height: 100%; // Добавлено для растягивания на всю высоту
+    justify-content: space-between; // Добавлено для равномерного распределения
 
     .media(mobile, {
       max-width: none;
       gap: 30px;
+      height: auto; // Сброс для мобильных
+      justify-content: flex-start; // Сброс для мобильных
     });
   }
 
@@ -101,9 +105,10 @@
   }
 
   &__icon {
-    width: 491px;
-    height: 377px;
+    width: 400px; // Уменьшено с 491px
+    height: 300px; // Уменьшено с 377px
     flex-shrink: 0;
+    align-self: center; // Центрирование иконки
 
     img {
       display: block;
@@ -285,8 +290,8 @@
     }
 
     &__icon {
-      width: 400px;
-      height: auto;
+      width: 350px;
+      height: 260px;
     }
   }
 }
