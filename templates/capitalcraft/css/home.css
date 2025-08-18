@@ -728,7 +728,7 @@
   grid-template-areas: "item1 line-vertical item2" "line-horizontal empty line-horizontal" "item3 line-vertical item4";
   grid-template-columns: 1fr auto 1fr;
   grid-template-rows: auto auto auto;
-  gap: 0;
+  gap: 40px;
   position: relative;
 }
 .philosophy__grid .philosophy__line--vertical {
@@ -776,7 +776,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 0;
+  padding: 20px;
   position: relative;
 }
 @media only screen and (max-width: 767px) {
@@ -816,7 +816,7 @@
   margin: 0;
   font-family: 'Onest', sans-serif;
   font-size: 28px;
-  line-height: 100%;
+  line-height: 120%;
   text-transform: uppercase;
   color: #000000;
   font-weight: 400;
