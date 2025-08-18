@@ -90,55 +90,37 @@
     display: grid;
     max-width: 743px;
     width: 100%;
-    // Правильная сетка 3x3 для broken cross - 4 items в углах
+    // Сетка 3x3 для broken cross эффекта
     grid-template-areas: 
       "item1 line-top item2"
       "line-left empty line-right"
       "item3 line-bottom item4";
-    grid-template-columns: 1fr 1px 1fr;  // 1px для центральных линий
-    grid-template-rows: auto 1px auto;    // 1px для центральных линий
+    grid-template-columns: 1fr 1px 1fr;
+    grid-template-rows: auto 1px auto;
     gap: @gap;  // Добавляем gap между элементами
     position: relative;
 
-    // Верхняя горизонтальная линия
-    .philosophy__line--top {
-      grid-area: line-top;
-      height: auto;
-      width: 1px;
-      background: @color-heading;
-      justify-self: stretch;
-      z-index: 1;
-    }
-
-    // Нижняя горизонтальная линия
+    // Горизонтальные линии
+    .philosophy__line--top,
     .philosophy__line--bottom {
-      grid-area: line-bottom;
       height: auto;
       width: 1px;
       background: @color-heading;
       justify-self: stretch;
-      z-index: 1;
     }
+    .philosophy__line--top { grid-area: line-top; }
+    .philosophy__line--bottom { grid-area: line-bottom; }
 
-    // Левая вертикальная линия
-    .philosophy__line--left {
-      grid-area: line-left;
-      width: auto;
-      height: 1px;
-      background: @color-heading;
-      align-self: stretch;
-      z-index: 1;
-    }
-
-    // Правая вертикальная линия
+    // Вертикальные линии
+    .philosophy__line--left,
     .philosophy__line--right {
-      grid-area: line-right;
       width: auto;
       height: 1px;
       background: @color-heading;
       align-self: stretch;
-      z-index: 1;
     }
+    .philosophy__line--left { grid-area: line-left; }
+    .philosophy__line--right { grid-area: line-right; }
 
     // Content items positioned in grid areas
     .philosophy-item {
@@ -148,10 +130,9 @@
       &--4 { grid-area: item4; }
     }
 
-    // Центральная "дыра" - пустая область
+    // Центральная пустая область для разрыва линий
     .center-gap {
       grid-area: empty;
-      // Пустая область для создания разрыва в линиях
     }
 
     .media(mobile, {
