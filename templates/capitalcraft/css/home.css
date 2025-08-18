@@ -739,7 +739,7 @@
   width: 1px;
   background: #000000;
   transform: translateX(-0.5px);
-  height: calc(50% - 12px);
+  height: calc(50% - 15px);
 }
 .philosophy__grid::after {
   content: '';
@@ -749,14 +749,14 @@
   width: 1px;
   background: #000000;
   transform: translateX(-0.5px);
-  height: calc(50% - 12px);
+  height: calc(50% - 15px);
 }
 .philosophy__grid .philosophy-item:nth-child(1)::after {
   content: '';
   position: absolute;
   top: 50%;
   left: 0;
-  width: calc(50% - 10.5px);
+  width: calc(50% - 15px);
   height: 1px;
   background: #000000;
   transform: translateY(-0.5px);
@@ -766,7 +766,7 @@
   position: absolute;
   top: 50%;
   right: 0;
-  width: calc(50% - 10.5px);
+  width: calc(50% - 15px);
   height: 1px;
   background: #000000;
   transform: translateY(-0.5px);
@@ -848,20 +848,20 @@
   }
 }
 .philosophy-item:nth-child(1) {
-  padding-right: 60px;
-  padding-bottom: 60px;
+  padding-right: 30px;
+  padding-bottom: 30px;
 }
 .philosophy-item:nth-child(2) {
-  padding-left: 60px;
-  padding-bottom: 60px;
+  padding-left: 30px;
+  padding-bottom: 30px;
 }
 .philosophy-item:nth-child(3) {
-  padding-top: 60px;
-  padding-right: 60px;
+  padding-top: 30px;
+  padding-right: 30px;
 }
 .philosophy-item:nth-child(4) {
-  padding-top: 60px;
-  padding-left: 60px;
+  padding-top: 30px;
+  padding-left: 30px;
 }
 @media only screen and (max-width: 767px) {
   .philosophy-item {

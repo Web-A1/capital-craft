@@ -146,7 +146,7 @@
       background: @color-heading;
       transform: translateX(-0.5px);
       // Высота = максимальная высота из (item1, item2)
-      height: calc(50% - 12px); // половина высоты минус половина row-gap
+      height: calc(50% - 15px); // половина высоты минус 30px разрыв
     }
 
     // Вертикальная линия - нижняя часть (от центра до низа)
@@ -159,7 +159,7 @@
       background: @color-heading;
       transform: translateX(-0.5px);
       // Высота = максимальная высота из (item3, item4)
-      height: calc(50% - 12px); // половина высоты минус половина row-gap
+      height: calc(50% - 15px); // половина высоты минус 30px разрыв
     }
 
     // Горизонтальная линия - левая часть (от левого края до центра)
@@ -168,7 +168,7 @@
       position: absolute;
       top: 50%;
       left: 0;
-      width: calc(50% - 10.5px); // половина ширины минус половина column-gap
+      width: calc(50% - 15px); // половина ширины минус 30px разрыв
       height: 1px;
       background: @color-heading;
       transform: translateY(-0.5px);
@@ -180,7 +180,7 @@
       position: absolute;
       top: 50%;
       right: 0;
-      width: calc(50% - 10.5px); // половина ширины минус половина column-gap
+      width: calc(50% - 15px); // половина ширины минус 30px разрыв
       height: 1px;
       background: @color-heading;
       transform: translateY(-0.5px);
@@ -260,23 +260,23 @@
 
   // Добавляем отступы 60px от линий до контента
   &:nth-child(1) {
-    padding-right: 60px; // отступ от левой горизонтальной линии
-    padding-bottom: 60px; // отступ от верхней вертикальной линии
+    padding-right: 30px; // отступ от левой горизонтальной линии
+    padding-bottom: 30px; // отступ от верхней вертикальной линии
   }
 
   &:nth-child(2) {
-    padding-left: 60px; // отступ от правой горизонтальной линии
-    padding-bottom: 60px; // отступ от верхней вертикальной линии
+    padding-left: 30px; // отступ от правой горизонтальной линии
+    padding-bottom: 30px; // отступ от верхней вертикальной линии
   }
 
   &:nth-child(3) {
-    padding-top: 60px; // отступ от левой горизонтальной линии
-    padding-right: 60px; // отступ от нижней вертикальной линии
+    padding-top: 30px; // отступ от левой горизонтальной линии
+    padding-right: 30px; // отступ от нижней вертикальной линии
   }
 
   &:nth-child(4) {
-    padding-top: 60px; // отступ от правой горизонтальной линии
-    padding-left: 60px; // отступ от нижней вертикальной линии
+    padding-top: 30px; // отступ от правой горизонтальной линии
+    padding-left: 30px; // отступ от нижней вертикальной линии
   }
 
   .media(mobile, {
