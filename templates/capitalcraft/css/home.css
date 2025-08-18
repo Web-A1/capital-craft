@@ -299,7 +299,6 @@
   .faq-home__inner {
     flex-direction: column;
     gap: 40px;
-    padding: 0 20px;
     justify-content: flex-start;
     align-items: stretch;
     position: static;
@@ -409,14 +408,11 @@
 }
 @media only screen and (max-width: 767px) {
   .show-case {
-    padding: 40px 20px;
+    padding: 40px 0;
     gap: 30px;
   }
 }
 .show-case__inner {
-  max-width: 1170px;
-  width: 100%;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 60px;
@@ -606,11 +602,6 @@
     padding: 40px 20px;
     gap: 30px;
   }
-}
-.philosophy__container {
-  max-width: 1170px;
-  width: 100%;
-  margin: 0 auto;
 }
 .philosophy__wrapper {
   display: flex;
@@ -869,11 +860,6 @@
     padding: 40px 20px;
     gap: 30px;
   }
-}
-.products__container {
-  max-width: 1170px;
-  width: 100%;
-  margin: 0 auto;
 }
 .products__wrapper {
   display: flex;
