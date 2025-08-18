@@ -950,7 +950,8 @@
   width: 400px;
   height: 300px;
   flex-shrink: 0;
-  align-self: center;
+  align-self: flex-end;
+  margin-left: 0;
 }
 .products__icon img {
   display: block;
