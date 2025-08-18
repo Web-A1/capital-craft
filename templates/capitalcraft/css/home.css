@@ -622,7 +622,7 @@
 @media only screen and (max-width: 767px) {
   .philosophy__wrapper {
     flex-direction: column;
-    gap: 30px;
+    gap: 40px;
   }
 }
 .philosophy__left {
@@ -675,17 +675,6 @@
   .philosophy__desc {
     text-align: left;
     line-height: 150%;
-  }
-}
-.philosophy__right {
-  flex: 0 1 743px;
-  display: flex;
-  flex-direction: column;
-  gap: 50px;
-}
-@media only screen and (max-width: 767px) {
-  .philosophy__right {
-    gap: 40px;
   }
 }
 .philosophy__grid {
