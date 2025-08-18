@@ -5,7 +5,7 @@ $faqGroups = array_chunk($faqHome, 3);
 ?>
 
 <section class="faq-home frame section-with-divider" id="faq">
-    <div class="faq-home__inner">
+    <div class="container faq-home__inner">
         <div class="faq-home__swiper swiper">
             <div class="swiper-wrapper">
                 <?php foreach ($faqGroups as $group): ?>
