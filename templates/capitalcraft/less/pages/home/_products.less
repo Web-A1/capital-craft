@@ -24,6 +24,22 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: @gap * 2;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: @section-divider-color;
+      transform: translateX(-50%);
+
+      .media(mobile, {
+        display: none;
+      });
+    }
 
     .media(mobile, {
       flex-direction: column;
