@@ -725,75 +725,73 @@
 }
 .philosophy__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  column-gap: 21px;
-  row-gap: 24px;
+  grid-template-areas: "top-line top-line top-line top-line" "left-line item1 top-right-line item2" "left-line item3 bottom-right-line item4" "bottom-line bottom-line bottom-line bottom-line";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr auto;
+  gap: 0;
   position: relative;
 }
-.philosophy__grid::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 1px;
+.philosophy__grid .philosophy__line {
   background: #000000;
-  transform: translateX(-0.5px);
-  height: calc(50% - 60px);
 }
-.philosophy__grid::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 1px;
-  background: #000000;
-  transform: translateX(-0.5px);
-  height: calc(50% - 60px);
-}
-.philosophy__grid .philosophy-item:nth-child(1)::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: calc(50% - 60px);
+.philosophy__grid .philosophy__line--top {
+  grid-area: top-line;
   height: 1px;
-  background: #000000;
-  transform: translateY(-0.5px);
+  width: 100%;
+  justify-self: stretch;
 }
-.philosophy__grid .philosophy-item:nth-child(2)::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 0;
-  width: calc(50% - 60px);
+.philosophy__grid .philosophy__line--right {
+  grid-area: top-right-line;
+  width: 1px;
+  height: 100%;
+  align-self: stretch;
+}
+.philosophy__grid .philosophy__line--bottom {
+  grid-area: bottom-line;
   height: 1px;
-  background: #000000;
-  transform: translateY(-0.5px);
+  width: 100%;
+  justify-self: stretch;
+}
+.philosophy__grid .philosophy__line--left {
+  grid-area: left-line;
+  width: 1px;
+  height: 100%;
+  align-self: stretch;
+}
+.philosophy__grid .philosophy-item--1 {
+  grid-area: item1;
+}
+.philosophy__grid .philosophy-item--2 {
+  grid-area: item2;
+}
+.philosophy__grid .philosophy-item--3 {
+  grid-area: item3;
+}
+.philosophy__grid .philosophy-item--4 {
+  grid-area: item4;
 }
 @media only screen and (max-width: 767px) {
   .philosophy__grid {
+    grid-template-areas: "item1" "item2" "item3" "item4";
     grid-template-columns: 1fr;
-    row-gap: 30px;
+    grid-template-rows: auto auto auto auto;
+    gap: 30px;
   }
-  .philosophy__grid::before,
-  .philosophy__grid::after,
-  .philosophy__grid .philosophy-item::after {
+  .philosophy__grid .philosophy__line {
     display: none;
   }
 }
 .philosophy-item {
   display: flex;
-  flex-direction: row;
-  gap: 21px;
-  align-items: flex-start;
-  width: 100%;
-  flex: 1 1 0;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0;
+  position: relative;
 }
 @media only screen and (max-width: 767px) {
   .philosophy-item {
     gap: 16px;
     padding: 12px 0;
-    flex: none;
   }
 }
 .philosophy-item__icon {
@@ -801,6 +799,9 @@
   height: 55px;
   flex: 0 0 55px;
   color: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 @media only screen and (max-width: 767px) {
   .philosophy-item__icon {
@@ -846,42 +847,8 @@
     line-height: 150%;
   }
 }
-.philosophy-item:nth-child(1) {
-  padding-right: 30px;
-  padding-bottom: 30px;
-}
-.philosophy-item:nth-child(2) {
-  padding-left: 30px;
-  padding-bottom: 30px;
-}
-.philosophy-item:nth-child(3) {
-  padding-top: 30px;
-  padding-right: 30px;
-}
-.philosophy-item:nth-child(4) {
-  padding-top: 30px;
-  padding-left: 30px;
-}
 @media only screen and (max-width: 767px) {
   .philosophy-item {
     padding: 0;
-  }
-}
-.philosophy-item.philosophy-item--divider {
-  position: relative;
-}
-.philosophy-item.philosophy-item--divider::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -12px;
-  bottom: 0;
-  width: 1px;
-  background: #000000;
-  opacity: 1;
-}
-@media only screen and (max-width: 767px) {
-  .philosophy-item.philosophy-item--divider::after {
-    display: none;
   }
 }
