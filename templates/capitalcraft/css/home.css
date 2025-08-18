@@ -599,7 +599,7 @@
 }
 @media only screen and (max-width: 767px) {
   .philosophy {
-    padding: 40px 20px;
+    padding: 40px 0;
     gap: 30px;
   }
 }
@@ -799,7 +799,7 @@
 }
 @media only screen and (max-width: 767px) {
   .philosophy {
-    padding: 40px 20px;
+    padding: 40px 0;
     gap: 30px;
   }
   .philosophy__wrapper {
@@ -857,7 +857,7 @@
 }
 @media only screen and (max-width: 767px) {
   .products {
-    padding: 40px 20px;
+    padding: 40px 0;
     gap: 30px;
   }
 }
@@ -1052,7 +1052,7 @@
 }
 @media only screen and (max-width: 767px) {
   .products {
-    padding: 40px 20px;
+    padding: 40px 0;
     gap: 30px;
   }
   .products__wrapper {
