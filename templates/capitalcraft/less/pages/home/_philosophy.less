@@ -23,11 +23,11 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 60px;
+    gap: @gap * 2;
 
     .media(mobile, {
       flex-direction: column;
-      gap: 40px;
+      gap: @gap;
     });
   }
 
@@ -97,7 +97,7 @@
       "item3 line-bottom item4";
     grid-template-columns: 1fr 1px 1fr;  // 1px для центральных линий
     grid-template-rows: auto 1px auto;    // 1px для центральных линий
-    gap: 30px;  // Добавляем gap между элементами
+    gap: @gap;  // Добавляем gap между элементами
     position: relative;
 
     // Верхняя горизонтальная линия
@@ -162,7 +162,7 @@
         "item4";
       grid-template-columns: 1fr;
       grid-template-rows: auto auto auto auto;
-      gap: 30px;
+      gap: @gap;
 
       .philosophy__line,
       .center-gap { display: none; }
@@ -173,12 +173,12 @@
 .philosophy-item {
   display: flex;
   flex-direction: row;
-  gap: 30px;
+  gap: @gap;
   padding: 0;
   position: relative;
 
   .media(mobile, {
-    gap: 30px;
+    gap: @gap;
     padding: 12px 0;
   });
 
