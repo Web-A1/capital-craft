@@ -8,8 +8,8 @@
             </div>
 
             <div class="philosophy__right" data-node-id="12991:131">
-                <div class="philosophy__row philosophy__row--top" data-node-id="12991:132">
-                    <article class="philosophy-item philosophy-item--divider" data-node-id="12991:133">
+                <div class="philosophy__grid">
+                    <article class="philosophy-item" data-node-id="12991:133">
                         <div class="philosophy-item__icon" aria-hidden="true" data-node-id="12991:134">
                             <svg class="philosophy-item__svg" viewBox="0 0 57 57" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path d="M39.8972 56L56 39.8972V17.1028L39.8972 1H17.1028L1 17.1028V39.8972L17.1028 56H39.8972Z" stroke="currentColor" stroke-miterlimit="10"/>
@@ -45,15 +45,8 @@
                             <p class="philosophy-item__text">Если мы не уверены в результате — отказываем. Если же берёмся — всегда доводим до конца</p>
                         </div>
                     </article>
-                </div>
 
-                <div class="philosophy__divider" aria-hidden="true">
-                    <span class="philosophy__divider-line philosophy__divider-line--left"></span>
-                    <span class="philosophy__divider-line philosophy__divider-line--right"></span>
-                </div>
-
-                <div class="philosophy__row philosophy__row--bottom" data-node-id="12991:169">
-                    <article class="philosophy-item philosophy-item--divider" data-node-id="12991:170">
+                    <article class="philosophy-item" data-node-id="12991:170">
                         <div class="philosophy-item__icon" aria-hidden="true" data-node-id="12991:171">
                             <svg class="philosophy-item__svg" viewBox="0 0 57 58" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path d="M35.3457 15.0531V1H49.0839V15.0531C49.0839 18.9255 52.1674 22.0796 55.953 22.0796V36.1327C44.5656 36.1327 35.3457 26.6703 35.3457 15.0531Z" stroke="currentColor" stroke-miterlimit="10"/>
