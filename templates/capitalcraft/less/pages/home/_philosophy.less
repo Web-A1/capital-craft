@@ -253,11 +253,35 @@
     });
   }
 
-  // Hover effects (reduced motion aware)
-  @media (prefers-reduced-motion: no-preference) {
-    transition: transform .2s ease;
-    &:hover { transform: translateY(-2px); }
+  // Убираем анимацию при наведении
+  &:hover {
+    // Убираем все hover эффекты
   }
+
+  // Добавляем отступы 60px от линий до контента
+  &:nth-child(1) {
+    padding-left: 60px; // отступ от левой горизонтальной линии
+    padding-top: 60px; // отступ от верхней вертикальной линии
+  }
+
+  &:nth-child(2) {
+    padding-right: 60px; // отступ от правой горизонтальной линии
+    padding-top: 60px; // отступ от верхней вертикальной линии
+  }
+
+  &:nth-child(3) {
+    padding-left: 60px; // отступ от левой горизонтальной линии
+    padding-bottom: 60px; // отступ от нижней вертикальной линии
+  }
+
+  &:nth-child(4) {
+    padding-right: 60px; // отступ от правой горизонтальной линии
+    padding-bottom: 60px; // отступ от нижней вертикальной линии
+  }
+
+  .media(mobile, {
+    padding: 0; // убираем отступы на мобильных
+  });
 
   // Divider line for desktop layout
   &.philosophy-item--divider {
