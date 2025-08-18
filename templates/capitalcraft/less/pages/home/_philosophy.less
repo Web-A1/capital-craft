@@ -23,7 +23,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 40px;
+    gap: 60px;
 
     .media(mobile, {
       flex-direction: column;
@@ -87,6 +87,8 @@
 
   &__grid {
     display: grid;
+    max-width: 743px;
+    width: 100%;
     // Правильная сетка 3x3 для broken cross - 4 items в углах
     grid-template-areas: 
       "item1 line-top item2"
