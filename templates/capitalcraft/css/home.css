@@ -500,7 +500,6 @@
 }
 .show-case__swiper .swiper-wrapper {
   height: 100%;
-  padding: 35px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__swiper .swiper-wrapper {
