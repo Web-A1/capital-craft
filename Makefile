@@ -1,6 +1,6 @@
 # Makefile для компиляции LESS стилей
 
-.PHONY: less compile compile-dev compile-prod dev build clean help deploy
+.PHONY: less compile compile-dev compile-prod dev build clean help deploy merge-to-main
 
 # Компиляция всех LESS файлов
 less: compile
@@ -24,6 +24,12 @@ deploy:
 	@echo "📤 Пушаю изменения..."
 	@git add . && git commit -m "build: продакшн компиляция" && git push
 	@echo "✅ Компиляция и пуш завершены!"
+
+# Мердж dev в main
+merge-to-main:
+	@echo "🔄 Мерджу dev в main..."
+	@./merge-dev-to-main.sh
+	@echo "✅ Мердж завершен!"
 
 # Компиляция отдельных файлов
 critical:
@@ -59,6 +65,8 @@ help:
 	@echo "Доступные команды:"
 	@echo "  make compile-dev  - Компиляция LESS для разработки"
 	@echo "  make compile-prod - Продакшн компиляция LESS + JS (с минификацией)"
+	@echo "  make deploy       - КОМПИЛЯЦИЯ + ПУШ одной командой"
+	@echo "  make merge-to-main - МЕРДЖ dev в main"
 	@echo "  make critical     - Компиляция только critical.less"
 	@echo "  make home         - Компиляция только home.less"
 	@echo "  make faq          - Компиляция только faq.less"
