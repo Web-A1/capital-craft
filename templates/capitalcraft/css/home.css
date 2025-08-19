@@ -504,7 +504,6 @@
 @media only screen and (max-width: 767px) {
   .show-case__swiper .swiper-wrapper {
     height: auto;
-    padding: 35px;
   }
 }
 .show-case__swiper .swiper-slide {
