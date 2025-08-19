@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Шаблон сайта **Capital Craft** на **Joomla 5.3.2** с LESS и нативным JavaScript.",
   "scripts": {
-    "build:less": "npm run less:all",
+    "build:less": "npm run less:all:prod",
     "less:critical": "lessc templates/capitalcraft/less/critical.less templates/capitalcraft/css/critical.css",
     "less:home": "lessc templates/capitalcraft/less/home.less templates/capitalcraft/css/home.css",
     "less:faq": "lessc templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
@@ -14,11 +14,12 @@
     "less:faq:prod": "lessc -x templates/capitalcraft/less/faq.less templates/capitalcraft/css/faq.css",
     "less:base:prod": "lessc -x templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
     "less:all:prod": "npm-run-all less:base:prod less:critical:prod less:home:prod less:faq:prod",
-    "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --outfile=templates/capitalcraft/js/global/bundle.js",
-    "js:build:prod": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --minify --target=es2019 --outfile=templates/capitalcraft/js/global/bundle.js",
-    "compile": "./scripts/compile-less.sh",
-    "dev": "make compile",
-    "build": "make compile"
+    "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --minify --target=es2019 --outfile=templates/capitalcraft/js/global/bundle.js",
+    "js:build:dev": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --outfile=templates/capitalcraft/js/global/bundle.js",
+    "compile": "./templates/capitalcraft/build-scripts/compile-less.sh",
+    "compile:prod": "./templates/capitalcraft/build-scripts/compile-less-prod.sh",
+    "dev": "make compile-dev",
+    "build": "make compile-prod"
   },
   "keywords": [
     "joomla",
