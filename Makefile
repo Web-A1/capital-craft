@@ -31,6 +31,24 @@ merge-to-main:
 	@./merge-dev-to-main.sh
 	@echo "✅ Мердж завершен!"
 
+# Автоматический коммит изменений
+auto-commit:
+	@echo "🔄 Автоматически коммичу изменения..."
+	@if [ -n "$$(git status --porcelain)" ]; then \
+		git add . && \
+		git commit -m "auto: автоматический коммит - $$(date)" && \
+		echo "✅ Изменения закоммичены!"; \
+	else \
+		echo "✅ Нет изменений для коммита"; \
+	fi
+
+# Умный мердж (автокоммит + мердж)
+smart-merge:
+	@echo "🧠 Умный мердж: автокоммит + мердж..."
+	@make auto-commit
+	@make merge-to-main
+	@echo "✅ Умный мердж завершен!"
+
 # Компиляция отдельных файлов
 critical:
 	@echo "🔄 Компилирую critical.less..."
@@ -67,6 +85,8 @@ help:
 	@echo "  make compile-prod - Продакшн компиляция LESS + JS (с минификацией)"
 	@echo "  make deploy       - КОМПИЛЯЦИЯ + ПУШ одной командой"
 	@echo "  make merge-to-main - МЕРДЖ dev в main"
+	@echo "  make auto-commit  - Автоматический коммит изменений"
+	@echo "  make smart-merge  - УМНЫЙ МЕРДЖ (автокоммит + мердж)"
 	@echo "  make critical     - Компиляция только critical.less"
 	@echo "  make home         - Компиляция только home.less"
 	@echo "  make faq          - Компиляция только faq.less"
