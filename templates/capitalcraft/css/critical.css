@@ -495,7 +495,6 @@ section,
 .frame--header {
   border-top: 1px solid #333333;
   margin-top: 20px;
-  border-radius: 6px 6px 0 0;
 }
 @media only screen and (max-width: 767px) {
   .frame--header {
@@ -505,7 +504,6 @@ section,
 }
 .frame--footer {
   border-bottom: 1px solid #333333;
-  border-radius: 0 0 6px 6px;
 }
 @media only screen and (max-width: 767px) {
   .frame--footer {
