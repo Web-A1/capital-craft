@@ -126,11 +126,16 @@
   }
 
   &__card {
-    border: 1px solid @color-heading;
+    border: none;
     box-sizing: border-box;
     height: 100%;
     overflow-y: auto;
     border-radius: @radius;
+    background-color: @color-bg-craft;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.12),
+      0 4px 16px rgba(0, 0, 0, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 
   &__card-content {
@@ -138,10 +143,10 @@
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    padding: 30px 60px 30px 40px;
+    padding: 35px 60px 35px 40px;
 
     .media(mobile, {
-      padding: 30px 30px 60px 30px;
+      padding: 35px 35px 60px 35px;
     });
   }
 
