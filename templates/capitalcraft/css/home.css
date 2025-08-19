@@ -493,6 +493,9 @@
 @media only screen and (max-width: 767px) {
   .show-case__swiper {
     height: auto;
+    background-color: #fdfbf5;
+    border-radius: 6px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 }
 .show-case__swiper .swiper-wrapper {
@@ -501,6 +504,7 @@
 @media only screen and (max-width: 767px) {
   .show-case__swiper .swiper-wrapper {
     height: auto;
+    padding: 35px;
   }
 }
 .show-case__swiper .swiper-slide {
@@ -527,8 +531,6 @@
   height: 100%;
   overflow-y: auto;
   border-radius: 6px;
-  background-color: #fdfbf5;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 .show-case__card-content {
   display: flex;
