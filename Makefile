@@ -1,6 +1,6 @@
 # Makefile для компиляции LESS стилей
 
-.PHONY: less compile compile-dev compile-prod dev build clean
+.PHONY: less compile compile-dev compile-prod dev build clean help deploy
 
 # Компиляция всех LESS файлов
 less: compile
@@ -8,17 +8,22 @@ less: compile
 # Быстрая компиляция (для разработки)
 compile-dev:
 	@echo "🚀 Компилирую LESS файлы для разработки..."
-	@npm run less:all
+	@./templates/capitalcraft/build-scripts/compile-less.sh
 	@echo "✅ Компиляция для разработки завершена!"
 
 # Продакшн компиляция (с минификацией)
 compile-prod:
 	@echo "🚀 Компилирую LESS файлы для продакшна..."
-	@npm run less:all:prod
-	@echo "✅ Продакшн компиляция LESS завершена!"
-	@echo "🔄 Компилирую JavaScript для продакшна..."
-	@npm run js:build
-	@echo "✅ Продакшн компиляция JavaScript завершена!"
+	@./templates/capitalcraft/build-scripts/compile-less-prod.sh
+	@echo "✅ Продакшн компиляция завершена!"
+
+# Компиляция и пуш одной командой
+deploy:
+	@echo "🚀 Компилирую и пушаю..."
+	@make compile-prod
+	@echo "📤 Пушаю изменения..."
+	@git add . && git commit -m "build: продакшн компиляция" && git push
+	@echo "✅ Компиляция и пуш завершены!"
 
 # Компиляция отдельных файлов
 critical:
