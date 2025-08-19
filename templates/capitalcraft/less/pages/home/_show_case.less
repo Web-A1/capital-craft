@@ -112,6 +112,11 @@
 
   &__pagination {
     right: 30px !important;
+    .media(mobile, {
+      background: @color-bg-craft;
+      bottom: var(--swiper-pagination-bottom, 0px) !important;
+      height: 30px;
+    });
 
     .swiper-pagination-bullet {
       background: @color-heading;
