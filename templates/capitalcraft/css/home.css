@@ -489,17 +489,18 @@
 .show-case__swiper {
   width: 100%;
   height: 450px;
+  background-color: #fdfbf5;
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 @media only screen and (max-width: 767px) {
   .show-case__swiper {
     height: auto;
-    background-color: #fdfbf5;
-    border-radius: 6px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 }
 .show-case__swiper .swiper-wrapper {
   height: 100%;
+  padding: 35px;
 }
 @media only screen and (max-width: 767px) {
   .show-case__swiper .swiper-wrapper {
