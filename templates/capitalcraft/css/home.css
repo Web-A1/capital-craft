@@ -281,8 +281,8 @@
     height: auto;
     max-height: none;
     border-radius: 6px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    background-color: #fdfbf5;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6);
   }
 }
 .faq-home__inner::before {
@@ -337,7 +337,7 @@
 @media only screen and (max-width: 767px) {
   .faq-home__slide ul {
     gap: 20px;
-    padding: 30px;
+    padding: 35px;
     height: auto;
     justify-content: flex-start;
   }
