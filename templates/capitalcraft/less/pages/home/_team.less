@@ -41,20 +41,22 @@
       padding-right: 0;
       gap: 30px;
     });
-  }
 
-  &__divider {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 1px;
-    height: 100%;
-    background-color: #000000;
-    pointer-events: none;
+    // Вертикальная разделительная линия через псевдоэлемент
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 1px;
+      height: 580px; // Высота всех картинок справа: 390px + 150px + 40px (gap)
+      background-color: #000000;
+      pointer-events: none;
 
-    .media(mobile, {
-      display: none;
-    });
+      .media(mobile, {
+        display: none;
+      });
+    }
   }
 
   &__title-block {
@@ -132,10 +134,8 @@
   }
 
   &__icon {
-    position: absolute;
-    top: 0;
-    right: 0;
     align-self: flex-start;
+    margin-top: auto; // Прижимает иконку к низу блока
 
     img {
       width: 87.55px;
