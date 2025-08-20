@@ -59,6 +59,21 @@
     }
   }
 
+  &__right {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 670px;
+    flex-shrink: 0;
+    margin-left: 60px; // Отступ слева от линии
+
+    .media(mobile, {
+      width: 100%;
+      gap: 20px;
+      margin-left: 0;
+    });
+  }
+
   &__title-block {
     display: flex;
     flex-direction: column;
@@ -148,18 +163,7 @@
     }
   }
 
-  &__right {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    width: 670px;
-    flex-shrink: 0;
 
-    .media(mobile, {
-      width: 100%;
-      gap: 20px;
-    });
-  }
 
   &__gallery {
     display: flex;
