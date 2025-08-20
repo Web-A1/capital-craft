@@ -10,6 +10,9 @@
                     <div class="team__title">
                         <p>Эксперты, на которых можно положиться</p>
                     </div>
+                    <div class="team__icon">
+                        <img src="/templates/capitalcraft/images/home/icon-team-home.svg" alt="Иконка команды Capital Craft" loading="lazy">
+                    </div>
                 </div>
                 <div class="team__description">
                     <p>Каждый из нас строил бизнес, принимал риски и ответственность, проходил через найм, обязательства перед людьми и непростые решения. Мы не читаем про бизнес — мы его ведём. На своих деньгах, со своими людьми, под свою ответственность.</p>
@@ -23,9 +26,6 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17 17 7m0 0H8m9 0v9" />
                         </svg>
                     </a>
-                </div>
-                <div class="team__icon">
-                    <img src="/templates/capitalcraft/images/home/icon-team-home.svg" alt="Team Icon" loading="lazy">
                 </div>
             </div>
             <div class="team__right">
