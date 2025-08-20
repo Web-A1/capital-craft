@@ -1,16 +1,18 @@
 <section class="products frame section-with-divider" id="products">
     <div class="container products__container">
         <div class="products__wrapper">
-            <div class="products__title-block">
-                <div class="products__subtitle">
-                    <p>продукты capital craft</p>
+            <div class="products__left">
+                <div class="products__title-block">
+                    <div class="products__subtitle">
+                        <p>продукты capital craft</p>
+                    </div>
+                    <div class="products__title">
+                        <p>Три уровня вовлечения - от первичного аудита до общей ответственности</p>
+                    </div>
                 </div>
-                <div class="products__title">
-                    <p>Три уровня вовлечения - от первичного аудита до общей ответственности</p>
+                <div class="products__icon">
+                    <img src="/templates/capitalcraft/images/home/сс-icon-circles.svg" alt="Capital Craft Icon" loading="lazy">
                 </div>
-            </div>
-            <div class="products__icon">
-                <img src="/templates/capitalcraft/images/home/сс-icon-circles.svg" alt="Capital Craft Icon" loading="lazy">
             </div>
             <div class="products__right">
                 <div class="products__item">
