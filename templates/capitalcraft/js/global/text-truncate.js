@@ -86,4 +86,6 @@ window.addEventListener('resize', () => {
 // Экспортируем функцию для использования в основном файле
 export default initTextTruncate;
 
-//тест
+//тест// Тест изменения Wed Aug 20 14:16:38 MSK 2025
+// Еще один тест Wed Aug 20 14:20:02 MSK 2025
+// Тест исправленного скрипта Wed Aug 20 14:22:27 MSK 2025

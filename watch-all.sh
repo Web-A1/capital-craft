@@ -127,13 +127,36 @@ if command -v npx &> /dev/null; then
     echo "   • templates/capitalcraft/"
     echo ""
     
-    # Используем chokidar-cli для отслеживания изменений
-    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/global/ templates/capitalcraft/ --initial | while read -r line; do
-        file="${line#*:}"         # убираем "change:", "add:" и т.п.
-        if [ -f "$file" ]; then
-            echo "📄 Обнаружено изменение: $file"
-            process_file "$file"
+    # Исправляем проблему с pipe - используем временный файл для событий
+    temp_file=$(mktemp)
+    trap "rm -f $temp_file; exit" INT TERM EXIT
+    
+    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/global/ templates/capitalcraft/ --initial > "$temp_file" &
+    chokidar_pid=$!
+    
+    echo "🔄 Chokidar запущен (PID: $chokidar_pid)"
+    echo "📝 Ожидаю события в файле: $temp_file"
+    echo ""
+    
+    # Мониторим временный файл на предмет новых событий
+    while true; do
+        if [ -s "$temp_file" ]; then
+            # Читаем все новые строки
+            while IFS= read -r line; do
+                if [[ $line =~ ^(change|add|unlink): ]]; then
+                    file="${line#*:}"
+                    if [ -f "$file" ]; then
+                        echo "📄 Обнаружено изменение: $file"
+                        process_file "$file"
+                    fi
+                fi
+            done < "$temp_file"
+            
+            # Очищаем файл после обработки
+            > "$temp_file"
         fi
+        
+        sleep 0.1
     done
 else
     echo "❌ Не найден npx"
