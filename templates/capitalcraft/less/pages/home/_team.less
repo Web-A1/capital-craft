@@ -52,12 +52,29 @@
     width: 670px;
     flex-shrink: 0;
     margin-left: 60px; // Отступ слева от линии
+    position: relative; // Для позиционирования псевдоэлемента
 
     .media(mobile, {
       width: 100%;
       gap: 20px;
       margin-left: 0;
     });
+
+    // Вертикальная разделительная линия через псевдоэлемент
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -60px; // Смещение влево на 60px (отступ)
+      width: 1px;
+      height: 100%; // Автоматическая высота всего блока
+      background-color: #000000;
+      pointer-events: none;
+
+      .media(mobile, {
+        display: none;
+      });
+    }
   }
 
   &__title-block {
