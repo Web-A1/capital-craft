@@ -24,6 +24,9 @@
                         </svg>
                     </a>
                 </div>
+                <div class="team__icon">
+                    <img src="/templates/capitalcraft/images/home/icon-team-home.svg" alt="Иконка команды Capital Craft" loading="lazy">
+                </div>
             </div>
             <div class="team__right">
                 <div class="team__gallery">
