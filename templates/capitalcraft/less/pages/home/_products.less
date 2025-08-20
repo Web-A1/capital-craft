@@ -101,6 +101,11 @@
       font-size: 28px;
       line-height: 120%;
     });
+
+    // Планшетные стили
+    @media (min-width: 768px) and (max-width: 1023px) {
+      font-size: 32px;
+    }
   }
 
   &__icon {
@@ -118,6 +123,12 @@
     .media(mobile, {
       display: none;
     });
+
+    // Планшетные стили
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: 350px;
+      height: 260px;
+    }
   }
 
   &__right {
@@ -193,6 +204,11 @@
     .media(mobile, {
       font-size: 24px;
     });
+
+    // Планшетные стили
+    @media (min-width: 768px) and (max-width: 1023px) {
+      font-size: 28px;
+    }
   }
 
   &__item-description {
@@ -212,83 +228,5 @@
       text-align: start;
       line-height: 150%;
     });
-  }
-}
-
-// Мобильные стили
-.media(mobile, {
-  .products {
-    gap: 30px;
-
-    &__wrapper {
-      flex-direction: column;
-      gap: @gap;
-    }
-
-    &__left {
-      max-width: none;
-      gap: 30px;
-    }
-
-    &__title-block {
-      gap: @subtitle-title-gap;
-    }
-
-    &__title {
-      font-size: 28px;
-      line-height: 120%;
-    }
-
-    &__icon {
-      display: none;
-    }
-
-    &__right {
-      max-width: none;
-      gap: 30px;
-    }
-
-    &__item {
-      flex-direction: row;
-      gap: 30px;
-      align-items: flex-start;
-    }
-
-    &__number {
-      width: 60px;
-      height: 60px;
-    }
-
-    &__content {
-      gap: 10px;
-      padding-bottom: 0;
-    }
-
-    &__item-title {
-      font-size: 24px;
-    }
-
-    &__item-description {
-      text-align: start;
-      line-height: 150%;
-    }
-  }
-});
-
-// Планшетные стили
-@media (min-width: 768px) and (max-width: 1023px) {
-  .products {
-    &__title {
-      font-size: 32px;
-    }
-
-    &__item-title {
-      font-size: 28px;
-    }
-
-    &__icon {
-      width: 350px;
-      height: 260px;
-    }
   }
 }
