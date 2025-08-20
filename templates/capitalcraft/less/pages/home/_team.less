@@ -108,49 +108,9 @@
     });
   }
 
-  &__button {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 10px 20px;
-    background-color: #8d222c;
-    border-radius: 5px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-
-    .media(mobile, {
-      gap: 16px;
-      padding: 8px 16px;
-    });
-
-    span {
-      color: #ffffff;
-      font-family: @font-body;
-      font-size: 16px;
-      text-transform: uppercase;
-      white-space: nowrap;
-
-      .media(mobile, {
-        font-size: 14px;
-      });
-    }
-
-    svg {
-      width: 16px;
-      height: 13.27px;
-      color: #ffffff;
-      transform: rotate(270deg);
-
-      .media(mobile, {
-        width: 14px;
-        height: 11.5px;
-      });
-    }
-
-    &:hover {
-      background-color: darken(#8d222c, 10%);
-      transform: translateY(-2px);
-    }
+  &__btn {
+    // Использует базовые стили из btn-main
+    // Дополнительные стили для блока team можно добавить здесь при необходимости
   }
 
   &__icon {
