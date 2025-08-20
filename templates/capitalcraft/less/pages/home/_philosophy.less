@@ -32,11 +32,11 @@
     max-width: 290px;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: @title-text-gap;
 
     .media(mobile, {
       max-width: none;
-      gap: 0;
+      gap: @title-text-gap;
     });
   }
 
@@ -44,7 +44,6 @@
     display: flex;
     flex-direction: column;
     gap: @title-block-gap;
-    margin-bottom: @title-text-gap;
   }
 
   &__eyebrow {
