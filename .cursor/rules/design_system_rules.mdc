@@ -1,0 +1,119 @@
+# Design System Rules for Capital Craft Project
+
+## Design System Structure
+
+### 1. Token Definitions
+- **Location**: `templates/capitalcraft/less/_variables.less`
+- **Format**: LESS variables with semantic naming
+- **Structure**: Colors, typography, spacing, breakpoints defined as variables
+
+**Key Tokens:**
+```less
+// Colors
+@color-accent: #8d222c;
+@color-heading: #000000;
+@color-text: #333333;
+@color-bg-craft: #fdfbf5;
+@color-white: #ffffff;
+@section-divider-color: #000000;
+
+// Typography
+@font-body: 'Golos Text', sans-serif;
+@font-title: 'Onest', sans-serif;
+@font-size-base: 16px;
+@font-size-text: @font-size-base;
+@font-size-sub: @font-size-base * 0.8;
+@font-size-title: @font-size-base * 1.8;
+
+// Spacing
+@gap: 30px;
+@section-padding: 60px;
+@radius: 6px;
+```
+
+### 2. Component Library
+- **Location**: `templates/capitalcraft/pages/home/`
+- **Architecture**: BEM methodology with semantic HTML structure
+- **Pattern**: Left content (title + description) + Right content (main content)
+
+**Component Structure:**
+```html
+<section class="block-name frame section-with-divider" id="block-name">
+    <div class="container block-name__container">
+        <div class="block-name__wrapper">
+            <div class="block-name__left">
+                <div class="block-name__eyebrow">eyebrow text</div>
+                <h2 class="block-name__title">Main title</h2>
+                <p class="block-name__desc">Description text</p>
+            </div>
+            <div class="block-name__right">
+                <!-- Main content -->
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+### 3. Frameworks & Libraries
+- **UI Framework**: Joomla template system with PHP
+- **Styling**: LESS with custom compilation
+- **Build System**: LESS compilation to CSS
+- **No JavaScript frameworks detected**
+
+### 4. Asset Management
+- **Location**: `templates/capitalcraft/images/`
+- **Structure**: Organized by page/component (e.g., `images/home/`)
+- **Format**: WebP for images, SVG for icons
+- **Referencing**: Absolute paths from template root
+
+### 5. Icon System
+- **Location**: `templates/capitalcraft/images/home/`
+- **Format**: SVG files
+- **Naming**: Descriptive names (e.g., `icon-team-home.svg`)
+- **Usage**: `<img>` tags with alt text
+
+### 6. Styling Approach
+- **Methodology**: BEM (Block Element Modifier)
+- **Global Styles**: Base styles in `base.less`
+- **Responsive**: Media queries nested under component classes
+- **Mobile First**: Mobile styles defined first, then overridden for desktop
+
+**Responsive Pattern:**
+```less
+.block {
+  // Desktop styles
+  
+  .media(mobile, {
+    // Mobile overrides
+  });
+}
+```
+
+### 7. Project Structure
+- **Template**: Joomla-based template system
+- **Pages**: Organized by page type in `pages/` directory
+- **Components**: Reusable components in `components/` directory
+- **Styling**: LESS files compiled to CSS in `css/` directory
+
+## Integration Guidelines
+
+### For Figma Integration:
+1. **Follow BEM naming convention**
+2. **Use existing color tokens from `_variables.less`**
+3. **Maintain responsive structure with mobile-first approach**
+4. **Keep component structure consistent with existing blocks**
+5. **Use semantic HTML elements**
+6. **Include proper alt text for images**
+7. **Follow existing spacing and typography patterns**
+
+### Component Creation Process:
+1. Create PHP template file in appropriate directory
+2. Create corresponding LESS file
+3. Import LESS file in main stylesheet
+4. Follow existing responsive patterns
+5. Use existing design tokens
+6. Test mobile and desktop layouts
+description:
+globs:
+alwaysApply: false
+---
