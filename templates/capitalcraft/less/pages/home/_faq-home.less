@@ -7,12 +7,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch; // изменено с flex-start для одинаковой высоты
     position: relative;
     gap: 120px;
 
     .faq-home__content {
       order: 2;
+      height: 200px; // та же высота что и у swiper
+      box-sizing: border-box;
     }
     .faq-home__btn {
       order: 3;
@@ -134,6 +136,7 @@
     flex-direction: column;
     gap: 30px;
     flex: 1 1 0;
+    position: relative; // для абсолютного позиционирования кнопки
 
     .media(mobile, {
       width: 100%;
@@ -166,6 +169,11 @@
 
   &__btn {
     &--desktop {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: 10;
+
       .media(mobile, {
         display: none;
       });
