@@ -29,14 +29,31 @@
   }
 
   &__left {
-    max-width: 440px;
+    width: 440px;
+    padding-right: 60px;
     display: flex;
     flex-direction: column;
     gap: 40px;
+    position: relative;
 
     .media(mobile, {
-      max-width: none;
+      width: 100%;
+      padding-right: 0;
       gap: 30px;
+    });
+  }
+
+  &__divider {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background-color: #000000;
+    pointer-events: none;
+
+    .media(mobile, {
+      display: none;
     });
   }
 
@@ -132,6 +149,7 @@
     flex-direction: column;
     gap: 40px;
     width: 670px;
+    flex-shrink: 0;
 
     .media(mobile, {
       width: 100%;
