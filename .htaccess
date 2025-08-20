@@ -4,6 +4,36 @@
 # @license    GNU General Public License version 2 or later; see LICENSE.txt
 ##
 
+# --- ДОМЕН-СПЕЦИФИЧНЫЕ НАСТРОЙКИ ---
+# DEV-ПОДДОМЕН (закрываем от индексации)
+<If "%{HTTP_HOST} == 'div.capital-craft.ru'">
+  # Запрет индексации всего контента
+  <IfModule mod_headers.c>
+    Header always set X-Robots-Tag "noindex, nofollow"
+  </IfModule>
+
+  # Подмена robots.txt на dev-версию
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^robots\.txt$ robots-dev.txt [L]
+  </IfModule>
+</If>
+
+# ПРОД (разрешаем индексацию)
+<If "%{HTTP_HOST} == 'capital-craft.ru' || %{HTTP_HOST} == 'www.capital-craft.ru'">
+  # Убираем X-Robots-Tag, если пришёл сверху
+  <IfModule mod_headers.c>
+    Header unset X-Robots-Tag
+  </IfModule>
+
+  # Канонизация www -> без www
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTP_HOST} ^www\.capital-craft\.ru$ [NC]
+    RewriteRule ^ https://capital-craft.ru%{REQUEST_URI} [L,R=301]
+  </IfModule>
+</If>
+
 ##
 # READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
 #
