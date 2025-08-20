@@ -28,15 +28,15 @@
     });
   }
 
-  &__left {
+  &__title-block {
     max-width: 290px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: @title-block-gap;
 
     .media(mobile, {
       max-width: none;
-      gap: 30px;
+      gap: @title-block-gap;
     });
   }
 
