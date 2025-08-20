@@ -134,9 +134,8 @@
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    // gap: 30px; // убираем, используем justify-content: space-between
     flex: 1 1 0;
-    position: relative; // для абсолютного позиционирования кнопки
     justify-content: space-between; // заголовок сверху, кнопка внизу
 
     .media(mobile, {
