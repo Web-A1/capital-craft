@@ -74,12 +74,15 @@ commit_and_push() {
         git commit -m "$message $(date '+%Y-%m-%d %H:%M:%S')"
         
         echo "🚀 Пушим в dev..."
-        git push origin dev
-        
-        if [ $? -eq 0 ]; then
+        if git push origin dev; then
             echo "✅ Изменения отправлены в dev!"
         else
-            echo "❌ Ошибка при push в dev"
+            echo "⚠️ Push не удался. Пытаюсь синхронизироваться с origin/dev..."
+            if git pull --rebase origin dev && git push origin dev; then
+                echo "✅ Изменения отправлены в dev после синхронизации!"
+            else
+                echo "❌ Не удалось отправить изменения после синхронизации"
+            fi
         fi
     fi
     
