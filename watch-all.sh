@@ -102,20 +102,25 @@ process_file() {
         return
     fi
     
-    if [[ $file =~ \.less$ ]]; then
-        handle_less "$file"
-    elif [[ $file =~ \.js$ ]]; then
-        # Проверяем, что это исходный JS файл (не в node_modules или других папках)
-        if [[ $file =~ templates/capitalcraft/js/ ]] && [[ ! $file =~ /node_modules/ ]] && [[ ! $file =~ /vendor/ ]]; then
-            handle_js "$file"
-        else
-            echo "📄 Игнорирую JS файл: $file"
-        fi
-    elif [[ $file =~ \.php$ ]]; then
-        handle_php "$file"
-    else
-        echo "📄 Изменен файл: $file (не обрабатывается)"
-    fi
+    case "$file" in
+        *.less)
+            handle_less "$file"
+            ;;
+        *.js)
+            # Проверяем, что это исходный JS файл (не в node_modules или других папках)
+            if [[ "$file" =~ templates/capitalcraft/js/ ]] && [[ "$file" != *node_modules* ]] && [[ "$file" != *vendor* ]]; then
+                handle_js "$file"
+            else
+                echo "📄 Игнорирую JS файл: $file"
+            fi
+            ;;
+        *.php)
+            handle_php "$file"
+            ;;
+        *)
+            echo "📄 Изменен файл: $file (не обрабатывается)"
+            ;;
+    esac
 }
 
 # Запускаем мониторинг с помощью chokidar-cli
