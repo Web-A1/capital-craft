@@ -91,10 +91,26 @@ commit_and_push() {
 process_file() {
     local file="$1"
     
+    # Исключаем выходные файлы
+    if [[ $file =~ /bundle\.js$ ]] || [[ $file =~ /\.css$ ]] || [[ $file =~ /\.map$ ]]; then
+        echo "📄 Игнорирую выходной файл: $file"
+        return
+    fi
+    
+    # Проверяем, что файл существует и не является директорией
+    if [ ! -f "$file" ]; then
+        return
+    fi
+    
     if [[ $file =~ \.less$ ]]; then
         handle_less "$file"
     elif [[ $file =~ \.js$ ]]; then
-        handle_js "$file"
+        # Проверяем, что это исходный JS файл (не в node_modules или других папках)
+        if [[ $file =~ templates/capitalcraft/js/ ]] && [[ ! $file =~ /node_modules/ ]] && [[ ! $file =~ /vendor/ ]]; then
+            handle_js "$file"
+        else
+            echo "📄 Игнорирую JS файл: $file"
+        fi
     elif [[ $file =~ \.php$ ]]; then
         handle_php "$file"
     else
@@ -102,24 +118,25 @@ process_file() {
     fi
 }
 
-# Запускаем мониторинг с помощью fswatch (macOS)
-if command -v fswatch &> /dev/null; then
-    echo "🍎 Использую fswatch (macOS)"
+# Запускаем мониторинг с помощью chokidar-cli
+if command -v npx &> /dev/null; then
+    echo "📦 Использую chokidar-cli (Node.js)"
     echo "📁 Отслеживаю папки:"
     echo "   • templates/capitalcraft/less/"
-    echo "   • templates/capitalcraft/js/"
+    echo "   • templates/capitalcraft/js/global/"
     echo "   • templates/capitalcraft/"
     echo ""
     
-    # Используем fswatch -r для рекурсивного отслеживания с выводом имен файлов
-    fswatch -r templates/capitalcraft/less/ templates/capitalcraft/js/ templates/capitalcraft/ | while read file; do
+    # Используем chokidar-cli для отслеживания изменений
+    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/global/ templates/capitalcraft/ --initial | while read -r line; do
+        file="${line#*:}"         # убираем "change:", "add:" и т.п.
         if [ -f "$file" ]; then
             echo "📄 Обнаружено изменение: $file"
             process_file "$file"
         fi
     done
 else
-    echo "❌ Не найден fswatch"
-    echo "Установите: brew install fswatch"
+    echo "❌ Не найден npx"
+    echo "Установите Node.js: https://nodejs.org/"
     exit 1
 fi
