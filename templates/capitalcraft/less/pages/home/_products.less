@@ -227,6 +227,57 @@
     .media(mobile, {
       text-align: start;
       line-height: 150%;
+      
+      // Стили для обрезанного текста
+      &.truncated {
+        position: relative;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        max-height: calc(1.5em * 3); // 3 строки с line-height 150%
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          width: 60px;
+          height: 1.5em;
+          background: linear-gradient(to right, transparent, @color-white 20%);
+          pointer-events: none;
+        }
+      }
+      
+      // Стили для развернутого текста
+      &.expanded {
+        overflow: visible;
+        display: block;
+        max-height: none;
+        
+        &::after {
+          display: none;
+        }
+      }
+      
+      // Кнопка "Читать далее"
+      .read-more-btn {
+        display: inline-block;
+        margin-top: 10px;
+        color: @color-accent;
+        font-size: @font-size-sub;
+        text-decoration: underline;
+        cursor: pointer;
+        user-select: none;
+        
+        &:hover {
+          text-decoration: none;
+        }
+        
+        &.hidden {
+          display: none;
+        }
+      }
     });
   }
 }
