@@ -255,8 +255,15 @@ check_conflicts() {
         log_warning "Обнаружено $CONFLICTS потенциальных конфликтов"
         log_info "Конфликтующие файлы:"
         git merge-tree $(git merge-base main dev) main dev 2>/dev/null | grep "<<<<<<< " -A 1 -B 1 | grep "+++" | sed 's/+++ b\///' | sort | uniq || true
-        add_issue "Обнаружены конфликты: $CONFLICTS"
-        return 1
+        
+        if [ "$FORCE_MERGE" = true ]; then
+            log_info "Автоматическое разрешение конфликтов будет выполнено (--force)"
+            log_to_file "Конфликты будут разрешены автоматически"
+            return 0
+        else
+            add_issue "Обнаружены конфликты: $CONFLICTS"
+            return 1
+        fi
     else
         log_success "Конфликтов не обнаружено"
         log_to_file "Конфликты: не обнаружены"
@@ -445,6 +452,36 @@ commit_compiled_files() {
     fi
 }
 
+# Автоматическое разрешение конфликтов
+resolve_conflicts_automatically() {
+    log_merge "Автоматически разрешаю конфликты..."
+    
+    # Получаем список конфликтующих файлов
+    CONFLICT_FILES=$(git merge-tree $(git merge-base main dev) main dev 2>/dev/null | grep "<<<<<<< " -A 1 -B 1 | grep "+++" | sed 's/+++ b\///' | sort | uniq || true)
+    
+    if [ -n "$CONFLICT_FILES" ]; then
+        log_info "Конфликтующие файлы:"
+        echo "$CONFLICT_FILES"
+        
+        # Для каждого конфликтующего файла выбираем версию из dev
+        for file in $CONFLICT_FILES; do
+            if [ -f "$file" ]; then
+                log_info "Разрешаю конфликт в файле: $file"
+                # Выбираем версию из dev (текущей ветки)
+                git checkout --ours "$file" 2>/dev/null || git checkout HEAD -- "$file" 2>/dev/null
+                log_to_file "Конфликт разрешен в файле: $file (выбрана версия dev)"
+            fi
+        done
+        
+        # Добавляем разрешенные файлы
+        git add .
+        log_success "Все конфликты автоматически разрешены"
+        log_to_file "Автоматическое разрешение конфликтов завершено"
+    else
+        log_info "Конфликтующих файлов не обнаружено"
+    fi
+}
+
 # Выполнение мерджа
 perform_merge() {
     log_merge "Переключаюсь на ветку main..."
@@ -456,8 +493,28 @@ perform_merge() {
     log_to_file "Обновление main: выполнено"
 
     log_merge "Мерджу dev в main..."
-    git merge dev --no-ff -m "Merge dev into main - $(date)"
-    log_to_file "Мердж dev в main: выполнено"
+    
+    # Пытаемся выполнить мердж
+    if git merge dev --no-ff -m "Merge dev into main - $(date)"; then
+        log_success "Мердж выполнен успешно"
+        log_to_file "Мердж dev в main: выполнено"
+    else
+        log_warning "Мердж завершился с конфликтами, разрешаю автоматически..."
+        log_to_file "Мердж завершился с конфликтами"
+        
+        # Автоматически разрешаем конфликты
+        resolve_conflicts_automatically
+        
+        # Коммитим разрешенные конфликты
+        if git add . && git commit -m "Merge dev into main - конфликты разрешены автоматически - $(date)"; then
+            log_success "Конфликты разрешены и закоммичены"
+            log_to_file "Конфликты разрешены и закоммичены"
+        else
+            log_error "Не удалось закоммитить разрешенные конфликты"
+            log_to_file "Ошибка коммита разрешенных конфликтов"
+            return 1
+        fi
+    fi
 
     log_merge "Пушаю main в remote..."
     git push origin main
