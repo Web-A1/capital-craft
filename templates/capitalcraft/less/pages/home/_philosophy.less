@@ -32,19 +32,15 @@
     max-width: 290px;
     display: flex;
     flex-direction: column;
-    gap: @title-text-gap;
+    gap: @title-block-gap;
 
     .media(mobile, {
       max-width: none;
-      gap: @title-text-gap;
+      gap: @title-block-gap;
     });
   }
 
-  &__title-block {
-    display: flex;
-    flex-direction: column;
-    gap: @title-block-gap;
-  }
+
 
   &__eyebrow {
     color: lighten(@color-text, 20%);
