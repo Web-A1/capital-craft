@@ -28,17 +28,22 @@
     });
   }
 
-  &__title-block {
+  &__left {
     max-width: 290px;
     display: flex;
     flex-direction: column;
-    gap: @subtitle-title-gap;
-    margin-bottom: @title-desc-gap;
+    gap: @title-desc-gap;
 
     .media(mobile, {
       max-width: none;
-      gap: @subtitle-title-gap;
+      gap: @title-desc-gap;
     });
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: @subtitle-title-gap;
   }
 
 
@@ -228,9 +233,9 @@
       gap: @gap;
     }
 
-    &__title-block {
+    &__left {
       max-width: none;
-      gap: @subtitle-title-gap;
+      gap: @title-desc-gap;
     }
 
     &__title {
