@@ -132,37 +132,29 @@ if command -v npx &> /dev/null; then
     echo "   • templates/capitalcraft/"
     echo ""
     
-    # Исправляем проблему с pipe - используем временный файл для событий
-    temp_file=$(mktemp)
-    trap "rm -f $temp_file; exit" INT TERM EXIT
-    
-    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/global/ templates/capitalcraft/ --initial > "$temp_file" &
+    # Используем именованный канал (FIFO) для передачи событий без потери данных
+    pipe_file=$(mktemp -u)
+    mkfifo "$pipe_file"
+
+    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/global/ templates/capitalcraft/ --initial > "$pipe_file" &
     chokidar_pid=$!
-    
+
+    trap 'rm -f "$pipe_file"; kill "$chokidar_pid"; exit' INT TERM EXIT
+
     echo "🔄 Chokidar запущен (PID: $chokidar_pid)"
-    echo "📝 Ожидаю события в файле: $temp_file"
+    echo "📝 Ожидаю события..."
     echo ""
-    
-    # Мониторим временный файл на предмет новых событий
-    while true; do
-        if [ -s "$temp_file" ]; then
-            # Читаем все новые строки
-            while IFS= read -r line; do
-                if [[ $line =~ ^(change|add|unlink): ]]; then
-                    file="${line#*:}"
-                    if [ -f "$file" ]; then
-                        echo "📄 Обнаружено изменение: $file"
-                        process_file "$file"
-                    fi
-                fi
-            done < "$temp_file"
-            
-            # Очищаем файл после обработки
-            > "$temp_file"
+
+    # Читаем события напрямую из канала
+    while IFS= read -r line; do
+        if [[ $line =~ ^(change|add|unlink): ]]; then
+            file="${line#*:}"
+            if [ -f "$file" ]; then
+                echo "📄 Обнаружено изменение: $file"
+                process_file "$file"
+            fi
         fi
-        
-        sleep 0.1
-    done
+    done < "$pipe_file"
 else
     echo "❌ Не найден npx"
     echo "Установите Node.js: https://nodejs.org/"
