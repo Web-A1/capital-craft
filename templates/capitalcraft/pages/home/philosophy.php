@@ -1,14 +1,12 @@
 <section class="philosophy frame section-with-divider" id="philosophy">
     <div class="container philosophy__container">
         <div class="philosophy__wrapper">
-            
                 <div class="philosophy__title-block">
                     <div class="philosophy__subtitle">философия capital craft</div>
                     <h2 class="philosophy__title">Результат - это последовательность выверенных шагов</h2>
                     <p class="philosophy__desc">Мы не сопровождаем — мы ведём. Погружаемся в задачу, считаем риски, разрабатываем стратегию и доводим до результата</p>
                 </div>
             
-
             <div class="philosophy__grid">
                 <!-- Grid areas for lines and content -->
                 <div class="philosophy__line philosophy__line--top"></div>
