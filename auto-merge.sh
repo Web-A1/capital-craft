@@ -1,13 +1,12 @@
 #!/bin/bash
 
 # =============================================================================
-# AUTO-MERGE: Автоматический мердж dev в main с проверками и логированием
+# AUTO-MERGE: Автоматический мердж dev в main с проверками
 # =============================================================================
-# Использование: ./auto-merge.sh [--force] [--no-backup] [--dry-run]
+# Использование: ./auto-merge.sh [--force] [--dry-run]
 # 
 # Опции:
 #   --force     - принудительный мердж (пропустить некоторые проверки)
-#   --no-backup - не создавать бэкап
 #   --dry-run   - только проверка без выполнения мерджа
 # =============================================================================
 
@@ -28,14 +27,11 @@ NC='\033[0m' # No Color
 
 # Настройки проекта
 PROJECT_NAME="Capital Craft"
-BACKUP_DIR="../backup_$(date +%Y%m%d_%H%M%S)"
-LOG_FILE="merge_$(date +%Y%m%d_%H%M%S).log"
 LESS_COMPILE_CMD="npm run less:all"
 JS_BUILD_CMD="npm run js:build"
 
 # Флаги
 FORCE_MERGE=false
-CREATE_BACKUP=true
 DRY_RUN=false
 
 # Счетчик проблем
@@ -46,52 +42,32 @@ RESTART_COUNT=0
 MAX_RESTARTS=3
 
 # =============================================================================
-# ФУНКЦИИ ЛОГИРОВАНИЯ
+# ФУНКЦИИ ВЫВОДА
 # =============================================================================
 
-# Инициализация лога
-init_log() {
-    echo "=== MERGE LOG: $(date) ===" > "$LOG_FILE"
-    echo "Проект: $PROJECT_NAME" >> "$LOG_FILE"
-    echo "Пользователь: $(whoami)" >> "$LOG_FILE"
-    echo "Система: $(uname -a)" >> "$LOG_FILE"
-    echo "" >> "$LOG_FILE"
-}
-
-# Запись в лог
-log_to_file() {
-    echo "[$(date '+%H:%M:%S')] $1" >> "$LOG_FILE"
-}
-
-# Функции для вывода с логированием
+# Функции для вывода
 log_info() { 
     echo -e "${BLUE}ℹ️  $1${NC}"
-    log_to_file "INFO: $1"
 }
 
 log_success() { 
     echo -e "${GREEN}✅ $1${NC}"
-    log_to_file "SUCCESS: $1"
 }
 
 log_warning() { 
     echo -e "${YELLOW}⚠️  $1${NC}"
-    log_to_file "WARNING: $1"
 }
 
 log_error() { 
     echo -e "${RED}❌ $1${NC}"
-    log_to_file "ERROR: $1"
 }
 
 log_step() { 
     echo -e "${PURPLE}🔧 $1${NC}"
-    log_to_file "STEP: $1"
 }
 
 log_merge() { 
     echo -e "${CYAN}🚀 $1${NC}"
-    log_to_file "MERGE: $1"
 }
 
 # =============================================================================
@@ -101,7 +77,6 @@ log_merge() {
 # Функция для увеличения счетчика проблем
 add_issue() {
     ISSUES_COUNT=$((ISSUES_COUNT + 1))
-    log_to_file "ISSUE_ADDED: $1"
 }
 
 # Проверка git репозитория
@@ -109,7 +84,6 @@ check_git_repo() {
     log_step "Проверка git репозитория..."
     if git rev-parse --git-dir > /dev/null 2>&1; then
         log_success "Git репозиторий найден"
-        log_to_file "Git репозиторий: OK"
     else
         log_error "Git репозиторий не найден"
         add_issue "Git репозиторий не найден"
@@ -122,7 +96,7 @@ check_current_branch() {
     log_step "Проверка текущей ветки..."
     CURRENT_BRANCH=$(git branch --show-current)
     log_info "Текущая ветка: ${CURRENT_BRANCH}"
-    log_to_file "Текущая ветка: $CURRENT_BRANCH"
+    
     
     if [ "$CURRENT_BRANCH" != "dev" ]; then
         log_warning "Рекомендуется работать на ветке dev"
@@ -139,17 +113,17 @@ check_working_tree() {
     log_step "Проверка чистоты рабочего дерева..."
     if git diff-index --quiet HEAD --; then
         log_success "Рабочее дерево чистое"
-        log_to_file "Рабочее дерево: чистый"
+        
     else
         log_warning "Есть незакоммиченные изменения:"
         git status --porcelain
-        log_to_file "Незакоммиченные изменения: $(git status --porcelain | wc -l) файлов"
+        
         
         # Автоматически коммитим изменения и перезапускаем процесс
         log_info "🔄 Автоматически коммичу незакоммиченные изменения..."
         if auto_commit_and_restart; then
             log_success "Изменения закоммичены, процесс мерджа перезапущен"
-            log_to_file "Автокоммит и перезапуск выполнены"
+            
             return 0
         else
             log_error "Не удалось закоммитить изменения"
@@ -165,7 +139,7 @@ check_branches() {
     
     if git show-ref --verify --quiet refs/heads/dev; then
         log_success "Ветка dev существует"
-        log_to_file "Ветка dev: существует"
+        
     else
         log_error "Ветка dev не найдена"
         add_issue "Ветка dev не найдена"
@@ -174,7 +148,7 @@ check_branches() {
 
     if git show-ref --verify --quiet refs/heads/main; then
         log_success "Ветка main существует"
-        log_to_file "Ветка main: существует"
+        
     else
         log_error "Ветка main не найдена"
         add_issue "Ветка main не найдена"
@@ -197,14 +171,14 @@ check_remote_sync() {
             add_issue "Dev отстает от remote"
         elif [ "$DEV_AHEAD" -gt 0 ]; then
             log_warning "Ветка dev опережает origin/dev на $DEV_AHEAD коммитов"
-            log_to_file "Dev опережает remote на $DEV_AHEAD коммитов"
+            
         else
             log_success "Ветка dev синхронизирована с origin/dev"
-            log_to_file "Dev синхронизирована с remote"
+            
         fi
     else
         log_warning "Remote ветка origin/dev не найдена"
-        log_to_file "Remote dev не найдена"
+        
     fi
 
     # Проверяем main ветку
@@ -217,14 +191,14 @@ check_remote_sync() {
             add_issue "Main отстает от remote"
         elif [ "$MAIN_AHEAD" -gt 0 ]; then
             log_warning "Ветка main опережает origin/main на $MAIN_AHEAD коммитов"
-            log_to_file "Main опережает remote на $MAIN_AHEAD коммитов"
+            
         else
             log_success "Ветка main синхронизирована с origin/main"
-            log_to_file "Main синхронизирована с remote"
+            
         fi
     else
         log_warning "Remote ветка origin/main не найдена"
-        log_to_file "Remote main не найдена"
+        
     fi
 }
 
@@ -236,7 +210,7 @@ check_dev_ahead() {
         log_success "Ветка dev опережает main на $COMMITS_AHEAD коммитов"
         log_info "Последние коммиты в dev:"
         git log --oneline main..dev | head -5
-        log_to_file "Dev опережает main на $COMMITS_AHEAD коммитов"
+        
     else
         log_warning "Ветка dev не содержит новых коммитов по сравнению с main"
         add_issue "Dev не содержит новых коммитов"
@@ -257,11 +231,11 @@ check_conflicts() {
         git merge-tree $(git merge-base main dev) main dev 2>/dev/null | grep "<<<<<<< " -A 1 -B 1 | grep "+++" | sed 's/+++ b\///' | sort | uniq || true
         
         log_info "Конфликты будут разрешены автоматически во время мерджа"
-        log_to_file "Конфликты будут разрешены автоматически"
+        
         return 0
     else
         log_success "Конфликтов не обнаружено"
-        log_to_file "Конфликты: не обнаружены"
+        
         return 0
     fi
 }
@@ -272,7 +246,7 @@ check_less_compilation() {
     if [ -f "package.json" ]; then
         if grep -q "less:all" package.json; then
             log_success "Скрипт компиляции LESS найден в package.json"
-            log_to_file "LESS скрипт: найден"
+            
         else
             log_warning "Скрипт компиляции LESS не найден в package.json"
             add_issue "LESS скрипт не найден"
@@ -280,7 +254,7 @@ check_less_compilation() {
         
         if [ -d "node_modules" ] || [ -d "../node_modules" ]; then
             log_success "Node modules установлены"
-            log_to_file "Node modules: установлены"
+            
         else
             log_warning "Node modules не установлены. Выполните: npm install"
             add_issue "Node modules не установлены"
@@ -297,7 +271,7 @@ check_remote_access() {
     log_step "Проверка доступности remote репозитория..."
     if git ls-remote origin > /dev/null 2>&1; then
         log_success "Remote репозиторий доступен"
-        log_to_file "Remote доступ: OK"
+        
     else
         log_warning "Проблемы с доступом к remote репозиторию"
         add_issue "Проблемы с remote доступом"
@@ -324,11 +298,11 @@ check_merge_readiness() {
     echo "=================================="
     if [ $ISSUES_COUNT -eq 0 ]; then
         log_success "🎉 ВСЕ ПРОВЕРКИ ПРОЙДЕНЫ! Готов к мерджу."
-        log_to_file "Все проверки пройдены успешно"
+        
         return 0
     else
         log_error "Обнаружено $ISSUES_COUNT проблем(ы). Исправьте их перед мерджем."
-        log_to_file "Обнаружено проблем: $ISSUES_COUNT"
+        
         return 1
     fi
 }
@@ -342,7 +316,7 @@ auto_commit_and_restart() {
     # Проверяем количество перезапусков
     if [ "$RESTART_COUNT" -ge "$MAX_RESTARTS" ]; then
         log_error "Достигнуто максимальное количество перезапусков ($MAX_RESTARTS). Остановка процесса."
-        log_to_file "Достигнут лимит перезапусков: $MAX_RESTARTS"
+        
         return 1
     fi
     
@@ -356,29 +330,29 @@ auto_commit_and_restart() {
         COMMIT_MSG="auto: автоматический коммит перед мерджем - $(date) - попытка $((RESTART_COUNT + 1))"
         if git commit -m "$COMMIT_MSG"; then
             log_success "Изменения закоммичены автоматически!"
-            log_to_file "Автокоммит выполнен: $COMMIT_MSG"
+            
             
             # Пушим изменения в dev
             log_merge "Пушаю закоммиченные изменения в dev..."
             if git push origin dev; then
                 log_success "Изменения запушены в dev"
-                log_to_file "Пуш в dev выполнен"
+                
                 
                 # Увеличиваем счетчик перезапусков
                 RESTART_COUNT=$((RESTART_COUNT + 1))
                 log_info "🔄 Перезапускаю процесс мерджа (попытка $RESTART_COUNT из $MAX_RESTARTS)..."
-                log_to_file "Перезапуск процесса мерджа: попытка $RESTART_COUNT"
+                
                 
                 # Запускаем скрипт заново с теми же параметрами
                 exec "$0" "$@"
             else
                 log_error "Не удалось запушть изменения в dev"
-                log_to_file "Ошибка пуша в dev"
+                
                 return 1
             fi
         else
             log_error "Не удалось закоммитить изменения"
-            log_to_file "Ошибка коммита"
+            
             return 1
         fi
     fi
@@ -392,33 +366,21 @@ auto_commit_changes() {
         git add .
         git commit -m "auto: автоматический коммит перед мерджем - $(date)"
         log_success "Изменения закоммичены автоматически!"
-        log_to_file "Автокоммит выполнен"
+        
     fi
 }
 
-# Создание бэкапа
-create_backup() {
-    if [ "$CREATE_BACKUP" = true ]; then
-        log_merge "Создаю бэкап текущего состояния..."
-        mkdir -p "$BACKUP_DIR"
-        cp -r . "$BACKUP_DIR/"
-        log_success "Бэкап создан: $BACKUP_DIR"
-        log_to_file "Бэкап создан: $BACKUP_DIR"
-    else
-        log_info "Создание бэкапа пропущено (--no-backup)"
-        log_to_file "Бэкап пропущен"
-    fi
-}
+
 
 # Компиляция LESS
 compile_less() {
     log_merge "Компилирую LESS для продакшна..."
     if npm run less:all; then
         log_success "LESS скомпилирован успешно"
-        log_to_file "LESS компиляция: успешно"
+        
     else
         log_error "Ошибка компиляции LESS!"
-        log_to_file "LESS компиляция: ошибка"
+        
         return 1
     fi
 }
@@ -428,10 +390,10 @@ compile_js() {
     log_merge "Компилирую JavaScript..."
     if npm run js:build; then
         log_success "JavaScript скомпилирован успешно"
-        log_to_file "JS компиляция: успешно"
+        
     else
         log_error "Ошибка компиляции JavaScript!"
-        log_to_file "JS компиляция: ошибка"
+        
         return 1
     fi
 }
@@ -441,10 +403,10 @@ commit_compiled_files() {
     log_merge "Коммичу скомпилированные файлы..."
     if git add . && git commit -m "build: продакшн компиляция перед мерджем"; then
         log_success "Скомпилированные файлы закоммичены"
-        log_to_file "Коммит скомпилированных файлов: успешно"
+        
     else
         log_warning "Не удалось закоммитить скомпилированные файлы (возможно, нет изменений)"
-        log_to_file "Коммит скомпилированных файлов: пропущен"
+        
     fi
 }
 
@@ -465,14 +427,14 @@ resolve_conflicts_automatically() {
                 log_info "Разрешаю конфликт в файле: $file"
                 # Выбираем версию из dev (текущей ветки)
                 git checkout --ours "$file" 2>/dev/null || git checkout HEAD -- "$file" 2>/dev/null
-                log_to_file "Конфликт разрешен в файле: $file (выбрана версия dev)"
+                
             fi
         done
         
         # Добавляем разрешенные файлы
         git add .
         log_success "Все конфликты автоматически разрешены"
-        log_to_file "Автоматическое разрешение конфликтов завершено"
+        
     else
         log_info "Конфликтующих файлов не обнаружено"
     fi
@@ -482,21 +444,21 @@ resolve_conflicts_automatically() {
 perform_merge() {
     log_merge "Переключаюсь на ветку main..."
     git checkout main
-    log_to_file "Переключение на main: выполнено"
+    
 
     log_merge "Обновляю main с remote..."
     git pull origin main
-    log_to_file "Обновление main: выполнено"
+    
 
     log_merge "Мерджу dev в main..."
     
     # Пытаемся выполнить мердж
     if git merge dev --no-ff -m "Merge dev into main - $(date)"; then
         log_success "Мердж выполнен успешно"
-        log_to_file "Мердж dev в main: выполнено"
+        
     else
         log_warning "Мердж завершился с конфликтами, разрешаю автоматически..."
-        log_to_file "Мердж завершился с конфликтами"
+        
         
         # Автоматически разрешаем конфликты
         resolve_conflicts_automatically
@@ -504,21 +466,21 @@ perform_merge() {
         # Коммитим разрешенные конфликты
         if git add . && git commit -m "Merge dev into main - конфликты разрешены автоматически - $(date)"; then
             log_success "Конфликты разрешены и закоммичены"
-            log_to_file "Конфликты разрешены и закоммичены"
+            
         else
             log_error "Не удалось закоммитить разрешенные конфликты"
-            log_to_file "Ошибка коммита разрешенных конфликтов"
+            
             return 1
         fi
     fi
 
     log_merge "Пушаю main в remote..."
     git push origin main
-    log_to_file "Пуш main: выполнен"
+    
 
     log_merge "Возвращаюсь на ветку dev..."
     git checkout dev
-    log_to_file "Возврат на dev: выполнен"
+    
 }
 
 # =============================================================================
@@ -534,11 +496,7 @@ parse_arguments() {
                 log_info "Включен принудительный мердж (--force)"
                 shift
                 ;;
-            --no-backup)
-                CREATE_BACKUP=false
-                log_info "Создание бэкапа отключено (--no-backup)"
-                shift
-                ;;
+
             --dry-run)
                 DRY_RUN=true
                 log_info "Режим тестирования (--dry-run)"
@@ -546,7 +504,7 @@ parse_arguments() {
                 ;;
             *)
                 log_error "Неизвестный аргумент: $1"
-                echo "Использование: $0 [--force] [--no-backup] [--dry-run]"
+                echo "Использование: $0 [--force] [--dry-run]"
                 exit 1
                 ;;
         esac
@@ -559,8 +517,7 @@ main() {
     log_info "🚀 AUTO-MERGE: Автоматический мердж dev в main"
     echo "=================================================="
     
-    # Инициализация лога
-    init_log
+
     
     # Обработка аргументов
     parse_arguments "$@"
@@ -569,10 +526,10 @@ main() {
     if ! check_merge_readiness; then
         if [ "$FORCE_MERGE" = true ]; then
             log_warning "Продолжаю мердж несмотря на проблемы (--force)"
-            log_to_file "Мердж продолжен с флагом --force"
+            
         else
             log_error "Мердж отменен из-за проблем"
-            log_to_file "Мердж отменен"
+            
             exit 1
         fi
     fi
@@ -580,7 +537,7 @@ main() {
     # Если это dry-run, останавливаемся здесь
     if [ "$DRY_RUN" = true ]; then
         log_success "🎯 DRY-RUN завершен успешно! Все проверки пройдены."
-        log_to_file "Dry-run завершен успешно"
+        
         exit 0
     fi
     
@@ -588,7 +545,6 @@ main() {
     log_merge "Начинаю выполнение мерджа..."
     
     auto_commit_changes
-    create_backup
     compile_less
     compile_js
     commit_compiled_files
@@ -600,9 +556,6 @@ main() {
     log_success "🎉 МЕРДЖ УСПЕШНО ЗАВЕРШЕН!"
     echo ""
     log_info "Что было сделано:"
-    if [ "$CREATE_BACKUP" = true ]; then
-        echo "  - Создан бэкап: $BACKUP_DIR"
-    fi
     echo "  - LESS скомпилирован для продакшна"
     echo "  - JavaScript скомпилирован для продакшна"
     echo "  - dev мерджнут в main"
@@ -611,11 +564,10 @@ main() {
     echo ""
     log_merge "🚀 Автодеплой на основной сайт запущен!"
     
-    log_to_file "Мердж завершен успешно"
-    log_to_file "Лог сохранен в: $LOG_FILE"
     
-    echo ""
-    log_info "📋 Лог операции сохранен в: $LOG_FILE"
+    
+    
+
 }
 
 # =============================================================================
