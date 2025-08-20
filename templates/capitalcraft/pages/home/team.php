@@ -2,7 +2,6 @@
     <div class="container team__container">
         <div class="team__wrapper">
             <div class="team__left">
-                <div class="team__divider"></div>
                 <div class="team__title-block">
                     <div class="team__subtitle">
                         <p>команда</p>
