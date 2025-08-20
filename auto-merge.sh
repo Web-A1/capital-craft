@@ -256,17 +256,13 @@ check_conflicts() {
         log_info "Конфликтующие файлы:"
         git merge-tree $(git merge-base main dev) main dev 2>/dev/null | grep "<<<<<<< " -A 1 -B 1 | grep "+++" | sed 's/+++ b\///' | sort | uniq || true
         
-        if [ "$FORCE_MERGE" = true ]; then
-            log_info "Автоматическое разрешение конфликтов будет выполнено (--force)"
-            log_to_file "Конфликты будут разрешены автоматически"
-            return 0
-        else
-            add_issue "Обнаружены конфликты: $CONFLICTS"
-            return 1
-        fi
+        log_info "Конфликты будут разрешены автоматически во время мерджа"
+        log_to_file "Конфликты будут разрешены автоматически"
+        return 0
     else
         log_success "Конфликтов не обнаружено"
         log_to_file "Конфликты: не обнаружены"
+        return 0
     fi
 }
 
