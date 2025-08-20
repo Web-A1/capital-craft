@@ -42,21 +42,7 @@
       gap: 30px;
     });
 
-    // Вертикальная разделительная линия через псевдоэлемент
-    &::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 1px;
-      height: 770px; // Высота всех картинок справа: 390px + 40px + 150px + 40px + 150px
-      background-color: #000000;
-      pointer-events: none;
 
-      .media(mobile, {
-        display: none;
-      });
-    }
   }
 
   &__right {
