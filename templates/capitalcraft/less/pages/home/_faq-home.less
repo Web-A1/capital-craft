@@ -77,7 +77,10 @@
       align-items: stretch;
       position: static;
 
-      .faq-home__content { order: 1; }
+      .faq-home__content { 
+        order: 1; 
+        height: auto; // убираем фиксированную высоту для мобильной версии
+      }
       .faq-home__swiper  { order: 2; }
       .faq-home__btn     { order: 3; }
 
@@ -176,6 +179,7 @@
 
       .media(mobile, {
         display: none;
+        position: static; // убираем абсолютное позиционирование для мобильной версии
       });
     }
 
