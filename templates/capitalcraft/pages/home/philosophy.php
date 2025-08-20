@@ -4,8 +4,8 @@
                 <div class="philosophy__title-block">
                     <div class="philosophy__subtitle">философия capital craft</div>
                     <h2 class="philosophy__title">Результат - это последовательность выверенных шагов</h2>
-                    <p class="philosophy__desc">Мы не сопровождаем — мы ведём. Погружаемся в задачу, считаем риски, разрабатываем стратегию и доводим до результата</p>
                 </div>
+                <p class="philosophy__desc">Мы не сопровождаем — мы ведём. Погружаемся в задачу, считаем риски, разрабатываем стратегию и доводим до результата</p>
             
             <div class="philosophy__grid">
                 <!-- Grid areas for lines and content -->
