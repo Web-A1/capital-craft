@@ -10,9 +10,6 @@
                     <div class="team__title">
                         <p>Эксперты, на которых можно положиться</p>
                     </div>
-                    <div class="team__icon">
-                        <img src="/templates/capitalcraft/images/home/icon-team-home.svg" alt="Иконка команды Capital Craft" loading="lazy">
-                    </div>
                 </div>
                 <div class="team__description">
                     <p>Каждый из нас строил бизнес, принимал риски и ответственность, проходил через найм, обязательства перед людьми и непростые решения. Мы не читаем про бизнес — мы его ведём. На своих деньгах, со своими людьми, под свою ответственность.</p>
