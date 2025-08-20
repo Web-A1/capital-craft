@@ -44,7 +44,7 @@ echo "✅ Бэкап создан: ../$BACKUP_DIR"
 
 # Компиляция LESS для продакшна
 echo "🔄 Компилирую LESS для продакшна..."
-make compile-prod
+npm run build
 if [ $? -ne 0 ]; then
     echo "❌ Ошибка компиляции LESS!"
     exit 1
