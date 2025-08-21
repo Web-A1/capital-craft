@@ -233,8 +233,8 @@
       display: block;
       max-height: none;
       
-      // Стили для обрезанного текста
-      &.truncated {
+      // Стили для обрезанного текста (применяются к параграфу)
+      p.truncated {
         position: relative;
         overflow: hidden !important;
         display: -webkit-box !important;
@@ -254,8 +254,8 @@
         }
       }
       
-      // Стили для развернутого текста
-      &.expanded {
+      // Стили для развернутого текста (применяются к параграфу)
+      p.expanded {
         overflow: visible !important;
         display: block !important;
         max-height: none !important;
@@ -266,25 +266,25 @@
           display: none !important;
         }
       }
-      
-      // Кнопка "Читать далее"
-      .read-more-btn {
-        display: inline-block;
-        margin-top: 10px;
-        color: @color-accent;
-        font-size: @font-size-sub;
-        text-decoration: underline;
-        cursor: pointer;
-        user-select: none;
-        
-        &:hover {
-          text-decoration: none;
-        }
-        
-        &.hidden {
-          display: none;
-        }
-      }
     });
+  }
+  
+  // Кнопка "Читать далее" (вне контейнера описания)
+  .read-more-btn {
+    display: inline-block;
+    margin-top: 10px;
+    color: @color-accent;
+    font-size: @font-size-sub;
+    text-decoration: underline;
+    cursor: pointer;
+    user-select: none;
+    
+    &:hover {
+      text-decoration: none;
+    }
+    
+    &.hidden {
+      display: none;
+    }
   }
 }
