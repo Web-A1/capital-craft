@@ -1,6 +1,6 @@
 /**
  * Обрезает описания товаров на мобильных устройствах до трёх строк
- * с добавлением "… полностью" и переключением полного текста по клику.
+ * с добавлением "… read more" и переключением полного текста по клику.
  */
 export function initTextTruncate() {
   if (window.innerWidth > 767) return;
@@ -23,7 +23,7 @@ export function initTextTruncate() {
     }
 
     const maxHeight = lineHeight * 3;
-    const suffix = ' … полностью';
+    const suffix = ' … read more';
 
     let truncated = original;
     const applyContent = () => {
