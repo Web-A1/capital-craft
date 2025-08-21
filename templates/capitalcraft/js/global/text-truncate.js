@@ -43,6 +43,14 @@ export function initTextTruncate() {
       scrollHeight: textElement.scrollHeight
     });
     
+    // Дополнительная отладка CSS
+    console.log(`Элемент ${index + 1} CSS свойства:`, {
+      lineHeight: getComputedStyle(description).lineHeight,
+      fontSize: getComputedStyle(description).fontSize,
+      overflow: getComputedStyle(description).overflow,
+      display: getComputedStyle(description).display
+    });
+    
     // Проверяем, нужно ли обрезать текст
     if (textElement.scrollHeight <= maxHeight) {
       console.log(`Элемент ${index + 1}: обрезание не нужно`);
