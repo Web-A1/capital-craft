@@ -22,10 +22,6 @@
     gap: @gap * 2;
     position: relative;
 
-    .media(mobile, {
-      gap: 0;
-    });
-
     &::before {
       content: '';
       position: absolute;
@@ -43,7 +39,7 @@
 
     .media(mobile, {
       flex-direction: column;
-      gap: @gap;
+      gap: 0;
     });
   }
 
