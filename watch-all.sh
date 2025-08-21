@@ -129,8 +129,7 @@ process_file() {
 }
 
 # --- запуск chokidar с дебаунсом и завершением записи ---
-pipe_file=$(mktemp -u); mkfifo "$pipe_file"
-trap 'rm -f "$pipe_file"; kill ${chokidar_pid:-0} 2>/dev/null || true; exit' INT TERM EXIT
+trap 'kill ${chokidar_pid:-0} 2>/dev/null || true; exit' INT TERM EXIT
 
 npx chokidar-cli \
   "templates/capitalcraft/less/**" \
@@ -145,13 +144,14 @@ npx chokidar-cli \
   --await-write-finish 200 \
   --debounce 800 \
   --initial \
-  > "$pipe_file" &
+  &
 chokidar_pid=$!
 
 echo "🔄 Chokidar PID: $chokidar_pid"
 echo "📝 Ожидаю события..."
 echo ""
 
+# Читаем вывод chokidar напрямую
 while IFS= read -r line; do
   # Формат строки: "change: path" / "add: path" / "unlink: path"
   case "$line" in
@@ -160,4 +160,16 @@ while IFS= read -r line; do
     unlink:*) file="${line#unlink: }"; process_file "$file" "unlink" ;;
     *) : ;;
   esac
-done < "$pipe_file"
+done < <(npx chokidar-cli \
+  "templates/capitalcraft/less/**" \
+  "templates/capitalcraft/js/**" \
+  "templates/capitalcraft/**" \
+  --ignore "**/*.css" \
+  --ignore "**/*.map" \
+  --ignore "**/*bundle.js" \
+  --ignore "**/node_modules/**" \
+  --ignore "**/.git/**" \
+  --ignore "**/vendor/**" \
+  --await-write-finish 200 \
+  --debounce 800 \
+  --initial)

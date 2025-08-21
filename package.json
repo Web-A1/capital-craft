@@ -9,8 +9,7 @@
     "less:base": "lessc -x templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
     "less:all": "npm-run-all less:base less:critical less:home less:faq",
     "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --minify --target=es2019 --outfile=templates/capitalcraft/js/global/bundle.js",
-    "build": "npm run less:all && npm js:build",
-    "auto-compile": "./auto-compile.sh",
+    "build": "npm run less:all && npm run js:build",
     "watch:all": "./watch-all.sh",
     "push:dev": "git add . && git commit -m \"Update $(date +%Y-%m-%d_%H:%M:%S)\" && git push origin dev"
   },
