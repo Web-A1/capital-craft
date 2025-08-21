@@ -241,16 +241,21 @@
         -webkit-line-clamp: 3 !important;
         -webkit-box-orient: vertical !important;
         max-height: calc(1.5em * 3) !important; // 3 строки с line-height 150%
+        cursor: pointer !important;
         
+        // Добавляем " ... полностью" в конец строки
         &::after {
-          content: '';
+          content: ' ... полностью';
           position: absolute;
           bottom: 0;
           right: 0;
-          width: 60px;
-          height: 1.5em;
-          background: linear-gradient(to right, transparent, @color-white 20%);
-          pointer-events: none;
+          color: @color-accent;
+          font-weight: 500;
+          text-decoration: underline;
+          background: @color-white;
+          padding-left: 4px;
+          cursor: pointer;
+          pointer-events: none; // Позволяет кликать по основному тексту
         }
       }
       
@@ -261,30 +266,12 @@
         max-height: none !important;
         -webkit-line-clamp: unset !important;
         -webkit-box-orient: unset !important;
+        cursor: pointer !important;
         
         &::after {
-          display: none !important;
+          display: none;
         }
       }
     });
-  }
-  
-  // Кнопка "Читать далее" (вне контейнера описания)
-  .read-more-btn {
-    display: inline-block;
-    margin-top: 10px;
-    color: @color-accent;
-    font-size: @font-size-sub;
-    text-decoration: underline;
-    cursor: pointer;
-    user-select: none;
-    
-    &:hover {
-      text-decoration: none;
-    }
-    
-    &.hidden {
-      display: none;
-    }
   }
 }
