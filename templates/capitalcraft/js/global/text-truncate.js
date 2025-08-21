@@ -117,12 +117,16 @@ function resetTextTruncate() {
   
   descriptions.forEach(description => {
     // Удаляем все добавленные элементы и классы
-    const readMoreBtn = description.querySelector('.read-more-btn');
+    const readMoreBtn = description.parentNode.querySelector('.read-more-btn');
     if (readMoreBtn) {
       readMoreBtn.remove();
     }
     
-    description.classList.remove('truncated', 'expanded');
+    // Убираем классы с параграфа
+    const textElement = description.querySelector('p');
+    if (textElement) {
+      textElement.classList.remove('truncated', 'expanded');
+    }
   });
 }
 
