@@ -228,59 +228,49 @@
       text-align: start;
       line-height: 150%;
       
-      // Базовые стили для мобильной версии
-      overflow: visible;
-      display: block;
-      max-height: none;
-      
       // Стили для обрезанного текста (применяются к параграфу)
       p.truncated {
         position: relative;
+        overflow: hidden !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 3 !important;
+        -webkit-box-orient: vertical !important;
+        max-height: calc(1.5em * 3) !important; // 3 строки с line-height 150%
         cursor: pointer !important;
         
-        // Убрано CSS обрезание - теперь управляется только JavaScript
-        // overflow: hidden !important;
-        // display: -webkit-box !important;
-        // -webkit-line-clamp: 3 !important;
-        // -webkit-box-orient: vertical !important;
-        // max-height: calc(1.5em * 3) !important;
+        // Обрезание по целым словам
+        word-break: keep-all !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
         
-        // Убрано обрезание по целым словам - теперь управляется JavaScript
-        // word-break: keep-all !important;
-        // word-wrap: break-word !important;
-        // overflow-wrap: break-word !important;
-        
-        // Убран псевдоэлемент " ... полностью" - теперь управляется JavaScript
-        // &::after {
-        //   content: ' ... полностью';
-        //   position: absolute;
-        //   bottom: 0;
-        //   right: 0;
-        //   color: @color-accent;
-        //   font-weight: 500;
-        //   text-decoration: underline;
-        //   background: @color-white;
-        //   padding-left: 4px;
-        //   cursor: pointer;
-        //   pointer-events: none;
-        // }
+        // Добавляем " ... полностью" в конец строки
+        &::after {
+          content: ' ... полностью';
+          position: absolute;
+          bottom: 0;
+          right: 0;
+          color: @color-accent;
+          font-weight: 500;
+          text-decoration: underline;
+          background: @color-white;
+          padding-left: 4px;
+          cursor: pointer;
+          pointer-events: none; // Позволяет кликать по основному тексту
+        }
       }
       
       // Стили для развернутого текста (применяются к параграфу)
       p.expanded {
+        overflow: visible !important;
+        display: block !important;
+        max-height: none !important;
+        -webkit-line-clamp: unset !important;
+        -webkit-box-orient: unset !important;
         cursor: pointer !important;
         
-        // Убрано принудительное восстановление - теперь управляется JavaScript
-        // overflow: visible !important;
-        // display: block !important;
-        // max-height: none !important;
-        // -webkit-line-clamp: unset !important;
-        // -webkit-box-orient: unset !important;
-        
-        // Убран сброс псевдоэлемента - теперь не нужен
-        // &::after {
-        //   display: none;
-        // }
+        &::after {
+          display: none;
+        }
       }
     });
   }
