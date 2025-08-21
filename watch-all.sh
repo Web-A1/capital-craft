@@ -131,27 +131,11 @@ process_file() {
 # --- запуск chokidar с дебаунсом и завершением записи ---
 trap 'kill ${chokidar_pid:-0} 2>/dev/null || true; exit' INT TERM EXIT
 
-npx chokidar-cli \
-  "templates/capitalcraft/less/**" \
-  "templates/capitalcraft/js/**" \
-  "templates/capitalcraft/**" \
-  --ignore "**/*.css" \
-  --ignore "**/*.map" \
-  --ignore "**/*bundle.js" \
-  --ignore "**/node_modules/**" \
-  --ignore "**/.git/**" \
-  --ignore "**/vendor/**" \
-  --await-write-finish 200 \
-  --debounce 800 \
-  --initial \
-  &
-chokidar_pid=$!
-
-echo "🔄 Chokidar PID: $chokidar_pid"
+echo "🔄 Запускаю chokidar..."
 echo "📝 Ожидаю события..."
 echo ""
 
-# Читаем вывод chokidar напрямую
+# Запускаем chokidar и читаем его вывод напрямую
 while IFS= read -r line; do
   # Формат строки: "change: path" / "add: path" / "unlink: path"
   case "$line" in
