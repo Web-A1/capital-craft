@@ -23,11 +23,11 @@ export function initTextTruncate() {
     }
 
     const maxHeight = lineHeight * 3;
-    const suffix = ' … read more';
+    const suffix = 'read more';
 
     let truncated = original;
     const applyContent = () => {
-      p.innerHTML = truncated + `<span class="products__read-more">${suffix}</span>`;
+      p.innerHTML = truncated + ` … <span class="products__read-more">${suffix}</span>`;
     };
 
     applyContent();
@@ -51,7 +51,7 @@ export function initTextTruncate() {
       if (collapsed) {
         p.textContent = p.dataset.originalText;
       } else {
-        p.innerHTML = p.dataset.truncatedText + `<span class="products__read-more">${suffix}</span>`;
+        p.innerHTML = p.dataset.truncatedText + ` … <span class="products__read-more">${suffix}</span>`;
       }
       p.classList.toggle('truncated', !collapsed);
       p.classList.toggle('expanded', collapsed);
