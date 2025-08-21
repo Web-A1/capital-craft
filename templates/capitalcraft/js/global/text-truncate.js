@@ -43,16 +43,22 @@ export function initTextTruncate() {
     
     // Обработчик клика по кнопке
     readMoreBtn.addEventListener('click', function() {
+      console.log('Клик по кнопке, текущие классы:', description.classList.toString());
+      
       if (description.classList.contains('truncated')) {
         // Разворачиваем текст
         description.classList.remove('truncated');
         description.classList.add('expanded');
         readMoreBtn.textContent = 'Свернуть';
+        console.log('Добавлен класс expanded, убран truncated');
+        console.log('Новые классы:', description.classList.toString());
       } else {
         // Сворачиваем текст
         description.classList.remove('expanded');
         description.classList.add('truncated');
         readMoreBtn.textContent = 'Читать далее';
+        console.log('Добавлен класс truncated, убран expanded');
+        console.log('Новые классы:', description.classList.toString());
       }
     });
   });
