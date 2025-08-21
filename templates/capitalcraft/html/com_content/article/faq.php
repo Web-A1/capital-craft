@@ -25,7 +25,7 @@ $doc->setMetaData('revisit-after', '7 days');
 
 require __DIR__ . '/../../../data/faq_data.php';
 
-// Структурированные данные JSON-LD для FAQ
+// Структурированные данные JSON-LD для  FAQ
 $faqSchema = [
     '@context' => 'https://schema.org',
     '@type' => 'FAQPage',
