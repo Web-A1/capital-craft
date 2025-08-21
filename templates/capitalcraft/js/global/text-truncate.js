@@ -32,8 +32,8 @@ export function initTextTruncate() {
     }
 
     const originalText = textElement.textContent;
-    // Получаем line-height из родительского элемента, а не из параграфа
-    const lineHeight = parseFloat(getComputedStyle(description).lineHeight);
+    // Получаем line-height из параграфа
+    const lineHeight = parseFloat(getComputedStyle(textElement).lineHeight);
     const maxHeight = lineHeight * 3; // 3 строки
     
     console.log(`Элемент ${index + 1}:`, {
@@ -45,10 +45,10 @@ export function initTextTruncate() {
     
     // Дополнительная отладка CSS
     console.log(`Элемент ${index + 1} CSS свойства:`, {
-      lineHeight: getComputedStyle(description).lineHeight,
-      fontSize: getComputedStyle(description).fontSize,
-      overflow: getComputedStyle(description).overflow,
-      display: getComputedStyle(description).display
+      lineHeight: getComputedStyle(textElement).lineHeight,
+      fontSize: getComputedStyle(textElement).fontSize,
+      overflow: getComputedStyle(textElement).overflow,
+      display: getComputedStyle(textElement).display
     });
     
     // Проверяем, нужно ли обрезать текст
@@ -64,43 +64,43 @@ export function initTextTruncate() {
     readMoreBtn.className = 'read-more-btn';
     readMoreBtn.textContent = 'Читать далее';
     
-    // Добавляем кнопку после текста
-    description.appendChild(readMoreBtn);
+    // Вставляем кнопку ПОСЛЕ блока описания (вне области overflow: hidden)
+    description.insertAdjacentElement('afterend', readMoreBtn);
     
     // Проверяем, что кнопка создалась
     console.log(`Элемент ${index + 1}: кнопка создана:`, readMoreBtn);
-    console.log(`Элемент ${index + 1}: кнопка в DOM:`, description.querySelector('.read-more-btn'));
+    console.log(`Элемент ${index + 1}: кнопка в DOM:`, description.parentNode.querySelector('.read-more-btn'));
     
-    // Добавляем класс для обрезанного состояния
-    description.classList.add('truncated');
-    console.log(`Элемент ${index + 1}: добавлен класс truncated`);
+    // Добавляем класс для обрезанного состояния к ПАРАГРАФУ, а не к контейнеру
+    textElement.classList.add('truncated');
+    console.log(`Элемент ${index + 1}: добавлен класс truncated к параграфу`);
     
     // Обработчик клика по кнопке
     readMoreBtn.addEventListener('click', function(e) {
       console.log('=== КЛИК ПО КНОПКЕ ===');
       console.log('Событие клика:', e);
-      console.log('Клик по кнопке, текущие классы:', description.classList.toString());
+      console.log('Клик по кнопке, текущие классы параграфа:', textElement.classList.toString());
       
-      if (description.classList.contains('truncated')) {
+      if (textElement.classList.contains('truncated')) {
         // Разворачиваем текст
-        description.classList.remove('truncated');
-        description.classList.add('expanded');
+        textElement.classList.remove('truncated');
+        textElement.classList.add('expanded');
         readMoreBtn.textContent = 'Свернуть';
         console.log('Добавлен класс expanded, убран truncated');
-        console.log('Новые классы:', description.classList.toString());
-        console.log('Текущие CSS свойства:', {
-          overflow: getComputedStyle(description).overflow,
-          display: getComputedStyle(description).display,
-          maxHeight: getComputedStyle(description).maxHeight,
-          webkitLineClamp: getComputedStyle(description).webkitLineClamp
+        console.log('Новые классы параграфа:', textElement.classList.toString());
+        console.log('Текущие CSS свойства параграфа:', {
+          overflow: getComputedStyle(textElement).overflow,
+          display: getComputedStyle(textElement).display,
+          maxHeight: getComputedStyle(textElement).maxHeight,
+          webkitLineClamp: getComputedStyle(textElement).webkitLineClamp
         });
       } else {
         // Сворачиваем текст
-        description.classList.remove('expanded');
-        description.classList.add('truncated');
+        textElement.classList.remove('expanded');
+        textElement.classList.add('truncated');
         readMoreBtn.textContent = 'Читать далее';
         console.log('Добавлен класс truncated, убран expanded');
-        console.log('Новые классы:', description.classList.toString());
+        console.log('Новые классы параграфа:', textElement.classList.toString());
       }
     });
     
