@@ -108,19 +108,12 @@ function resetTextTruncate() {
   const descriptions = document.querySelectorAll('.products__item-description');
   
   descriptions.forEach(description => {
-    // Убираем классы с параграфа и восстанавливаем оригинальный текст
+    // Убираем классы с параграфа
     const textElement = description.querySelector('p');
     if (textElement) {
       textElement.classList.remove('truncated', 'expanded');
       textElement.style.cursor = '';
       textElement.removeAttribute('title');
-      
-      // Восстанавливаем оригинальный текст
-      const originalText = textElement.getAttribute('data-original-text');
-      if (originalText) {
-        textElement.textContent = originalText;
-        textElement.removeAttribute('data-original-text');
-      }
     }
   });
 }
