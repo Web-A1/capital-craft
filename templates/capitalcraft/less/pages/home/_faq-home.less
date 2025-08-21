@@ -7,15 +7,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: stretch; // изменено с flex-start для одинаковой высоты
     position: relative;
     gap: 120px;
 
     .faq-home__content {
       order: 2;
-    }
-    .faq-home__btn {
-      order: 3;
+      height: 200px; // та же высота что и у swiper
+      box-sizing: border-box;
     }
     .faq-home__swiper {
       order: 1;
@@ -75,7 +74,10 @@
       align-items: stretch;
       position: static;
 
-      .faq-home__content { order: 1; }
+      .faq-home__content { 
+        order: 1; 
+        height: auto; // убираем фиксированную высоту для мобильной версии
+      }
       .faq-home__swiper  { order: 2; }
       .faq-home__btn     { order: 3; }
 
@@ -132,19 +134,22 @@
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    // gap: 30px; // убираем, используем justify-content: space-between
     flex: 1 1 0;
+    justify-content: space-between; // заголовок сверху, кнопка внизу
 
     .media(mobile, {
       width: 100%;
         max-width: 100%;
+        gap: 30px; // возвращаем gap для мобильной версии
+        justify-content: flex-start; // убираем space-between для мобильной версии
       });
   }
 
   &__title-block {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: @subtitle-title-gap;
   }
 
   &__subtitle {
@@ -162,12 +167,22 @@
     font-weight: 600;
     line-height: 110%;
     max-width: 363px;
+
+    .media(mobile, {
+      font-size: @font-size-title-mobile;
+    });
   }
 
   &__btn {
     &--desktop {
+      // position: absolute; // убираем, используем flexbox
+      // bottom: 0; // убираем
+      // left: 0; // убираем
+      // z-index: 10; // убираем
+
       .media(mobile, {
         display: none;
+        position: static; // убираем абсолютное позиционирование для мобильной версии
       });
     }
 

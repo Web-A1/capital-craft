@@ -1,0 +1,280 @@
+// out: false
+
+.team {
+  padding: @section-padding 0;
+  display: flex;
+  flex-direction: column;
+  gap: @section-padding;
+
+  // mobile overrides for the root block
+  .media(mobile, {
+    padding: 40px 0;
+    gap: 30px;
+  });
+
+  &__container {
+  }
+
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 0;
+
+    .media(mobile, {
+      flex-direction: column;
+      gap: @gap;
+      align-items: flex-start;
+    });
+  }
+
+  &__left {
+    width: 440px;
+    padding-right: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+
+    .media(mobile, {
+      width: 100%;
+      padding-right: 0;
+      gap: 0;
+    });
+  }
+
+  &__right {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 670px;
+    flex-shrink: 0;
+    margin-left: 60px; // Отступ слева от линии
+    position: relative; // Для позиционирования псевдоэлемента
+
+    .media(mobile, {
+      width: 100%;
+      gap: 20px;
+      margin-left: 0;
+    });
+
+    // Вертикальная разделительная линия через псевдоэлемент
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -60px; // Смещение влево на 60px (отступ)
+      width: 1px;
+      height: 100%; // Автоматическая высота всего блока
+      background-color: #000000;
+      pointer-events: none;
+
+      .media(mobile, {
+        display: none;
+      });
+    }
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: @subtitle-title-gap;
+    position: relative;
+    margin-bottom: @title-desc-margin;
+  }
+
+  &__subtitle {
+    color: lighten(@color-text, 20%);
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    letter-spacing: 0.175em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    font-family: @font-title;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 110%;
+    color: @color-heading;
+    margin: 0;
+
+    .media(mobile, {
+      font-size: @font-size-title-mobile;
+      line-height: 120%;
+    });
+  }
+
+  &__desc {
+    font-family: @font-body;
+    font-size: @font-size-text;
+    line-height: 140%;
+    color: @color-text;
+    text-align: justify;
+    margin: 0;
+
+    .media(mobile, {
+      text-align: left;
+    });
+
+    p {
+      margin: 0 0 16px 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__button-wrapper {
+    display: none; // временно скрываем пока не сделаем отдельную страницу team
+    margin-top: 40px;
+    
+    .media(mobile, {
+      align-self: flex-start;
+      margin-top: 30px;
+    });
+  }
+
+  &__btn {
+    // Использует базовые стили из btn-main
+    // Дополнительные стили для блока team можно добавить здесь при необходимости
+  }
+
+  &__icon {
+    align-self: flex-start;
+    margin-top: auto; // Прижимает иконку к низу
+
+    .media(mobile, {
+      display: none;
+    });
+
+    img {
+      width: 87.55px;
+      height: 62.5px;
+
+      .media(mobile, {
+        width: 70px;
+        height: 50px;
+      });
+    }
+  }
+
+
+
+  &__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    .media(mobile, {
+      gap: 20px;
+    });
+  }
+
+  &__images-secondary {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    .media(mobile, {
+      gap: 20px;
+    });
+  }
+
+  &__image {
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #f5f5f5; // Fallback цвет
+
+    img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    &--main {
+      height: 390px;
+
+      .media(mobile, {
+        height: 250px;
+      });
+    }
+
+    &--secondary {
+      height: 150px;
+
+      .media(mobile, {
+        display: none;
+      });
+    }
+  }
+
+  &__image-overlay {
+    display: none; // временно скрываем пока не сделаем модалку
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+
+    .media(mobile, {
+      bottom: 20px;
+      right: 20px;
+    });
+  }
+
+  &__view-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background-color: rgba(253, 251, 245, 0.9);
+    border-radius: 3px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+
+    .media(mobile, {
+      gap: 8px;
+      padding: 8px 16px;
+    });
+
+    span {
+      color: #000000;
+      font-family: 'Syne', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      letter-spacing: 0.05em;
+
+      .media(mobile, {
+        font-size: 11px;
+      });
+    }
+
+    svg {
+      width: 12px;
+      height: 9px;
+      color: #000000;
+      transform: rotate(270deg);
+      transition: transform 0.3s ease;
+
+      .media(mobile, {
+        width: 10px;
+        height: 7.5px;
+      });
+    }
+
+    &:hover {
+      background-color: rgba(253, 251, 245, 1);
+      transform: translateY(-1px);
+
+      svg {
+        transform: rotate(270deg) translateX(2px);
+      }
+    }
+  }
+}

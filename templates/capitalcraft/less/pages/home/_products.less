@@ -5,10 +5,9 @@
   display: flex;
   flex-direction: column;
   gap: @section-padding;
-
+  
   // mobile overrides for the root block
   .media(mobile, {
-    padding: 40px 0;
     gap: 30px;
   });
 
@@ -19,9 +18,14 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: stretch; // Изменено с flex-start на stretch
+    align-items: stretch;
     gap: @gap * 2;
     position: relative;
+    
+    .media(mobile, {
+      flex-direction: column;
+      gap: 0;
+    });
 
     &::before {
       content: '';
@@ -37,11 +41,6 @@
         display: none;
       });
     }
-
-    .media(mobile, {
-      flex-direction: column;
-      gap: @gap;
-    });
   }
 
   &__left {
@@ -63,11 +62,11 @@
   &__title-block {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: @subtitle-title-gap;
     max-width: 491px;
 
     .media(mobile, {
-      gap: 8px;
+      gap: @subtitle-title-gap;
     });
   }
 
@@ -87,21 +86,21 @@
 
   &__title {
     font-family: @font-title;
-    font-size: 34px;
+    font-size: @font-size-title;
     font-weight: 600;
     line-height: 110%;
     color: @color-heading;
     margin: 0;
 
+    .media(mobile, {
+      font-size: @font-size-title-mobile;
+      margin-bottom: 30px;
+    });
+
     p {
       margin: 0;
       line-height: normal;
     }
-
-    .media(mobile, {
-      font-size: 28px;
-      line-height: 120%;
-    });
   }
 
   &__icon {
@@ -119,6 +118,12 @@
     .media(mobile, {
       display: none;
     });
+
+    // Планшетные стили
+    @media (min-width: 768px) and (max-width: 1023px) {
+      width: 350px;
+      height: 260px;
+    }
   }
 
   &__right {
@@ -194,6 +199,11 @@
     .media(mobile, {
       font-size: 24px;
     });
+
+    // Планшетные стили
+    @media (min-width: 768px) and (max-width: 1023px) {
+      font-size: 28px;
+    }
   }
 
   &__item-description {
@@ -206,91 +216,37 @@
 
     p {
       margin: 0;
-      line-height: normal;
+      line-height: inherit;
     }
 
     .media(mobile, {
       text-align: start;
-      line-height: 150%;
+      
+      // Стили для обрезанного текста (применяются к параграфу)
+      p.truncated {
+        overflow: hidden !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 4 !important;
+        -webkit-box-orient: vertical !important;
+        max-height: calc(1.5em * 4) !important; // 4 строки с line-height 150%
+        cursor: pointer !important;
+
+        .products__read-more {
+          color: @color-text;
+          font-weight: 400;
+          text-decoration: underline;
+        }
+      }
+
+      // Стили для развернутого текста (применяются к параграфу)
+      p.expanded {
+        overflow: visible !important;
+        display: block !important;
+        max-height: none !important;
+        -webkit-line-clamp: unset !important;
+        -webkit-box-orient: unset !important;
+        cursor: pointer !important;
+      }
     });
-  }
-}
-
-// Мобильные стили
-.media(mobile, {
-  .products {
-    padding: 40px 0;
-    gap: 30px;
-
-    &__wrapper {
-      flex-direction: column;
-      gap: @gap;
-    }
-
-    &__left {
-      max-width: none;
-      gap: 30px;
-    }
-
-    &__title-block {
-      gap: 8px;
-    }
-
-    &__title {
-      font-size: 28px;
-      line-height: 120%;
-    }
-
-    &__icon {
-      display: none;
-    }
-
-    &__right {
-      max-width: none;
-      gap: 30px;
-    }
-
-    &__item {
-      flex-direction: row;
-      gap: 30px;
-      align-items: flex-start;
-    }
-
-    &__number {
-      width: 60px;
-      height: 60px;
-    }
-
-    &__content {
-      gap: 10px;
-      padding-bottom: 0;
-    }
-
-    &__item-title {
-      font-size: 24px;
-    }
-
-    &__item-description {
-      text-align: start;
-      line-height: 150%;
-    }
-  }
-});
-
-// Планшетные стили
-@media (min-width: 768px) and (max-width: 1023px) {
-  .products {
-    &__title {
-      font-size: 32px;
-    }
-
-    &__item-title {
-      font-size: 28px;
-    }
-
-    &__icon {
-      width: 350px;
-      height: 260px;
-    }
   }
 }

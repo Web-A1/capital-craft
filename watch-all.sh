@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Универсальный мониторинг файлов проекта
 # Запуск: ./watch-all.sh (работает в фоне)
@@ -12,13 +13,15 @@ echo "   • PHP файлы → только commit + push"
 echo "⏹️  Для остановки: Ctrl+C"
 echo ""
 
-# Проверяем, что мы в dev ветке
+# Guardrails
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "❌ Не git‑репозиторий"; exit 1
+fi
 current_branch=$(git branch --show-current)
 if [ "$current_branch" != "dev" ]; then
-    echo "❌ Ошибка: вы не в ветке dev (текущая ветка: $current_branch)"
-    echo "Переключитесь на dev: git checkout dev"
-    exit 1
+  echo "❌ Ошибка: вы не в ветке dev (сейчас: $current_branch)"; exit 1
 fi
+command -v npx >/dev/null || { echo "❌ Не найден npx"; exit 1; }
 
 # Функция для обработки LESS файлов
 handle_less() {
@@ -61,65 +64,129 @@ handle_php() {
     commit_and_push "PHP update"
 }
 
-# Функция для коммита и push
+# --- commit/push (исправления) ---
 commit_and_push() {
-    local message="$1"
-    
-    # Проверяем, есть ли изменения для коммита
-    if git diff-index --quiet HEAD --; then
-        echo "📝 Нет изменений для коммита"
-    else
-        echo "📝 Коммичу изменения..."
-        git add .
-        git commit -m "$message $(date '+%Y-%m-%d %H:%M:%S')"
-        
-        echo "🚀 Пушим в dev..."
-        git push origin dev
-        
-        if [ $? -eq 0 ]; then
-            echo "✅ Изменения отправлены в dev!"
-        else
-            echo "❌ Ошибка при push в dev"
-        fi
+  local message="$1"
+
+  # Стадим всё, включая удаления
+  git add -A
+
+  # Безопасная проверка на изменения (HEAD может отсутствовать)
+  if git diff --cached --quiet; then
+    echo "📝 Нет изменений для коммита"
+    echo ""; return
+  fi
+
+  echo "📝 Коммичу изменения..."
+  git commit -m "$message $(date '+%Y-%m-%d %H:%M:%S')"
+
+  echo "🚀 Пушим в dev..."
+  for i in 1 2 3; do
+    if git push origin dev; then
+      echo "✅ Изменения отправлены в dev!"
+      echo ""; return
     fi
-    
-    echo "🔄 Ожидаю следующие изменения..."
-    echo ""
+    echo "⚠️ Push не удался, попытка $i/3 → pull --rebase --autostash…"
+    git pull --rebase --autostash origin dev || true
+    sleep 2
+  done
+  echo "❌ Не удалось отправить изменения"; echo ""
 }
 
-# Функция для определения типа файла и вызова соответствующего обработчика
+# --- обработка unlink и игноры ---
 process_file() {
-    local file="$1"
-    
-    if [[ $file =~ \.less$ ]]; then
-        handle_less "$file"
-    elif [[ $file =~ \.js$ ]]; then
+  local file="$1"
+  local kind="$2"  # add|change|unlink
+
+  echo "🔍 process_file: обработка $kind для файла '$file'"
+
+  # Игноры выходных/служебных
+  case "$file" in
+    *.css|*.map|*/bundle.js|*/bundle.min.js) echo "📄 Игнор артефакта: $file"; return ;;
+  esac
+  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* ]] && { echo "📄 Игнор служебного: $file"; return; }
+
+  # Для unlink файла уже нет на диске — всё равно коммитим удаление
+  if [[ "$kind" == "unlink" ]]; then
+    echo "🗑️ Удалён файл: $file"
+    commit_and_push "Remove file"
+    return
+  fi
+
+  # Для add/change проверяем расширение
+  if [[ ! -f "$file" ]]; then 
+    echo "❌ Файл не найден: $file"
+    return
+  fi
+
+  echo "✅ Файл найден, определяю тип..."
+
+  case "$file" in
+    *.less)  
+      echo "🎨 Обрабатываю как LESS файл: $file"
+      handle_less "$file" 
+      ;;
+    *.js)
+      if [[ "$file" =~ templates/capitalcraft/js/ ]]; then
+        echo "⚡ Обрабатываю как JS файл: $file"
         handle_js "$file"
-    elif [[ $file =~ \.php$ ]]; then
-        handle_php "$file"
-    else
-        echo "📄 Изменен файл: $file (не обрабатывается)"
-    fi
+      else
+        echo "📄 Игнор JS вне src: $file"
+      fi
+      ;;
+    *.php)   
+      echo "🐘 Обрабатываю как PHP файл: $file"
+      handle_php "$file" 
+      ;;
+    *)       
+      echo "📄 Изменён файл: $file (не обрабатывается)"
+      ;;
+  esac
 }
 
-# Запускаем мониторинг с помощью fswatch (macOS)
-if command -v fswatch &> /dev/null; then
-    echo "🍎 Использую fswatch (macOS)"
-    echo "📁 Отслеживаю папки:"
-    echo "   • templates/capitalcraft/less/"
-    echo "   • templates/capitalcraft/js/"
-    echo "   • templates/capitalcraft/"
-    echo ""
-    
-    # Используем fswatch -r для рекурсивного отслеживания с выводом имен файлов
-    fswatch -r templates/capitalcraft/less/ templates/capitalcraft/js/ templates/capitalcraft/ | while read file; do
-        if [ -f "$file" ]; then
-            echo "📄 Обнаружено изменение: $file"
-            process_file "$file"
-        fi
-    done
-else
-    echo "❌ Не найден fswatch"
-    echo "Установите: brew install fswatch"
-    exit 1
-fi
+# --- запуск chokidar с дебаунсом и завершением записи ---
+trap 'kill ${chokidar_pid:-0} 2>/dev/null || true; exit' INT TERM EXIT
+
+echo "🔄 Запускаю chokidar..."
+echo "📝 Ожидаю события..."
+echo ""
+
+# Запускаем chokidar и читаем его вывод напрямую
+echo "🔍 Запускаю chokidar с отладкой..."
+while IFS= read -r line; do
+  echo "📨 Получено событие: $line"
+  # Формат строки: "change: path" / "add: path" / "unlink: path"
+  case "$line" in
+    change:*) 
+      file=$(echo "$line" | cut -d: -f2-)
+      echo "🔄 Обрабатываю изменение: $file"
+      echo "🔍 Проверяю: file='$file', line='$line'"
+      process_file "$file" "change" 
+      ;;
+    add:*)    
+      file=$(echo "$line" | cut -d: -f2-)
+      echo "➕ Обрабатываю добавление: $file"
+      process_file "$file" "add" 
+      ;;
+    unlink:*) 
+      file=$(echo "$line" | cut -d: -f2-)
+      echo "🗑️ Обрабатываю удаление: $file"
+      process_file "$file" "unlink" 
+      ;;
+    *) 
+      echo "❓ Неизвестное событие: $line"
+      ;;
+  esac
+done < <(npx chokidar-cli \
+  "templates/capitalcraft/less/**" \
+  "templates/capitalcraft/js/**" \
+  "templates/capitalcraft/**" \
+  --ignore "**/*.css" \
+  --ignore "**/*.map" \
+  --ignore "**/*bundle.js" \
+  --ignore "**/node_modules/**" \
+  --ignore "**/.git/**" \
+  --ignore "**/vendor/**" \
+  --await-write-finish 200 \
+  --debounce 800 \
+  --initial)

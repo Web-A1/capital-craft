@@ -4,6 +4,7 @@ import { initModal } from './modal.js';
 import { initPhoneMask } from './phone-mask.js';
 import { initFormSubmit } from './form-submit.js';
 import { initScrollTop } from './scroll-top.js';
+import { initTextTruncate } from './text-truncate.js';
 
 // Делаем IMask доступным глобально
 window.IMask = IMask;
@@ -13,6 +14,7 @@ initModal();
 initPhoneMask();
 initFormSubmit();
 initScrollTop();
+initTextTruncate();
 
 const header = document.querySelector('.site-header');
 
@@ -51,4 +53,3 @@ if (header) {
     }
   };
 }
-
