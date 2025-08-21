@@ -21,6 +21,51 @@ export function initTextTruncate() {
     return;
   }
 
+  // Функция для обрезания текста по целым словам
+  function truncateTextByWords(text, maxLines, lineHeight) {
+    const words = text.split(' ');
+    const maxHeight = lineHeight * maxLines;
+    
+    // Создаем временный элемент для измерения
+    const tempElement = document.createElement('p');
+    tempElement.style.cssText = `
+      position: absolute;
+      visibility: hidden;
+      white-space: nowrap;
+      font-family: inherit;
+      font-size: inherit;
+      line-height: inherit;
+      margin: 0;
+      padding: 0;
+    `;
+    document.body.appendChild(tempElement);
+    
+    let truncatedText = '';
+    let currentHeight = 0;
+    
+    for (let i = 0; i < words.length; i++) {
+      const testText = truncatedText + (truncatedText ? ' ' : '') + words[i];
+      tempElement.textContent = testText;
+      
+      // Проверяем, помещается ли текст
+      if (tempElement.scrollHeight <= maxHeight) {
+        truncatedText = testText;
+        currentHeight = tempElement.scrollHeight;
+      } else {
+        break;
+      }
+    }
+    
+    // Удаляем временный элемент
+    document.body.removeChild(tempElement);
+    
+    return {
+      text: truncatedText,
+      height: currentHeight,
+      isTruncated: truncatedText.length < text.length
+    };
+  }
+
   descriptions.forEach((description, index) => {
     console.log(`Обрабатываем элемент ${index + 1}:`, description);
     
@@ -57,7 +102,19 @@ export function initTextTruncate() {
       return; // Текст помещается в 3 строки, обрезание не нужно
     }
 
-    console.log(`Элемент ${index + 1}: настраиваем обрезание текста`);
+    console.log(`Элемент ${index + 1}: настраиваем обрезание текста по словам`);
+
+    // Сохраняем оригинальный текст
+    textElement.setAttribute('data-original-text', originalText);
+    
+    // Обрезаем текст по целым словам
+    const truncated = truncateTextByWords(originalText, 3, lineHeight);
+    
+    if (truncated.isTruncated) {
+      // Устанавливаем обрезанный текст
+      textElement.textContent = truncated.text;
+      console.log(`Элемент ${index + 1}: текст обрезан по словам:`, truncated.text);
+    }
 
     // Добавляем класс для обрезанного состояния к ПАРАГРАФУ
     textElement.classList.add('truncated');
@@ -77,6 +134,7 @@ export function initTextTruncate() {
         // Разворачиваем текст
         textElement.classList.remove('truncated');
         textElement.classList.add('expanded');
+        textElement.textContent = textElement.getAttribute('data-original-text');
         textElement.setAttribute('title', 'Кликните, чтобы свернуть текст');
         console.log('Добавлен класс expanded, убран truncated');
         console.log('Новые классы параграфа:', textElement.classList.toString());
@@ -90,6 +148,7 @@ export function initTextTruncate() {
         // Сворачиваем текст
         textElement.classList.remove('expanded');
         textElement.classList.add('truncated');
+        textElement.textContent = truncated.text;
         textElement.setAttribute('title', 'Кликните, чтобы развернуть текст');
         console.log('Добавлен класс truncated, убран expanded');
         console.log('Новые классы параграфа:', textElement.classList.toString());
