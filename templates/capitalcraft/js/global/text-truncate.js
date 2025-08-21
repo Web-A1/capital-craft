@@ -30,15 +30,19 @@ export function initTextTruncate() {
 
     p.dataset.originalText = original;
     p.dataset.truncatedText = truncated;
-    p.textContent = truncated;
+    p.innerHTML = truncated + `<span class="products__read-more">${suffix}</span>`;
     p.classList.add('truncated');
     block.style.cursor = 'pointer';
 
     block.addEventListener('click', () => {
       const collapsed = p.classList.contains('truncated');
+      if (collapsed) {
+        p.textContent = p.dataset.originalText;
+      } else {
+        p.innerHTML = p.dataset.truncatedText + `<span class="products__read-more">${suffix}</span>`;
+      }
       p.classList.toggle('truncated', !collapsed);
       p.classList.toggle('expanded', collapsed);
-      p.textContent = collapsed ? p.dataset.originalText : p.dataset.truncatedText;
     });
   });
 }
