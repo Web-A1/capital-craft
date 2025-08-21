@@ -5,19 +5,22 @@ $doc = JFactory::getDocument();
 $doc->setTitle('Часто задаваемые вопросы - Capital Craft | Инвестиционные решения');
 $doc->setDescription('Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса. Экспертные консультации от Capital Craft.');
 
-// Open Graph теги для социальных сетей
-$doc->setMetaData('og:title', 'Часто задаваемые вопросы - Capital Craft');
-$doc->setMetaData('og:description', 'Ответы на популярные вопросы о привлечении капитала и инвестициях');
-$doc->setMetaData('og:type', 'website');
-$doc->setMetaData('og:url', JURI::current());
-$doc->setMetaData('og:image', JURI::root() . 'templates/capitalcraft/images/faq/faq_hand.webp');
+// Open Graph теги для социальных сетей (исправлено: property вместо name)
+$doc->addCustomTag('<meta property="og:title" content="FAQ — Часто задаваемые вопросы | Capital Craft" />');
+$doc->addCustomTag('<meta property="og:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях" />');
+$doc->addCustomTag('<meta property="og:type" content="website" />');
+$doc->addCustomTag('<meta property="og:url" content="' . JURI::current() . '" />');
+$doc->addCustomTag('<meta property="og:image" content="' . JURI::root() . 'templates/capitalcraft/images/faq/faq_hand.webp" />');
+$doc->addCustomTag('<meta property="og:site_name" content="Capital Craft" />');
+$doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
 
-// Canonical URL для предотвращения дублирования
-$doc->addHeadLink(JURI::current(), 'canonical');
+// Canonical URL для предотвращения дублирования (исправлено: добавлен rel="canonical")
+$canonical = JURI::current();
+$doc->addHeadLink($canonical, 'canonical', 'rel');
 
-// Hreflang теги для языковой версии
-$doc->addHeadLink(JURI::current(), 'alternate', 'hreflang', 'ru');
-$doc->addHeadLink(JURI::current(), 'alternate', 'hreflang', 'x-default');
+// Hreflang теги для языковой версии (исправлено: добавлен rel="alternate")
+$doc->addHeadLink($canonical, 'alternate', 'rel', ['hreflang' => 'ru-RU']);
+$doc->addHeadLink($canonical, 'alternate', 'rel', ['hreflang' => 'x-default']);
 
 // Мета-теги для поисковых роботов
 $doc->setMetaData('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
