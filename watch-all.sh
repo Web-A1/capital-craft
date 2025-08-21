@@ -98,6 +98,8 @@ process_file() {
   local file="$1"
   local kind="$2"  # add|change|unlink
 
+  echo "🔍 process_file: обработка $kind для файла '$file'"
+
   # Игноры выходных/служебных
   case "$file" in
     *.css|*.map|*/bundle.js|*/bundle.min.js) echo "📄 Игнор артефакта: $file"; return ;;
@@ -112,19 +114,33 @@ process_file() {
   fi
 
   # Для add/change проверяем расширение
-  if [[ ! -f "$file" ]]; then return; fi
+  if [[ ! -f "$file" ]]; then 
+    echo "❌ Файл не найден: $file"
+    return
+  fi
+
+  echo "✅ Файл найден, определяю тип..."
 
   case "$file" in
-    *.less)  handle_less "$file" ;;
+    *.less)  
+      echo "🎨 Обрабатываю как LESS файл: $file"
+      handle_less "$file" 
+      ;;
     *.js)
       if [[ "$file" =~ templates/capitalcraft/js/ ]]; then
+        echo "⚡ Обрабатываю как JS файл: $file"
         handle_js "$file"
       else
         echo "📄 Игнор JS вне src: $file"
       fi
       ;;
-    *.php)   handle_php "$file" ;;
-    *)       echo "📄 Изменён файл: $file (не обрабатывается)";;
+    *.php)   
+      echo "🐘 Обрабатываю как PHP файл: $file"
+      handle_php "$file" 
+      ;;
+    *)       
+      echo "📄 Изменён файл: $file (не обрабатывается)"
+      ;;
   esac
 }
 
@@ -136,13 +152,30 @@ echo "📝 Ожидаю события..."
 echo ""
 
 # Запускаем chokidar и читаем его вывод напрямую
+echo "🔍 Запускаю chokidar с отладкой..."
 while IFS= read -r line; do
+  echo "📨 Получено событие: $line"
   # Формат строки: "change: path" / "add: path" / "unlink: path"
   case "$line" in
-    change:*) file="${line#change: }"; process_file "$file" "change" ;;
-    add:*)    file="${line#add: }";    process_file "$file" "add" ;;
-    unlink:*) file="${line#unlink: }"; process_file "$file" "unlink" ;;
-    *) : ;;
+    change:*) 
+      file=$(echo "$line" | cut -d: -f2-)
+      echo "🔄 Обрабатываю изменение: $file"
+      echo "🔍 Проверяю: file='$file', line='$line'"
+      process_file "$file" "change" 
+      ;;
+    add:*)    
+      file=$(echo "$line" | cut -d: -f2-)
+      echo "➕ Обрабатываю добавление: $file"
+      process_file "$file" "add" 
+      ;;
+    unlink:*) 
+      file=$(echo "$line" | cut -d: -f2-)
+      echo "🗑️ Обрабатываю удаление: $file"
+      process_file "$file" "unlink" 
+      ;;
+    *) 
+      echo "❓ Неизвестное событие: $line"
+      ;;
   esac
 done < <(npx chokidar-cli \
   "templates/capitalcraft/less/**" \
