@@ -108,16 +108,12 @@ function resetTextTruncate() {
   const descriptions = document.querySelectorAll('.products__item-description');
   
   descriptions.forEach(description => {
-    // Удаляем все добавленные элементы и классы
-    const readMoreBtn = description.parentNode.querySelector('.read-more-btn');
-    if (readMoreBtn) {
-      readMoreBtn.remove();
-    }
-    
     // Убираем классы с параграфа
     const textElement = description.querySelector('p');
     if (textElement) {
       textElement.classList.remove('truncated', 'expanded');
+      textElement.style.cursor = '';
+      textElement.removeAttribute('title');
     }
   });
 }
