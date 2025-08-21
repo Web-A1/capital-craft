@@ -57,35 +57,27 @@ export function initTextTruncate() {
       return; // Текст помещается в 3 строки, обрезание не нужно
     }
 
-    console.log(`Элемент ${index + 1}: создаем кнопку "Читать далее"`);
+    console.log(`Элемент ${index + 1}: настраиваем обрезание текста`);
 
-    // Создаем кнопку "Читать далее"
-    const readMoreBtn = document.createElement('span');
-    readMoreBtn.className = 'read-more-btn';
-    readMoreBtn.textContent = 'Читать далее';
-    
-    // Вставляем кнопку ПОСЛЕ блока описания (вне области overflow: hidden)
-    description.insertAdjacentElement('afterend', readMoreBtn);
-    
-    // Проверяем, что кнопка создалась
-    console.log(`Элемент ${index + 1}: кнопка создана:`, readMoreBtn);
-    console.log(`Элемент ${index + 1}: кнопка в DOM:`, description.parentNode.querySelector('.read-more-btn'));
-    
-    // Добавляем класс для обрезанного состояния к ПАРАГРАФУ, а не к контейнеру
+    // Добавляем класс для обрезанного состояния к ПАРАГРАФУ
     textElement.classList.add('truncated');
     console.log(`Элемент ${index + 1}: добавлен класс truncated к параграфу`);
     
-    // Обработчик клика по кнопке
-    readMoreBtn.addEventListener('click', function(e) {
-      console.log('=== КЛИК ПО КНОПКЕ ===');
+    // Делаем параграф кликабельным
+    textElement.style.cursor = 'pointer';
+    textElement.setAttribute('title', 'Кликните, чтобы развернуть текст');
+    
+    // Обработчик клика по параграфу
+    textElement.addEventListener('click', function(e) {
+      console.log('=== КЛИК ПО ТЕКСТУ ===');
       console.log('Событие клика:', e);
-      console.log('Клик по кнопке, текущие классы параграфа:', textElement.classList.toString());
+      console.log('Клик по тексту, текущие классы параграфа:', textElement.classList.toString());
       
       if (textElement.classList.contains('truncated')) {
         // Разворачиваем текст
         textElement.classList.remove('truncated');
         textElement.classList.add('expanded');
-        readMoreBtn.textContent = 'Свернуть';
+        textElement.setAttribute('title', 'Кликните, чтобы свернуть текст');
         console.log('Добавлен класс expanded, убран truncated');
         console.log('Новые классы параграфа:', textElement.classList.toString());
         console.log('Текущие CSS свойства параграфа:', {
@@ -98,14 +90,14 @@ export function initTextTruncate() {
         // Сворачиваем текст
         textElement.classList.remove('expanded');
         textElement.classList.add('truncated');
-        readMoreBtn.textContent = 'Читать далее';
+        textElement.setAttribute('title', 'Кликните, чтобы развернуть текст');
         console.log('Добавлен класс truncated, убран expanded');
         console.log('Новые классы параграфа:', textElement.classList.toString());
       }
     });
     
     // Проверяем, что обработчик привязался
-    console.log(`Элемент ${index + 1}: обработчик клика привязан`);
+    console.log(`Элемент ${index + 1}: обработчик клика привязан к параграфу`);
   });
   
   console.log('=== ИНИЦИАЛИЗАЦИЯ ЗАВЕРШЕНА ===');
