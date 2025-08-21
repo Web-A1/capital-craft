@@ -32,7 +32,8 @@ export function initTextTruncate() {
     }
 
     const originalText = textElement.textContent;
-    const lineHeight = parseFloat(getComputedStyle(textElement).lineHeight);
+    // Получаем line-height из родительского элемента, а не из параграфа
+    const lineHeight = parseFloat(getComputedStyle(description).lineHeight);
     const maxHeight = lineHeight * 3; // 3 строки
     
     console.log(`Элемент ${index + 1}:`, {
