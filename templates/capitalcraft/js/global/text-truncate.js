@@ -12,9 +12,18 @@ export function initTextTruncate() {
     if (!p) return;
 
     const original = p.textContent.trim();
-    const lineHeight = parseFloat(getComputedStyle(p).lineHeight);
+
+    const computed = getComputedStyle(p);
+    let lineHeight = parseFloat(computed.lineHeight);
+    if (isNaN(lineHeight)) {
+      lineHeight = parseFloat(getComputedStyle(block).lineHeight);
+    }
+    if (isNaN(lineHeight) || lineHeight === 0) {
+      lineHeight = parseFloat(computed.fontSize) * 1.2;
+    }
+
     const maxHeight = lineHeight * 3;
-    const suffix = ' … подробнее';
+    const suffix = ' … полностью';
 
     let truncated = original;
     const applyContent = () => {
