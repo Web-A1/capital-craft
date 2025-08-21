@@ -21,6 +21,11 @@
     align-items: stretch;
     gap: @gap * 2;
     position: relative;
+    
+    .media(mobile, {
+      flex-direction: column;
+      gap: 0;
+    });
 
     &::before {
       content: '';
@@ -36,11 +41,6 @@
         display: none;
       });
     }
-
-    .media(mobile, {
-      flex-direction: column;
-      gap: 0;
-    });
   }
 
   &__left {
