@@ -31,18 +31,18 @@ export function initTextTruncate() {
       return;
     }
 
-    const originalText = textElement.textContent;
+    const originalText = textElement.textContent.trim();
     // Получаем line-height из параграфа
     const lineHeight = parseFloat(getComputedStyle(textElement).lineHeight);
     const maxHeight = lineHeight * 3; // 3 строки
-    
+
     console.log(`Элемент ${index + 1}:`, {
       textLength: originalText.length,
       lineHeight: lineHeight,
       maxHeight: maxHeight,
       scrollHeight: textElement.scrollHeight
     });
-    
+
     // Дополнительная отладка CSS
     console.log(`Элемент ${index + 1} CSS свойства:`, {
       lineHeight: getComputedStyle(textElement).lineHeight,
@@ -50,7 +50,7 @@ export function initTextTruncate() {
       overflow: getComputedStyle(textElement).overflow,
       display: getComputedStyle(textElement).display
     });
-    
+
     // Проверяем, нужно ли обрезать текст
     if (textElement.scrollHeight <= maxHeight) {
       console.log(`Элемент ${index + 1}: обрезание не нужно`);
@@ -59,10 +59,23 @@ export function initTextTruncate() {
 
     console.log(`Элемент ${index + 1}: настраиваем обрезание текста`);
 
+    // Обрезаем текст по целым словам
+    let truncatedText = originalText;
+    textElement.textContent = truncatedText;
+    while (textElement.scrollHeight > maxHeight && truncatedText.includes(' ')) {
+      truncatedText = truncatedText.substring(0, truncatedText.lastIndexOf(' ')).trim();
+      textElement.textContent = truncatedText;
+    }
+
+    // Сохраняем исходный и обрезанный текст в dataset
+    textElement.dataset.originalText = originalText;
+    textElement.dataset.truncatedText = truncatedText;
+    textElement.textContent = truncatedText;
+
     // Добавляем класс для обрезанного состояния к ПАРАГРАФУ
     textElement.classList.add('truncated');
     console.log(`Элемент ${index + 1}: добавлен класс truncated к параграфу`);
-    
+
     // Делаем параграф кликабельным
     textElement.style.cursor = 'pointer';
     textElement.setAttribute('title', 'Кликните, чтобы развернуть текст');
@@ -77,6 +90,7 @@ export function initTextTruncate() {
         // Разворачиваем текст
         textElement.classList.remove('truncated');
         textElement.classList.add('expanded');
+        textElement.textContent = textElement.dataset.originalText || '';
         textElement.setAttribute('title', 'Кликните, чтобы свернуть текст');
         console.log('Добавлен класс expanded, убран truncated');
         console.log('Новые классы параграфа:', textElement.classList.toString());
@@ -90,6 +104,7 @@ export function initTextTruncate() {
         // Сворачиваем текст
         textElement.classList.remove('expanded');
         textElement.classList.add('truncated');
+        textElement.textContent = textElement.dataset.truncatedText || '';
         textElement.setAttribute('title', 'Кликните, чтобы развернуть текст');
         console.log('Добавлен класс truncated, убран expanded');
         console.log('Новые классы параграфа:', textElement.classList.toString());
@@ -106,7 +121,7 @@ export function initTextTruncate() {
 // Функция для очистки состояния при изменении размера окна
 function resetTextTruncate() {
   const descriptions = document.querySelectorAll('.products__item-description');
-  
+
   descriptions.forEach(description => {
     // Убираем классы с параграфа
     const textElement = description.querySelector('p');
@@ -114,6 +129,11 @@ function resetTextTruncate() {
       textElement.classList.remove('truncated', 'expanded');
       textElement.style.cursor = '';
       textElement.removeAttribute('title');
+      if (textElement.dataset.originalText) {
+        textElement.textContent = textElement.dataset.originalText;
+        delete textElement.dataset.originalText;
+        delete textElement.dataset.truncatedText;
+      }
     }
   });
 }
@@ -130,5 +150,3 @@ window.addEventListener('resize', () => {
 
 // Экспортируем функцию для использования в основном файле
 export default initTextTruncate;
-
-//тест1
