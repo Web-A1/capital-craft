@@ -62,7 +62,7 @@
     width: 100%;
 
     &__viewport {
-      overflow-x: auto;
+      overflow-x: hidden;
       overflow-y: hidden;
       width: 100%;
       scrollbar-width: none;
@@ -72,6 +72,7 @@
       }
 
       .media(mobile, {
+        overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-x;
