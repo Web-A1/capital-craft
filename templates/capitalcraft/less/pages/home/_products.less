@@ -243,6 +243,11 @@
         max-height: calc(1.5em * 3) !important; // 3 строки с line-height 150%
         cursor: pointer !important;
         
+        // Обрезание по целым словам
+        word-break: keep-all !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        
         // Добавляем " ... полностью" в конец строки
         &::after {
           content: ' ... полностью';
