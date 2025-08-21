@@ -17,20 +17,24 @@ export function initTextTruncate() {
     const suffix = ' … подробнее';
 
     let truncated = original;
-    p.textContent = truncated + suffix;
+    const applyContent = () => {
+      p.innerHTML = truncated + `<span class="products__read-more">${suffix}</span>`;
+    };
+
+    applyContent();
     while (p.scrollHeight > maxHeight && /\s/.test(truncated)) {
       truncated = truncated.replace(/\s*\S+\s*$/, '').trim();
-      p.textContent = truncated + suffix;
+      applyContent();
     }
 
-    if (p.scrollHeight <= maxHeight) {
-      p.textContent = original;
+    if (truncated === original) {
+      p.innerHTML = original;
       return;
     }
 
     p.dataset.originalText = original;
     p.dataset.truncatedText = truncated;
-    p.innerHTML = truncated + `<span class="products__read-more">${suffix}</span>`;
+    applyContent();
     p.classList.add('truncated');
     block.style.cursor = 'pointer';
 
