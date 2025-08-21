@@ -22,7 +22,7 @@ export function initTextTruncate() {
       lineHeight = parseFloat(computed.fontSize) * 1.2;
     }
 
-    const maxHeight = lineHeight * 3;
+    const maxHeight = lineHeight * 4;
     const suffix = 'read more';
 
     let truncated = original;
