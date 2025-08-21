@@ -91,8 +91,8 @@ commit_and_push() {
 process_file() {
     local file="$1"
     
-    # Исключаем выходные файлы
-    if [[ $file =~ /bundle\.js$ ]] || [[ $file =~ /\.css$ ]] || [[ $file =~ /\.map$ ]]; then
+    # Исключаем выходные файлы, чтобы избежать бесконечных циклов пересборки
+    if [[ "$file" == */bundle.js ]] || [[ "$file" == *.css ]] || [[ "$file" == *.map ]]; then
         echo "📄 Игнорирую выходной файл: $file"
         return
     fi
@@ -128,7 +128,7 @@ if command -v npx &> /dev/null; then
     echo "📦 Использую chokidar-cli (Node.js)"
     echo "📁 Отслеживаю папки:"
     echo "   • templates/capitalcraft/less/"
-    echo "   • templates/capitalcraft/js/global/"
+    echo "   • templates/capitalcraft/js/"
     echo "   • templates/capitalcraft/"
     echo ""
     
@@ -136,7 +136,11 @@ if command -v npx &> /dev/null; then
     pipe_file=$(mktemp -u)
     mkfifo "$pipe_file"
 
-    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/global/ templates/capitalcraft/ --initial > "$pipe_file" &
+    npx chokidar-cli templates/capitalcraft/less/ templates/capitalcraft/js/ templates/capitalcraft/ \
+        --ignore "templates/capitalcraft/js/**/bundle.js" \
+        --ignore "**/*.css" \
+        --ignore "**/*.map" \
+        --initial > "$pipe_file" &
     chokidar_pid=$!
 
     trap 'rm -f "$pipe_file"; kill "$chokidar_pid"; exit' INT TERM EXIT
