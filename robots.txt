@@ -27,3 +27,6 @@ Disallow: /logs/
 Disallow: /modules/
 Disallow: /plugins/
 Disallow: /tmp/
+
+# Sitemap location
+Sitemap: https://capital-craft.ru/sitemap.xml
