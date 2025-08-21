@@ -21,10 +21,12 @@
     align-items: stretch;
     gap: @gap * 2;
     position: relative;
+    min-height: 560px; // Добавлено для выравнивания высоты блоков
     
     .media(mobile, {
       flex-direction: column;
       gap: 0;
+      min-height: auto; // Сброс для мобильных
     });
 
     &::before {
@@ -48,7 +50,6 @@
     display: flex;
     flex-direction: column;
     gap: 40px;
-    height: 100%; // Добавлено для растягивания на всю высоту
     justify-content: space-between; // Добавлено для равномерного распределения
 
     .media(mobile, {
@@ -104,10 +105,9 @@
   }
 
   &__icon {
-    width: 400px; // Уменьшено с 491px
-    height: 300px; // Уменьшено с 377px
+    width: 400px;
+    height: 400px; 
     flex-shrink: 0;
-    align-self: flex-start; // Прижимаем к верхнему краю
 
     img {
       display: block;
@@ -131,10 +131,12 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    height: 100%; // Добавлено для выравнивания высоты
 
     .media(mobile, {
       max-width: none;
       gap: 30px;
+      height: auto; // Сброс для мобильных
     });
   }
 
