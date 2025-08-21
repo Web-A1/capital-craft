@@ -37,7 +37,7 @@ export function initTextTruncate() {
     }
 
     if (truncated === original) {
-      p.innerHTML = original;
+      p.textContent = original;
       return;
     }
 
