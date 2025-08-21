@@ -7,9 +7,6 @@ export const initBurger = () => {
   
   if (!burger || !header || !mobileNav) return;
   
-  // Сохраняем элемент, который имел фокус до открытия меню
-  let previouslyFocusedElement = null;
-  
   // Инициализация: меню скрыто для скринридеров по умолчанию
   mobileNav.setAttribute('aria-hidden', 'true');
 
@@ -20,9 +17,6 @@ export const initBurger = () => {
     
     // Управление доступностью
     mobileNav.setAttribute('aria-hidden', 'true');
-    
-    // Возвращаем фокус на кнопку бургера
-    burger.focus();
     
     // Восстанавливаем реакцию хедера на скролл после закрытия меню
     if (window.headerControl) {
@@ -39,15 +33,6 @@ export const initBurger = () => {
     
     // Управление доступностью
     mobileNav.setAttribute('aria-hidden', 'false');
-    
-    // Сохраняем текущий фокус
-    previouslyFocusedElement = document.activeElement;
-    
-    // Переводим фокус на первый пункт меню
-    const firstMenuItem = mobileNav.querySelector('a');
-    if (firstMenuItem) {
-      firstMenuItem.focus();
-    }
     
     // Временно блокируем реакцию хедера на скролл при открытии меню
     if (window.headerControl) {
