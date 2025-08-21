@@ -59,18 +59,19 @@ export function initTextTruncate() {
 
     console.log(`Элемент ${index + 1}: настраиваем обрезание текста`);
 
-    // Обрезаем текст по целым словам
+    // Обрезаем текст по целым словам с учетом " ... полностью"
     let truncatedText = originalText;
-    textElement.textContent = truncatedText;
-    while (textElement.scrollHeight > maxHeight && truncatedText.includes(' ')) {
-      truncatedText = truncatedText.substring(0, truncatedText.lastIndexOf(' ')).trim();
-      textElement.textContent = truncatedText;
+    const extraText = ' ... полностью';
+    textElement.textContent = truncatedText + extraText;
+    while (textElement.scrollHeight > maxHeight && /\s/.test(truncatedText)) {
+      truncatedText = truncatedText.replace(/\s*\S+\s*$/, '').trim();
+      textElement.textContent = truncatedText + extraText;
     }
+    textElement.textContent = truncatedText;
 
     // Сохраняем исходный и обрезанный текст в dataset
     textElement.dataset.originalText = originalText;
     textElement.dataset.truncatedText = truncatedText;
-    textElement.textContent = truncatedText;
 
     // Добавляем класс для обрезанного состояния к ПАРАГРАФУ
     textElement.classList.add('truncated');
