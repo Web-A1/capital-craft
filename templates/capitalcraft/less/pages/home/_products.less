@@ -228,14 +228,19 @@
       text-align: start;
       line-height: 150%;
       
+      // Базовые стили для мобильной версии
+      overflow: visible;
+      display: block;
+      max-height: none;
+      
       // Стили для обрезанного текста
       &.truncated {
         position: relative;
-        overflow: hidden;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        max-height: calc(1.5em * 3); // 3 строки с line-height 150%
+        overflow: hidden !important;
+        display: -webkit-box !important;
+        -webkit-line-clamp: 3 !important;
+        -webkit-box-orient: vertical !important;
+        max-height: calc(1.5em * 3) !important; // 3 строки с line-height 150%
         
         &::after {
           content: '';
@@ -251,14 +256,14 @@
       
       // Стили для развернутого текста
       &.expanded {
-        overflow: visible;
-        display: block;
-        max-height: none;
-        -webkit-line-clamp: unset;
-        -webkit-box-orient: unset;
+        overflow: visible !important;
+        display: block !important;
+        max-height: none !important;
+        -webkit-line-clamp: unset !important;
+        -webkit-box-orient: unset !important;
         
         &::after {
-          display: none;
+          display: none !important;
         }
       }
       
