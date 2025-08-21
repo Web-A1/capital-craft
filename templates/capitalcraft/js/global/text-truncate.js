@@ -43,7 +43,6 @@ export function initTextTruncate() {
 
     p.dataset.originalText = original;
     p.dataset.truncatedText = truncated;
-    applyContent();
     p.classList.add('truncated');
     block.style.cursor = 'pointer';
 
