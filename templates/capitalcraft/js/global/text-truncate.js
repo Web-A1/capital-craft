@@ -67,13 +67,18 @@ export function initTextTruncate() {
     // Добавляем кнопку после текста
     description.appendChild(readMoreBtn);
     
+    // Проверяем, что кнопка создалась
+    console.log(`Элемент ${index + 1}: кнопка создана:`, readMoreBtn);
+    console.log(`Элемент ${index + 1}: кнопка в DOM:`, description.querySelector('.read-more-btn'));
+    
     // Добавляем класс для обрезанного состояния
     description.classList.add('truncated');
     console.log(`Элемент ${index + 1}: добавлен класс truncated`);
     
     // Обработчик клика по кнопке
-    readMoreBtn.addEventListener('click', function() {
+    readMoreBtn.addEventListener('click', function(e) {
       console.log('=== КЛИК ПО КНОПКЕ ===');
+      console.log('Событие клика:', e);
       console.log('Клик по кнопке, текущие классы:', description.classList.toString());
       
       if (description.classList.contains('truncated')) {
@@ -98,6 +103,9 @@ export function initTextTruncate() {
         console.log('Новые классы:', description.classList.toString());
       }
     });
+    
+    // Проверяем, что обработчик привязался
+    console.log(`Элемент ${index + 1}: обработчик клика привязан`);
   });
   
   console.log('=== ИНИЦИАЛИЗАЦИЯ ЗАВЕРШЕНА ===');
