@@ -8,8 +8,8 @@
             </svg>
         </button>
         <div class="modal__header">
-            <p class="modal__subtitle">обсудить проект</p>
-            <h2 class="modal__title" id="contact-title">Давайте разбираться</h2>
+            <h3 class="modal__subtitle">обсудить проект</h3>
+            <p class="modal__title" id="contact-title">Давайте разбираться</p>
             <p class="modal__description">Оставьте свои контакты и кратко опишите задачу — мы свяжемся с вами, чтобы обсудить детали</p>
         </div>
         <form id="contactForm" class="modal__form" novalidate>
