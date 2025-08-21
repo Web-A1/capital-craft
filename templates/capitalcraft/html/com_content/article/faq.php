@@ -79,8 +79,8 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($orgSchem
     <div class="faq__container">
         <div class="faq__content">
             <div class="faq__title-block">
-                <div class="faq__subtitle">часто задаваемые вопросы</div>
-                <h1 class="faq__title">Сильные решения начинаются с вопросов</h1>
+                <h1 class="faq__subtitle">часто задаваемые вопросы</h1>
+                <h2 class="faq__title">Сильные решения начинаются с вопросов</h2>
             </div>
             <div class="faq__accordion">
                 <?php foreach ($faq_data as $item): ?>
