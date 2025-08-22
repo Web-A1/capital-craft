@@ -30,8 +30,8 @@ $cases = [
 <section class="show-case frame section-with-divider" id="cases">
     <div class="container show-case__inner">
         <div class="show-case__title-block">
-            <div class="show-case__subtitle">завершенные кейсы</div>
-            <h2 class="show-case__title">Когда стратегия становится результатом</h2>
+            <h2 class="show-case__subtitle">Завершенные кейсы</h2>
+            <p class="show-case__title">Когда стратегия становится результатом</p>
         </div>
 
         <div class="show-case__content">
@@ -47,19 +47,19 @@ $cases = [
                                     <div class="show-case__card-title"><?= htmlspecialchars($case['title'], ENT_QUOTES, 'UTF-8') ?></div>
                                     <div class="show-case__details">
                                         <div class="show-case__detail">
-                                            <div class="show-case__detail-title">Бизнес клиента</div>
+                                            <h3 class="show-case__detail-title">Бизнес клиента</h3>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['business'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                         <div class="show-case__detail">
-                                            <div class="show-case__detail-title">Задача</div>
+                                            <h3 class="show-case__detail-title">Задача</h3>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['task'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                         <div class="show-case__detail">
-                                            <div class="show-case__detail-title">Стратегия</div>
+                                            <h3 class="show-case__detail-title">Стратегия</h3>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['strategy'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                         <div class="show-case__detail">
-                                            <div class="show-case__detail-title">Результат</div>
+                                            <h3 class="show-case__detail-title">Результат</h3>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['result'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                     </div>
@@ -72,7 +72,7 @@ $cases = [
 
                 <div class="show-case__button-wrapper">
                     <a href="#" class="btn-main show-case__button">
-                        <span>завершенные кейсы</span>
+                        <span>Завершенные кейсы</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17 17 7m0 0H8m9 0v9" />
                         </svg>
