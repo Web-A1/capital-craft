@@ -20,15 +20,15 @@ const SITE_CONFIG = {
   ]
 };
 
-// Генерируем текущую дату в формате YYYY-MM-DD
-function getCurrentDate() {
+// Генерируем текущую дату и время в формате YYYY-MM-DDTHH:MM:SS
+function getCurrentDateTime() {
   const now = new Date();
-  return now.toISOString().split('T')[0];
+  return now.toISOString().slice(0, 19); // YYYY-MM-DDTHH:MM:SS
 }
 
 // Генерируем XML sitemap
 function generateSitemapXML() {
-  const currentDate = getCurrentDate();
+  const currentDateTime = getCurrentDateTime();
   
   let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
   xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
@@ -36,7 +36,7 @@ function generateSitemapXML() {
   SITE_CONFIG.pages.forEach(page => {
     xml += '  <url>\n';
     xml += `    <loc>${SITE_CONFIG.baseUrl}${page.path}</loc>\n`;
-    xml += `    <lastmod>${currentDate}</lastmod>\n`;
+    xml += `    <lastmod>${currentDateTime}</lastmod>\n`;
     xml += `    <changefreq>${page.changefreq}</changefreq>\n`;
     xml += `    <priority>${page.priority}</priority>\n`;
     xml += '  </url>\n';
@@ -57,7 +57,7 @@ function main() {
     fs.writeFileSync(sitemapPath, sitemapContent, 'utf8');
     
     console.log('✅ Sitemap.xml успешно обновлен!');
-    console.log(`📅 Дата обновления: ${getCurrentDate()}`);
+    console.log(`📅 Дата и время обновления: ${getCurrentDateTime()}`);
     console.log(`📁 Файл сохранен: ${sitemapPath}`);
     
     // Выводим содержимое для проверки
@@ -75,4 +75,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { generateSitemapXML, getCurrentDate };
+module.exports = { generateSitemapXML, getCurrentDateTime };
