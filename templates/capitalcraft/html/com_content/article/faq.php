@@ -127,7 +127,11 @@ $orgSchema = [
     ],
     'foundingDate' => '2020',
     'areaServed' => 'RU',
-    'serviceType' => 'Инвестиционные решения и привлечение капитала'
+    'hasOfferCatalog' => [
+        '@type' => 'OfferCatalog',
+        'name' => 'Инвестиционные решения и привлечение капитала',
+        'description' => 'Услуги по привлечению капитала и инвестиционным решениям'
+    ]
 ];
 
 $doc->addCustomTag('<script type="application/ld+json">' . json_encode($orgSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '</script>');
