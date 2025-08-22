@@ -9,7 +9,13 @@ $doc->setDescription('Ответы на популярные вопросы о �
 $doc->addCustomTag('<meta property="og:title" content="FAQ — Часто задаваемые вопросы | Capital Craft" />');
 $doc->addCustomTag('<meta property="og:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях" />');
 $doc->addCustomTag('<meta property="og:type" content="website" />');
-$doc->addCustomTag('<meta property="og:url" content="' . JURI::current() . '" />');
+
+// Генерируем canonical URL более надежным способом
+$canonicalUrl = 'https://capital-craft.ru/faq';
+$doc->addCustomTag('<link rel="canonical" href="' . $canonicalUrl . '" />');
+
+// Open Graph URL
+$doc->addCustomTag('<meta property="og:url" content="' . $canonicalUrl . '" />');
 $doc->addCustomTag('<meta property="og:image" content="' . JURI::root() . 'templates/capitalcraft/images/faq/faq_hand.webp" />');
 $doc->addCustomTag('<meta property="og:site_name" content="Capital Craft" />');
 $doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
