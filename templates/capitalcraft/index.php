@@ -86,6 +86,19 @@ if ($isFaq) {
       "areaServed": "Россия"
     }
     </script>
+  <?php else: ?>
+    <!-- Базовые SEO мета-теги для остальных страниц -->
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="revisit-after" content="7 days">
+    
+    <!-- Open Graph теги для остальных страниц -->
+    <meta property="og:site_name" content="Capital Craft">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:type" content="website">
+    
+    <!-- Hreflang для языковой версии -->
+    <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
+    <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/">
   <?php endif; ?>
 
   <!-- Шрифты -->
