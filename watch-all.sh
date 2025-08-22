@@ -30,6 +30,9 @@ JS_CHANGED=false
 SITEMAP_CHANGED=false
 PHP_CHANGED=false
 
+# Защита от повторной обработки одного файла в рамках одного цикла
+PROCESSED_FILES=""
+
 # Функция для проверки реальных изменений в git
 has_git_changes() {
     local file="$1"
@@ -151,6 +154,9 @@ execute_final_actions() {
         JS_CHANGED=false
         SITEMAP_CHANGED=false
         PHP_CHANGED=false
+        
+        # Очищаем список обработанных файлов
+        PROCESSED_FILES=""
     fi
 }
 
@@ -189,6 +195,13 @@ process_file() {
   local kind="$2"  # add|change|unlink
 
   echo "🔍 process_file: обработка $kind для файла '$file'"
+
+  # Защита от повторной обработки одного файла в рамках одного цикла
+  if [[ "$PROCESSED_FILES" == *"|$file|"* ]]; then
+    echo "🔄 Файл уже обработан в этом цикле: $file (пропускаю)"
+    return
+  fi
+  PROCESSED_FILES="$PROCESSED_FILES|$file|"
 
   # Игноры выходных/служебных
   case "$file" in
@@ -297,7 +310,7 @@ while IFS= read -r line; do
 done < <(npx chokidar-cli \
   "templates/capitalcraft/less/**" \
   "templates/capitalcraft/js/**" \
-  "templates/capitalcraft/**" \
+  "templates/capitalcraft/**/*.php" \
   "sitemap.xml" \
   --ignore "**/*.css" \
   --ignore "**/*.map" \
