@@ -240,6 +240,8 @@ check_merge_readiness() {
 # =============================================================================
 
 # Автоматическое разрешение конфликтов
+# ВАЖНО: Эта функция вызывается когда мы находимся на ветке main
+# и мерджим в неё ветку dev. Поэтому --theirs = версия из dev
 resolve_conflicts_automatically() {
     log_merge "Автоматически разрешаю конфликты..."
     
@@ -254,8 +256,8 @@ resolve_conflicts_automatically() {
         for file in $CONFLICT_FILES; do
             if [ -f "$file" ]; then
                 log_info "Разрешаю конфликт в файле: $file"
-                # Выбираем версию из dev (текущей ветки)
-                git checkout --ours "$file" 2>/dev/null || git checkout HEAD -- "$file" 2>/dev/null
+                # Выбираем версию из dev (--theirs, так как мы на main и мерджим dev)
+                git checkout --theirs "$file" 2>/dev/null || git checkout HEAD -- "$file" 2>/dev/null
             fi
         done
         
