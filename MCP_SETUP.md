@@ -1,4 +1,45 @@
-# Perplexity MCP Server - Ручная настройка
+# MCP Серверы - Настройка
+
+## PageSpeed MCP Server
+
+### Что это такое
+
+PageSpeed MCP Server - это сервер для интеграции с Google PageSpeed Insights через Model Context Protocol (MCP). Он позволяет анализировать производительность веб-сайтов прямо в Cursor.
+
+### Возможности
+
+- **Анализ производительности:** FCP, LCP, TTI, TBT, CLS, Speed Index, TTFB
+- **Оценка лучших практик:** HTTPS, JavaScript ошибки, консольные предупреждения
+- **SEO анализ:** Meta теги, robots.txt, структурированные данные
+- **Аудит доступности:** ARIA атрибуты, контраст цветов, иерархия заголовков
+- **Оптимизация ресурсов:** изображения, JavaScript, CSS, кэширование
+
+### Установка
+
+PageSpeed MCP Server уже установлен в проекте:
+
+```bash
+npm install github:PhialsBasement/Pagespeed-MCP-Server
+```
+
+### Конфигурация
+
+Файл `mcp.json` уже настроен:
+
+```json
+{
+  "mcpServers": {
+    "pagespeed": {
+      "command": "node",
+      "args": ["node_modules/mcp-pagespeed-server/dist/index.js"]
+    }
+  }
+}
+```
+
+---
+
+## Perplexity MCP Server - Ручная настройка
 
 ## Что это такое
 

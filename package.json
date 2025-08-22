@@ -9,7 +9,8 @@
     "less:base": "lessc -x templates/capitalcraft/less/base.less templates/capitalcraft/css/base.css",
     "less:all": "npm-run-all less:base less:critical less:home less:faq",
     "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --minify --target=es2019 --outfile=templates/capitalcraft/js/global/bundle.js",
-    "build": "npm run less:all && npm run js:build",
+    "sitemap": "node scripts/generate-sitemap.js",
+    "build": "npm run less:all && npm run js:build && npm run sitemap",
     "watch:all": "./watch-all.sh",
     "push:dev": "git add . && git commit -m \"Update $(date +%Y-%m-%d_%H:%M:%S)\" && git push origin dev"
   },
@@ -17,6 +18,7 @@
     "esbuild": "^0.25.9",
     "imask": "^7.6.1",
     "less": "^4.4.1",
+    "mcp-pagespeed-server": "github:PhialsBasement/Pagespeed-MCP-Server",
     "npm-run-all": "^4.1.5"
   },
   "devDependencies": {
