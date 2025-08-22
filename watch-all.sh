@@ -254,7 +254,8 @@ last_event_time=0
 debounce_delay=800
 
 while IFS= read -r line; do
-  current_time=$(date +%s%3N)  # Время в миллисекундах
+  # Используем секунды вместо миллисекунд для совместимости с macOS
+  current_time=$(date +%s)
   
   echo "📨 Получено событие: $line"
   
@@ -286,8 +287,8 @@ while IFS= read -r line; do
   # Запускаем таймер для выполнения финальных действий
   (
     sleep 0.8  # 800ms дебаунс
-    current_check_time=$(date +%s%3N)
-    if [ $((current_check_time - last_event_time)) -ge $debounce_delay ]; then
+    current_check_time=$(date +%s)
+    if [ $((current_check_time - last_event_time)) -ge 1 ]; then
       echo "⏰ Дебаунс завершен, выполняю финальные действия..."
       execute_final_actions
     fi
