@@ -20,10 +20,19 @@ const SITE_CONFIG = {
   ]
 };
 
-// Генерируем текущую дату и время в формате YYYY-MM-DDTHH:MM:SS
+// Генерируем текущую дату и время в формате YYYY-MM-DDTHH:MM:SS (локальное время)
 function getCurrentDateTime() {
   const now = new Date();
-  return now.toISOString().slice(0, 19); // YYYY-MM-DDTHH:MM:SS
+  
+  // Получаем локальное время (московское UTC+3)
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
 
 // Генерируем XML sitemap
