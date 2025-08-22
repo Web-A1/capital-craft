@@ -1,9 +1,9 @@
 <section class="partners frame section-with-divider">
     <div class="container partners__inner">
         <div class="partners__title">
-            <div class="partners__title-text">
+            <h2 class="partners__title-text">
                 НАМ ДОВЕРЯЮТ КРУПНЕЙШИЕ БАНКИ И ЛИЗИНГОВЫЕ КОМПАНИИ
-            </div>
+</h2>
         </div>
 
         <div class="partners__carousel-wrapper">
