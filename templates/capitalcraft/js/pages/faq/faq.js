@@ -45,6 +45,14 @@ document.addEventListener('DOMContentLoaded', function () {
           });
         }
       }
+
+      // Добавляем поддержку клавиатуры
+      question.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.click();
+        }
+      });
     });
   });
 });
