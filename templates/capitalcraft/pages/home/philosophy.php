@@ -3,8 +3,8 @@
         <div class="philosophy__wrapper">
             <header class="philosophy__left">
                 <div class="philosophy__title-block">
-                    <p class="philosophy__subtitle">философия capital craft</p>
-                    <h2 class="philosophy__title" id="philosophy-title">Результат - это последовательность выверенных шагов</h2>
+                    <h2 class="philosophy__subtitle">философия capital craft</h2>
+                    <p class="philosophy__title" id="philosophy-title">Результат - это последовательность выверенных шагов</p>
                 </div>
                 <p class="philosophy__desc">Мы не сопровождаем — мы ведём. Погружаемся в задачу, считаем риски, разрабатываем стратегию и доводим до результата</p>
             </header>
