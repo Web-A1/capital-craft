@@ -46,6 +46,8 @@ if ($isFaq) {
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Capital Craft - Инвестиционные решения для бизнеса">
     <meta name="twitter:description" content="Бутиковое агентство инвестиционных решений для привлечения финансирования">
+    <meta name="twitter:image" content="https://capital-craft.ru/templates/capitalcraft/images/home/sphere.svg">
+    <meta name="twitter:image:alt" content="Capital Craft - Инвестиционные решения для бизнеса">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://capital-craft.ru/">
