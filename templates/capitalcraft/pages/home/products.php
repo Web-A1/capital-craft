@@ -4,7 +4,7 @@
             <div class="products__left">
                 <div class="products__title-block">
                     <div class="products__subtitle">
-                        <p>продукты capital craft</p>
+                        <h2>Продукты CAPITAL CRAFT</h2>
                     </div>
                     <div class="products__title">
                         <p>Три уровня вовлечения - от первичного аудита до общей ответственности</p>
@@ -21,7 +21,7 @@
                     </div>
                     <div class="products__content">
                         <div class="products__item-title">
-                            <p>CAPITAL LENS</p>
+                            <h3>CAPITAL LENS</h3>
                         </div>
                         <div class="products__item-description">
                             <p>Первичный аудит, в котором мы детально разбираем ваш запрос в контексте финансовых показателей и восприятия со стороны кредитных организаций. В результате, вы получаете реалистичную стратегию финансирования</p>
@@ -34,7 +34,7 @@
                     </div>
                     <div class="products__content">
                         <div class="products__item-title">
-                            <p>CAPITAL CRAFT</p>
+                            <h3>CAPITAL CRAFT</h3>
                         </div>
                         <div class="products__item-description">
                             <p>Полное сопровождение сделки: от аудита и стратегии — до получения финансирования. Мы берём на себя процесс, помогаем с документами, ведём переговоры, оцениваем риски. Всё, что нужно, чтобы вы дошли до результата</p>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="products__content">
                         <div class="products__item-title">
-                            <p>EQUITY SIGNATURE</p>
+                            <h3>EQUITY SIGNATURE</h3>
                         </div>
                         <div class="products__item-description">
                             <p>Мы входим в проект как партнёры: выстраиваем структуру, привлекаем финансирование, усиливаем бизнес. Участвуем в процессе и разделяем результат — в виде доли, процента или иного механизма</p>
