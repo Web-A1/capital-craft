@@ -24,6 +24,8 @@ if ($isFaq) {
 <html lang="ru">
 
 <head>
+
+
   <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,6 +35,9 @@ if ($isFaq) {
   <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
 
   <jdoc:include type="head" />
+
+  <!-- Верификация Яндекс.Вебмастера -->
+  <meta name="yandex-verification" content="277972e517ae7eff" />
 
   <!-- Фавикон по умолчанию -->
   <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_red_stroke.svg" media="(prefers-color-scheme: light)">
