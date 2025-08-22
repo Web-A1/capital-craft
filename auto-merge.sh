@@ -182,14 +182,20 @@ check_remote_sync() {
 check_dev_ahead() {
     log_step "Проверка различий между dev и main..."
     COMMITS_AHEAD=$(git rev-list --count main..dev 2>/dev/null || echo "0")
+    COMMITS_BEHIND=$(git rev-list --count dev..main 2>/dev/null || echo "0")
+    
     if [ "$COMMITS_AHEAD" -gt 0 ]; then
         log_success "Ветка dev опережает main на $COMMITS_AHEAD коммитов"
         log_info "Последние коммиты в dev:"
         git log --oneline main..dev | head -5
+    elif [ "$COMMITS_BEHIND" -gt 0 ]; then
+        log_warning "Ветка dev отстает от main на $COMMITS_BEHIND коммитов"
+        log_info "Будет выполнен мердж для синхронизации веток"
+        # Не считаем это проблемой - мердж все равно выполнится
     else
-        log_warning "Ветка dev не содержит новых коммитов по сравнению с main"
-        add_issue "Dev не содержит новых коммитов"
-        return 1
+        log_info "Ветки dev и main синхронизированы"
+        log_info "Мердж будет выполнен для обновления main"
+        # Не считаем это проблемой - мердж все равно выполнится
     fi
 }
 
