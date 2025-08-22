@@ -131,12 +131,14 @@ execute_final_actions() {
         actions+=("JS rebuild")
     fi
     
-    if [ "$LESS_CHANGED" = true ] || [ "$JS_CHANGED" = true ]; then
+    # Обновляем sitemap только если он еще не был обновлен в этом цикле
+    if ([ "$LESS_CHANGED" = true ] || [ "$JS_CHANGED" = true ]) && [ "$SITEMAP_CHANGED" = false ]; then
         echo "🗺️ Обновляю sitemap..."
         npm run sitemap
         SITEMAP_CHANGED=true
     fi
     
+    # Добавляем sitemap в действия только если он действительно был обновлен
     if [ "$SITEMAP_CHANGED" = true ]; then
         actions+=("sitemap update")
     fi
