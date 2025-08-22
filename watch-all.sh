@@ -24,9 +24,33 @@ if [ "$current_branch" != "dev" ]; then
 fi
 command -v npx >/dev/null || { echo "❌ Не найден npx"; exit 1; }
 
+# Переменные для отслеживания состояния
+LESS_CHANGED=false
+JS_CHANGED=false
+SITEMAP_CHANGED=false
+PHP_CHANGED=false
+
+# Функция для проверки реальных изменений в git
+has_git_changes() {
+    local file="$1"
+    if git diff --quiet "$file" 2>/dev/null; then
+        if git diff --cached --quiet "$file" 2>/dev/null; then
+            return 1  # Нет изменений
+        fi
+    fi
+    return 0  # Есть изменения
+}
+
 # Функция для обработки LESS файлов
 handle_less() {
     local file="$1"
+    
+    # Проверяем, действительно ли файл изменился
+    if ! has_git_changes "$file"; then
+        echo "📝 LESS файл не изменился: $file (пропускаю)"
+        return
+    fi
+    
     echo "🎨 Изменен LESS файл: $file"
     echo "🔄 Компилирую LESS..."
     
@@ -34,9 +58,7 @@ handle_less() {
     
     if [ $? -eq 0 ]; then
         echo "✅ LESS компиляция завершена!"
-        echo "🗺️ Обновляю sitemap..."
-        npm run sitemap
-        commit_and_push "LESS compilation + sitemap update"
+        LESS_CHANGED=true
     else
         echo "❌ Ошибка компиляции LESS!"
     fi
@@ -45,6 +67,13 @@ handle_less() {
 # Функция для обработки JS файлов
 handle_js() {
     local file="$1"
+    
+    # Проверяем, действительно ли файл изменился
+    if ! has_git_changes "$file"; then
+        echo "📝 JS файл не изменился: $file (пропускаю)"
+        return
+    fi
+    
     echo "⚡ Изменен JS файл: $file"
     echo "🔄 Пересобираю JavaScript..."
     
@@ -52,9 +81,7 @@ handle_js() {
     
     if [ $? -eq 0 ]; then
         echo "✅ JavaScript пересборка завершена!"
-        echo "🗺️ Обновляю sitemap..."
-        npm run sitemap
-        commit_and_push "JS rebuild + sitemap update"
+        JS_CHANGED=true
     else
         echo "❌ Ошибка пересборки JavaScript!"
     fi
@@ -63,22 +90,71 @@ handle_js() {
 # Функция для обработки PHP файлов
 handle_php() {
     local file="$1"
-    echo "🐘 Изменен PHP файл: $file"
-    echo "📝 Только коммит и push..."
     
-    commit_and_push "PHP update"
+    # Проверяем, действительно ли файл изменился
+    if ! has_git_changes "$file"; then
+        echo "📝 PHP файл не изменился: $file (пропускаю)"
+        return
+    fi
+    
+    echo "🐘 Изменен PHP файл: $file"
+    PHP_CHANGED=true
 }
 
 # Функция для обработки sitemap.xml
 handle_sitemap() {
     local file="$1"
-    echo "🗺️ Изменен sitemap.xml: $file"
-    echo "📝 Только коммит и push..."
     
-    commit_and_push "Sitemap update"
+    # Проверяем, действительно ли файл изменился
+    if ! has_git_changes "$file"; then
+        echo "📝 Sitemap не изменился: $file (пропускаю)"
+        return
+    fi
+    
+    echo "🗺️ Изменен sitemap.xml: $file"
+    SITEMAP_CHANGED=true
 }
 
-# --- commit/push (исправления) ---
+# Функция для выполнения финальных действий
+execute_final_actions() {
+    local message=""
+    local actions=()
+    
+    if [ "$LESS_CHANGED" = true ]; then
+        actions+=("LESS compilation")
+    fi
+    
+    if [ "$JS_CHANGED" = true ]; then
+        actions+=("JS rebuild")
+    fi
+    
+    if [ "$LESS_CHANGED" = true ] || [ "$JS_CHANGED" = true ]; then
+        echo "🗺️ Обновляю sitemap..."
+        npm run sitemap
+        SITEMAP_CHANGED=true
+    fi
+    
+    if [ "$SITEMAP_CHANGED" = true ]; then
+        actions+=("sitemap update")
+    fi
+    
+    if [ "$PHP_CHANGED" = true ]; then
+        actions+=("PHP update")
+    fi
+    
+    if [ ${#actions[@]} -gt 0 ]; then
+        message=$(IFS=" + "; echo "${actions[*]}")
+        commit_and_push "$message"
+        
+        # Сбрасываем флаги
+        LESS_CHANGED=false
+        JS_CHANGED=false
+        SITEMAP_CHANGED=false
+        PHP_CHANGED=false
+    fi
+}
+
+# --- commit/push (оптимизированная версия) ---
 commit_and_push() {
   local message="$1"
 
@@ -171,14 +247,22 @@ echo ""
 
 # Запускаем chokidar и читаем его вывод напрямую
 echo "🔍 Запускаю chokidar с отладкой..."
+echo "⏰ Использую дебаунс 800ms для группировки событий..."
+
+# Переменная для отслеживания времени последнего события
+last_event_time=0
+debounce_delay=800
+
 while IFS= read -r line; do
+  current_time=$(date +%s%3N)  # Время в миллисекундах
+  
   echo "📨 Получено событие: $line"
+  
   # Формат строки: "change: path" / "add: path" / "unlink: path"
   case "$line" in
     change:*) 
       file=$(echo "$line" | cut -d: -f2-)
       echo "🔄 Обрабатываю изменение: $file"
-      echo "🔍 Проверяю: file='$file', line='$line'"
       process_file "$file" "change" 
       ;;
     add:*)    
@@ -195,6 +279,20 @@ while IFS= read -r line; do
       echo "❓ Неизвестное событие: $line"
       ;;
   esac
+  
+  # Обновляем время последнего события
+  last_event_time=$current_time
+  
+  # Запускаем таймер для выполнения финальных действий
+  (
+    sleep 0.8  # 800ms дебаунс
+    current_check_time=$(date +%s%3N)
+    if [ $((current_check_time - last_event_time)) -ge $debounce_delay ]; then
+      echo "⏰ Дебаунс завершен, выполняю финальные действия..."
+      execute_final_actions
+    fi
+  ) &
+  
 done < <(npx chokidar-cli \
   "templates/capitalcraft/less/**" \
   "templates/capitalcraft/js/**" \
@@ -207,5 +305,4 @@ done < <(npx chokidar-cli \
   --ignore "**/.git/**" \
   --ignore "**/vendor/**" \
   --await-write-finish 200 \
-  --debounce 800 \
-  --initial)
+  --debounce 800)
