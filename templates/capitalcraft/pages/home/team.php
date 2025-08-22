@@ -4,7 +4,7 @@
             <div class="team__left">
                 <div class="team__title-block">
                     <div class="team__subtitle">
-                        <p>команда</p>
+                        <h2>Команда</h2>
                     </div>
                     <div class="team__title">
                         <p>Эксперты, на которых можно положиться</p>
@@ -19,7 +19,7 @@
                 </p>
                 <div class="team__button-wrapper">
                     <a href="#" class="btn-main team__btn">
-                        <span>подробнее</span>
+                        <span>Подробнее</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17 17 7m0 0H8m9 0v9" />
                         </svg>
