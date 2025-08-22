@@ -1,8 +1,8 @@
-<main class="hero frame section-with-divider" role="main">
+<section class="hero frame section-with-divider">
     <div class="container hero__inner">
         <div class="hero__content">
-            <p class="hero__title">Мы создаем <br> точные решения <br> для вашего капитала</p>
-            <h1 class="hero__text">CAPITAL CRAFT — бутиковое агентство инвестиционных решений, специализирующееся на привлечении финансирования для бизнеса. Мы помогаем компаниям найти оптимальные стратегии роста и максимально реализовать их потенциал</h1>
+            <h1 class="hero__title">Мы создаем <br> точные решения <br> для вашего капитала</h1>
+            <p class="hero__text">CAPITAL CRAFT — бутиковое агентство инвестиционных решений, специализирующееся на привлечении финансирования для бизнеса. Мы помогаем компаниям найти оптимальные стратегии роста и максимально реализовать их потенциал</p>
             <a href="/faq" class="btn-main hero__btn">
                 <span>вопросы - ответы</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -14,4 +14,4 @@
             <img src="/templates/capitalcraft/images/home/sphere.svg" alt="Сфера capital craft">
         </div>
     </div>
-</main>
+</section>
