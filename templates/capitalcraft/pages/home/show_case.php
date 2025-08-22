@@ -47,19 +47,19 @@ $cases = [
                                     <div class="show-case__card-title"><?= htmlspecialchars($case['title'], ENT_QUOTES, 'UTF-8') ?></div>
                                     <div class="show-case__details">
                                         <div class="show-case__detail">
-                                            <h3 class="show-case__detail-title">Бизнес клиента</h3>
+                                            <p class="show-case__detail-title">Бизнес клиента</p>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['business'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                         <div class="show-case__detail">
-                                            <h3 class="show-case__detail-title">Задача</h3>
+                                            <p class="show-case__detail-title">Задача</p>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['task'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                         <div class="show-case__detail">
-                                            <h3 class="show-case__detail-title">Стратегия</h3>
+                                            <p class="show-case__detail-title">Стратегия</p>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['strategy'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                         <div class="show-case__detail">
-                                            <h3 class="show-case__detail-title">Результат</h3>
+                                            <p class="show-case__detail-title">Результат</p>
                                             <div class="show-case__detail-description"><?= htmlspecialchars($case['result'], ENT_QUOTES, 'UTF-8') ?></div>
                                         </div>
                                     </div>
