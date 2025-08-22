@@ -118,21 +118,6 @@ if ($isFaq) {
       <meta name="author" content="Capital Craft">
       <meta name="publisher" content="Capital Craft">
       <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
-      
-      <!-- Canonical URL для FAQ страницы -->
-      <link rel="canonical" href="https://capital-craft.ru/faq">
-      
-      <!-- Open Graph теги для FAQ страницы -->
-      <meta property="og:title" content="FAQ - Часто задаваемые вопросы | Capital Craft">
-      <meta property="og:description" content="Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса. Экспертные консультации от Capital Craft.">
-      <meta property="og:type" content="website">
-      <meta property="og:url" content="https://capital-craft.ru/faq">
-      <meta property="og:image" content="https://capital-craft.ru/templates/capitalcraft/images/home/sphere.svg">
-      
-      <!-- Twitter Card для FAQ страницы -->
-      <meta name="twitter:card" content="summary">
-      <meta name="twitter:title" content="FAQ - Часто задаваемые вопросы | Capital Craft">
-      <meta name="twitter:description" content="Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса.">
     <?php endif; ?>
   <?php endif; ?>
 
