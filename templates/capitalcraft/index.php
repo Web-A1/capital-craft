@@ -113,7 +113,6 @@ if ($isFaq) {
     <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/">
     
     <!-- Специальные мета-теги для FAQ страницы -->
-    <!-- DEBUG: isFaq = <?php echo $isFaq ? 'true' : 'false'; ?> -->
     <?php if ($isFaq): ?>
       <!-- Title и Description для FAQ -->
       <title>Часто задаваемые вопросы - Capital Craft | Инвестиционные решения</title>
