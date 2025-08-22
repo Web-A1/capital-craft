@@ -147,7 +147,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
         <div class="faq__content">
             <div class="faq__title-block">
                 <h1 class="faq__subtitle">часто задаваемые вопросы</h1>
-                <h2 class="faq__title">Сильные решения начинаются с вопросов</h2>
+                <p class="faq__title">Сильные решения начинаются с вопросов</p>
             </div>
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
                 <?php foreach ($faq_data as $index => $item): ?>
