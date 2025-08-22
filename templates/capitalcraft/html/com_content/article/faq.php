@@ -1,41 +1,8 @@
 <?php defined('_JEXEC') or die;
 $doc = JFactory::getDocument();
 
-// SEO мета-теги для FAQ страницы
-$doc->setTitle('Часто задаваемые вопросы - Capital Craft | Инвестиционные решения');
-$doc->setDescription('Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса. Экспертные консультации от Capital Craft.');
-
-// Open Graph теги для социальных сетей
-$doc->addCustomTag('<meta property="og:title" content="FAQ — Часто задаваемые вопросы | Capital Craft" />');
-$doc->addCustomTag('<meta property="og:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях" />');
-$doc->addCustomTag('<meta property="og:type" content="website" />');
-
-// Генерируем canonical URL более надежным способом
+// Канонический URL для JSON-LD схем (используется только в структурированных данных)
 $canonicalUrl = 'https://capital-craft.ru/faq';
-$doc->addCustomTag('<meta property="og:url" content="' . $canonicalUrl . '" />');
-
-// Open Graph URL
-$doc->addCustomTag('<meta property="og:url" content="' . $canonicalUrl . '" />');
-$doc->addCustomTag('<meta property="og:image" content="' . JURI::root() . 'templates/capitalcraft/images/faq/faq_hand.webp" />');
-$doc->addCustomTag('<meta property="og:site_name" content="Capital Craft" />');
-$doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
-
-// Canonical URL для предотвращения дублирования
-$doc->addHeadLink($canonicalUrl, 'canonical', 'rel');
-
-// Hreflang теги для языковой версии
-$doc->addHeadLink($canonicalUrl, 'alternate', 'rel', ['hreflang' => 'ru-RU']);
-$doc->addHeadLink($canonicalUrl, 'alternate', 'rel', ['hreflang' => 'x-default']);
-
-// Мета-теги для поисковых роботов
-$doc->setMetaData('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
-$doc->setMetaData('revisit-after', '7 days');
-
-// Мета-теги для производительности и мобильной оптимизации
-$doc->addCustomTag('<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">');
-$doc->addCustomTag('<meta http-equiv="X-UA-Compatible" content="IE=edge">');
-$doc->addCustomTag('<meta name="theme-color" content="#8d222c">');
-$doc->addCustomTag('<meta name="msapplication-TileColor" content="#8d222c">');
 
 require __DIR__ . '/../../../data/faq_data.php';
 
