@@ -25,7 +25,7 @@
                         <img src="/templates/capitalcraft/images/home/ph_item1.svg" alt="Уверенность" class="philosophy-item__svg">
                     </div>
                     <div class="philosophy-item__content">
-                        <h3 class="philosophy-item__title">уверенность</h3>
+                        <h3 class="philosophy-item__title">Уверенность</h3>
                         <p class="philosophy-item__text">Сначала — анализ, потом — решение. Если берёмся, значит, видим потенциал</p>
                     </div>
                 </article>
@@ -35,7 +35,7 @@
                         <img src="/templates/capitalcraft/images/home/ph_item2.svg" alt="Ответственность" class="philosophy-item__svg">
                     </div>
                     <div class="philosophy-item__content">
-                        <h3 class="philosophy-item__title">ОТВЕТСТВЕННОСТЬ</h3>
+                        <h3 class="philosophy-item__title">Ответственность</h3>
                         <p class="philosophy-item__text">Если мы не уверены в результате — отказываем. Если же берёмся — всегда доводим до конца</p>
                     </div>
                 </article>
@@ -45,7 +45,7 @@
                         <img src="/templates/capitalcraft/images/home/ph_item3.svg" alt="Доверие" class="philosophy-item__svg">
                     </div>
                     <div class="philosophy-item__content">
-                        <h3 class="philosophy-item__title">доверие</h3>
+                        <h3 class="philosophy-item__title">Доверие</h3>
                         <p class="philosophy-item__text">Мы выстраиваем доверие через прозрачность, контроль и своевременное выполнение обязательств</p>
                     </div>
                 </article>
@@ -55,7 +55,7 @@
                         <img src="/templates/capitalcraft/images/home/ph_item4.svg" alt="Стратегия" class="philosophy-item__svg">
                     </div>
                     <div class="philosophy-item__content">
-                        <h3 class="philosophy-item__title">стратегия</h3>
+                        <h3 class="philosophy-item__title">Стратегия</h3>
                         <p class="philosophy-item__text">Каждое решение опирается на логику, расчёт и контекст. Мы не подбираем — мы проектируем</p>
                     </div>
                 </article>
