@@ -60,6 +60,12 @@ if ($isFaq) {
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="revisit-after" content="7 days">
     
+    <!-- Дополнительные SEO мета-теги для главной страницы -->
+    <meta name="keywords" content="инвестиционные решения, привлечение финансирования, капитал, бизнес, лизинг, банки, инвестиции, финансирование, рост бизнеса, стратегия развития">
+    <meta name="author" content="Capital Craft">
+    <meta name="publisher" content="Capital Craft">
+    <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
+    
     <!-- Структурированные данные JSON-LD -->
     <script type="application/ld+json">
     {
@@ -110,6 +116,7 @@ if ($isFaq) {
     <?php if ($isFaq): ?>
       <meta name="keywords" content="инвестиции, финансирование, капитал, бизнес, лизинг, банки, привлечение средств">
       <meta name="author" content="Capital Craft">
+      <meta name="publisher" content="Capital Craft">
       <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
     <?php endif; ?>
   <?php endif; ?>
