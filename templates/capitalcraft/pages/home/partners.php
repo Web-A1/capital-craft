@@ -2,7 +2,7 @@
     <div class="container partners__inner">
         <div class="partners__title">
             <h2 class="partners__title-text">
-                НАМ ДОВЕРЯЮТ КРУПНЕЙШИЕ БАНКИ И ЛИЗИНГОВЫЕ КОМПАНИИ
+                Нам доверяют крупнейшие банки и лизинговые компании
             </h2>
         </div>
 
