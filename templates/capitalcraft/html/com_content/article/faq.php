@@ -12,7 +12,17 @@ $doc->addCustomTag('<meta property="og:type" content="website" />');
 
 // Генерируем canonical URL более надежным способом
 $canonicalUrl = 'https://capital-craft.ru/faq';
-$doc->addCustomTag('<link rel="canonical" href="' . $canonicalUrl . '" />');
+$doc->addCustomTag('<meta property="og:url" content="' . $canonicalUrl . '" />');
+
+// Добавляем canonical URL через JavaScript (Joomla не позволяет link теги)
+$doc->addCustomTag('<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    canonical.href = "' . $canonicalUrl . '";
+    document.head.appendChild(canonical);
+});
+</script>');
 
 // Open Graph URL
 $doc->addCustomTag('<meta property="og:url" content="' . $canonicalUrl . '" />');
