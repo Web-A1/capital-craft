@@ -9,12 +9,12 @@ const SITE_CONFIG = {
   pages: [
     {
       path: '/',
-      priority: '1.0',
+      priority: '0.9',
       changefreq: 'daily'
     },
     {
       path: '/faq',
-      priority: '0.9',
+      priority: '1.0',
       changefreq: 'daily'
     }
   ]
