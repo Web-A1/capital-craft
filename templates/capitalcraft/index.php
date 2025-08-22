@@ -114,10 +114,37 @@ if ($isFaq) {
     
     <!-- Специальные мета-теги для FAQ страницы -->
     <?php if ($isFaq): ?>
+      <!-- Title и Description для FAQ -->
+      <title>Часто задаваемые вопросы - Capital Craft | Инвестиционные решения</title>
+      <meta name="description" content="Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса. Экспертные консультации от Capital Craft.">
+      
+      <!-- Keywords, Author, Publisher -->
       <meta name="keywords" content="инвестиции, финансирование, капитал, бизнес, лизинг, банки, привлечение средств">
       <meta name="author" content="Capital Craft">
       <meta name="publisher" content="Capital Craft">
       <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
+      
+      <!-- Canonical URL для FAQ -->
+      <link rel="canonical" href="https://capital-craft.ru/faq">
+      
+      <!-- Open Graph теги для FAQ -->
+      <meta property="og:title" content="FAQ — Часто задаваемые вопросы | Capital Craft">
+      <meta property="og:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях">
+      <meta property="og:type" content="website">
+      <meta property="og:url" content="https://capital-craft.ru/faq">
+      <meta property="og:site_name" content="Capital Craft">
+      <meta property="og:locale" content="ru_RU">
+      <meta property="og:image" content="https://capital-craft.ru/templates/capitalcraft/images/faq/faq_hand.webp">
+      
+      <!-- Twitter Card для FAQ -->
+      <meta name="twitter:card" content="summary_large_image">
+      <meta name="twitter:title" content="FAQ — Часто задаваемые вопросы | Capital Craft">
+      <meta name="twitter:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях">
+      <meta name="twitter:image" content="https://capital-craft.ru/templates/capitalcraft/images/faq/faq_hand.webp">
+      
+      <!-- Hreflang для FAQ -->
+      <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/faq">
+      <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/faq">
     <?php endif; ?>
   <?php endif; ?>
 
