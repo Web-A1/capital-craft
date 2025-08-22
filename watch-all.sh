@@ -7,9 +7,10 @@ set -euo pipefail
 echo "🚀 Запуск универсального мониторинга файлов..."
 echo "📁 Отслеживаю изменения в проекте..."
 echo "🔄 Логика обработки:"
-echo "   • LESS файлы → компиляция + commit + push"
-echo "   • JS файлы → пересборка + commit + push"
+echo "   • LESS файлы → компиляция + sitemap + commit + push"
+echo "   • JS файлы → пересборка + sitemap + commit + push"
 echo "   • PHP файлы → только commit + push"
+echo "   • sitemap.xml → только commit + push"
 echo "⏹️  Для остановки: Ctrl+C"
 echo ""
 
@@ -33,7 +34,9 @@ handle_less() {
     
     if [ $? -eq 0 ]; then
         echo "✅ LESS компиляция завершена!"
-        commit_and_push "LESS compilation"
+        echo "🗺️ Обновляю sitemap..."
+        npm run sitemap
+        commit_and_push "LESS compilation + sitemap update"
     else
         echo "❌ Ошибка компиляции LESS!"
     fi
@@ -49,7 +52,9 @@ handle_js() {
     
     if [ $? -eq 0 ]; then
         echo "✅ JavaScript пересборка завершена!"
-        commit_and_push "JS rebuild"
+        echo "🗺️ Обновляю sitemap..."
+        npm run sitemap
+        commit_and_push "JS rebuild + sitemap update"
     else
         echo "❌ Ошибка пересборки JavaScript!"
     fi
@@ -62,6 +67,15 @@ handle_php() {
     echo "📝 Только коммит и push..."
     
     commit_and_push "PHP update"
+}
+
+# Функция для обработки sitemap.xml
+handle_sitemap() {
+    local file="$1"
+    echo "🗺️ Изменен sitemap.xml: $file"
+    echo "📝 Только коммит и push..."
+    
+    commit_and_push "Sitemap update"
 }
 
 # --- commit/push (исправления) ---
@@ -138,6 +152,10 @@ process_file() {
       echo "🐘 Обрабатываю как PHP файл: $file"
       handle_php "$file" 
       ;;
+    sitemap.xml)
+      echo "🗺️ Обрабатываю как sitemap.xml: $file"
+      handle_sitemap "$file"
+      ;;
     *)       
       echo "📄 Изменён файл: $file (не обрабатывается)"
       ;;
@@ -181,6 +199,7 @@ done < <(npx chokidar-cli \
   "templates/capitalcraft/less/**" \
   "templates/capitalcraft/js/**" \
   "templates/capitalcraft/**" \
+  "sitemap.xml" \
   --ignore "**/*.css" \
   --ignore "**/*.map" \
   --ignore "**/*bundle.js" \
