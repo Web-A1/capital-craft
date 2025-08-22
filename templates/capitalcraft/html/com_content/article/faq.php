@@ -201,9 +201,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
         <figure class="faq__image">
             <img src="/templates/capitalcraft/images/faq/faq_hand.webp" 
                  alt="Часто задаваемые вопросы о привлечении капитала и инвестициях" 
-                 loading="lazy"
-                 width="400"
-                 height="300">
+                 loading="lazy">
         </figure>
     </div>
 </section>
