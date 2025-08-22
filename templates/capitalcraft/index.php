@@ -106,7 +106,7 @@ if ($isFaq) {
     <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
     <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/">
     
-    <!-- Специальные мета-теги для FAQ страницы -->
+    <!-- Специальные мета-теги для FAQ -->
     <?php if ($isFaq): ?>
       <meta name="keywords" content="инвестиции, финансирование, капитал, бизнес, лизинг, банки, привлечение средств">
       <meta name="author" content="Capital Craft">
