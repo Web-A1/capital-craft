@@ -37,6 +37,10 @@ if ($isFaq) {
     <meta property="og:url" content="https://capital-craft.ru/">
     <meta property="og:site_name" content="Capital Craft">
     <meta property="og:locale" content="ru_RU">
+    <meta property="og:image" content="https://capital-craft.ru/templates/capitalcraft/images/home/sphere.svg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Capital Craft - Инвестиционные решения для бизнеса">
     
     <!-- Twitter Card разметка -->
     <meta name="twitter:card" content="summary_large_image">
