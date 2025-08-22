@@ -3,7 +3,7 @@
         <div class="partners__title">
             <h2 class="partners__title-text">
                 НАМ ДОВЕРЯЮТ КРУПНЕЙШИЕ БАНКИ И ЛИЗИНГОВЫЕ КОМПАНИИ
-</h2>
+            </h2>
         </div>
 
         <div class="partners__carousel-wrapper">
