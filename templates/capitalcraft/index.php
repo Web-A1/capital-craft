@@ -165,10 +165,6 @@ if ($isFaq) {
   <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_red_stroke.svg" media="(prefers-color-scheme: light)">
   <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_white_stroke.svg" media="(prefers-color-scheme: dark)">
 
-  <!-- ICO fallback
-  <link rel="icon" type="image/x-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon.ico"> 
-  -->
-
   <!-- Apple и mask icon -->
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
   <link rel="mask-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon_black.svg" color="#000">
