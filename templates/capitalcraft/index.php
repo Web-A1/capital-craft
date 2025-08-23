@@ -162,16 +162,21 @@ if ($isFaq) {
   <meta name="yandex-verification" content="277972e517ae7eff" />
 
   <!-- Фавиконка: по умолчанию favicon.ico, затем скрипт подменяет SVG в зависимости от темы -->
-  <link id="favicon" rel="shortcut icon" href="<?php echo $this->baseurl; ?>/favicon.ico" type="image/x-icon">
+  <link id="favicon" rel="icon" href="<?php echo $this->baseurl; ?>/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="<?php echo $this->baseurl; ?>/favicon.ico">
   <script>
     (function () {
       var mq = window.matchMedia('(prefers-color-scheme: dark)');
       var link = document.getElementById('favicon');
       function update() {
-        link.href = mq.matches
+        var href = mq.matches
           ? '<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_white_stroke.svg'
           : '<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_red_stroke.svg';
-        link.type = 'image/svg+xml';
+        var newLink = link.cloneNode(true);
+        newLink.href = href;
+        newLink.type = 'image/svg+xml';
+        link.parentNode.replaceChild(newLink, link);
+        link = newLink;
       }
       mq.addEventListener ? mq.addEventListener('change', update) : mq.addListener(update);
       update();
