@@ -160,7 +160,7 @@ if ($isFaq) {
 
   <!-- Верификация Яндекс.Вебмастера -->
   <meta name="yandex-verification" content="277972e517ae7eff" />
-  <!-- Фавиконка: адаптируется к теме браузера благодаря CSS внутри SVG -->
+  <!-- Фавиконки для светлой и тёмной темы -->
   <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon.svg" type="image/svg+xml">
 
   <!-- Apple и mask icon -->
