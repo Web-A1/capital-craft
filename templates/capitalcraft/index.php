@@ -162,8 +162,8 @@ if ($isFaq) {
   <meta name="yandex-verification" content="277972e517ae7eff" />
 
   <!-- Фавиконка: по умолчанию favicon.ico, затем скрипт подменяет SVG в зависимости от темы -->
-  <link id="favicon" rel="icon" href="<?php echo $this->baseurl; ?>/favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="<?php echo $this->baseurl; ?>/favicon.ico">
+  <link id="favicon" rel="icon" href="<?php echo $this->baseurl; ?>/favicon.ico" type="image/x-icon">
   <script>
     (function () {
       var mq = window.matchMedia('(prefers-color-scheme: dark)');
