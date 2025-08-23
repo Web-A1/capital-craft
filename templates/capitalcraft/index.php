@@ -75,7 +75,7 @@ if ($isFaq) {
       "alternateName": "Capital-craft",
       "description": "Бутиковое агентство инвестиционных решений",
       "url": "https://capital-craft.ru/",
-      "logo": "https://capital-craft.ru/templates/capitalcraft/images/favicon/icon_red_stroke.svg",
+      "logo": "https://capital-craft.ru/favicon.svg",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+7 (499) 325-68-26",
