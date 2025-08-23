@@ -75,7 +75,7 @@ if ($isFaq) {
       "alternateName": "Capital-craft",
       "description": "Бутиковое агентство инвестиционных решений",
       "url": "https://capital-craft.ru/",
-      "logo": "https://capital-craft.ru/templates/capitalcraft/images/favicon/icon_red_stroke.svg",
+      "logo": "https://capital-craft.ru/favicon.svg",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+7 (499) 325-68-26",
@@ -160,14 +160,9 @@ if ($isFaq) {
 
   <!-- Верификация Яндекс.Вебмастера -->
   <meta name="yandex-verification" content="277972e517ae7eff" />
-
-  <!-- Фавикон по умолчанию -->
-  <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_red_stroke.svg" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_white_stroke.svg" media="(prefers-color-scheme: dark)">
-
-  <!-- ICO fallback
-  <link rel="icon" type="image/x-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon.ico"> 
-  -->
+  <!-- Фавиконки для светлой и тёмной темы -->
+  <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 
   <!-- Apple и mask icon -->
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
