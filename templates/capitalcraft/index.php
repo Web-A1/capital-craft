@@ -161,9 +161,10 @@ if ($isFaq) {
   <!-- Верификация Яндекс.Вебмастера -->
   <meta name="yandex-verification" content="277972e517ae7eff" />
 
-  <!-- Фавикон по умолчанию -->
-  <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_red_stroke.svg" media="(prefers-color-scheme: light)">
-  <link rel="icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_white_stroke.svg" media="(prefers-color-scheme: dark)">
+  <!-- Фавиконки для разных тем и fallback для Яндекс.Вебмастера -->
+  <link rel="shortcut icon" href="<?php echo $this->baseurl; ?>/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/svg+xml" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_red_stroke.svg" media="(prefers-color-scheme: light)">
+  <link rel="icon" type="image/svg+xml" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/icon_white_stroke.svg" media="(prefers-color-scheme: dark)">
 
   <!-- Apple и mask icon -->
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
