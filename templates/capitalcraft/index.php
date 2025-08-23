@@ -162,6 +162,7 @@ if ($isFaq) {
   <meta name="yandex-verification" content="277972e517ae7eff" />
   <!-- Фавиконки для светлой и тёмной темы -->
   <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)">
 
   <!-- Apple и mask icon -->
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
