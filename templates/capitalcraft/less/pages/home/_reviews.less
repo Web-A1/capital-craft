@@ -204,7 +204,8 @@
     // Hover эффект - меняем цвет круга
     &:hover {
       img {
-        filter: brightness(0.8) saturate(0.5); // Делаем круг светло-серым
+        // Применяем hover только к кругу, используя CSS переменные
+        --circle-fill: #e0e0e0; // Светло-серый цвет для круга при hover
       }
     }
     
@@ -213,6 +214,9 @@
       height: 80px;
       object-fit: contain;
       transition: all 0.3s ease;
+      
+      // CSS переменная для цвета круга
+      --circle-fill: transparent; // По умолчанию круг прозрачный
     }
     
     &--prev {
