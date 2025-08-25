@@ -194,15 +194,39 @@
     justify-content: center;
     cursor: pointer;
     z-index: 10;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
     flex-shrink: 0;
     
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
     margin-top: 40px; // Примерно середина текста отзыва
     
+    // Hover эффект с кругом
     &:hover {
-      opacity: 0.7;
+      &::after {
+        content: '';
+        position: absolute;
+        width: 40px; // Круг меньше внешней обводки
+        height: 40px;
+        border-radius: 50%;
+        background-color: #e0e0e0; // Светло-серый цвет
+        z-index: -1;
+        transition: all 0.3s ease;
+      }
+    }
+    
+    // Позиционирование круга для левой стрелки
+    &--prev:hover::after {
+      right: 15px; // Прижат к левой части внешней окружности
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    // Позиционирование круга для правой стрелки
+    &--next:hover::after {
+      left: 15px; // Прижат к правой части внешней окружности
+      top: 50%;
+      transform: translateY(-50%);
     }
     
     img {
