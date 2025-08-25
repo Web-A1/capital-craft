@@ -57,7 +57,27 @@
     width: 100%;
     max-width: 1170px;
     position: relative;
-
+    
+    // Фиксированные кавычки на фоне
+    &::before {
+      content: '"';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: @font-title;
+      font-size: 200px;
+      font-weight: 300;
+      color: rgba(0, 0, 0, 0.03);
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+      
+      .media(mobile, {
+        font-size: 120px;
+      });
+    }
+    
     .media(mobile, {
       flex-direction: column;
       gap: 20px;
@@ -100,30 +120,11 @@
     position: relative;
     height: 100%; // Занимает всю высоту слайда
     justify-content: center; // Центрируем содержимое по вертикали
-
+    z-index: 2; // Поверх фоновых кавычек
+    
     .media(mobile, {
       gap: 20px;
     });
-
-    // Декоративная кавычка на фоне
-    &::before {
-      content: '"';
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 120px;
-      font-family: @font-title;
-      color: rgba(0, 0, 0, 0.05);
-      line-height: 1;
-      pointer-events: none;
-      z-index: -1;
-
-      .media(mobile, {
-        font-size: 80px;
-        top: -10px;
-      });
-    }
   }
 
   &__quote-text {
