@@ -97,17 +97,17 @@
   }
 
   &__slide {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    gap: 40px !important; // Отступ между цитатой и именем клиента (принудительно)
-    text-align: center !important;
-    height: 100% !important; // Занимает всю высоту слайдера
-    justify-content: center !important; // Центрируем содержимое по вертикали
-    z-index: 2 !important; // Поверх фоновых кавычек
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px; // Отступ между цитатой и именем клиента
+    text-align: center;
+    height: 100%; // Занимает всю высоту слайдера
+    justify-content: center; // Центрируем содержимое по вертикали
+    z-index: 2; // Поверх фоновых кавычек
 
     .media(mobile, {
-      gap: 30px !important; // Меньший отступ для мобильных (принудительно)
+      gap: 30px; // Меньший отступ для мобильных
     });
   }
 
@@ -131,14 +131,14 @@
   }
 
   &__signature {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important; // Отступ между именем автора и компанией (принудительно)
-    align-items: center !important;
-    text-align: center !important;
+    display: flex;
+    flex-direction: column;
+    gap: 4px; // Отступ между именем автора и компанией
+    align-items: center;
+    text-align: center;
 
     .media(mobile, {
-      gap: 3px !important; // Еще меньше для мобильных (принудительно)
+      gap: 3px; // Еще меньше для мобильных
     });
   }
 
