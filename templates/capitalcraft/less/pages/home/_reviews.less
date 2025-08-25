@@ -131,11 +131,11 @@
   }
 
   &__signature {
-    display: flex;
-    flex-direction: column;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 4px !important; // Отступ между именем автора и компанией (принудительно)
-    align-items: center;
-    text-align: center;
+    align-items: center !important;
+    text-align: center !important;
 
     .media(mobile, {
       gap: 3px !important; // Еще меньше для мобильных (принудительно)
