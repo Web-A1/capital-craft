@@ -5,7 +5,9 @@ readme = "Full project structure and workflow documented in README.md in reposit
 stack = "Joomla 5.3.2, PHP 8.3+, Less, native JavaScript, esbuild build scripts"
 build_commands = [
   "npm run less:all  # compile all Less to CSS",
-  "npm run js:build  # rebuild global JavaScript bundle"
+  "npm run js:build  # rebuild global JavaScript bundle",
+  "npm run build     # full production build (less + js + sitemap)",
+  "npm run watch:all # watch for changes during development"
 ]
 
 [priority_rules]
@@ -45,7 +47,8 @@ build_commands = [
 - Index: /index.php connects blocks/styles/scripts via $isHome, $isFaq, etc.
 
 [sensitive_files]
-- telegram_config.php and .htaccess can be analyzed but must not be modified unless explicitly requested.
+- telegram_config.php (server-side, not overwritten during deployment)
+- htaccess can be analyzed but must not be modified unless explicitly requested.
 
 [recommendations]
 - Suggest broad improvements separately from the main task.
