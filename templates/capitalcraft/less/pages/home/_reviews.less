@@ -57,6 +57,15 @@
     max-width: 1170px;
     position: relative;
     
+    // Прижимаем стрелки к краям
+    .reviews__arrow--prev {
+      margin-left: -40px; // Сдвигаем левую стрелку влево
+    }
+    
+    .reviews__arrow--next {
+      margin-right: -40px; // Сдвигаем правую стрелку вправо
+    }
+    
     // Фиксированные кавычки на фоне
     &::before {
       content: '\201C'; //Левая двойная кавычка Unicode
