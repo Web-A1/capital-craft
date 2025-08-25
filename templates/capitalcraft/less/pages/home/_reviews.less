@@ -100,14 +100,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 60px; // Увеличиваем отступ между текстом и подписью
+    gap: 40px; // Отступ между цитатой и именем клиента
     text-align: center;
     height: 100%; // Занимает всю высоту слайдера
     justify-content: center; // Центрируем содержимое по вертикали
     z-index: 2; // Поверх фоновых кавычек
 
     .media(mobile, {
-      gap: 40px; // Меньший отступ для мобильных, но все равно больше чем между автором и компанией
+      gap: 30px; // Меньший отступ для мобильных
     });
   }
 
@@ -133,12 +133,12 @@
   &__signature {
     display: flex;
     flex-direction: column;
-    gap: 15px; // Меньший отступ между именем автора и компанией
+    gap: 4px; // Отступ между именем автора и компанией (как в дизайне)
     align-items: center;
     text-align: center;
 
     .media(mobile, {
-      gap: 10px; // Еще меньше для мобильных
+      gap: 3px; // Еще меньше для мобильных
     });
   }
 
