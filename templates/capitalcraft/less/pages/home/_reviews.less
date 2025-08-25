@@ -133,12 +133,12 @@
   &__signature {
     display: flex;
     flex-direction: column;
-    gap: 4px; // Отступ между именем автора и компанией (как в дизайне)
+    gap: 4px !important; // Отступ между именем автора и компанией (принудительно)
     align-items: center;
     text-align: center;
 
     .media(mobile, {
-      gap: 3px; // Еще меньше для мобильных
+      gap: 3px !important; // Еще меньше для мобильных (принудительно)
     });
   }
 
