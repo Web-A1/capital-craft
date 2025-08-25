@@ -1,0 +1,232 @@
+// out: false
+
+.reviews {
+  padding: @section-padding 0;
+  display: flex;
+  flex-direction: column;
+  gap: @section-padding;
+
+  // mobile overrides for the root block
+  .media(mobile, {
+    padding: 40px 0;
+    gap: 30px;
+  });
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+
+    .media(mobile, {
+      gap: 20px;
+    });
+  }
+
+  &__title-block {
+    display: flex;
+    flex-direction: column;
+    gap: @subtitle-title-gap;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__subtitle {
+    h2 {
+      color: lighten(@color-text, 20%);
+      font-family: @font-body;
+      font-size: @font-size-sub;
+      font-weight: 400;
+      letter-spacing: 0.175em;
+      text-transform: uppercase;
+      line-height: 1;
+      margin: 0;
+
+      .media(mobile, {
+        font-size: 12px;
+        letter-spacing: 0.15em;
+      });
+    }
+  }
+
+  &__content {
+    width: 100%;
+    max-width: 1170px;
+    position: relative;
+  }
+
+  &__swiper {
+    position: relative;
+    width: 100%;
+  }
+
+  &__slide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    text-align: center;
+
+    .media(mobile, {
+      gap: 20px;
+    });
+  }
+
+  &__quote {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    max-width: 830px;
+    position: relative;
+
+    .media(mobile, {
+      gap: 20px;
+      max-width: 100%;
+    });
+
+    // Декоративная кавычка на фоне
+    &::before {
+      content: '"';
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 120px;
+      font-family: @font-title;
+      color: rgba(0, 0, 0, 0.05);
+      line-height: 1;
+      pointer-events: none;
+      z-index: -1;
+
+      .media(mobile, {
+        font-size: 80px;
+        top: -10px;
+      });
+    }
+  }
+
+  &__quote-text {
+    font-family: @font-body;
+    font-size: 25px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: @color-heading;
+    text-align: center;
+
+    .media(mobile, {
+      font-size: 18px;
+      line-height: 1.3;
+    });
+  }
+
+  &__signature {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  &__author-name {
+    font-family: @font-body;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1;
+    color: @color-heading;
+    text-align: center;
+
+    .media(mobile, {
+      font-size: 20px;
+    });
+  }
+
+  &__company-name {
+    font-family: @font-body;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: lighten(@color-text, 30%);
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    text-align: center;
+
+    .media(mobile, {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+    });
+  }
+
+  // Навигационные стрелки
+  &__arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+      opacity: 0.7;
+    }
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+    }
+
+    // Левая стрелка (повернутая)
+    &--prev {
+      left: 0;
+
+      .media(mobile, {
+        display: none;
+      });
+    }
+
+    // Правая стрелка
+    &--next {
+      right: 0;
+
+      .media(mobile, {
+        display: none;
+      });
+    }
+  }
+
+  // Пагинация для мобильных
+  &__pagination {
+    position: relative;
+    margin-top: 20px;
+    display: none;
+
+    .media(mobile, {
+      display: block;
+    });
+
+    .swiper-pagination-bullet {
+      width: 8px;
+      height: 8px;
+      background-color: lighten(@color-text, 40%);
+      opacity: 0.5;
+      transition: all 0.3s ease;
+
+      &-active {
+        opacity: 1;
+        background-color: @color-heading;
+      }
+    }
+  }
+
+  // Скрываем стандартную пагинацию Swiper на десктопе
+  .swiper-pagination {
+    .media(desktop, {
+      display: none;
+    });
+  }
+}

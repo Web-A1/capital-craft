@@ -226,6 +226,7 @@ if ($isFaq) {
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="templates/capitalcraft/js/pages/home/show_case_swiper.js"></script>
     <script src="templates/capitalcraft/js/pages/home/faq_swiper.js"></script>
+    <script src="templates/capitalcraft/js/pages/home/reviews_swiper.js"></script>
   <?php endif; ?>
 
   <?php if ($isFaq): ?>
