@@ -60,12 +60,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeSlide = reviewsSwiper.slides[reviewsSwiper.activeIndex];
     if (activeSlide) {
       activeSlide.style.opacity = '0';
-      activeSlide.style.transform = 'translateY(20px)';
+      // Убираем смещение по оси Y
+      // activeSlide.style.transform = 'translateY(20px)';
       
       setTimeout(() => {
-        activeSlide.style.transition = 'all 0.6s ease';
+        activeSlide.style.transition = 'opacity 0.6s ease';
         activeSlide.style.opacity = '1';
-        activeSlide.style.transform = 'translateY(0)';
+        // Убираем смещение по оси Y
+        // activeSlide.style.transform = 'translateY(0)';
       }, 100);
     }
   });
@@ -75,7 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const firstSlide = reviewsSwiper.slides[0];
     if (firstSlide) {
       firstSlide.style.opacity = '1';
-      firstSlide.style.transform = 'translateY(0)';
+      // Убираем смещение по оси Y
+      // firstSlide.style.transform = 'translateY(0)';
     }
   });
 
