@@ -3,10 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     slidesPerView: 1,
     direction: 'horizontal',
     loop: true,
-    autoplay: false, {
-      delay: 5000,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
+    autoplay: false, 
+    
+    //{
+      //delay: 5000,
+      //disableOnInteraction: false,
+      //pauseOnMouseEnter: true,
     },
     navigation: {
       nextEl: '.reviews__arrow--next',
