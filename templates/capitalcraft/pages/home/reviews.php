@@ -11,6 +11,12 @@ require __DIR__ . '/../../data/reviews_data.php';
         </div>
 
         <div class="reviews__content">
+            <!-- Левая стрелка -->
+            <div class="reviews__arrow reviews__arrow--prev">
+                <img src="/templates/capitalcraft/images/home/left-arrow_reviews.svg" alt="Предыдущий отзыв" loading="lazy">
+            </div>
+
+            <!-- Слайдер с отзывами -->
             <div class="reviews__swiper swiper">
                 <div class="swiper-wrapper">
                     <?php foreach ($reviews_data as $review): ?>
@@ -32,16 +38,13 @@ require __DIR__ . '/../../data/reviews_data.php';
                     <?php endforeach; ?>
                 </div>
 
-                <!-- Навигационные стрелки -->
-                <div class="reviews__arrow reviews__arrow--prev">
-                    <img src="/templates/capitalcraft/images/home/left-arrow_reviews.svg" alt="Предыдущий отзыв" loading="lazy">
-                </div>
-                <div class="reviews__arrow reviews__arrow--next">
-                    <img src="/templates/capitalcraft/images/home/right-arrow_reviews.svg" alt="Следующий отзыв" loading="lazy">
-                </div>
-
                 <!-- Пагинация для мобильных -->
                 <div class="reviews__pagination swiper-pagination"></div>
+            </div>
+
+            <!-- Правая стрелка -->
+            <div class="reviews__arrow reviews__arrow--next">
+                <img src="/templates/capitalcraft/images/home/right-arrow_reviews.svg" alt="Следующий отзыв" loading="lazy">
             </div>
         </div>
     </div>
