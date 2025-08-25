@@ -9,7 +9,7 @@ echo "📁 Отслеживаю изменения в проекте..."
 echo "🔄 Логика обработки:"
 echo "   • LESS файлы → компиляция + sitemap + commit + push"
 echo "   • JS файлы → пересборка + sitemap + commit + push"
-echo "   • PHP файлы → только commit + push"
+echo "   • PHP файлы → sitemap + commit + push"
 echo "   • sitemap.xml → только commit + push"
 echo "⏹️  Для остановки: Ctrl+C"
 echo ""
@@ -132,7 +132,7 @@ execute_final_actions() {
     fi
     
     # Обновляем sitemap только если он еще не был обновлен в этом цикле
-    if ([ "$LESS_CHANGED" = true ] || [ "$JS_CHANGED" = true ]) && [ "$SITEMAP_CHANGED" = false ]; then
+    if ([ "$LESS_CHANGED" = true ] || [ "$JS_CHANGED" = true ] || [ "$PHP_CHANGED" = true ]) && [ "$SITEMAP_CHANGED" = false ]; then
         echo "🗺️ Обновляю sitemap..."
         npm run sitemap
         SITEMAP_CHANGED=true
