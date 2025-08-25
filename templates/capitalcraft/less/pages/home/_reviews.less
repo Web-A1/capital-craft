@@ -204,13 +204,8 @@
     // Hover эффект - меняем цвет круга
     &:hover {
       img {
-        // Применяем hover к SVG кругу
-        filter: hue-rotate(0deg) saturate(0.3) brightness(1.2);
-      }
-      
-      // Дополнительно меняем цвет круга через CSS
-      svg circle {
-        fill: #e0e0e0 !important; // Светло-серый цвет для круга при hover
+        // Применяем hover к SVG кругу через CSS filter
+        filter: brightness(0.8) saturate(0.5) hue-rotate(0deg);
       }
     }
     
