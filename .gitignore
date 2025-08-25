@@ -23,7 +23,8 @@ Thumbs.db
 *.swp
 *.swo
 
-/telegram_config.php
+/templates/capitalcraft/telegram_config.php
 /administrator/components/com_akeebabackup/backup/
 site-*.jpa
 kickstart.php
+/configuration.php
