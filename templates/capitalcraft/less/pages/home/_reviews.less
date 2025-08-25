@@ -69,9 +69,12 @@
     width: 100%;
     max-width: 830px;
     flex: 1;
+    // Фиксированная высота для стабильности блока
+    height: 280px;
 
     .media(mobile, {
       max-width: 100%;
+      height: 320px; // Увеличиваем высоту на мобильных для лучшего отображения
     });
   }
 
@@ -81,6 +84,7 @@
     align-items: center;
     gap: 40px;
     text-align: center;
+    height: 100%; // Занимает всю высоту слайдера
 
     .media(mobile, {
       gap: 20px;
@@ -94,6 +98,8 @@
     align-items: center;
     width: 100%;
     position: relative;
+    height: 100%; // Занимает всю высоту слайда
+    justify-content: center; // Центрируем содержимое по вертикали
 
     .media(mobile, {
       gap: 20px;
@@ -128,10 +134,14 @@
     color: @color-heading;
     text-align: center;
     width: 100%;
+    // Ограничиваем максимальную высоту текста
+    max-height: 120px;
+    overflow: hidden;
 
     .media(mobile, {
       font-size: 18px;
       line-height: 1.3;
+      max-height: 140px; // Больше места для мобильных
     });
   }
 
@@ -140,6 +150,9 @@
     flex-direction: column;
     gap: 8px;
     align-items: center;
+    // Фиксированная высота для подписи
+    height: 60px;
+    justify-content: center;
   }
 
   &__author-name {
