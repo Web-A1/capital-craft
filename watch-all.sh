@@ -159,6 +159,7 @@ execute_final_actions() {
         
         # Очищаем список обработанных файлов
         PROCESSED_FILES=""
+        echo "🧹 Очистил список обработанных файлов"
     fi
 }
 
@@ -203,7 +204,6 @@ process_file() {
     echo "🔄 Файл уже обработан в этом цикле: $file (пропускаю)"
     return
   fi
-  PROCESSED_FILES="$PROCESSED_FILES|$file|"
 
   # Игноры выходных/служебных
   case "$file" in
@@ -226,6 +226,7 @@ process_file() {
 
   echo "✅ Файл найден, определяю тип..."
 
+  # Сначала обрабатываем файл, потом добавляем в PROCESSED_FILES
   case "$file" in
     *.less)  
       echo "🎨 Обрабатываю как LESS файл: $file"
@@ -247,6 +248,10 @@ process_file() {
       echo "📄 Изменён файл: $file (не обрабатывается)"
       ;;
   esac
+
+  # Добавляем в PROCESSED_FILES только после успешной обработки
+  PROCESSED_FILES="$PROCESSED_FILES|$file|"
+  echo "✅ Файл добавлен в PROCESSED_FILES: $file"
 }
 
 # --- запуск chokidar с дебаунсом и завершением записи ---

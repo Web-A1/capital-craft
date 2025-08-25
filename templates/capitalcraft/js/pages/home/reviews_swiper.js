@@ -3,12 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     slidesPerView: 1,
     direction: 'horizontal',
     loop: true,
-    autoplay: false, 
-    /*{
-      delay: 5000,
-      disableOnInteraction: false,
-      pauseOnMouseEnter: true,
-    },*/
     navigation: {
       nextEl: '.reviews__arrow--next',
       prevEl: '.reviews__arrow--prev',
@@ -44,8 +38,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Плавные переходы
     effect: 'slide',
     speed: 600,
-    // Убираем autoHeight, так как теперь фиксированная высота
-    // autoHeight: true,
     // Предзагрузка следующего слайда
     preloadImages: true,
     // Ленивая загрузка изображений
@@ -62,18 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
       reviewsSwiper.slideNext();
     }
   });
-
-  // Останавливаем автопрокрутку при наведении мыши
-  const swiperContainer = document.querySelector('.reviews__swiper');
-  if (swiperContainer) {
-    swiperContainer.addEventListener('mouseenter', () => {
-      reviewsSwiper.autoplay.stop();
-    });
-
-    swiperContainer.addEventListener('mouseleave', () => {
-      reviewsSwiper.autoplay.start();
-    });
-  }
 
   // Добавляем анимацию появления слайдов
   reviewsSwiper.on('slideChange', () => {
