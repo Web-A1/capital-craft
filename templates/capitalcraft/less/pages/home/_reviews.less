@@ -201,19 +201,19 @@
     align-self: flex-start;
     margin-top: 25px; // Примерно середина текста отзыва
     
-    // Hover эффект - меняем цвет круга через CSS переменные
-    &:hover {
-      img {
-        // Применяем hover к SVG кругу
-        filter: brightness(0.8) saturate(0.5);
-      }
-    }
-    
-    img {
+    // Inline SVG стили
+    .reviews__svg {
       width: 80px;
       height: 80px;
-      object-fit: contain;
       transition: all 0.3s ease;
+    }
+    
+    // Hover эффект - меняем цвет только круга
+    &:hover {
+      .reviews__circle {
+        fill: #e0e0e0 !important; // Светло-серый цвет для круга при hover
+      }
+      // Стрелка остается черной
     }
     
     &--prev {
@@ -234,7 +234,7 @@
       height: 80px; // Увеличиваем мобильный контейнер
       margin-top: 25px; // Меньший отступ для мобильных
       
-      img {
+      .reviews__svg {
         width: 60px;
         height: 60px;
       }

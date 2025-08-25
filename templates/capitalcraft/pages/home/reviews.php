@@ -13,7 +13,10 @@ require __DIR__ . '/../../data/reviews_data.php';
         <div class="reviews__content">
             <!-- Левая стрелка -->
             <div class="reviews__arrow reviews__arrow--prev">
-                <img src="/templates/capitalcraft/images/home/arrow-l_reviews.svg" alt="Предыдущий отзыв" loading="lazy">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 101 60" class="reviews__svg">
+                    <circle cx="71" cy="30" r="29.5" stroke="#000" fill="transparent" transform="rotate(180 71 30)" class="reviews__circle"/>
+                    <path fill="#000" d="M71 31a1 1 0 1 0 0-2v2ZM.293 29.293a1 1 0 0 0 0 1.414l6.364 6.364a1 1 0 0 0 1.414-1.414L2.414 30l5.657-5.657a1 1 0 1 0-1.414-1.414L.293 29.293ZM71 30v-1H1v2h70v-1Z" class="reviews__arrow-path"/>
+                </svg>
             </div>
 
             <!-- Слайдер с отзывами -->
@@ -44,7 +47,10 @@ require __DIR__ . '/../../data/reviews_data.php';
 
             <!-- Правая стрелка -->
             <div class="reviews__arrow reviews__arrow--next">
-                <img src="/templates/capitalcraft/images/home/arrow-r_reviews.svg" alt="Следующий отзыв" loading="lazy">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 101 60" class="reviews__svg">
+                    <circle cx="30" cy="30" r="29.5" stroke="#000" fill="transparent" transform="matrix(1 0 0 -1 0 60)" class="reviews__circle"/>
+                    <path fill="#000" d="M30 31a1 1 0 1 1 0-2v2Zm70.707-1.707a1 1 0 0 1 0 1.414l-6.364 6.364a1 1 0 0 1-1.414-1.414L98.586 30l-5.657-5.657a1 1 0 1 1 1.414-1.414l6.364 6.364ZM30 30v-1h70v2H30v-1Z" class="reviews__arrow-path"/>
+                </svg>
             </div>
         </div>
     </div>
