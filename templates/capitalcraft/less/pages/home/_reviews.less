@@ -32,6 +32,12 @@
   }
 
   &__subtitle {
+    display: flex;
+    flex-direction: column;
+    gap: @subtitle-title-gap;
+    align-items: center;
+    text-align: center;
+    
     h2 {
       color: lighten(@color-text, 20%);
       font-family: @font-body;
@@ -49,22 +55,14 @@
     }
   }
 
-  &__content {
+  // Новый контейнер для слайдера и стрелок
+  &__slider-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
     max-width: 1170px;
     position: relative;
-    
-    // Прижимаем стрелки к краям
-    .reviews__arrow--prev {
-      margin-left: -40px; // Сдвигаем левую стрелку влево
-    }
-    
-    .reviews__arrow--next {
-      margin-right: -40px; // Сдвигаем правую стрелку вправо
-    }
     
     // Фиксированные кавычки на фоне
     &::before {
@@ -209,8 +207,8 @@
     align-self: flex-start;
     margin-top: 25px; // Примерно середина текста отзыва
     
-    // Inline SVG стили
-    .reviews__svg {
+    // Универсальные SVG классы
+    .arrow-svg {
       width: 80px;
       height: 80px;
       transition: all 0.3s ease;
@@ -218,7 +216,7 @@
     
     // Hover эффект - меняем цвет только круга
     &:hover {
-      .reviews__circle {
+      .arrow-circle {
         fill: #e0e0e0 !important; // Светло-серый цвет для круга при hover
       }
       // Стрелка остается черной
@@ -242,7 +240,7 @@
       height: 80px; // Увеличиваем мобильный контейнер
       margin-top: 25px; // Меньший отступ для мобильных
       
-      .reviews__svg {
+      .arrow-svg {
         width: 60px;
         height: 60px;
       }
