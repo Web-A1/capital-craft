@@ -55,33 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Добавляем анимацию появления слайдов
-  reviewsSwiper.on('slideChange', () => {
-    const activeSlide = reviewsSwiper.slides[reviewsSwiper.activeIndex];
-    if (activeSlide) {
-      activeSlide.style.opacity = '0';
-      // Убираем смещение по оси Y
-      // activeSlide.style.transform = 'translateY(20px)';
-      
-      setTimeout(() => {
-        activeSlide.style.transition = 'opacity 0.6s ease';
-        activeSlide.style.opacity = '1';
-        // Убираем смещение по оси Y
-        // activeSlide.style.transform = 'translateY(0)';
-      }, 100);
-    }
-  });
-
-  // Инициализация первого слайда
-  reviewsSwiper.on('init', () => {
-    const firstSlide = reviewsSwiper.slides[0];
-    if (firstSlide) {
-      firstSlide.style.opacity = '1';
-      // Убираем смещение по оси Y
-      // firstSlide.style.transform = 'translateY(0)';
-    }
-  });
-
   // Запускаем слайдер
   reviewsSwiper.init();
 });
