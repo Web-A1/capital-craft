@@ -111,28 +111,15 @@
     gap: 40px;
     text-align: center;
     height: 100%; // Занимает всю высоту слайдера
-
-    .media(mobile, {
-      gap: 20px;
-    });
-  }
-
-  &__quote {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    align-items: center;
-    width: 100%;
-    position: relative;
-    height: 100%; // Занимает всю высоту слайда
     justify-content: center; // Центрируем содержимое по вертикали
     z-index: 2; // Поверх фоновых кавычек
-    
+
     .media(mobile, {
       gap: 20px;
     });
   }
 
+  // Упрощенные стили для текста отзыва
   &__quote-text {
     font-family: @font-body;
     font-size: 25px;
@@ -147,8 +134,7 @@
 
     .media(mobile, {
       font-size: 18px;
-      line-height: 1.3;
-      max-height: 140px; // Больше места для мобильных
+      max-height: 120px;
     });
   }
 
