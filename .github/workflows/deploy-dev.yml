@@ -8,26 +8,10 @@ jobs:
     steps:
       - name: SSH to Beget and deploy
         uses: appleboy/ssh-action@v1.0.3
-        env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         with:
           host: tdsta.beget.tech
           username: tdsta
           key: ${{ secrets.BEGET_SSH_KEY }}
-          envs: TELEGRAM_BOT_TOKEN,TELEGRAM_CHAT_ID
           script: |
             # Запускаем основной скрипт деплоя
             bash ~/deploy_dev.sh
-            
-            # Создаем telegram_config.php в папке шаблона (где PHP его ищет)
-            PROJECT_PATH="$HOME/div.capital-craft.ru/public_html"
-            CONFIG_PATH="${PROJECT_PATH}/templates/capitalcraft/telegram_config.php"
-            
-            echo '<?php' > "${CONFIG_PATH}"
-            echo 'return [' >> "${CONFIG_PATH}"
-            echo "    'TELEGRAM_TOKEN' => '${TELEGRAM_BOT_TOKEN}'," >> "${CONFIG_PATH}"
-            echo "    'CHAT_ID' => '${TELEGRAM_CHAT_ID}'" >> "${CONFIG_PATH}"
-            echo '];' >> "${CONFIG_PATH}"
-            chmod 644 "${CONFIG_PATH}"
-            echo "telegram_config.php created successfully"
