@@ -96,7 +96,8 @@
     });
   }
 
-  &__slide {
+  // Повышаем специфичность для перебивания Swiper стилей
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
     display: flex;
     flex-direction: column;
     align-items: center;
