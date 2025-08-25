@@ -187,8 +187,8 @@
 
   // Навигационные стрелки
   &__arrow {
-    width: 100px;
-    height: 60px;
+    width: 120px; // Увеличиваем с 100px
+    height: 80px; // Увеличиваем с 60px
     display: flex;
     align-items: center;
     justify-content: center;
@@ -196,25 +196,27 @@
     z-index: 10;
     transition: opacity 0.3s ease;
     flex-shrink: 0;
-
+    
+    // Центрируем по вертикали относительно текста отзыва
+    align-self: flex-start;
+    margin-top: 60px; // Примерно середина текста отзыва
+    
     &:hover {
       opacity: 0.7;
     }
-
+    
     img {
-      width: 60px;
-      height: 60px;
+      width: 80px; // Увеличиваем с 60px
+      height: 80px; // Увеличиваем с 60px
       object-fit: contain;
     }
-
-    // Левая стрелка (повернутая)
+    
     &--prev {
       .media(mobile, {
         display: none;
       });
     }
-
-    // Правая стрелка
+    
     &--next {
       .media(mobile, {
         display: none;
