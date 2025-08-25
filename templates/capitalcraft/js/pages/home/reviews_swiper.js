@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     slidesPerView: 1,
     direction: 'horizontal',
     loop: true,
-    autoplay: {
+    autoplay: false, {
       delay: 5000,
       disableOnInteraction: false,
       pauseOnMouseEnter: true,
