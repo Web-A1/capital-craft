@@ -43,8 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Плавные переходы
     effect: 'slide',
     speed: 600,
-    // Автоматическая высота слайдов
-    autoHeight: true,
+    // Убираем autoHeight, так как теперь фиксированная высота
+    // autoHeight: true,
     // Предзагрузка следующего слайда
     preloadImages: true,
     // Ленивая загрузка изображений
