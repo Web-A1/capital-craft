@@ -13,8 +13,7 @@ require __DIR__ . '/../../data/reviews_data.php';
         <div class="reviews__content">
             <!-- Левая стрелка -->
             <div class="reviews__arrow reviews__arrow--prev">
-                <img src="/templates/capitalcraft/images/home/circle_reviews.svg" alt="" class="reviews__circle" loading="lazy">
-                <img src="/templates/capitalcraft/images/home/arrow-l_reviews.svg" alt="Предыдущий отзыв" class="reviews__arrow-icon" loading="lazy">
+                <img src="/templates/capitalcraft/images/home/arrow-l_reviews.svg" alt="Предыдущий отзыв" loading="lazy">
             </div>
 
             <!-- Слайдер с отзывами -->
@@ -45,8 +44,7 @@ require __DIR__ . '/../../data/reviews_data.php';
 
             <!-- Правая стрелка -->
             <div class="reviews__arrow reviews__arrow--next">
-                <img src="/templates/capitalcraft/images/home/circle_reviews.svg" alt="" class="reviews__circle" loading="lazy">
-                <img src="/templates/capitalcraft/images/home/arrow-r_reviews.svg" alt="Следующий отзыв" class="reviews__arrow-icon" loading="lazy">
+                <img src="/templates/capitalcraft/images/home/arrow-r_reviews.svg" alt="Следующий отзыв" loading="lazy">
             </div>
         </div>
     </div>
