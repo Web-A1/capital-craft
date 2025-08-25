@@ -232,12 +232,8 @@ process_file() {
       handle_less "$file" 
       ;;
     *.js)
-      if [[ "$file" =~ templates/capitalcraft/js/ ]]; then
-        echo "⚡ Обрабатываю как JS файл: $file"
-        handle_js "$file"
-      else
-        echo "📄 Игнор JS вне src: $file"
-      fi
+      echo "⚡ Обрабатываю как JS файл: $file"
+      handle_js "$file"
       ;;
     *.php)   
       echo "🐘 Обрабатываю как PHP файл: $file"
@@ -311,7 +307,7 @@ while IFS= read -r line; do
   
 done < <(npx chokidar-cli \
   "templates/capitalcraft/less/**" \
-  "templates/capitalcraft/js/**" \
+  "templates/capitalcraft/js/**/*.js" \
   "templates/capitalcraft/**/*.php" \
   "sitemap.xml" \
   --ignore "**/*.css" \
