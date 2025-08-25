@@ -196,27 +196,42 @@
     z-index: 10;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    position: relative; // Для абсолютного позиционирования элементов
     
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
     margin-top: 25px; // Примерно середина текста отзыва
     
-    // Hover эффект - меняем цвет круга
-    &:hover {
-      img {
-        // Применяем hover к SVG кругу через CSS filter
-        filter: brightness(0.8) saturate(0.5) hue-rotate(0deg);
-      }
+    // Круг (фон) - абсолютное позиционирование
+    .reviews__circle {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 1;
+      transition: all 0.3s ease;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
     
-    img {
+    // Стрелка (поверх круга) - абсолютное позиционирование
+    .reviews__arrow-icon {
+      position: absolute;
       width: 80px;
       height: 80px;
-      object-fit: contain;
+      z-index: 2;
       transition: all 0.3s ease;
-      
-      // CSS переменная для цвета круга
-      --circle-fill: transparent; // По умолчанию круг прозрачный
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    // Hover эффект - меняем цвет только круга
+    &:hover {
+      .reviews__circle {
+        filter: brightness(0.8) saturate(0.5); // Делаем круг светло-серым
+      }
+      // Стрелка остается без изменений
     }
     
     &--prev {
@@ -235,9 +250,14 @@
     .media(mobile, {
       width: 100px; // Увеличиваем мобильный контейнер
       height: 80px; // Увеличиваем мобильный контейнер
-      margin-top: 40px; // Меньший отступ для мобильных
+      margin-top: 25px; // Меньший отступ для мобильных
       
-      img {
+      .reviews__circle {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .reviews__arrow-icon {
         width: 60px;
         height: 60px;
       }
