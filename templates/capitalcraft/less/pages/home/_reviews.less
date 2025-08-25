@@ -97,14 +97,14 @@
   }
 
   &__slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
     gap: 40px !important; // Отступ между цитатой и именем клиента (принудительно)
-    text-align: center;
-    height: 100%; // Занимает всю высоту слайдера
-    justify-content: center; // Центрируем содержимое по вертикали
-    z-index: 2; // Поверх фоновых кавычек
+    text-align: center !important;
+    height: 100% !important; // Занимает всю высоту слайдера
+    justify-content: center !important; // Центрируем содержимое по вертикали
+    z-index: 2 !important; // Поверх фоновых кавычек
 
     .media(mobile, {
       gap: 30px !important; // Меньший отступ для мобильных (принудительно)
