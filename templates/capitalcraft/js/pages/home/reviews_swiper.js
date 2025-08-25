@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loop: true,
     autoplay: false, 
     /*{
-      //delay: 5000,
-      //disableOnInteraction: false,
-      //pauseOnMouseEnter: true,
+      delay: 5000,
+      disableOnInteraction: false,
+      pauseOnMouseEnter: true,
     },*/
     navigation: {
       nextEl: '.reviews__arrow--next',
