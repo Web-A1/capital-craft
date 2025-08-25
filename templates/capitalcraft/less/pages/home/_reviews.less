@@ -259,4 +259,35 @@
       gap: 3px; // Еще меньше для мобильных
     });
   }
+
+  // Повышаем специфичность для author-name
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__author-name {
+    font-family: @font-body;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1;
+    color: @color-heading;
+    text-align: center;
+
+    .media(mobile, {
+      font-size: 20px;
+    });
+  }
+
+  // Повышаем специфичность для company-name
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__company-name {
+    font-family: @font-body;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1;
+    color: lighten(@color-text, 30%);
+    text-transform: uppercase;
+    letter-spacing: 0.35em;
+    text-align: center;
+
+    .media(mobile, {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+    });
+  }
 }
