@@ -50,14 +50,29 @@
   }
 
   &__content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
     width: 100%;
     max-width: 1170px;
     position: relative;
+
+    .media(mobile, {
+      flex-direction: column;
+      gap: 20px;
+    });
   }
 
   &__swiper {
     position: relative;
     width: 100%;
+    max-width: 830px;
+    flex: 1;
+
+    .media(mobile, {
+      max-width: 100%;
+    });
   }
 
   &__slide {
@@ -77,12 +92,11 @@
     flex-direction: column;
     gap: 40px;
     align-items: center;
-    max-width: 830px;
+    width: 100%;
     position: relative;
 
     .media(mobile, {
       gap: 20px;
-      max-width: 100%;
     });
 
     // Декоративная кавычка на фоне
@@ -113,6 +127,7 @@
     line-height: 1.4;
     color: @color-heading;
     text-align: center;
+    width: 100%;
 
     .media(mobile, {
       font-size: 18px;
@@ -158,9 +173,6 @@
 
   // Навигационные стрелки
   &__arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     width: 100px;
     height: 60px;
     display: flex;
@@ -169,6 +181,7 @@
     cursor: pointer;
     z-index: 10;
     transition: opacity 0.3s ease;
+    flex-shrink: 0;
 
     &:hover {
       opacity: 0.7;
@@ -182,8 +195,6 @@
 
     // Левая стрелка (повернутая)
     &--prev {
-      left: 0;
-
       .media(mobile, {
         display: none;
       });
@@ -191,8 +202,6 @@
 
     // Правая стрелка
     &--next {
-      right: 0;
-
       .media(mobile, {
         display: none;
       });
