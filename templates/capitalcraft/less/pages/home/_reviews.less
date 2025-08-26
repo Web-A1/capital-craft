@@ -17,7 +17,6 @@
     flex-direction: column;
     gap: 60px;
     align-items: center;
-
   }
 
   &__subtitle {
@@ -93,8 +92,8 @@
     });
   }
 
-  // Повышаем специфичность для перебивания Swiper стилей
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
+  // Упрощенные селекторы для слайдов
+  &__slide {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,8 +108,8 @@
     });
   }
 
-  // Повышаем специфичность для quote-text
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__quote-text {
+  // Упрощенный селектор для quote-text
+  &__quote-text {
     font-family: @font-body;
     font-size: 25px;
     font-weight: 400;
@@ -128,10 +127,6 @@
     });
   }
 
-  // Убираем старые селекторы - теперь используются более специфичные выше
-  // &__author-name { ... } - удален
-  // &__company-name { ... } - удален
-
   // Навигационные стрелки
   &__arrow {
     width: 140px; // Увеличиваем для предотвращения обрезания
@@ -143,6 +138,12 @@
     z-index: 10;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    
+    // Сброс стилей для button
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
     
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
@@ -161,6 +162,18 @@
         fill: #e0e0e0; // Светло-серый цвет для круга при hover
       }
       // Стрелка остается черной
+    }
+    
+    // Focus стили для доступности
+    &:focus {
+      outline: 2px solid @color-accent;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+    
+    // Active состояние
+    &:active {
+      transform: scale(0.95);
     }
     
     &--prev {
@@ -216,10 +229,8 @@
     }
   }
 
-  // Пагинация управляется Swiper - убираем ненужные стили
-
-  // Повышаем специфичность для signature
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature {
+  // Упрощенный селектор для signature
+  &__signature {
     display: flex;
     flex-direction: column;
     gap: 4px; // Отступ между именем автора и компанией
@@ -231,8 +242,8 @@
     });
   }
 
-  // Повышаем специфичность для author-name
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__author-name {
+  // Упрощенный селектор для author-name
+  &__author-name {
     font-family: @font-body;
     font-size: 24px;
     font-weight: 400;
@@ -245,8 +256,8 @@
     });
   }
 
-  // Повышаем специфичность для company-name
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__company-name {
+  // Упрощенный селектор для company-name
+  &__company-name {
     font-family: @font-body;
     font-size: 14px;
     font-weight: 400;

@@ -66,6 +66,21 @@ if ($isFaq) {
     <meta name="publisher" content="Capital Craft">
     <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
     
+    <!-- Специальные мета-теги для блока отзывов -->
+    <meta name="reviews:count" content="3">
+    <meta name="reviews:type" content="client testimonials">
+    <meta name="reviews:category" content="investment services">
+    
+    <!-- Open Graph теги для отзывов -->
+    <meta property="og:section" content="Отзывы клиентов">
+    <meta property="og:article:tag" content="отзывы, клиенты, инвестиции, финансирование">
+    
+    <!-- Twitter Card дополнительные теги -->
+    <meta name="twitter:label1" content="Количество отзывов">
+    <meta name="twitter:data1" content="3">
+    <meta name="twitter:label2" content="Тип услуг">
+    <meta name="twitter:data2" content="Инвестиционные решения">
+    
     <!-- Структурированные данные JSON-LD -->
     <script type="application/ld+json">
     {
