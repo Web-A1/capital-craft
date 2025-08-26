@@ -133,7 +133,7 @@
   // Навигационные стрелки
   &__arrow {
     width: 80px; // Увеличиваем для предотвращения обрезания
-    height: 80px; // Увеличиваем для предотвращения обрезания
+    height: 49px; // Увеличиваем для предотвращения обрезания
     display: flex;
     align-items: center;
     justify-content: center;
@@ -154,7 +154,7 @@
     // Универсальные SVG классы
     .arrow-svg {
       width: 80px;
-      height: 80px;
+      height: 49px;
       transition: all 0.3s ease;
     }
     
@@ -189,18 +189,6 @@
         display: none;
       });
     }
-    
-    // Адаптивность для мобильных
-    .media(mobile, {
-      width: 100px; // Увеличиваем мобильный контейнер
-      height: 80px; // Увеличиваем мобильный контейнер
-      margin-top: 25px; // Меньший отступ для мобильных
-      
-      .arrow-svg {
-        width: 60px;
-        height: 60px;
-      }
-    });
   }
 
   // Пагинация для мобильных
