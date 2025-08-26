@@ -204,16 +204,20 @@
       display: block;
     });
 
-    .swiper-pagination-bullet {
-      width: 8px;
-      height: 8px;
-      background-color: lighten(@color-text, 40%);
-      opacity: 0.5;
-      transition: all 0.3s ease;
+    // Увеличиваем специфичность для перебивания Swiper стилей
+    &.swiper-pagination {
+      .swiper-pagination-bullet {
+        width: 8px !important;
+        height: 8px !important;
+        background-color: lighten(@color-text, 40%) !important;
+        opacity: 0.5 !important;
+        transition: all 0.3s ease !important;
+        margin: 0 4px !important; // Добавляем отступы между точками
 
-      &-active {
-        opacity: 1;
-        background-color: @color-heading;
+        &-active {
+          opacity: 1 !important;
+          background-color: @color-heading !important;
+        }
       }
     }
   }
