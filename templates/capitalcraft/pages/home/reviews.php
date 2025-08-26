@@ -39,10 +39,10 @@ require __DIR__ . '/../../data/reviews_data.php';
                         </div>
                     <?php endforeach; ?>
                 </div>
-
-                <!-- Пагинация для мобильных -->
-                <div class="reviews__pagination swiper-pagination"></div>
             </div>
+
+            <!-- Пагинация для мобильных - вынесена за пределы слайдера -->
+            <div class="reviews__pagination swiper-pagination"></div>
 
             <!-- Правая стрелка - вынесена на уровень выше -->
             <div class="reviews__arrow reviews__arrow--next">
