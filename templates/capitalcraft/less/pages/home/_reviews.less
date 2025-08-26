@@ -243,21 +243,21 @@
   // Упрощенный селектор для author-name
   &__author-name {
     font-family: @font-body;
-    font-size: 24px;
+    font-size: (@font-size-base * 1.375);
     font-weight: 400;
     line-height: 1;
     color: @color-heading;
     text-align: center;
 
     .media(mobile, {
-      font-size: 20px;
+      font-size: (@font-size-base * 1.125);
     });
   }
 
   // Упрощенный селектор для company-name
   &__company-name {
     font-family: @font-body;
-    font-size: 14px;
+    font-size: @font-size-sub;
     font-weight: 400;
     line-height: 1;
     color: lighten(@color-text, 30%);
@@ -265,9 +265,5 @@
     letter-spacing: 0.35em;
     text-align: center;
 
-    .media(mobile, {
-      font-size: 12px;
-      letter-spacing: 0.25em;
-    });
   }
 }
