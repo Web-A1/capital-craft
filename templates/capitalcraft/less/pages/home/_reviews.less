@@ -194,6 +194,9 @@
     display: none;
     text-align: center;
     margin-top: 20px; // Отступ от слайдера
+    position: static !important; // Убираем абсолютное позиционирование
+    bottom: auto !important; // Убираем bottom от Swiper
+    z-index: auto !important; // Убираем z-index от Swiper
 
     .media(mobile, {
       display: block;
