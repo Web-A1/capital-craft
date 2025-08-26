@@ -87,6 +87,7 @@
     flex: 1;
     // Фиксированная высота для стабильности блока
     height: 280px;
+    overflow: hidden; // Добавляем для обрезки контента
 
     .media(mobile, {
       max-width: 100%;
@@ -191,8 +192,11 @@
 
   // Пагинация для мобильных
   &__pagination {
-    position: relative;
-    margin-top: 20px;
+    position: absolute; // Абсолютное позиционирование внутри слайдера
+    bottom: 20px; // Размещаем внизу слайдера
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; // Поверх контента слайдера
     display: none;
 
     .media(mobile, {
