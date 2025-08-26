@@ -7,9 +7,9 @@ set -euo pipefail
 echo "🚀 Запуск универсального мониторинга файлов..."
 echo "📁 Отслеживаю изменения в проекте..."
 echo "🔄 Логика обработки:"
-echo "   • LESS файлы → компиляция + sitemap + commit + push"
-echo "   • JS файлы → пересборка + sitemap + commit + push"
-echo "   • PHP файлы → sitemap + commit + push"
+echo "   • LESS файлы → компиляция + commit + push"
+echo "   • JS файлы → пересборка + commit + push"
+echo "   • PHP файлы → commit + push"
 echo "   • sitemap.xml → только commit + push"
 echo "⏹️  Для остановки: Ctrl+C"
 echo ""
@@ -27,7 +27,6 @@ command -v npx >/dev/null || { echo "❌ Не найден npx"; exit 1; }
 # Переменные для отслеживания состояния
 LESS_CHANGED=false
 JS_CHANGED=false
-SITEMAP_CHANGED=false
 PHP_CHANGED=false
 
 # Защита от повторной обработки одного файла в рамках одного цикла
@@ -104,19 +103,7 @@ handle_php() {
     PHP_CHANGED=true
 }
 
-# Функция для обработки sitemap.xml
-handle_sitemap() {
-    local file="$1"
-    
-    # Проверяем, действительно ли файл изменился
-    if ! has_git_changes "$file"; then
-        echo "📝 Sitemap не изменился: $file (пропускаю)"
-        return
-    fi
-    
-    echo "🗺️ Изменен sitemap.xml: $file"
-    SITEMAP_CHANGED=true
-}
+
 
 # Функция для выполнения финальных действий
 execute_final_actions() {
@@ -131,18 +118,6 @@ execute_final_actions() {
         actions+=("JS rebuild")
     fi
     
-    # Обновляем sitemap только если он еще не был обновлен в этом цикле
-    if ([ "$LESS_CHANGED" = true ] || [ "$JS_CHANGED" = true ] || [ "$PHP_CHANGED" = true ]) && [ "$SITEMAP_CHANGED" = false ]; then
-        echo "🗺️ Обновляю sitemap..."
-        npm run sitemap
-        SITEMAP_CHANGED=true
-    fi
-    
-    # Добавляем sitemap в действия только если он действительно был обновлен
-    if [ "$SITEMAP_CHANGED" = true ]; then
-        actions+=("sitemap update")
-    fi
-    
     if [ "$PHP_CHANGED" = true ]; then
         actions+=("PHP update")
     fi
@@ -154,7 +129,6 @@ execute_final_actions() {
         # Сбрасываем флаги
         LESS_CHANGED=false
         JS_CHANGED=false
-        SITEMAP_CHANGED=false
         PHP_CHANGED=false
         
         # Очищаем список обработанных файлов
@@ -241,8 +215,7 @@ process_file() {
       handle_php "$file" 
       ;;
     sitemap.xml)
-      echo "🗺️ Обрабатываю как sitemap.xml: $file"
-      handle_sitemap "$file"
+      echo "🗺️ Изменен sitemap.xml: $file"
       ;;
     *)       
       echo "📄 Изменён файл: $file (не обрабатывается)"
