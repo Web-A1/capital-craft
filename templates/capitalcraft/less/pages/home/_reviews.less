@@ -15,17 +15,15 @@
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 60px;
     align-items: center;
 
-    .media(mobile, {
-      gap: 50px;
-    });
   }
 
   &__subtitle {
     display: flex;
     flex-direction: column;
+    gap: @subtitle-title-gap;
     align-items: center;
     text-align: center;
     
@@ -59,11 +57,11 @@
     &::before {
       content: '\201C'; //Левая двойная кавычка Unicode
       position: absolute;
-      top: 7%;
+      top: 18%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-family: @font-title;
-      font-size: 100px;
+      font-size: 200px;
       font-weight: 300;
       color: rgba(0, 0, 0, 0.03);
       z-index: 1;
@@ -71,7 +69,8 @@
       user-select: none;
       
       .media(mobile, {
-        top: 5%;
+        font-size: 120px;
+        top: 6%;
       });
     }
     
@@ -84,9 +83,9 @@
   &__swiper {
     position: relative;
     width: 100%;
-    max-width: 950px;
+    max-width: 830px;
     flex: 1;
-    height: 165px;
+    height: 280px;
 
     .media(mobile, {
       max-width: 100%;
@@ -94,8 +93,8 @@
     });
   }
 
-  // Упрощенные селекторы для слайдов
-  &__slide {
+  // Повышаем специфичность для перебивания Swiper стилей
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,30 +109,33 @@
     });
   }
 
-  // Упрощенный селектор для quote-text
-  &__quote-text {
+  // Повышаем специфичность для quote-text
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__quote-text {
     font-family: @font-body;
-    font-size: (@font-size-base * 1.375);
+    font-size: 25px;
     font-weight: 400;
     line-height: 1.4;
     color: @color-heading;
     text-align: center;
     width: 100%;
-    margin-bottom: 30px;
     // Ограничиваем максимальную высоту текста
     max-height: 135px;
     overflow: hidden;
 
     .media(mobile, {
-      font-size: (@font-size-base * 1.125);
+      font-size: 18px;
       max-height: 120px;
     });
   }
 
+  // Убираем старые селекторы - теперь используются более специфичные выше
+  // &__author-name { ... } - удален
+  // &__company-name { ... } - удален
+
   // Навигационные стрелки
   &__arrow {
-    width: 80px;
-    height: 49px; 
+    width: 140px; // Увеличиваем для предотвращения обрезания
+    height: 100px; // Увеличиваем для предотвращения обрезания
     display: flex;
     align-items: center;
     justify-content: center;
@@ -141,20 +143,15 @@
     z-index: 10;
     transition: all 0.3s ease;
     flex-shrink: 0;
-    margin: 24px 0 0 0;
-    
-    // Сброс стилей для button
-    background: none;
-    border: none;
-    padding: 0;
     
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
+    margin-top: 40px; // Примерно середина текста отзыва
     
     // Универсальные SVG классы
     .arrow-svg {
       width: 80px;
-      height: 49px;
+      height: 80px;
       transition: all 0.3s ease;
     }
     
@@ -162,20 +159,8 @@
     &:hover {
       .arrow-circle {
         fill: #e0e0e0; // Светло-серый цвет для круга при hover
-        transition: fill 0.3s ease;
       }
       // Стрелка остается черной
-      transform: scale(1.05); // Легкое увеличение при hover
-    }
-    
-    // Убираем видимый focus outline для красоты
-    &:focus {
-      outline: none;
-    }
-    
-    // Active состояние - легкая анимация при клике
-    &:active {
-      transform: scale(0.98); // Меньше чем hover, но больше чем обычное состояние
     }
     
     &--prev {
@@ -189,6 +174,18 @@
         display: none;
       });
     }
+    
+    // Адаптивность для мобильных
+    .media(mobile, {
+      width: 100px; // Увеличиваем мобильный контейнер
+      height: 80px; // Увеличиваем мобильный контейнер
+      margin-top: 25px; // Меньший отступ для мобильных
+      
+      .arrow-svg {
+        width: 60px;
+        height: 60px;
+      }
+    });
   }
 
   // Пагинация для мобильных
@@ -219,33 +216,39 @@
     }
   }
 
-  // Упрощенный селектор для signature
-  &__signature {
+  // Пагинация управляется Swiper - убираем ненужные стили
+
+  // Повышаем специфичность для signature
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature {
     display: flex;
     flex-direction: column;
-    gap: 8px; // Отступ между именем автора и компанией
+    gap: 4px; // Отступ между именем автора и компанией
     align-items: center;
     text-align: center;
+
+    .media(mobile, {
+      gap: 3px; // Еще меньше для мобильных
+    });
   }
 
-  // Упрощенный селектор для author-name
-  &__author-name {
+  // Повышаем специфичность для author-name
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__author-name {
     font-family: @font-body;
-    font-size: (@font-size-base * 1.375);
+    font-size: 24px;
     font-weight: 400;
     line-height: 1;
     color: @color-heading;
     text-align: center;
 
     .media(mobile, {
-      font-size: (@font-size-base * 1.125);
+      font-size: 20px;
     });
   }
 
-  // Упрощенный селектор для company-name
-  &__company-name {
+  // Повышаем специфичность для company-name
+  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__company-name {
     font-family: @font-body;
-    font-size: @font-size-sub;
+    font-size: 14px;
     font-weight: 400;
     line-height: 1;
     color: lighten(@color-text, 30%);
@@ -253,5 +256,9 @@
     letter-spacing: 0.35em;
     text-align: center;
 
+    .media(mobile, {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+    });
   }
 }
