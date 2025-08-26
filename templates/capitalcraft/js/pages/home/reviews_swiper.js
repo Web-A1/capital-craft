@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     pagination: {
       el: '.reviews__pagination',
       clickable: true,
-      dynamicBullets: true,
     },
     breakpoints: {
       // Мобильные устройства
