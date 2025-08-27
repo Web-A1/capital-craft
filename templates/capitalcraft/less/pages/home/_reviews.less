@@ -138,7 +138,6 @@
     .media(mobile, {
       font-size: (@font-size-base * 1.125);
     });
-
   }
 
   // Навигационные стрелки
@@ -260,7 +259,7 @@
   // Повышаем специфичность для company-name
   .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__company-name {
     font-family: @font-body;
-    font-size: 14px;
+    font-size: @font-size-sub;
     font-weight: 400;
     line-height: 1;
     color: lighten(@color-text, 30%);
@@ -269,7 +268,6 @@
     text-align: center;
 
     .media(mobile, {
-      font-size: 12px;
       letter-spacing: 0.25em;
     });
   }
