@@ -388,35 +388,35 @@ process_file() {
   local file="$1"
   local kind="$2"  # add|change|unlink
 
-  echo "🔍 process_file: обработка $kind для файла '$file'"
+  echo "process_file: обработка $kind для файла '$file'"
 
   # Защита от повторной обработки одного файла в рамках одного цикла
   # НО для LESS файлов разрешаем повторную обработку (компиляция при каждом сохранении)
   if [[ "$PROCESSED_FILES" == *"|$file|"* && "$file" != *".less" ]]; then
-    echo "🔄 Файл уже обработан в этом цикле: $file (пропускаю)"
+    echo "Файл уже обработан в этом цикле: $file (пропускаю)"
     return
   fi
 
   # Игноры выходных/служебных
   case "$file" in
-    *.css|*.map|*/bundle.js|*/bundle.min.js) echo "📄 Игнор артефакта: $file"; return ;;
-    .prettierrc|.php-cs-fixer.php|.editorconfig|.gitignore|.cursorrules|README*.md|format-php.sh|temp_file) echo "📄 Игнор конфигурации: $file"; return ;;
+    *.css|*.map|*/bundle.js|*/bundle.min.js) echo "Игнор артефакта: $file"; return ;;
+    .prettierrc|.php-cs-fixer.php|.editorconfig|.gitignore|.cursorrules|README*.md|format-php.sh|temp_file) echo "Игнор конфигурации: $file"; return ;;
   esac
-  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* || "$file" == *".vscode/"* ]] && { echo "📄 Игнор служебного: $file"; return; }
+  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* || "$file" == *".vscode/"* ]] && { echo "Игнор служебного: $file"; return; }
 
   # Для unlink файла уже нет на диске — всё равно коммитим удаление
   if [[ "$kind" == "unlink" ]]; then
-    echo "🗑️ Удалён файл: $file"
+    echo "Удалён файл: $file"
     return
   fi
 
   # Для add/change проверяем расширение
   if [[ ! -f "$file" ]]; then 
-    echo "❌ Файл не найден: $file"
+    echo "Файл не найден: $file"
     return
   fi
 
-  echo "✅ Файл найден, определяю тип..."
+  echo "Файл найден, определяю тип..."
 
   # Сначала обрабатываем файл, потом добавляем в PROCESSED_FILES
   case "$file" in
