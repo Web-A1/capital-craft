@@ -286,7 +286,38 @@ execute_final_actions() {
         
         echo "📝 Сообщение коммита: $commit_message"
         
-        git add .
+        # Умно добавляем только нужные файлы вместо git add .
+        if [[ "$LESS_CHANGED" == true ]]; then
+            # Добавляем LESS файлы и соответствующие CSS
+            echo "📦 Добавляю LESS файлы и CSS..."
+            echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | xargs -I {} git add {}
+            
+            # Добавляем соответствующие CSS файлы
+            if echo "$PROCESSED_FILES" | grep -q "pages/home"; then
+                git add templates/capitalcraft/css/home.css
+            fi
+            if echo "$PROCESSED_FILES" | grep -q "base.less"; then
+                git add templates/capitalcraft/css/base.css
+            fi
+            if echo "$PROCESSED_FILES" | grep -q "critical.less"; then
+                git add templates/capitalcraft/css/critical.css
+            fi
+            if echo "$PROCESSED_FILES" | grep -q "faq.less"; then
+                git add templates/capitalcraft/css/faq.css
+            fi
+        fi
+        
+        if [[ "$JS_CHANGED" == true ]]; then
+            echo "📦 Добавляю JS файлы..."
+            echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | xargs -I {} git add {}
+            git add templates/capitalcraft/js/global/bundle.js
+        fi
+        
+        if [[ "$PHP_CHANGED" == true ]]; then
+            echo "📦 Добавляю PHP файлы..."
+            echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | xargs -I {} git add {}
+        fi
+        
         git commit -m "$commit_message"
         git push origin dev
         echo "✅ Изменения автоматически отправлены в dev ветку!"
@@ -302,63 +333,7 @@ execute_final_actions() {
     fi
 }
 
-# --- подготовка к коммиту (без автоматического push) ---
-prepare_for_commit() {
-  local message="$1"
-  local changed_file="$2"
 
-  echo "📝 Подготавливаю изменения к коммиту..."
-  
-  # Очищаем staged area от предыдущих изменений
-  git reset HEAD
-  
-  # Добавляем файлы из PROCESSED_FILES (файлы, которые мы реально обработали)
-  if [[ -n "$PROCESSED_FILES" ]]; then
-    echo "📦 Добавляю обработанные файлы:"
-    
-    # Разбиваем PROCESSED_FILES на массив
-    IFS='|' read -ra FILES <<< "$PROCESSED_FILES"
-    
-    for file in "${FILES[@]}"; do
-      if [[ -n "$file" ]]; then
-        echo "   • $file"
-        git add "$file"
-        
-        # Для LESS файлов добавляем соответствующие CSS
-        if [[ "$file" == *".less" ]]; then
-          if [[ "$file" == *"/pages/home/"* ]]; then
-            echo "   • templates/capitalcraft/css/home.css"
-            git add templates/capitalcraft/css/home.css
-          elif [[ "$file" == *"/base.less" ]]; then
-            echo "   • templates/capitalcraft/css/base.css"
-            git add templates/capitalcraft/css/base.css
-          elif [[ "$file" == *"/critical.less" ]]; then
-            echo "   • templates/capitalcraft/css/critical.css"
-            git add templates/capitalcraft/css/critical.css
-          elif [[ "$file" == *"/faq.less" ]]; then
-            echo "   • templates/capitalcraft/css/faq.css"
-            git add templates/capitalcraft/css/faq.css
-          fi
-        fi
-      fi
-    done
-  fi
-  
-
-  
-  # Показываем количество изменений
-  local changed_files=$(git diff --cached --name-only | wc -l)
-  echo "📊 Готово к коммиту: $changed_files файлов изменено"
-  
-  # Показываем список изменений
-  echo "📝 Измененные файлы:"
-  git diff --cached --name-only | sed 's/^/   • /'
-  
-  echo ""
-  echo "🚀 Для отправки изменений выполните:"
-  echo "   npm run push:dev"
-  echo ""
-}
 
 # --- обработка unlink и игноры ---
 process_file() {
@@ -384,7 +359,6 @@ process_file() {
   # Для unlink файла уже нет на диске — всё равно коммитим удаление
   if [[ "$kind" == "unlink" ]]; then
     echo "🗑️ Удалён файл: $file"
-    prepare_for_commit "Remove file"
     return
   fi
 
