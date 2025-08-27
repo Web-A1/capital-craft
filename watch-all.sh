@@ -99,7 +99,15 @@ handle_php() {
         return
     fi
     
-    echo "🐘 Изменен PHP файл: $file"
+    # Проверяем, что изменилось - только форматирование или реальный контент
+    local content_changes=$(git diff "$file" | grep -E '^[+-]' | grep -v '^[+-][[:space:]]*$' | wc -l)
+    
+    if [ "$content_changes" -eq 0 ]; then
+        echo "📝 PHP файл изменился только форматирование: $file (пропускаю)"
+        return
+    fi
+    
+    echo "🐘 Изменен PHP файл (контент): $file"
     PHP_CHANGED=true
 }
 
@@ -183,7 +191,7 @@ process_file() {
   case "$file" in
     *.css|*.map|*/bundle.js|*/bundle.min.js) echo "📄 Игнор артефакта: $file"; return ;;
   esac
-  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* ]] && { echo "📄 Игнор служебного: $file"; return; }
+  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* || "$file" == *".vscode/"* || "$file" == "format-php.sh" ]] && { echo "📄 Игнор служебного: $file"; return; }
 
   # Для unlink файла уже нет на диске — всё равно коммитим удаление
   if [[ "$kind" == "unlink" ]]; then
@@ -294,5 +302,9 @@ done < <(npx chokidar-cli \
   --ignore "**/node_modules/**" \
   --ignore "**/.git/**" \
   --ignore "**/vendor/**" \
+  --ignore "**/.vscode/**" \
+  --ignore "format-php.sh" \
+  --ignore ".php-cs-fixer.php" \
+  --ignore ".prettierrc" \
   --await-write-finish 200 \
   --debounce 800)

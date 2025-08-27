@@ -11,8 +11,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
 }
 
 // 2) Данные
-$phone   = trim($_POST['phone'] ?? '');
-$name    = trim($_POST['name'] ?? '');
+$phone = trim($_POST['phone'] ?? '');
+$name = trim($_POST['name'] ?? '');
 $message = trim($_POST['message'] ?? '');
 
 if ($phone === '') {
@@ -27,31 +27,31 @@ $clean = static function (string $s): string {
     $s = preg_replace('/[^\P{C}\n\r\t]/u', '', $s);
     return mb_substr($s, 0, 500);
 };
-$phone   = $clean($phone);
-$name    = $clean($name);
+$phone = $clean($phone);
+$name = $clean($name);
 $message = $clean($message);
 
-// 3) Ключи  
+// 3) Ключи
 $configPath = __DIR__ . '/../telegram_config.php';
 
 // Подробная диагностика для отладки
 if (!is_file($configPath)) {
-    error_log("[TELEGRAM_CONFIG] Файл не найден: " . $configPath);
-    error_log("[TELEGRAM_CONFIG] Текущая директория: " . getcwd());
-    error_log("[TELEGRAM_CONFIG] dirname(__DIR__): " . dirname(__DIR__));
-    
+    error_log('[TELEGRAM_CONFIG] Файл не найден: ' . $configPath);
+    error_log('[TELEGRAM_CONFIG] Текущая директория: ' . getcwd());
+    error_log('[TELEGRAM_CONFIG] dirname(__DIR__): ' . dirname(__DIR__));
+
     http_response_code(500);
     echo json_encode([
-        'status' => 'error', 
+        'status' => 'error',
         'message' => 'Файл конфигурации не найден',
-        'debug' => 'Путь: ' . $configPath
+        'debug' => 'Путь: ' . $configPath,
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 // Проверяем, что файл читаемый
 if (!is_readable($configPath)) {
-    error_log("[TELEGRAM_CONFIG] Файл не читаемый: " . $configPath);
+    error_log('[TELEGRAM_CONFIG] Файл не читаемый: ' . $configPath);
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Файл конфигурации недоступен для чтения'], JSON_UNESCAPED_UNICODE);
     exit;
@@ -61,17 +61,17 @@ $config = include $configPath;
 
 // Проверяем структуру конфига
 if (!is_array($config)) {
-    error_log("[TELEGRAM_CONFIG] Конфиг не является массивом");
+    error_log('[TELEGRAM_CONFIG] Конфиг не является массивом');
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Неверный формат конфигурации'], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-$token  = $config['TELEGRAM_TOKEN'] ?? '';
+$token = $config['TELEGRAM_TOKEN'] ?? '';
 $chatId = $config['CHAT_ID'] ?? '';
 
 if ($token === '' || $chatId === '') {
-    error_log("[TELEGRAM_CONFIG] Пустые TOKEN или CHAT_ID. TOKEN: " . (empty($token) ? 'пустой' : 'есть') . ", CHAT_ID: " . (empty($chatId) ? 'пустой' : 'есть'));
+    error_log('[TELEGRAM_CONFIG] Пустые TOKEN или CHAT_ID. TOKEN: ' . (empty($token) ? 'пустой' : 'есть') . ', CHAT_ID: ' . (empty($chatId) ? 'пустой' : 'есть'));
     http_response_code(500);
     echo json_encode(['status' => 'error', 'message' => 'Отсутствуют TELEGRAM_TOKEN/CHAT_ID'], JSON_UNESCAPED_UNICODE);
     exit;
@@ -79,19 +79,19 @@ if ($token === '' || $chatId === '') {
 
 // 4) Отправка
 $text = "Новая заявка:\nИмя: {$name}\nТелефон: {$phone}\nСообщение: {$message}";
-$url  = "https://api.telegram.org/bot{$token}/sendMessage";
+$url = "https://api.telegram.org/bot{$token}/sendMessage";
 
 $ch = curl_init($url);
 curl_setopt_array($ch, [
-    CURLOPT_POST           => true,
-    CURLOPT_POSTFIELDS     => ['chat_id' => $chatId, 'text' => $text],
+    CURLOPT_POST => true,
+    CURLOPT_POSTFIELDS => ['chat_id' => $chatId, 'text' => $text],
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_CONNECTTIMEOUT => 5,
-    CURLOPT_TIMEOUT        => 10,
+    CURLOPT_TIMEOUT => 10,
 ]);
 $result = curl_exec($ch);
-$errno  = curl_errno($ch);
-$code   = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$errno = curl_errno($ch);
+$code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
 if ($errno !== 0) {

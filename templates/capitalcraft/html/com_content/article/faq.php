@@ -17,8 +17,8 @@ $faqSchema = [
     'about' => [
         '@type' => 'Organization',
         'name' => 'Capital Craft',
-        'description' => 'Бутиковое агентство инвестиционных решений'
-    ]
+        'description' => 'Бутиковое агентство инвестиционных решений',
+    ],
 ];
 
 foreach ($faq_data as $index => $item) {
@@ -30,8 +30,8 @@ foreach ($faq_data as $index => $item) {
             '@type' => 'Answer',
             'text' => $item['a'],
             'dateCreated' => date('c'),
-            'upvoteCount' => 1
-        ]
+            'upvoteCount' => 1,
+        ],
     ];
 }
 
@@ -46,15 +46,15 @@ $breadcrumbSchema = [
             '@type' => 'ListItem',
             'position' => 1,
             'name' => 'Главная',
-            'item' => JURI::root()
+            'item' => JURI::root(),
         ],
         [
             '@type' => 'ListItem',
             'position' => 2,
             'name' => 'FAQ',
-            'item' => JURI::current()
-        ]
-    ]
+            'item' => JURI::current(),
+        ],
+    ],
 ];
 
 $doc->addCustomTag('<script type="application/ld+json">' . json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '</script>');
@@ -71,7 +71,7 @@ $orgSchema = [
         '@type' => 'ImageObject',
         'url' => JURI::root() . 'templates/capitalcraft/images/logo_black.svg',
         'width' => 200,
-        'height' => 60
+        'height' => 60,
     ],
     'image' => JURI::root() . 'templates/capitalcraft/images/faq/faq_hand.webp',
     'address' => [
@@ -79,26 +79,26 @@ $orgSchema = [
         'streetAddress' => 'Варшавское шоссе 33, стр 1',
         'addressLocality' => 'Москва',
         'postalCode' => '117105',
-        'addressCountry' => 'RU'
+        'addressCountry' => 'RU',
     ],
     'contactPoint' => [
         '@type' => 'ContactPoint',
         'telephone' => '+7 (499) 325-68-26',
         'contactType' => 'customer service',
         'email' => 'info@capital-craft.ru',
-        'availableLanguage' => ['Russian', 'English']
+        'availableLanguage' => ['Russian', 'English'],
     ],
     'sameAs' => [
         'https://t.me/capital_craft1',
-        'https://dzen.ru/capital_craft1'
+        'https://dzen.ru/capital_craft1',
     ],
     'foundingDate' => '2020',
     'areaServed' => 'RU',
     'hasOfferCatalog' => [
         '@type' => 'OfferCatalog',
         'name' => 'Инвестиционные решения и привлечение капитала',
-        'description' => 'Услуги по привлечению капитала и инвестиционным решениям'
-    ]
+        'description' => 'Услуги по привлечению капитала и инвестиционным решениям',
+    ],
 ];
 
 $doc->addCustomTag('<script type="application/ld+json">' . json_encode($orgSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '</script>');
@@ -113,11 +113,11 @@ $webPageSchema = [
     'isPartOf' => [
         '@type' => 'WebSite',
         'name' => 'Capital Craft',
-        'url' => JURI::root()
+        'url' => JURI::root(),
     ],
     'about' => [
         '@type' => 'Organization',
-        'name' => 'Capital Craft'
+        'name' => 'Capital Craft',
     ],
     'inLanguage' => 'ru-RU',
     'breadcrumb' => [
@@ -127,16 +127,16 @@ $webPageSchema = [
                 '@type' => 'ListItem',
                 'position' => 1,
                 'name' => 'Главная',
-                'item' => JURI::root()
+                'item' => JURI::root(),
             ],
             [
                 '@type' => 'ListItem',
                 'position' => 2,
                 'name' => 'FAQ',
-                'item' => JURI::current()
-            ]
-        ]
-    ]
+                'item' => JURI::current(),
+            ],
+        ],
+    ],
 ];
 
 $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '</script>');

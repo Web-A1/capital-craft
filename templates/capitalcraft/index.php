@@ -10,19 +10,19 @@ $isFaq = $active && $active->alias === 'faq';
 
 $document = JFactory::getDocument();
 $document->addStyleSheet(
-  $this->baseurl . '/templates/capitalcraft/css/base.css',
+    $this->baseurl . '/templates/capitalcraft/css/base.css',
 );
 
 if ($isHome) {
-  $document->addStyleSheet(
-    $this->baseurl . '/templates/capitalcraft/css/home.css',
-  );
+    $document->addStyleSheet(
+        $this->baseurl . '/templates/capitalcraft/css/home.css',
+    );
 }
 
 if ($isFaq) {
-  $document->addStyleSheet(
-    $this->baseurl . '/templates/capitalcraft/css/faq.css',
-  );
+    $document->addStyleSheet(
+        $this->baseurl . '/templates/capitalcraft/css/faq.css',
+    );
 }
 ?>
 
