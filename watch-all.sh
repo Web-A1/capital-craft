@@ -10,7 +10,6 @@ echo "🔄 Логика обработки:"
 echo "   • LESS файлы → форматирование + компиляция + подготовка к коммиту"
 echo "   • JS файлы → форматирование + пересборка + подготовка к коммиту"
 echo "   • PHP файлы → форматирование + подготовка к коммиту"
-echo "   • PHP файлы → форматирование + подготовка к коммиту"
 echo "⏹️  Для остановки: Ctrl+C"
 echo ""
 
@@ -36,12 +35,17 @@ PROCESSED_FILES=""
 has_git_changes() {
     local file="$1"
     
-    # Простая проверка: если файл существует и не пустой, считаем измененным
-    if [ -f "$file" ] && [ -s "$file" ]; then
-        return 0  # Есть изменения
+    # Проверяем существование файла
+    if [[ ! -f "$file" ]]; then
+        return 1
     fi
     
-    return 1  # Нет изменений
+    # Проверяем, есть ли реальные изменения относительно последнего коммита
+    if git diff --quiet -- "$file" 2>/dev/null; then
+        return 1
+    fi
+    
+    return 0
 }
 
 # Функция для умной компиляции LESS файлов
@@ -209,57 +213,75 @@ execute_final_actions() {
     
     if [ ${#actions[@]} -gt 0 ]; then
         message=$(IFS=" + "; echo "${actions[*]}")
-        prepare_for_commit "$message" "$changed_file"
         
         # Автоматически коммитим и пушим изменения
         echo "🚀 Автоматически коммичу и пушу изменения..."
         
-        # Создаем информативное сообщение коммита
+        # Создаем информативное сообщение коммита для всех типов файлов
         local commit_message=""
+        local all_files=""
+        
         if [[ "$LESS_CHANGED" == true ]]; then
-            commit_message="LESS: "
-            # Получаем только имена файлов (без путей)
             local less_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | sed 's/.*\///' | tr '\n' ' ')
-            commit_message+="$less_files"
-        elif [[ "$JS_CHANGED" == true ]]; then
-            commit_message="JS: "
-            local js_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | sed 's/.*\///' | tr '\n' ' ')
-            commit_message+="$js_files"
-        elif [[ "$PHP_CHANGED" == true ]]; then
-            commit_message="PHP: "
-            local php_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | sed 's/.*\///' | tr '\n' ' ')
-            commit_message+="$php_files"
+            if [[ -n "$less_files" ]]; then
+                all_files+="LESS: $less_files "
+            fi
         fi
+        
+        if [[ "$JS_CHANGED" == true ]]; then
+            local js_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | sed 's/.*\///' | tr '\n' ' ')
+            if [[ -n "$js_files" ]]; then
+                all_files+="JS: $js_files "
+            fi
+        fi
+        
+        if [[ "$PHP_CHANGED" == true ]]; then
+            local php_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | sed 's/.*\///' | tr '\n' ' ')
+            if [[ -n "$php_files" ]]; then
+                all_files+="PHP: $php_files "
+            fi
+        fi
+        
+        commit_message="$all_files"
         
         # Добавляем временную метку в формате: время_день/месяц
         commit_message+=" | $(date +%H:%M:%S_%d/%m)"
         
-        # Добавляем информацию об изменениях
+        # Добавляем информацию об изменениях для всех типов файлов
+        local all_changes=""
+        
         if [[ "$LESS_CHANGED" == true ]]; then
-            # Получаем номера измененных строк для LESS файлов
             local less_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | head -1)
             if [[ -n "$less_file" ]]; then
                 local changed_lines=$(git diff --unified=0 "$less_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
                 if [[ -n "$changed_lines" ]]; then
-                    commit_message+=" | lines: $changed_lines"
+                    all_changes+="LESS lines: $changed_lines "
                 fi
             fi
-        elif [[ "$JS_CHANGED" == true ]]; then
+        fi
+        
+        if [[ "$JS_CHANGED" == true ]]; then
             local js_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | head -1)
             if [[ -n "$js_file" ]]; then
                 local changed_lines=$(git diff --unified=0 "$js_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
                 if [[ -n "$changed_lines" ]]; then
-                    commit_message+=" | lines: $changed_lines"
+                    all_changes+="JS lines: $changed_lines "
                 fi
             fi
-        elif [[ "$PHP_CHANGED" == true ]]; then
+        fi
+        
+        if [[ "$PHP_CHANGED" == true ]]; then
             local php_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | head -1)
             if [[ -n "$php_file" ]]; then
                 local changed_lines=$(git diff --unified=0 "$php_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
                 if [[ -n "$changed_lines" ]]; then
-                    commit_message+=" | lines: $changed_lines"
+                    all_changes+="PHP lines: $changed_lines "
                 fi
             fi
+        fi
+        
+        if [[ -n "$all_changes" ]]; then
+            commit_message+=" | $all_changes"
         fi
         
         echo "📝 Сообщение коммита: $commit_message"
@@ -439,7 +461,14 @@ while IFS= read -r line; do
     unlink:*) 
       file=$(echo "$line" | cut -d: -f2-)
       echo "🗑️ Обрабатываю удаление: $file"
-      process_file "$file" "unlink" 
+      process_file "$file" "unlink"
+      
+      # Автоматически коммитим и пушим удаление файла
+      echo "🚀 Автоматически коммичу и пушу удаление файла..."
+      git add -A
+      git commit -m "DELETE: $(basename "$file") | $(date +%H:%M:%S_%d/%m)"
+      git push origin dev
+      echo "✅ Удаление файла автоматически отправлено в dev ветку!"
       ;;
     *) 
       echo "❓ Неизвестное событие: $line"
