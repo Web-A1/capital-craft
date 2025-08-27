@@ -9,9 +9,6 @@ vendor/
 templates/capitalcraft/css/
 templates/capitalcraft/js/global/bundle.js
 
-# LESS files (Prettier doesn't handle them well)
-*.less
-
 # Logs and cache
 *.log
 logs/
