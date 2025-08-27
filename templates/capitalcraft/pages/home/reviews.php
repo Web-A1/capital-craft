@@ -6,7 +6,7 @@ require __DIR__ . '/../../data/reviews_data.php';
     <div class="container reviews__inner">
         <!-- Упрощенный заголовок без лишнего div -->
         <div class="reviews__subtitle">
-            <h2>отзывы наших клиентов</h2>
+            <h2>Отзывы наших клиентов</h2>
         </div>
 
         <!-- Новый контейнер для слайдера и стрелок -->
