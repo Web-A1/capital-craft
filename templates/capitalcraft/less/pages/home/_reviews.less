@@ -131,13 +131,6 @@
   // Дополнительные стили подписи
   &__author-name {
     font-style: normal;
-    font-family: @font-body;
-    font-size: (@font-size-base * 1.375);
-    font-weight: 400;
-
-    .media(mobile, {
-      font-size: (@font-size-base * 1.125);
-    });
   }
 
   // Навигационные стрелки
@@ -245,14 +238,14 @@
   // Повышаем специфичность для author-name
   .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__author-name {
     font-family: @font-body;
-    font-size: 24px;
+    font-size: (@font-size-base * 1.375);
     font-weight: 400;
     line-height: 1;
     color: @color-heading;
     text-align: center;
 
     .media(mobile, {
-      font-size: 20px;
+      font-size: (@font-size-base * 1.125);
     });
   }
 
