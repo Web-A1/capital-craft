@@ -4,11 +4,9 @@ require __DIR__ . '/../../data/reviews_data.php';
 
 <section class="reviews frame section-with-divider">
     <div class="container reviews__inner">
-        <!-- Упрощенный заголовок без лишнего div -->
-        <div class="reviews__subtitle">
-            <h2>Отзывы наших клиентов</h2>
-        </div>
-
+        
+    <h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
+        
         <!-- Новый контейнер для слайдера и стрелок -->
         <div class="reviews__slider-container">
             <!-- Левая стрелка - вынесена на уровень выше -->
