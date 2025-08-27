@@ -24,7 +24,7 @@ use Joomla\Component\Actionlogs\Administrator\Model\ActionlogsModel;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -97,17 +97,18 @@ class ActionlogsController extends AdminController
             // Destroy the iterator now
             unset($data);
 
-            $date     = new Date('now', new \DateTimeZone('UTC'));
+            $date = new Date('now', new \DateTimeZone('UTC'));
             $filename = 'logs_' . $date->format('Y-m-d_His_T');
 
             $csvDelimiter = ComponentHelper::getComponent('com_actionlogs')->getParams()->get('csv_delimiter', ',');
 
-            $this->app->setHeader('Content-Type', 'application/csv', true)
+            $this->app
+                ->setHeader('Content-Type', 'application/csv', true)
                 ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '.csv"', true)
                 ->setHeader('Cache-Control', 'must-revalidate', true)
                 ->sendHeaders();
 
-            $output = fopen("php://output", "w");
+            $output = fopen('php://output', 'w');
 
             foreach ($rows as $row) {
                 fputcsv($output, $row, $csvDelimiter);

@@ -12,7 +12,6 @@ defined('_JEXEC') || die();
 
 use Akeeba\Engine\Platform;
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-3">
 	<h3 class="card-header">
@@ -26,7 +25,7 @@ use Joomla\CMS\Language\Text;
 			</p>
 		</div>
 
-		<?php if(!$this->croninfo->info->jsonapi): ?>
+		<?php if (!$this->croninfo->info->jsonapi): ?>
 			<div class="alert alert-danger">
 				<p>
 					<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_JSONAPI_DISABLED') ?>
@@ -37,7 +36,7 @@ use Joomla\CMS\Language\Text;
 					</a>
 				</p>
 			</div>
-		<?php elseif(!trim($this->croninfo->info->secret)): ?>
+		<?php elseif (!trim($this->croninfo->info->secret)): ?>
 			<div class="alert alert-danger">
 				<p>
 					<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_FRONTEND_SECRET') ?>
@@ -58,22 +57,22 @@ use Joomla\CMS\Language\Text;
 			</p>
 			<p>
 				<code><?= sprintf(
-						'docker run --rm ghcr.io/akeeba/remotecli backup --profile=%d --host="%s" --secret="%s"',
-						Platform::getInstance()->get_active_profile(),
-						$this->escape($this->croninfo->json->path ),
-						$this->escape($this->croninfo->info->secret )
-					) ?></code>
+        'docker run --rm ghcr.io/akeeba/remotecli backup --profile=%d --host="%s" --secret="%s"',
+        Platform::getInstance()->get_active_profile(),
+        $this->escape($this->croninfo->json->path),
+        $this->escape($this->croninfo->info->secret),
+    ) ?></code>
 			</p>
 			<p>
 				<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_JSONAPI_ARCCLI_PHAR') ?>
 			</p>
 			<p>
 				<code><?= sprintf(
-						'php remote.phar backup --profile=%d --host="%s" --secret="%s"',
-						Platform::getInstance()->get_active_profile(),
-						$this->escape($this->croninfo->json->path ),
-						$this->escape($this->croninfo->info->secret )
-					) ?></code>
+        'php remote.phar backup --profile=%d --host="%s" --secret="%s"',
+        Platform::getInstance()->get_active_profile(),
+        $this->escape($this->croninfo->json->path),
+        $this->escape($this->croninfo->info->secret),
+    ) ?></code>
 			</p>
 
 			<h4>
@@ -88,7 +87,7 @@ use Joomla\CMS\Language\Text;
 				<tbody>
 				<tr>
 					<td>
-						<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_JSONAPI_ENDPOINT')?>
+						<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_JSONAPI_ENDPOINT') ?>
 					</td>
 					<td>
 						<?= $this->escape($this->croninfo->json->path) ?>
@@ -113,6 +112,6 @@ use Joomla\CMS\Language\Text;
 
 
 
-		<?php endif ?>
+		<?php endif; ?>
 	</div>
 </div>

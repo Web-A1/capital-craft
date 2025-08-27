@@ -23,7 +23,7 @@ use Joomla\Component\Banners\Administrator\Model\BannersModel;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -102,15 +102,15 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var BannersModel $model */
-        $model               = $this->getModel();
-        $this->categories    = $model->getCategoryOrders();
-        $this->items         = $model->getItems();
-        $this->pagination    = $model->getPagination();
-        $this->state         = $model->getState();
-        $this->filterForm    = $model->getFilterForm();
+        $model = $this->getModel();
+        $this->categories = $model->getCategoryOrders();
+        $this->items = $model->getItems();
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
-        if (!\count($this->items) && $this->isEmptyState = $model->getIsEmptyState()) {
+        if (!\count($this->items) && ($this->isEmptyState = $model->getIsEmptyState())) {
             $this->setLayout('emptystate');
         }
 
@@ -139,8 +139,8 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        $canDo   = ContentHelper::getActions('com_banners', 'category', $this->state->get('filter.category_id'));
-        $user    = $this->getCurrentUser();
+        $canDo = ContentHelper::getActions('com_banners', 'category', $this->state->get('filter.category_id'));
+        $user = $this->getCurrentUser();
         $toolbar = $this->getDocument()->getToolbar();
 
         ToolbarHelper::title(Text::_('COM_BANNERS_MANAGER_BANNERS'), 'bookmark banners');
@@ -149,9 +149,14 @@ class HtmlView extends BaseHtmlView
             $toolbar->addNew('banner.add');
         }
 
-        if (!$this->isEmptyState && ($canDo->get('core.edit.state') || ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')))) {
+        if (
+            !$this->isEmptyState &&
+            ($canDo->get('core.edit.state') ||
+                ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')))
+        ) {
             /** @var  DropdownButton $dropdown */
-            $dropdown = $toolbar->dropdownButton('status-group', 'JTOOLBAR_CHANGE_STATUS')
+            $dropdown = $toolbar
+                ->dropdownButton('status-group', 'JTOOLBAR_CHANGE_STATUS')
                 ->toggleSplit(false)
                 ->icon('icon-ellipsis-h')
                 ->buttonClass('btn btn-action')
@@ -182,18 +187,20 @@ class HtmlView extends BaseHtmlView
             }
 
             if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-                $toolbar->delete('banners.delete', 'JTOOLBAR_DELETE_FROM_TRASH')
+                $toolbar
+                    ->delete('banners.delete', 'JTOOLBAR_DELETE_FROM_TRASH')
                     ->message('JGLOBAL_CONFIRM_DELETE')
                     ->listCheck(true);
             }
 
             // Add a batch button
             if (
-                $user->authorise('core.create', 'com_banners')
-                && $user->authorise('core.edit', 'com_banners')
-                && $user->authorise('core.edit.state', 'com_banners')
+                $user->authorise('core.create', 'com_banners') &&
+                $user->authorise('core.edit', 'com_banners') &&
+                $user->authorise('core.edit.state', 'com_banners')
             ) {
-                $childBar->popupButton('batch', 'JTOOLBAR_BATCH')
+                $childBar
+                    ->popupButton('batch', 'JTOOLBAR_BATCH')
                     ->popupType('inline')
                     ->textHeader(Text::_('COM_BANNERS_BATCH_OPTIONS'))
                     ->url('#joomla-dialog-batch')

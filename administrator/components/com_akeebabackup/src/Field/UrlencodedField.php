@@ -13,12 +13,12 @@ use Joomla\CMS\Form\Field\TextField;
 
 class UrlencodedField extends TextField
 {
-	protected $type = 'Urlencoded';
+    protected $type = 'Urlencoded';
 
-	protected function getInput()
-	{
-		$this->value = urlencode($this->value);
+    protected function getInput()
+    {
+        $this->value = urlencode($this->value);
 
-		return parent::getInput();
-	}
+        return parent::getInput();
+    }
 }

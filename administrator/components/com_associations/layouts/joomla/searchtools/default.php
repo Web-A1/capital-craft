@@ -8,7 +8,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -22,10 +22,10 @@ $data = $displayData;
 // Receive overridable options
 $data['options'] = !empty($data['options']) ? $data['options'] : [];
 
-$noResultsText     = '';
+$noResultsText = '';
 $hideActiveFilters = false;
-$showFilterButton  = false;
-$showSelector      = false;
+$showFilterButton = false;
+$showSelector = false;
 $selectorFieldName = $data['options']['selectorFieldName'] ?? 'client_id';
 
 // If a filter form exists.
@@ -36,7 +36,8 @@ if (isset($data['view']->filterForm) && !empty($data['view']->filterForm)) {
 
         // Checks if a selector should be shown in the current layout.
         if (isset($data['view']->layout)) {
-            $showSelector = $selectorField->getAttribute('layout', 'default') != $data['view']->layout ? false : $showSelector;
+            $showSelector =
+                $selectorField->getAttribute('layout', 'default') != $data['view']->layout ? false : $showSelector;
         }
 
         // Unset the selector field from active filters group.
@@ -61,16 +62,22 @@ if (isset($data['view']->filterForm) && !empty($data['view']->filterForm)) {
 
 // Set some basic options.
 $customOptions = [
-    'filtersHidden'       => isset($data['options']['filtersHidden']) && $data['options']['filtersHidden'] ? $data['options']['filtersHidden'] : $hideActiveFilters,
-    'filterButton'        => isset($data['options']['filterButton']) && $data['options']['filterButton'] ? $data['options']['filterButton'] : $showFilterButton,
-    'defaultLimit'        => $data['options']['defaultLimit'] ?? Factory::getApplication()->get('list_limit', 20),
+    'filtersHidden' =>
+        isset($data['options']['filtersHidden']) && $data['options']['filtersHidden']
+            ? $data['options']['filtersHidden']
+            : $hideActiveFilters,
+    'filterButton' =>
+        isset($data['options']['filterButton']) && $data['options']['filterButton']
+            ? $data['options']['filterButton']
+            : $showFilterButton,
+    'defaultLimit' => $data['options']['defaultLimit'] ?? Factory::getApplication()->get('list_limit', 20),
     'searchFieldSelector' => '#filter_search',
-    'selectorFieldName'   => $selectorFieldName,
-    'showSelector'        => $showSelector,
-    'orderFieldSelector'  => '#list_fullordering',
-    'showNoResults'       => !empty($noResultsText),
-    'noResultsText'       => !empty($noResultsText) ? $noResultsText : '',
-    'formSelector'        => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
+    'selectorFieldName' => $selectorFieldName,
+    'showSelector' => $showSelector,
+    'orderFieldSelector' => '#list_fullordering',
+    'showNoResults' => !empty($noResultsText),
+    'noResultsText' => !empty($noResultsText) ? $noResultsText : '',
+    'formSelector' => !empty($data['options']['formSelector']) ? $data['options']['formSelector'] : '#adminForm',
 ];
 
 // Merge custom options in the options array.
@@ -83,9 +90,11 @@ $filtersActiveClass = $hideActiveFilters ? '' : ' js-stools-container-filters-vi
 HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['options']);
 ?>
 <div class="js-stools" role="search">
-    <?php // Add the itemtype and language selectors before the form filters. Do not display in modal. ?>
+    <?php
+// Add the itemtype and language selectors before the form filters. Do not display in modal.
+?>
     <?php $app = Factory::getApplication(); ?>
-    <?php if ($app->getInput()->get('forcedItemType', '', 'string') == '') : ?>
+    <?php if ($app->getInput()->get('forcedItemType', '', 'string') == ''): ?>
         <?php $itemTypeField = $data['view']->filterForm->getField('itemtype'); ?>
         <div class="js-stools-container-selector">
             <div class="js-stools-field-selector js-stools-itemtype">
@@ -94,7 +103,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
             </div>
         </div>
     <?php endif; ?>
-    <?php if ($app->getInput()->get('forcedLanguage', '', 'cmd') == '') : ?>
+    <?php if ($app->getInput()->get('forcedLanguage', '', 'cmd') == ''): ?>
         <?php $languageField = $data['view']->filterForm->getField('language'); ?>
         <div class="js-stools-container-selector">
             <div class="js-stools-field-selector js-stools-language">
@@ -103,7 +112,7 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
             </div>
         </div>
     <?php endif; ?>
-    <?php if ($data['options']['showSelector']) : ?>
+    <?php if ($data['options']['showSelector']): ?>
     <div class="js-stools-container-selector">
         <?php echo LayoutHelper::render('joomla.searchtools.default.selector', $data); ?>
     </div>
@@ -116,11 +125,11 @@ HTMLHelper::_('searchtools.form', $data['options']['formSelector'], $data['optio
     </div>
     <!-- Filters div -->
     <div class="js-stools-container-filters clearfix<?php echo $filtersActiveClass; ?>">
-        <?php if ($data['options']['filterButton']) : ?>
+        <?php if ($data['options']['filterButton']): ?>
             <?php echo $this->sublayout('filters', $data); ?>
         <?php endif; ?>
     </div>
 </div>
-<?php if ($data['options']['showNoResults']) : ?>
+<?php if ($data['options']['showNoResults']): ?>
     <?php echo $this->sublayout('noitems', $data); ?>
 <?php endif; ?>

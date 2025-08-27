@@ -16,20 +16,19 @@ defined('_JEXEC') || die();
  */
 class Excludetabledata extends Base
 {
-	public function __construct()
-	{
-		$this->object      = 'dbobject';
-		$this->subtype     = 'content';
-		$this->method      = 'direct';
-		$this->filter_name = 'Excludetabledata';
+    public function __construct()
+    {
+        $this->object = 'dbobject';
+        $this->subtype = 'content';
+        $this->method = 'direct';
+        $this->filter_name = 'Excludetabledata';
 
-		// We take advantage of the filter class magic to inject our custom filters
-		$this->filter_data['[SITEDB]'] = array(
-			'#__session',        // Sessions table
-			'#__guardxt_runs'    // Guard XT's run log (bloated to the bone)
-		);
+        // We take advantage of the filter class magic to inject our custom filters
+        $this->filter_data['[SITEDB]'] = [
+            '#__session', // Sessions table
+            '#__guardxt_runs', // Guard XT's run log (bloated to the bone)
+        ];
 
-		parent::__construct();
-	}
-
+        parent::__construct();
+    }
 }

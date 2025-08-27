@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Controller;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Form\FormFactoryInterface;
@@ -17,28 +17,33 @@ use Joomla\Input\Input;
 
 class StatisticController extends FormController
 {
-	protected $text_prefix = 'COM_AKEEBABACKUP_BUADMIN';
+    protected $text_prefix = 'COM_AKEEBABACKUP_BUADMIN';
 
-	public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null, FormFactoryInterface $formFactory = null)
-	{
-		parent::__construct($config, $factory, $app, $input, $formFactory);
+    public function __construct(
+        $config = [],
+        MVCFactoryInterface $factory = null,
+        ?CMSApplication $app = null,
+        ?Input $input = null,
+        FormFactoryInterface $formFactory = null,
+    ) {
+        parent::__construct($config, $factory, $app, $input, $formFactory);
 
-		$this->view_list = 'Manage';
-		$this->view_item = 'Statistic';
-	}
+        $this->view_list = 'Manage';
+        $this->view_item = 'Statistic';
+    }
 
-	protected function allowAdd($data = [])
-	{
-		return false;
-	}
+    protected function allowAdd($data = [])
+    {
+        return false;
+    }
 
-	protected function allowEdit($data = [], $key = 'id')
-	{
-		return $this->app->getIdentity()->authorise('akeebabackup.download', $this->option);
-	}
+    protected function allowEdit($data = [], $key = 'id')
+    {
+        return $this->app->getIdentity()->authorise('akeebabackup.download', $this->option);
+    }
 
-	protected function allowSave($data, $key = 'id')
-	{
-		return $this->app->getIdentity()->authorise('akeebabackup.download', $this->option);
-	}
+    protected function allowSave($data, $key = 'id')
+    {
+        return $this->app->getIdentity()->authorise('akeebabackup.download', $this->option);
+    }
 }

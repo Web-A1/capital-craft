@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -20,13 +20,13 @@ use Joomla\CMS\Router\Route;
 		</p>
 	</div>
 <?php else: ?>
-	<?php if($this->autorun): ?>
+	<?php if ($this->autorun): ?>
 		<div class="alert alert-warning">
 			<p>
 				<?= Text::_('COM_AKEEBABACKUP_ALICE_AUTORUN_NOTICE') ?>
 			</p>
 		</div>
-	<?php endif ?>
+	<?php endif; ?>
 
 	<form name="adminForm" id="adminForm"
 		  action="<?= Route::_('index.php?option=com_akeebabackup&view=Alice&task=start') ?>"
@@ -40,11 +40,19 @@ use Joomla\CMS\Router\Route;
 		</div>
 
 		<div class="col-12">
-			<?= HTMLHelper::_('select.genericlist', $this->logs, 'log', [
-				'list.attr' => [
-					'class' => 'form-select',
-				]
-			], 'value', 'text', $this->log) ?>
+			<?= HTMLHelper::_(
+       'select.genericlist',
+       $this->logs,
+       'log',
+       [
+           'list.attr' => [
+               'class' => 'form-select',
+           ],
+       ],
+       'value',
+       'text',
+       $this->log,
+   ) ?>
 		</div>
 
 		<div class="col-12">
@@ -57,7 +65,7 @@ use Joomla\CMS\Router\Route;
 
 		<?= HTMLHelper::_('form.token') ?>
 	</form>
-<?php endif ?>
+<?php endif; ?>
 
 <div class="alert alert-info">
 	<h2><?= Text::_('COM_AKEEBABACKUP_ALICE_HEAD_ONLYFAILED') ?></h2>

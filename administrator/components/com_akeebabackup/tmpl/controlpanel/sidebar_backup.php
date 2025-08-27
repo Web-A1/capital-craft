@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-2">
 	<h3 class="card-header">

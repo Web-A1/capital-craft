@@ -22,7 +22,7 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -244,26 +244,26 @@ class SysinfoModel extends BaseDatabaseModel
         }
 
         $this->php_settings = [
-            'memory_limit'        => \ini_get('memory_limit'),
+            'memory_limit' => \ini_get('memory_limit'),
             'upload_max_filesize' => \ini_get('upload_max_filesize'),
-            'post_max_size'       => \ini_get('post_max_size'),
-            'display_errors'      => \ini_get('display_errors') == '1',
-            'short_open_tag'      => \ini_get('short_open_tag') == '1',
-            'file_uploads'        => \ini_get('file_uploads') == '1',
-            'output_buffering'    => (int) \ini_get('output_buffering') !== 0,
-            'open_basedir'        => \ini_get('open_basedir'),
-            'session.save_path'   => \ini_get('session.save_path'),
-            'session.auto_start'  => \ini_get('session.auto_start'),
-            'disable_functions'   => \ini_get('disable_functions'),
-            'xml'                 => \extension_loaded('xml'),
-            'zlib'                => \extension_loaded('zlib'),
-            'zip'                 => \function_exists('zip_open') && \function_exists('zip_read'),
-            'mbstring'            => \extension_loaded('mbstring'),
-            'fileinfo'            => \extension_loaded('fileinfo'),
-            'gd'                  => \extension_loaded('gd'),
-            'iconv'               => \function_exists('iconv'),
-            'intl'                => \function_exists('transliterator_transliterate'),
-            'max_input_vars'      => \ini_get('max_input_vars'),
+            'post_max_size' => \ini_get('post_max_size'),
+            'display_errors' => \ini_get('display_errors') == '1',
+            'short_open_tag' => \ini_get('short_open_tag') == '1',
+            'file_uploads' => \ini_get('file_uploads') == '1',
+            'output_buffering' => (int) \ini_get('output_buffering') !== 0,
+            'open_basedir' => \ini_get('open_basedir'),
+            'session.save_path' => \ini_get('session.save_path'),
+            'session.auto_start' => \ini_get('session.auto_start'),
+            'disable_functions' => \ini_get('disable_functions'),
+            'xml' => \extension_loaded('xml'),
+            'zlib' => \extension_loaded('zlib'),
+            'zip' => \function_exists('zip_open') && \function_exists('zip_read'),
+            'mbstring' => \extension_loaded('mbstring'),
+            'fileinfo' => \extension_loaded('fileinfo'),
+            'gd' => \extension_loaded('gd'),
+            'iconv' => \function_exists('iconv'),
+            'intl' => \function_exists('transliterator_transliterate'),
+            'max_input_vars' => \ini_get('max_input_vars'),
         ];
 
         return $this->php_settings;
@@ -282,12 +282,21 @@ class SysinfoModel extends BaseDatabaseModel
             return $this->config;
         }
 
-        $registry     = new Registry(new \JConfig());
+        $registry = new Registry(new \JConfig());
         $this->config = $registry->toArray();
-        $hidden       = [
-            'host', 'user', 'password', 'ftp_user', 'ftp_pass',
-            'smtpuser', 'smtppass', 'redis_server_auth', 'session_redis_server_auth',
-            'proxy_user', 'proxy_pass', 'secret',
+        $hidden = [
+            'host',
+            'user',
+            'password',
+            'ftp_user',
+            'ftp_pass',
+            'smtpuser',
+            'smtppass',
+            'redis_server_auth',
+            'session_redis_server_auth',
+            'proxy_user',
+            'proxy_pass',
+            'secret',
         ];
 
         foreach ($hidden as $key) {
@@ -313,20 +322,20 @@ class SysinfoModel extends BaseDatabaseModel
         $db = $this->getDatabase();
 
         $this->info = [
-            'php'                    => php_uname(),
-            'dbserver'               => $db->getServerType(),
-            'dbversion'              => $db->getVersion(),
-            'dbcollation'            => $db->getCollation(),
-            'dbconnectioncollation'  => $db->getConnectionCollation(),
+            'php' => php_uname(),
+            'dbserver' => $db->getServerType(),
+            'dbversion' => $db->getVersion(),
+            'dbcollation' => $db->getCollation(),
+            'dbconnectioncollation' => $db->getConnectionCollation(),
             'dbconnectionencryption' => $db->getConnectionEncryption(),
             'dbconnencryptsupported' => $db->isConnectionEncryptionSupported(),
-            'phpversion'             => PHP_VERSION,
-            'server'                 => $_SERVER['SERVER_SOFTWARE'] ?? getenv('SERVER_SOFTWARE'),
-            'sapi_name'              => PHP_SAPI,
-            'version'                => (new Version())->getLongVersion(),
-            'compatpluginenabled'    => PluginHelper::isEnabled('behaviour', 'compat'),
+            'phpversion' => PHP_VERSION,
+            'server' => $_SERVER['SERVER_SOFTWARE'] ?? getenv('SERVER_SOFTWARE'),
+            'sapi_name' => PHP_SAPI,
+            'version' => new Version()->getLongVersion(),
+            'compatpluginenabled' => PluginHelper::isEnabled('behaviour', 'compat'),
             'compatpluginparameters' => $this->getCompatPluginParameters(),
-            'useragent'              => $_SERVER['HTTP_USER_AGENT'] ?? '',
+            'useragent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
         ];
 
         return $this->info;
@@ -412,13 +421,13 @@ class SysinfoModel extends BaseDatabaseModel
         phpinfo(INFO_GENERAL | INFO_CONFIGURATION | INFO_MODULES);
         $phpInfo = ob_get_clean();
         preg_match_all('#<body[^>]*>(.*)</body>#siU', $phpInfo, $output);
-        $output         = preg_replace('#<table[^>]*>#', '<table class="table">', $output[1][0]);
-        $output         = preg_replace('#(\w),(\w)#', '\1, \2', $output);
-        $output         = str_replace('<hr />', '', $output);
-        $output         = str_replace('<div class="text-center">', '', $output);
-        $output         = preg_replace('#<tr class="h">(.*)</tr>#', '<thead><tr class="h">$1</tr></thead><tbody>', $output);
-        $output         = str_replace('</table>', '</tbody></table>', $output);
-        $output         = str_replace('</div>', '', $output);
+        $output = preg_replace('#<table[^>]*>#', '<table class="table">', $output[1][0]);
+        $output = preg_replace('#(\w),(\w)#', '\1, \2', $output);
+        $output = str_replace('<hr />', '', $output);
+        $output = str_replace('<div class="text-center">', '', $output);
+        $output = preg_replace('#<tr class="h">(.*)</tr>#', '<thead><tr class="h">$1</tr></thead><tbody>', $output);
+        $output = str_replace('</table>', '</tbody></table>', $output);
+        $output = str_replace('</div>', '', $output);
         $this->php_info = $output;
 
         return $this->php_info;
@@ -455,21 +464,23 @@ class SysinfoModel extends BaseDatabaseModel
     public function getExtensions(): array
     {
         $installed = [];
-        $db        = $this->getDatabase();
-        $query     = $db->getQuery(true)
-            ->select('*')
-            ->from($db->quoteName('#__extensions'));
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true)->select('*')->from($db->quoteName('#__extensions'));
         $db->setQuery($query);
 
         try {
             $extensions = $db->loadObjectList();
         } catch (\Exception $e) {
             try {
-                Log::add(Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()), Log::WARNING, 'jerror');
+                Log::add(
+                    Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
+                    Log::WARNING,
+                    'jerror',
+                );
             } catch (\RuntimeException) {
                 Factory::getApplication()->enqueueMessage(
                     Text::sprintf('JLIB_DATABASE_ERROR_FUNCTION_FAILED', $e->getCode(), $e->getMessage()),
-                    'warning'
+                    'warning',
                 );
             }
 
@@ -486,22 +497,22 @@ class SysinfoModel extends BaseDatabaseModel
             }
 
             $installed[$extension->name] = [
-                'name'         => $extension->name,
-                'type'         => $extension->type,
-                'state'        => $extension->enabled ? Text::_('JENABLED') : Text::_('JDISABLED'),
-                'author'       => 'unknown',
-                'version'      => 'unknown',
+                'name' => $extension->name,
+                'type' => $extension->type,
+                'state' => $extension->enabled ? Text::_('JENABLED') : Text::_('JDISABLED'),
+                'author' => 'unknown',
+                'version' => 'unknown',
                 'creationDate' => 'unknown',
-                'authorUrl'    => 'unknown',
+                'authorUrl' => 'unknown',
             ];
 
             $manifest = new Registry($extension->manifest_cache);
 
             $extraData = [
-                'author'       => $manifest->get('author', ''),
-                'version'      => $manifest->get('version', ''),
+                'author' => $manifest->get('author', ''),
+                'version' => $manifest->get('version', ''),
                 'creationDate' => $manifest->get('creationDate', ''),
-                'authorUrl'    => $manifest->get('authorUrl', ''),
+                'authorUrl' => $manifest->get('authorUrl', ''),
             ];
 
             $installed[$extension->name] = array_merge($installed[$extension->name], $extraData);
@@ -529,10 +540,13 @@ class SysinfoModel extends BaseDatabaseModel
         $this->directories = [];
 
         $registry = Factory::getApplication()->getConfig();
-        $cparams  = ComponentHelper::getParams('com_media');
+        $cparams = ComponentHelper::getParams('com_media');
 
         $this->addDirectory('administrator/components', JPATH_ADMINISTRATOR . '/components');
-        $this->addDirectory('administrator/components/com_joomlaupdate', JPATH_ADMINISTRATOR . '/components/com_joomlaupdate');
+        $this->addDirectory(
+            'administrator/components/com_joomlaupdate',
+            JPATH_ADMINISTRATOR . '/components/com_joomlaupdate',
+        );
         $this->addDirectory('administrator/language', JPATH_ADMINISTRATOR . '/language');
 
         // List all admin languages
@@ -545,7 +559,7 @@ class SysinfoModel extends BaseDatabaseModel
 
             $this->addDirectory(
                 'administrator/language/' . $folder->getFilename(),
-                JPATH_ADMINISTRATOR . '/language/' . $folder->getFilename()
+                JPATH_ADMINISTRATOR . '/language/' . $folder->getFilename(),
             );
         }
 
@@ -559,7 +573,7 @@ class SysinfoModel extends BaseDatabaseModel
 
             $this->addDirectory(
                 'administrator/manifests/' . $folder->getFilename(),
-                JPATH_ADMINISTRATOR . '/manifests/' . $folder->getFilename()
+                JPATH_ADMINISTRATOR . '/manifests/' . $folder->getFilename(),
             );
         }
 
@@ -569,13 +583,12 @@ class SysinfoModel extends BaseDatabaseModel
         $this->addDirectory('components', JPATH_SITE . '/components');
 
         $imagesDir = $cparams->get('image_path', 'images');
-        $filesDir  = $cparams->get('file_path', 'files');
+        $filesDir = $cparams->get('file_path', 'files');
 
         $this->addDirectory($imagesDir, JPATH_SITE . '/' . $imagesDir);
 
         // List all images folders
         $image_folders = new \DirectoryIterator(JPATH_SITE . '/' . $imagesDir);
-
 
         foreach ($image_folders as $folder) {
             if ($folder->isDot() || !$folder->isDir()) {
@@ -584,7 +597,7 @@ class SysinfoModel extends BaseDatabaseModel
 
             $this->addDirectory(
                 $imagesDir . '/' . $folder->getFilename(),
-                JPATH_SITE . '/' . $imagesDir . '/' . $folder->getFilename()
+                JPATH_SITE . '/' . $imagesDir . '/' . $folder->getFilename(),
             );
         }
 
@@ -599,7 +612,7 @@ class SysinfoModel extends BaseDatabaseModel
 
             $this->addDirectory(
                 $filesDir . '/' . $folder->getFilename(),
-                JPATH_SITE . '/' . $filesDir . '/' . $folder->getFilename()
+                JPATH_SITE . '/' . $filesDir . '/' . $folder->getFilename(),
             );
         }
 
@@ -613,7 +626,10 @@ class SysinfoModel extends BaseDatabaseModel
                 continue;
             }
 
-            $this->addDirectory('language/' . $folder->getFilename(), JPATH_SITE . '/language/' . $folder->getFilename());
+            $this->addDirectory(
+                'language/' . $folder->getFilename(),
+                JPATH_SITE . '/language/' . $folder->getFilename(),
+            );
         }
 
         $this->addDirectory('libraries', JPATH_LIBRARIES);
@@ -649,23 +665,19 @@ class SysinfoModel extends BaseDatabaseModel
             $this->addDirectory(
                 'log',
                 $registry->get('log_path', JPATH_ADMINISTRATOR . '/logs'),
-                'COM_ADMIN_LOG_DIRECTORY'
+                'COM_ADMIN_LOG_DIRECTORY',
             );
-            $this->addDirectory(
-                'tmp',
-                $registry->get('tmp_path', JPATH_ROOT . '/tmp'),
-                'COM_ADMIN_TEMP_DIRECTORY'
-            );
+            $this->addDirectory('tmp', $registry->get('tmp_path', JPATH_ROOT . '/tmp'), 'COM_ADMIN_TEMP_DIRECTORY');
         } else {
             $this->addDirectory(
                 $registry->get('log_path', JPATH_ADMINISTRATOR . '/logs'),
                 $registry->get('log_path', JPATH_ADMINISTRATOR . '/logs'),
-                'COM_ADMIN_LOG_DIRECTORY'
+                'COM_ADMIN_LOG_DIRECTORY',
             );
             $this->addDirectory(
                 $registry->get('tmp_path', JPATH_ROOT . '/tmp'),
                 $registry->get('tmp_path', JPATH_ROOT . '/tmp'),
-                'COM_ADMIN_TEMP_DIRECTORY'
+                'COM_ADMIN_TEMP_DIRECTORY',
             );
         }
 
@@ -719,15 +731,15 @@ class SysinfoModel extends BaseDatabaseModel
      */
     protected function parsePhpInfo(string $html): array
     {
-        $html  = strip_tags($html, '<h2><th><td>');
-        $html  = preg_replace('/<th[^>]*>([^<]+)<\/th>/', '<info>\1</info>', $html);
-        $html  = preg_replace('/<td[^>]*>([^<]+)<\/td>/', '<info>\1</info>', $html);
-        $t     = preg_split('/(<h2[^>]*>[^<]+<\/h2>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
-        $r     = [];
+        $html = strip_tags($html, '<h2><th><td>');
+        $html = preg_replace('/<th[^>]*>([^<]+)<\/th>/', '<info>\1</info>', $html);
+        $html = preg_replace('/<td[^>]*>([^<]+)<\/td>/', '<info>\1</info>', $html);
+        $t = preg_split('/(<h2[^>]*>[^<]+<\/h2>)/', $html, -1, PREG_SPLIT_DELIM_CAPTURE);
+        $r = [];
         $count = \count($t);
-        $p1    = '<info>([^<]+)<\/info>';
-        $p2    = '/' . $p1 . '\s*' . $p1 . '\s*' . $p1 . '/';
-        $p3    = '/' . $p1 . '\s*' . $p1 . '/';
+        $p1 = '<info>([^<]+)<\/info>';
+        $p2 = '/' . $p1 . '\s*' . $p1 . '\s*' . $p1 . '/';
+        $p3 = '/' . $p1 . '\s*' . $p1 . '/';
 
         for ($i = 1; $i < $count; $i++) {
             if (preg_match('/<h2[^>]*>([^<]+)<\/h2>/', $t[$i], $matches)) {

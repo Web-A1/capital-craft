@@ -12,7 +12,4 @@ defined('_JEXEC') || die();
 
 use RuntimeException;
 
-class TransferIgnorableError extends RuntimeException
-{
-
-}
+class TransferIgnorableError extends RuntimeException {}

@@ -8,7 +8,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -62,19 +62,22 @@ if (empty($canDo['propagate'])) {
 $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
 $wa->useScript('field.modal-fields');
 $wa->addInlineScript(
-    'window.jSelectCategory_' . $id . ' = function (id, title, object) {
-  window.processModalSelect("Category", "' . $id . '", id, title, "", object);
+    'window.jSelectCategory_' .
+        $id .
+        ' = function (id, title, object) {
+  window.processModalSelect("Category", "' .
+        $id .
+        '", id, title, "", object);
 }',
     ['name' => 'inline.select_category_' . $id],
-    ['type' => 'module']
+    ['type' => 'module'],
 );
 Text::script('JGLOBAL_ASSOCIATIONS_PROPAGATE_FAILED');
 
 // Language propagate callback name
 // Strip off language tag at the end
-$tagLength            = strlen($language);
-$callbackFunctionStem = substr("jSelectCategory_" . $id, 0, -$tagLength);
-
+$tagLength = strlen($language);
+$callbackFunctionStem = substr('jSelectCategory_' . $id, 0, -$tagLength);
 ?>
 
 <button type="button" class="btn btn-primary" <?php echo $value ? '' : 'hidden'; ?>

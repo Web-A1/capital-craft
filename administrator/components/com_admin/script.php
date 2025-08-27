@@ -25,7 +25,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -173,14 +173,17 @@ class JoomlaInstallerScript
 
         try {
             // Get the params for the stats plugin
-            $params = $db->setQuery(
-                $db->getQuery(true)
-                    ->select($db->quoteName('params'))
-                    ->from($db->quoteName('#__extensions'))
-                    ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
-                    ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
-                    ->where($db->quoteName('element') . ' = ' . $db->quote('stats'))
-            )->loadResult();
+            $params = $db
+                ->setQuery(
+                    $db
+                        ->getQuery(true)
+                        ->select($db->quoteName('params'))
+                        ->from($db->quoteName('#__extensions'))
+                        ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
+                        ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
+                        ->where($db->quoteName('element') . ' = ' . $db->quote('stats')),
+                )
+                ->loadResult();
         } catch (Exception $e) {
             $this->collectError(__METHOD__, $e);
 
@@ -196,7 +199,8 @@ class JoomlaInstallerScript
 
         $params = json_encode($params);
 
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->update($db->quoteName('#__extensions'))
             ->set($db->quoteName('params') . ' = ' . $db->quote($params))
             ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
@@ -288,26 +292,65 @@ class JoomlaInstallerScript
              * 'pre_function' => Name of an optional migration function to be called before
              *                   uninstalling, `null` if not used.
              */
-            ['type' => 'plugin', 'element' => 'demotasks', 'folder' => 'task', 'client_id' => 0, 'pre_function' => null],
-            ['type' => 'plugin', 'element' => 'compat', 'folder' => 'system', 'client_id' => 0, 'pre_function' => 'migrateCompatPlugin'],
-            ['type' => 'plugin', 'element' => 'logrotation', 'folder' => 'system', 'client_id' => 0, 'pre_function' => 'migrateLogRotationPlugin'],
-            ['type' => 'plugin', 'element' => 'recaptcha', 'folder' => 'captcha', 'client_id' => 0, 'pre_function' => null],
-            ['type' => 'plugin', 'element' => 'sessiongc', 'folder' => 'system', 'client_id' => 0, 'pre_function' => 'migrateSessionGCPlugin'],
-            ['type' => 'plugin', 'element' => 'updatenotification', 'folder' => 'system', 'client_id' => 0, 'pre_function' => 'migrateUpdatenotificationPlugin'],
+            [
+                'type' => 'plugin',
+                'element' => 'demotasks',
+                'folder' => 'task',
+                'client_id' => 0,
+                'pre_function' => null,
+            ],
+            [
+                'type' => 'plugin',
+                'element' => 'compat',
+                'folder' => 'system',
+                'client_id' => 0,
+                'pre_function' => 'migrateCompatPlugin',
+            ],
+            [
+                'type' => 'plugin',
+                'element' => 'logrotation',
+                'folder' => 'system',
+                'client_id' => 0,
+                'pre_function' => 'migrateLogRotationPlugin',
+            ],
+            [
+                'type' => 'plugin',
+                'element' => 'recaptcha',
+                'folder' => 'captcha',
+                'client_id' => 0,
+                'pre_function' => null,
+            ],
+            [
+                'type' => 'plugin',
+                'element' => 'sessiongc',
+                'folder' => 'system',
+                'client_id' => 0,
+                'pre_function' => 'migrateSessionGCPlugin',
+            ],
+            [
+                'type' => 'plugin',
+                'element' => 'updatenotification',
+                'folder' => 'system',
+                'client_id' => 0,
+                'pre_function' => 'migrateUpdatenotificationPlugin',
+            ],
         ];
 
         $db = Factory::getDbo();
 
         foreach ($extensions as $extension) {
-            $row = $db->setQuery(
-                $db->getQuery(true)
-                    ->select('*')
-                    ->from($db->quoteName('#__extensions'))
-                    ->where($db->quoteName('type') . ' = ' . $db->quote($extension['type']))
-                    ->where($db->quoteName('element') . ' = ' . $db->quote($extension['element']))
-                    ->where($db->quoteName('folder') . ' = ' . $db->quote($extension['folder']))
-                    ->where($db->quoteName('client_id') . ' = ' . $db->quote($extension['client_id']))
-            )->loadObject();
+            $row = $db
+                ->setQuery(
+                    $db
+                        ->getQuery(true)
+                        ->select('*')
+                        ->from($db->quoteName('#__extensions'))
+                        ->where($db->quoteName('type') . ' = ' . $db->quote($extension['type']))
+                        ->where($db->quoteName('element') . ' = ' . $db->quote($extension['element']))
+                        ->where($db->quoteName('folder') . ' = ' . $db->quote($extension['folder']))
+                        ->where($db->quoteName('client_id') . ' = ' . $db->quote($extension['client_id'])),
+                )
+                ->loadObject();
 
             // Skip migrating and uninstalling if the extension doesn't exist
             if (!$row) {
@@ -324,12 +367,13 @@ class JoomlaInstallerScript
 
                 // Unlock and unprotect the plugin so we can uninstall it
                 $db->setQuery(
-                    $db->getQuery(true)
+                    $db
+                        ->getQuery(true)
                         ->update($db->quoteName('#__extensions'))
                         ->set($db->quoteName('locked') . ' = 0')
                         ->set($db->quoteName('protected') . ' = 0')
                         ->where($db->quoteName('extension_id') . ' = :extension_id')
-                        ->bind(':extension_id', $row->extension_id, ParameterType::INTEGER)
+                        ->bind(':extension_id', $row->extension_id, ParameterType::INTEGER),
                 )->execute();
 
                 // Uninstall the plugin
@@ -359,7 +403,8 @@ class JoomlaInstallerScript
         $db = Factory::getDbo();
 
         $db->setQuery(
-            $db->getQuery(true)
+            $db
+                ->getQuery(true)
                 ->update($db->quoteName('#__extensions'))
                 ->set($db->quoteName('enabled') . ' = :enabled')
                 ->set($db->quoteName('params') . ' = :params')
@@ -368,7 +413,7 @@ class JoomlaInstallerScript
                 ->where($db->quoteName('folder') . ' = ' . $db->quote('behaviour'))
                 ->where($db->quoteName('client_id') . ' = 0')
                 ->bind(':enabled', $rowOld->enabled, ParameterType::INTEGER)
-                ->bind(':params', $rowOld->params)
+                ->bind(':params', $rowOld->params),
         )->execute();
     }
 
@@ -394,20 +439,20 @@ class JoomlaInstallerScript
         $model = $component->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
 
         // Get the timeout, as configured in plg_system_logrotation
-        $params       = new Registry($data->params);
+        $params = new Registry($data->params);
         $cachetimeout = (int) $params->get('cachetimeout', 30);
-        $lastrun      = (int) $params->get('lastrun', time());
+        $lastrun = (int) $params->get('lastrun', time());
 
         $task = [
-            'title'           => 'Rotate Logs',
-            'type'            => 'rotation.logs',
+            'title' => 'Rotate Logs',
+            'type' => 'rotation.logs',
             'execution_rules' => [
-                'rule-type'     => 'interval-days',
+                'rule-type' => 'interval-days',
                 'interval-days' => $cachetimeout,
-                'exec-time'     => gmdate('H:i', $lastrun),
-                'exec-day'      => gmdate('d'),
+                'exec-time' => gmdate('H:i', $lastrun),
+                'exec-day' => gmdate('d'),
             ],
-            'state'  => 1,
+            'state' => 1,
             'params' => [
                 'logstokeep' => $params->get('logstokeep', 1),
             ],
@@ -438,18 +483,18 @@ class JoomlaInstallerScript
 
         /** @var \Joomla\Component\Scheduler\Administrator\Model\TaskModel $model */
         $model = $component->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
-        $task  = [
-            'title'           => 'Session GC',
-            'type'            => 'session.gc',
+        $task = [
+            'title' => 'Session GC',
+            'type' => 'session.gc',
             'execution_rules' => [
-                'rule-type'      => 'interval-hours',
+                'rule-type' => 'interval-hours',
                 'interval-hours' => 24,
-                'exec-time'      => gmdate('H:i'),
-                'exec-day'       => gmdate('d'),
+                'exec-time' => gmdate('H:i'),
+                'exec-day' => gmdate('d'),
             ],
-            'state'  => 1,
+            'state' => 1,
             'params' => [
-                'enable_session_gc'          => $params->get('enable_session_gc', 1),
+                'enable_session_gc' => $params->get('enable_session_gc', 1),
                 'enable_session_metadata_gc' => $params->get('enable_session_metadata_gc', 1),
             ],
         ];
@@ -472,29 +517,29 @@ class JoomlaInstallerScript
         }
 
         // Get the timeout for Joomla! updates, as configured in com_installer's component parameters
-        $component    = ComponentHelper::getComponent('com_installer');
-        $paramsc      = $component->getParams();
+        $component = ComponentHelper::getComponent('com_installer');
+        $paramsc = $component->getParams();
         $cachetimeout = (int) $paramsc->get('cachetimeout', 6);
-        $params       = new Registry($data->params);
-        $lastrun      = (int) $params->get('lastrun', time());
+        $params = new Registry($data->params);
+        $lastrun = (int) $params->get('lastrun', time());
 
         /** @var \Joomla\Component\Scheduler\Administrator\Extension\SchedulerComponent $component */
         $component = Factory::getApplication()->bootComponent('com_scheduler');
 
         /** @var \Joomla\Component\Scheduler\Administrator\Model\TaskModel $model */
         $model = $component->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
-        $task  = [
-            'title'           => 'Update Notification',
-            'type'            => 'update.notification',
+        $task = [
+            'title' => 'Update Notification',
+            'type' => 'update.notification',
             'execution_rules' => [
-                'rule-type'      => 'interval-hours',
+                'rule-type' => 'interval-hours',
                 'interval-hours' => $cachetimeout,
-                'exec-time'      => gmdate('H:i', $lastrun),
-                'exec-day'       => gmdate('d'),
+                'exec-time' => gmdate('H:i', $lastrun),
+                'exec-day' => gmdate('d'),
             ],
-            'state'  => 1,
+            'state' => 1,
             'params' => [
-                'email'             => $params->get('email', ''),
+                'email' => $params->get('email', ''),
                 'language_override' => $params->get('language_override', ''),
             ],
         ];
@@ -511,18 +556,20 @@ class JoomlaInstallerScript
         $extensions = ExtensionHelper::getCoreExtensions();
 
         // Attempt to refresh manifest caches
-        $db    = Factory::getDbo();
-        $query = $db->getQuery(true)
-            ->select('*')
-            ->from('#__extensions');
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true)->select('*')->from('#__extensions');
 
         foreach ($extensions as $extension) {
             $query->where(
-                'type=' . $db->quote($extension[0])
-                . ' AND element=' . $db->quote($extension[1])
-                . ' AND folder=' . $db->quote($extension[2])
-                . ' AND client_id=' . $extension[3],
-                'OR'
+                'type=' .
+                    $db->quote($extension[0]) .
+                    ' AND element=' .
+                    $db->quote($extension[1]) .
+                    ' AND folder=' .
+                    $db->quote($extension[2]) .
+                    ' AND client_id=' .
+                    $extension[3],
+                'OR',
             );
         }
 
@@ -543,13 +590,15 @@ class JoomlaInstallerScript
             if (!$installer->refreshManifestCache($extension->extension_id)) {
                 $this->collectError(
                     __METHOD__,
-                    new \Exception(\sprintf(
-                        'Error on updating manifest cache: (type, element, folder, client) = (%s, %s, %s, %s)',
-                        $extension->type,
-                        $extension->element,
-                        $extension->name,
-                        $extension->client_id
-                    ))
+                    new \Exception(
+                        \sprintf(
+                            'Error on updating manifest cache: (type, element, folder, client) = (%s, %s, %s, %s)',
+                            $extension->type,
+                            $extension->element,
+                            $extension->name,
+                            $extension->client_id,
+                        ),
+                    ),
                 );
             }
         }
@@ -566,12 +615,12 @@ class JoomlaInstallerScript
     public function deleteUnexistingFiles($dryRun = false, $suppressOutput = false)
     {
         $status = [
-            'files_exist'     => [],
-            'folders_exist'   => [],
-            'files_deleted'   => [],
+            'files_exist' => [],
+            'folders_exist' => [],
+            'files_deleted' => [],
             'folders_deleted' => [],
-            'files_errors'    => [],
-            'folders_errors'  => [],
+            'files_errors' => [],
+            'folders_errors' => [],
         ];
 
         $files = [
@@ -2764,7 +2813,7 @@ class JoomlaInstallerScript
             '/libraries/vendor/maximebf',
         ];
 
-        $status['files_checked']   = $files;
+        $status['files_checked'] = $files;
         $status['folders_checked'] = $folders;
 
         foreach ($files as $file) {
@@ -2843,10 +2892,10 @@ class JoomlaInstallerScript
                 continue;
             }
 
-            $asset->name      = $component;
+            $asset->name = $component;
             $asset->parent_id = 1;
-            $asset->rules     = '{}';
-            $asset->title     = $component;
+            $asset->rules = '{}';
+            $asset->title = $component;
             $asset->setLocation(1, 'last-child');
 
             if (!$asset->store()) {
@@ -2872,7 +2921,9 @@ class JoomlaInstallerScript
     private function cleanJoomlaCache()
     {
         /** @var \Joomla\Component\Cache\Administrator\Model\CacheModel $model */
-        $model = Factory::getApplication()->bootComponent('com_cache')->getMVCFactory()
+        $model = Factory::getApplication()
+            ->bootComponent('com_cache')
+            ->getMVCFactory()
             ->createModel('Cache', 'Administrator', ['ignore_request' => true]);
 
         // Clean frontend cache
@@ -2937,14 +2988,17 @@ class JoomlaInstallerScript
 
         try {
             // Get the ActionLogs system plugin's parameters
-            $row = $db->setQuery(
-                $db->getQuery(true)
-                    ->select([$db->quotename('enabled'), $db->quoteName('params')])
-                    ->from($db->quoteName('#__extensions'))
-                    ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
-                    ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
-                    ->where($db->quoteName('element') . ' = ' . $db->quote('actionlogs'))
-            )->loadObject();
+            $row = $db
+                ->setQuery(
+                    $db
+                        ->getQuery(true)
+                        ->select([$db->quotename('enabled'), $db->quoteName('params')])
+                        ->from($db->quoteName('#__extensions'))
+                        ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
+                        ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
+                        ->where($db->quoteName('element') . ' = ' . $db->quote('actionlogs')),
+                )
+                ->loadObject();
         } catch (Exception $e) {
             $this->collectError(__METHOD__, $e);
 
@@ -2968,16 +3022,16 @@ class JoomlaInstallerScript
 
         /** @var \Joomla\Component\Scheduler\Administrator\Model\TaskModel $model */
         $model = $component->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
-        $task  = [
-            'title'           => 'Delete Action Logs',
-            'type'            => 'delete.actionlogs',
+        $task = [
+            'title' => 'Delete Action Logs',
+            'type' => 'delete.actionlogs',
             'execution_rules' => [
-                'rule-type'      => 'interval-hours',
+                'rule-type' => 'interval-hours',
                 'interval-hours' => 24,
-                'exec-time'      => gmdate('H:i', $params->get('lastrun', time())),
-                'exec-day'       => gmdate('d'),
+                'exec-time' => gmdate('H:i', $params->get('lastrun', time())),
+                'exec-day' => gmdate('d'),
             ],
-            'state'  => 1,
+            'state' => 1,
             'params' => [
                 'logDeletePeriod' => $params->get('logDeletePeriod', 0),
             ],
@@ -3006,14 +3060,17 @@ class JoomlaInstallerScript
 
         try {
             // Get the PrivacyConsent system plugin's parameters
-            $row = $db->setQuery(
-                $db->getQuery(true)
-                    ->select([$db->quotename('enabled'), $db->quoteName('params')])
-                    ->from($db->quoteName('#__extensions'))
-                    ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
-                    ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
-                    ->where($db->quoteName('element') . ' = ' . $db->quote('privacyconsent'))
-            )->loadObject();
+            $row = $db
+                ->setQuery(
+                    $db
+                        ->getQuery(true)
+                        ->select([$db->quotename('enabled'), $db->quoteName('params')])
+                        ->from($db->quoteName('#__extensions'))
+                        ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
+                        ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))
+                        ->where($db->quoteName('element') . ' = ' . $db->quote('privacyconsent')),
+                )
+                ->loadObject();
         } catch (Exception $e) {
             $this->collectError(__METHOD__, $e);
 
@@ -3037,19 +3094,19 @@ class JoomlaInstallerScript
 
         /** @var \Joomla\Component\Scheduler\Administrator\Model\TaskModel $model */
         $model = $component->getMVCFactory()->createModel('Task', 'Administrator', ['ignore_request' => true]);
-        $task  = [
-            'title'           => 'Privacy Consent',
-            'type'            => 'privacy.consent',
+        $task = [
+            'title' => 'Privacy Consent',
+            'type' => 'privacy.consent',
             'execution_rules' => [
-                'rule-type'     => 'interval-days',
+                'rule-type' => 'interval-days',
                 'interval-days' => $params->get('cachetimeout', 30),
-                'exec-time'     => gmdate('H:i', $params->get('lastrun', time())),
-                'exec-day'      => gmdate('d'),
+                'exec-time' => gmdate('H:i', $params->get('lastrun', time())),
+                'exec-day' => gmdate('d'),
             ],
-            'state'  => 1,
+            'state' => 1,
             'params' => [
                 'consentexpiration' => $params->get('consentexpiration', 360),
-                'remind'            => $params->get('remind', 30),
+                'remind' => $params->get('remind', 30),
             ],
         ];
 
@@ -3080,14 +3137,17 @@ class JoomlaInstallerScript
 
         try {
             // Get the TinyMCE editor plugin's parameters
-            $params = $db->setQuery(
-                $db->getQuery(true)
-                    ->select($db->quoteName('params'))
-                    ->from($db->quoteName('#__extensions'))
-                    ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
-                    ->where($db->quoteName('folder') . ' = ' . $db->quote('editors'))
-                    ->where($db->quoteName('element') . ' = ' . $db->quote('tinymce'))
-            )->loadResult();
+            $params = $db
+                ->setQuery(
+                    $db
+                        ->getQuery(true)
+                        ->select($db->quoteName('params'))
+                        ->from($db->quoteName('#__extensions'))
+                        ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
+                        ->where($db->quoteName('folder') . ' = ' . $db->quote('editors'))
+                        ->where($db->quoteName('element') . ' = ' . $db->quote('tinymce')),
+                )
+                ->loadResult();
         } catch (Exception $e) {
             $this->collectError(__METHOD__, $e);
 
@@ -3113,16 +3173,20 @@ class JoomlaInstallerScript
                  * "formats"      -> "styles"
                  * "template"     -> "jtemplate"
                  */
-                $search  = ['blockformats', 'fontformats', 'fontsizes', 'formats'];
+                $search = ['blockformats', 'fontformats', 'fontsizes', 'formats'];
                 $replace = ['blocks', 'fontfamily', 'fontsize', 'styles'];
 
                 // Don't redo the template
                 if (!\in_array('jtemplate', $params['configuration']['toolbars'][$setIdx]['menu'])) {
-                    $search[]  = 'template';
+                    $search[] = 'template';
                     $replace[] = 'jtemplate';
                 }
 
-                $params['configuration']['toolbars'][$setIdx]['menu'] = str_replace($search, $replace, $toolbarConfig['menu']);
+                $params['configuration']['toolbars'][$setIdx]['menu'] = str_replace(
+                    $search,
+                    $replace,
+                    $toolbarConfig['menu'],
+                );
             }
 
             // There could be no toolbar at all, or only toolbar1, or both toolbar1 and toolbar2
@@ -3137,23 +3201,28 @@ class JoomlaInstallerScript
                      * "styleselect"    -> "styles"
                      * "template"       -> "jtemplate"
                      */
-                    $search  = ['fontselect', 'fontsizeselect', 'formatselect', 'styleselect'];
+                    $search = ['fontselect', 'fontsizeselect', 'formatselect', 'styleselect'];
                     $replace = ['fontfamily', 'fontsize', 'blocks', 'styles'];
 
                     // Don't redo the template
                     if (!\in_array('jtemplate', $params['configuration']['toolbars'][$setIdx][$toolbarIdx])) {
-                        $search[]  = 'template';
+                        $search[] = 'template';
                         $replace[] = 'jtemplate';
                     }
 
-                    $params['configuration']['toolbars'][$setIdx][$toolbarIdx] = str_replace($search, $replace, $toolbarConfig[$toolbarIdx]);
+                    $params['configuration']['toolbars'][$setIdx][$toolbarIdx] = str_replace(
+                        $search,
+                        $replace,
+                        $toolbarConfig[$toolbarIdx],
+                    );
                 }
             }
         }
 
         $params = json_encode($params);
 
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->update($db->quoteName('#__extensions'))
             ->set($db->quoteName('params') . ' = ' . $db->quote($params))
             ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
@@ -3181,7 +3250,9 @@ class JoomlaInstallerScript
     private function setGuidedToursUid()
     {
         /** @var \Joomla\Component\Cache\Administrator\Model\CacheModel $model */
-        $model = Factory::getApplication()->bootComponent('com_guidedtours')->getMVCFactory()
+        $model = Factory::getApplication()
+            ->bootComponent('com_guidedtours')
+            ->getMVCFactory()
             ->createModel('Tours', 'Administrator', ['ignore_request' => true]);
 
         $items = $model->getItems();
@@ -3193,7 +3264,10 @@ class JoomlaInstallerScript
                 $tourItem->load($item->id);
 
                 // Tour follows Joomla naming convention
-                if (str_starts_with($tourItem->title, 'COM_GUIDEDTOURS_TOUR_') && str_ends_with($tourItem->title, '_TITLE')) {
+                if (
+                    str_starts_with($tourItem->title, 'COM_GUIDEDTOURS_TOUR_') &&
+                    str_ends_with($tourItem->title, '_TITLE')
+                ) {
                     $uidTitle = 'joomla_' . str_replace('COM_GUIDEDTOURS_TOUR_', '', $tourItem->title);
 
                     // Remove the last _TITLE part
@@ -3201,31 +3275,38 @@ class JoomlaInstallerScript
                     if ($pos !== false) {
                         $uidTitle = substr($uidTitle, 0, $pos);
                     }
-                } elseif (preg_match('#COM_(\w+)_TOUR_#', $tourItem->title) && str_ends_with($tourItem->title, '_TITLE')) {
+                } elseif (
+                    preg_match('#COM_(\w+)_TOUR_#', $tourItem->title) &&
+                    str_ends_with($tourItem->title, '_TITLE')
+                ) {
                     // Tour follows component naming pattern
                     $uidTitle = preg_replace('#COM_(\w+)_TOUR_#', '$1.', $tourItem->title);
 
                     // Remove the last _TITLE part
-                    $pos = strrpos($uidTitle, "_TITLE");
+                    $pos = strrpos($uidTitle, '_TITLE');
                     if ($pos !== false) {
                         $uidTitle = substr($uidTitle, 0, $pos);
                     }
                 } else {
-                    $uri      = Uri::getInstance();
-                    $host     = $uri->toString(['host']);
-                    $host     = ApplicationHelper::stringURLSafe($host, $tourItem->language);
+                    $uri = Uri::getInstance();
+                    $host = $uri->toString(['host']);
+                    $host = ApplicationHelper::stringURLSafe($host, $tourItem->language);
                     $uidTitle = $host . ' ' . str_replace('COM_GUIDEDTOURS_TOUR_', '', $tourItem->title);
                     // Remove the last _TITLE part
                     if (str_ends_with($uidTitle, '_TITLE')) {
-                        $pos      = strrpos($uidTitle, '_TITLE');
+                        $pos = strrpos($uidTitle, '_TITLE');
                         $uidTitle = substr($uidTitle, 0, $pos);
                     }
                 }
                 // ApplicationHelper::stringURLSafe will replace a period (.) separator so we split the construction into multiple parts
                 $uidTitleParts = explode('.', $uidTitle);
-                array_walk($uidTitleParts, function (&$value, $key, $tourLanguage) {
-                    $value = ApplicationHelper::stringURLSafe($value, $tourLanguage);
-                }, $tourItem->language);
+                array_walk(
+                    $uidTitleParts,
+                    function (&$value, $key, $tourLanguage) {
+                        $value = ApplicationHelper::stringURLSafe($value, $tourLanguage);
+                    },
+                    $tourItem->language,
+                );
                 $tourItem->uid = implode('.', $uidTitleParts);
 
                 $tourItem->store();
@@ -3244,10 +3325,13 @@ class JoomlaInstallerScript
     {
         $files = [
             // From 4.4 to 5.0
-            '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/ED256.php' => '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/Ed256.php',
-            '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/ED512.php' => '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/Ed512.php',
+            '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/ED256.php' =>
+                '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/Ed256.php',
+            '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/ED512.php' =>
+                '/libraries/vendor/web-auth/cose-lib/src/Algorithm/Signature/EdDSA/Ed512.php',
             // From 5.0.0-alpha3 to 5.0.0-alpha4
-            '/plugins/schemaorg/blogposting/src/Extension/Blogposting.php' => '/plugins/schemaorg/blogposting/src/Extension/BlogPosting.php',
+            '/plugins/schemaorg/blogposting/src/Extension/Blogposting.php' =>
+                '/plugins/schemaorg/blogposting/src/Extension/BlogPosting.php',
         ];
 
         foreach ($files as $old => $expected) {
@@ -3258,9 +3342,9 @@ class JoomlaInstallerScript
                 continue;
             }
 
-            $oldBasename      = basename($oldRealpath);
-            $newRealpath      = realpath(JPATH_ROOT . $expected);
-            $newBasename      = basename($newRealpath);
+            $oldBasename = basename($oldRealpath);
+            $newRealpath = realpath(JPATH_ROOT . $expected);
+            $newBasename = basename($newRealpath);
             $expectedBasename = basename($expected);
 
             // On Windows or Unix with only the incorrectly cased file.
@@ -3307,9 +3391,9 @@ class JoomlaInstallerScript
     {
         // Don't do anything if not updating from a 5.2.0 or 5.2.1
         if (
-            empty($this->fromVersion)
-            || version_compare($this->fromVersion, '5.2.0', 'lt')
-            || version_compare($this->fromVersion, '5.2.1', 'gt')
+            empty($this->fromVersion) ||
+            version_compare($this->fromVersion, '5.2.0', 'lt') ||
+            version_compare($this->fromVersion, '5.2.1', 'gt')
         ) {
             return;
         }

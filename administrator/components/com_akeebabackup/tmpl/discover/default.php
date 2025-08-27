@@ -14,11 +14,15 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-$this->getDocument()
-	->addScriptOptions('akeebabackup.Configuration.URLs.browser', Route::_(
-		'index.php?option=com_akeebabackup&view=Browser&processfolder=1&tmpl=component&folder=',
-		false, Route::TLS_IGNORE, true
-	));
+$this->getDocument()->addScriptOptions(
+    'akeebabackup.Configuration.URLs.browser',
+    Route::_(
+        'index.php?option=com_akeebabackup&view=Browser&processfolder=1&tmpl=component&folder=',
+        false,
+        Route::TLS_IGNORE,
+        true,
+    ),
+);
 
 echo $this->loadAnyTemplate('commontemplates/folderbrowser');
 ?>

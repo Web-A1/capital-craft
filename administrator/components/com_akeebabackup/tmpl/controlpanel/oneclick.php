@@ -12,7 +12,6 @@ defined('_JEXEC') || die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-2">
 	<h3 class="card-header bg-primary text-white">
@@ -21,7 +20,7 @@ use Joomla\CMS\Language\Text;
 
 	<div class="card-body">
 		<div class="akeeba-cpanel-container d-flex flex-row flex-wrap align-items-stretch">
-			<?php foreach($this->quickIconProfiles as $qiProfile): ?>
+			<?php foreach ($this->quickIconProfiles as $qiProfile): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-success border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Backup&autostart=1&profileid=<?= (int) $qiProfile->id ?>&<?= Factory::getApplication()->getFormToken() ?>=1">
 					<div class="bg-success text-white d-block text-center p-3 h2">
@@ -29,7 +28,7 @@ use Joomla\CMS\Language\Text;
 					</div>
 					<span><?= $this->escape($qiProfile->description) ?></span>
 				</a>
-			<?php endforeach ?>
+			<?php endforeach; ?>
 		</div>
 	</div>
 

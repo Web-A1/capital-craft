@@ -18,33 +18,25 @@ use Akeeba\Engine\Factory;
  */
 class Excludefiles extends Base
 {
-	public function __construct()
-	{
-		$this->object      = 'file';
-		$this->subtype     = 'all';
-		$this->method      = 'direct';
-		$this->filter_name = 'Excludefiles';
+    public function __construct()
+    {
+        $this->object = 'file';
+        $this->subtype = 'all';
+        $this->method = 'direct';
+        $this->filter_name = 'Excludefiles';
 
-		// Get the site's root
-		$configuration = Factory::getConfiguration();
+        // Get the site's root
+        $configuration = Factory::getConfiguration();
 
-		if ($configuration->get('akeeba.platform.override_root', 0))
-		{
-			$root = $configuration->get('akeeba.platform.newroot', '[SITEROOT]');
-		}
-		else
-		{
-			$root = '[SITEROOT]';
-		}
+        if ($configuration->get('akeeba.platform.override_root', 0)) {
+            $root = $configuration->get('akeeba.platform.newroot', '[SITEROOT]');
+        } else {
+            $root = '[SITEROOT]';
+        }
 
-		// We take advantage of the filter class magic to inject our custom filters
-		$this->filter_data[$root] = array(
-			'kickstart.php',
-			'error_log',
-			'administrator/error_log'
-		);
+        // We take advantage of the filter class magic to inject our custom filters
+        $this->filter_data[$root] = ['kickstart.php', 'error_log', 'administrator/error_log'];
 
-		parent::__construct();
-	}
-
+        parent::__construct();
+    }
 }

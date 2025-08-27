@@ -23,18 +23,12 @@ use Joomla\DI\ServiceProviderInterface;
 
 class CacheCleaner implements ServiceProviderInterface
 {
-	public function register(Container $container)
-	{
-		$container->set(
-			CacheCleanerService::class,
-			function (Container $container) {
-				$app = Factory::getApplication();
+    public function register(Container $container)
+    {
+        $container->set(CacheCleanerService::class, function (Container $container) {
+            $app = Factory::getApplication();
 
-				return new CacheCleanerService(
-					$app,
-					$container->get(CacheControllerFactoryInterface::class)
-				);
-			}
-		);
-	}
+            return new CacheCleanerService($app, $container->get(CacheControllerFactoryInterface::class));
+        });
+    }
 }

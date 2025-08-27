@@ -16,8 +16,7 @@ defined('_JEXEC') || die();
 // Pass parameters to the JavaScript
 $vapidKeys = $this->getModel('push')->getVapidKeys('com_akeebabackup');
 
-if ($vapidKeys === null):
-?>
+if ($vapidKeys === null): ?>
 <div class="card mb-2">
 	<h3 class="card-header bg-info text-white">
 		<?= Text::_('COM_AKEEBABACKUP_CONTROLPANEL_WEBPUSH_HEAD') ?>
@@ -29,34 +28,32 @@ if ($vapidKeys === null):
 		</div>
 	</div>
 </div>
-<?php
-endif;
+<?php endif;
 
 $this->getDocument()->addScriptOptions('com_akeebabackup.webPush', [
-	'workerUri'         => $this->getDocument()
-		->getWebAssetManager()
-		->getAsset('script', 'com_akeebabackup.webpush-worker')
-		->getUri('true'),
-	'subscribeUri'      => Route::_(
-		'index.php?option=com_akeebabackup&task=Push.webpushsubscribe',
-		false,
-		Route::TLS_IGNORE,
-		true
-	),
-	'unsubscribeUri'    => Route::_(
-		'index.php?option=com_akeebabackup&task=Push.webpushunsubscribe',
-		false,
-		Route::TLS_IGNORE,
-		true
-	),
-	'vapidKeys'         => $vapidKeys,
-	'subscribeButton'   => '#btnWebPushSubscribe',
-	'unsubscribeButton' => '#btnWebPushUnsubscribe',
-	'unavailableInfo'   => '#webPushNotAvailable',
+    'workerUri' => $this->getDocument()
+        ->getWebAssetManager()
+        ->getAsset('script', 'com_akeebabackup.webpush-worker')
+        ->getUri('true'),
+    'subscribeUri' => Route::_(
+        'index.php?option=com_akeebabackup&task=Push.webpushsubscribe',
+        false,
+        Route::TLS_IGNORE,
+        true,
+    ),
+    'unsubscribeUri' => Route::_(
+        'index.php?option=com_akeebabackup&task=Push.webpushunsubscribe',
+        false,
+        Route::TLS_IGNORE,
+        true,
+    ),
+    'vapidKeys' => $vapidKeys,
+    'subscribeButton' => '#btnWebPushSubscribe',
+    'unsubscribeButton' => '#btnWebPushUnsubscribe',
+    'unavailableInfo' => '#webPushNotAvailable',
 ]);
 // Load the JavaScript
 $this->getDocument()->getWebAssetManager()->useScript('com_akeebabackup.webpush');
-
 ?>
 <div class="card mb-2">
 	<h3 class="card-header bg-info text-white">

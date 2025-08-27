@@ -9,7 +9,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="alert alert-success" id="comAkeebaUploadDone">
 	<?= Text::_('COM_AKEEBABACKUP_TRANSFER_MSG_DONE') ?>

@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Joomla\CMS\HTML\HTMLHelper as HTMLHelperAlias;
 use Joomla\CMS\Language\Text;
@@ -14,20 +14,18 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var  \Akeeba\Component\AkeebaBackup\Administrator\View\Alice\HtmlView $this */
 
-$js = <<< JS
+$js = <<<JS
 document.addEventListener('DOMContentLoaded', function() {
     setTimeout(function () {
-		document.forms.adminForm.submit();        
+		document.forms.adminForm.submit();
     }, 500);
 });
 JS;
 
-$this->getDocument()->getWebAssetManager()
-	->useScript('com_akeebabackup.system')
-	->addInlineScript($js, [], [], [
-			'com_akeebabackup.system'
-	]);
-
+$this->getDocument()
+    ->getWebAssetManager()
+    ->useScript('com_akeebabackup.system')
+    ->addInlineScript($js, [], [], ['com_akeebabackup.system']);
 ?>
 
 <div class="card">

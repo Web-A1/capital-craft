@@ -8,13 +8,12 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Joomla\Component\Admin\Administrator\View\Sysinfo\HtmlView $this */
-
 ?>
 <div class="sysinfo">
     <table class="table">
@@ -125,7 +124,9 @@ use Joomla\CMS\Language\Text;
                     <?php echo Text::_('COM_ADMIN_JOOMLA_COMPAT_PLUGIN'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['compatpluginenabled'] ? Text::_('JENABLED') . ' (' . $this->info['compatpluginparameters'] . ')' : Text::_('JDISABLED'); ?>
+                    <?php echo $this->info['compatpluginenabled']
+                        ? Text::_('JENABLED') . ' (' . $this->info['compatpluginparameters'] . ')'
+                        : Text::_('JDISABLED'); ?>
                 </td>
             </tr>
             <tr>

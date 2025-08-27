@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -43,8 +43,9 @@ class PlugininfoField extends FormField
      */
     protected function getInput()
     {
-        $db     = $this->getDatabase();
-        $query  = $db->getQuery(true)
+        $db = $this->getDatabase();
+        $query = $db
+            ->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('folder') . ' = ' . $db->quote('actionlog'))
@@ -57,14 +58,14 @@ class PlugininfoField extends FormField
             'link',
             Route::_('index.php?option=com_plugins&task=plugin.edit&extension_id=' . $result),
             Text::_('PLG_SYSTEM_ACTIONLOGS_JOOMLA_ACTIONLOG_DISABLED'),
-            ['class' => 'alert-link']
+            ['class' => 'alert-link'],
         );
 
-        return '<div class="alert alert-info">'
-            . '<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden">'
-            . Text::_('INFO')
-            . '</span>'
-            . Text::sprintf('PLG_SYSTEM_ACTIONLOGS_JOOMLA_ACTIONLOG_DISABLED_REDIRECT', $link)
-            . '</div>';
+        return '<div class="alert alert-info">' .
+            '<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden">' .
+            Text::_('INFO') .
+            '</span>' .
+            Text::sprintf('PLG_SYSTEM_ACTIONLOGS_JOOMLA_ACTIONLOG_DISABLED_REDIRECT', $link) .
+            '</div>';
     }
 }

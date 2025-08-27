@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -44,11 +44,12 @@ class ComponentsCategoryField extends ListField
     protected function getOptions()
     {
         // Initialise variable.
-        $db      = $this->getDatabase();
+        $db = $this->getDatabase();
         $options = [];
 
         $query = $db->getQuery(true);
-        $query->select('DISTINCT ' . $db->quoteName('extension'))
+        $query
+            ->select('DISTINCT ' . $db->quoteName('extension'))
             ->from($db->quoteName('#__categories'))
             ->where($db->quoteName('extension') . ' != ' . $db->quote('system'));
 
@@ -56,23 +57,24 @@ class ComponentsCategoryField extends ListField
         $categoryTypes = $db->loadColumn();
 
         foreach ($categoryTypes as $categoryType) {
-            $option        = new \stdClass();
+            $option = new \stdClass();
             $option->value = $categoryType;
 
             // Extract the component name and optional section name
-            $parts     = explode('.', $categoryType);
+            $parts = explode('.', $categoryType);
             $component = $parts[0];
-            $section   = (\count($parts) > 1) ? $parts[1] : null;
+            $section = \count($parts) > 1 ? $parts[1] : null;
 
             // Load component language files
             $lang = Factory::getLanguage();
-            $lang->load($component, JPATH_BASE)
-            || $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
+            $lang->load($component, JPATH_BASE) ||
+                $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
 
             // If the component section string exists, let's use it
             if ($lang->hasKey($component_section_key = strtoupper($component . ($section ? "_$section" : '')))) {
                 $option->text = Text::_($component_section_key);
-            } else { // Else use the component title
+            } else {
+                // Else use the component title
                 $option->text = Text::_(strtoupper($component));
             }
 

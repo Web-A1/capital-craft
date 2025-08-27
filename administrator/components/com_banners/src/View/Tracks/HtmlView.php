@@ -21,7 +21,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Banners\Administrator\Model\TracksModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -92,14 +92,14 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var TracksModel $model */
-        $model               = $this->getModel();
-        $this->items         = $model->getItems();
-        $this->pagination    = $model->getPagination();
-        $this->state         = $model->getState();
-        $this->filterForm    = $model->getFilterForm();
+        $model = $this->getModel();
+        $this->items = $model->getItems();
+        $this->pagination = $model->getPagination();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
-        if (!\count($this->items) && $this->isEmptyState = $model->getIsEmptyState()) {
+        if (!\count($this->items) && ($this->isEmptyState = $model->getIsEmptyState())) {
             $this->setLayout('emptystate');
         }
 
@@ -122,27 +122,33 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        $canDo   = ContentHelper::getActions('com_banners', 'category', $this->state->get('filter.category_id'));
+        $canDo = ContentHelper::getActions('com_banners', 'category', $this->state->get('filter.category_id'));
         $toolbar = $this->getDocument()->getToolbar();
 
         ToolbarHelper::title(Text::_('COM_BANNERS_MANAGER_TRACKS'), 'bookmark banners-tracks');
 
         if (!$this->isEmptyState) {
-            $toolbar->popupButton()
+            $toolbar
+                ->popupButton()
                 ->url(Route::_('index.php?option=com_banners&view=download&tmpl=component'))
                 ->text('JTOOLBAR_EXPORT')
                 ->selector('downloadModal')
                 ->icon('icon-download')
-                ->footer('<button class="btn btn-secondary" data-bs-dismiss="modal" type="button"'
-                    . ' onclick="window.parent.Joomla.Modal.getCurrent().close();">'
-                    . Text::_('COM_BANNERS_CANCEL') . '</button>'
-                    . '<button class="btn btn-success" type="button"'
-                    . ' onclick="Joomla.iframeButtonClick({iframeSelector: \'#downloadModal\', buttonSelector: \'#exportBtn\'})">'
-                    . Text::_('COM_BANNERS_TRACKS_EXPORT') . '</button>');
+                ->footer(
+                    '<button class="btn btn-secondary" data-bs-dismiss="modal" type="button"' .
+                        ' onclick="window.parent.Joomla.Modal.getCurrent().close();">' .
+                        Text::_('COM_BANNERS_CANCEL') .
+                        '</button>' .
+                        '<button class="btn btn-success" type="button"' .
+                        ' onclick="Joomla.iframeButtonClick({iframeSelector: \'#downloadModal\', buttonSelector: \'#exportBtn\'})">' .
+                        Text::_('COM_BANNERS_TRACKS_EXPORT') .
+                        '</button>',
+                );
         }
 
         if (!$this->isEmptyState && $canDo->get('core.delete')) {
-            $toolbar->delete('tracks.delete', 'COM_BANNERS_TRACKS_DELETE')
+            $toolbar
+                ->delete('tracks.delete', 'COM_BANNERS_TRACKS_DELETE')
                 ->message('COM_BANNERS_DELETE_MSG')
                 ->listCheck(false);
         }

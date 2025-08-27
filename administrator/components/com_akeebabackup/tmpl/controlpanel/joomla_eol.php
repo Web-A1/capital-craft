@@ -6,9 +6,7 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') || die();
-
-?>
+defined('_JEXEC') || die(); ?>
 <?php if (time() > 1760475600): ?>
 	<details class="alert alert-danger">
 		<summary class="alert-heading h3">Joomla! 4 has reached End of Service</summary>
@@ -35,7 +33,7 @@ defined('_JEXEC') || die();
 			<strong>You need to update your site to Joomla! 5 as soon as possible.</strong> We will not provide any updates or support after October 15th, 2025. Moreover, we do not guarantee an update path to Joomla! 5 and beyond will exist after October 15th, 2025.
 		</p>
 	</details>
-<?php elseif(time() > 1697317200): ?>
+<?php elseif (time() > 1697317200): ?>
 	<details class="alert alert-info">
 		<summary class="alert-heading h3">Joomla! 4 is approaching Security Maintenance</summary>
 		<p>

@@ -14,7 +14,6 @@ use Joomla\CMS\Language\Text;
 /** @var HtmlView $this */
 
 $errorParts = explode("\n", $this->errorMessage, 2);
-
 ?>
 <div class="alert alert-danger">
 	<?php if (!empty($this->errorMessage)): ?>
@@ -24,9 +23,9 @@ $errorParts = explode("\n", $this->errorMessage, 2);
     <p>
         <?= $errorParts[0] ?>
     </p>
-    <?php if(isset($errorParts[1])): ?>
+    <?php if (isset($errorParts[1])): ?>
         <pre><?= $errorParts[1] ?></pre>
-    <?php endif ?>
+    <?php endif; ?>
 	<?php else: ?>
 		<?= Text::_('COM_AKEEBABACKUP_TRANSFER_MSG_FAILED') ?>
 	<?php endif; ?>

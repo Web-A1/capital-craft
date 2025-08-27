@@ -8,14 +8,14 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Layout\LayoutHelper;
 
 $displayData = [
     'textPrefix' => 'COM_BANNERS_TRACKS',
-    'helpURL'    => 'https://docs.joomla.org/Special:MyLanguage/Help5.x:Banners:_Tracks',
-    'icon'       => 'icon-bookmark banners',
+    'helpURL' => 'https://docs.joomla.org/Special:MyLanguage/Help5.x:Banners:_Tracks',
+    'icon' => 'icon-bookmark banners',
 ];
 
 echo LayoutHelper::render('joomla.content.emptystate', $displayData);

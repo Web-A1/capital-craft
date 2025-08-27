@@ -7,22 +7,22 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Mixin;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 trait ViewTaskBasedEventsTrait
 {
-	use TriggerEventTrait;
+    use TriggerEventTrait;
 
-	public function display($tpl = null)
-	{
-		$task = $this->getModel()->getState('task');
+    public function display($tpl = null)
+    {
+        $task = $this->getModel()->getState('task');
 
-		$eventName = 'onBefore' . ucfirst($task);
-		$this->triggerEvent($eventName, [&$tpl]);
+        $eventName = 'onBefore' . ucfirst($task);
+        $this->triggerEvent($eventName, [&$tpl]);
 
-		parent::display($tpl);
+        parent::display($tpl);
 
-		$eventName = 'onAfter' . ucfirst($task);
-		$this->triggerEvent($eventName, [&$tpl]);
-	}
+        $eventName = 'onAfter' . ucfirst($task);
+        $this->triggerEvent($eventName, [&$tpl]);
+    }
 }

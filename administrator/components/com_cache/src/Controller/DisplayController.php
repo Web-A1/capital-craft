@@ -17,7 +17,7 @@ use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -86,7 +86,10 @@ class DisplayController extends BaseController
             $result = $this->getModel('cache')->cleanlist($cid);
 
             if ($result !== []) {
-                $this->app->enqueueMessage(Text::sprintf('COM_CACHE_EXPIRED_ITEMS_DELETE_ERROR', implode(', ', $result)), 'error');
+                $this->app->enqueueMessage(
+                    Text::sprintf('COM_CACHE_EXPIRED_ITEMS_DELETE_ERROR', implode(', ', $result)),
+                    'error',
+                );
             } else {
                 $this->app->enqueueMessage(Text::_('COM_CACHE_EXPIRED_ITEMS_HAVE_BEEN_DELETED'), 'message');
             }
@@ -108,7 +111,7 @@ class DisplayController extends BaseController
         $this->checkToken();
 
         /** @var \Joomla\Component\Cache\Administrator\Model\CacheModel $model */
-        $model      = $this->getModel('cache');
+        $model = $this->getModel('cache');
         $allCleared = true;
 
         $mCache = $model->getCache();
@@ -118,9 +121,9 @@ class DisplayController extends BaseController
                 $this->app->enqueueMessage(
                     Text::sprintf(
                         'COM_CACHE_EXPIRED_ITEMS_DELETE_ERROR',
-                        Text::_('JADMINISTRATOR') . ' > ' . $cache->group
+                        Text::_('JADMINISTRATOR') . ' > ' . $cache->group,
                     ),
-                    'error'
+                    'error',
                 );
                 $allCleared = false;
             }

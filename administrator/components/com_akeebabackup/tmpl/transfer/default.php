@@ -22,7 +22,7 @@ use Joomla\CMS\Language\Text;
 			<?= Text::_('COM_AKEEBABACKUP_TRANSFER_FORCE_BODY') ?>
 		</p>
 	</div>
-<?php endif ?>
+<?php endif; ?>
 
 <?= $this->loadTemplate('prerequisites') ?>
 

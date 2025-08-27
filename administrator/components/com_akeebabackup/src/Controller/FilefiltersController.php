@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Controller;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerAjaxTrait;
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerCustomACLTrait;
@@ -16,8 +16,8 @@ use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerReusableModelsTr
 
 class FilefiltersController extends DatabasefiltersController
 {
-	use ControllerEventsTrait;
-	use ControllerCustomACLTrait;
-	use ControllerReusableModelsTrait;
-	use ControllerAjaxTrait;
+    use ControllerEventsTrait;
+    use ControllerCustomACLTrait;
+    use ControllerReusableModelsTrait;
+    use ControllerAjaxTrait;
 }

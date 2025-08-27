@@ -21,7 +21,7 @@ use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -62,7 +62,7 @@ class BannerModel extends AdminModel
      * @var  array
      */
     protected $batch_commands = [
-        'client_id'   => 'batchClient',
+        'client_id' => 'batchClient',
         'language_id' => 'batchLanguage',
     ];
 
@@ -80,19 +80,19 @@ class BannerModel extends AdminModel
     protected function cleanupPostBatchCopy(TableInterface $table, $newId, $oldId)
     {
         // Initialise clicks and impmade
-        $db    = $this->getDatabase();
+        $db = $this->getDatabase();
 
-        $query = $db->getQuery(true)
-                ->update($db->quoteName('#__banners'))
-                ->set($db->quoteName('clicks') . ' = 0')
-                ->set($db->quoteName('impmade') . ' = 0')
-                ->where($db->quoteName('id') . ' = :newId')
-                ->bind(':newId', $newId, ParameterType::INTEGER);
+        $query = $db
+            ->getQuery(true)
+            ->update($db->quoteName('#__banners'))
+            ->set($db->quoteName('clicks') . ' = 0')
+            ->set($db->quoteName('impmade') . ' = 0')
+            ->where($db->quoteName('id') . ' = :newId')
+            ->bind(':newId', $newId, ParameterType::INTEGER);
 
         $db->setQuery($query);
         $db->execute();
     }
-
 
     /**
      * Batch client changes for a group of banners.
@@ -173,8 +173,8 @@ class BannerModel extends AdminModel
     public function generateTitle($categoryId, $table)
     {
         // Alter the title & alias
-        $data         = $this->generateNewTitle($categoryId, $table->alias, $table->name);
-        $table->name  = $data['0'];
+        $data = $this->generateNewTitle($categoryId, $table->alias, $table->name);
+        $table->name = $data['0'];
         $table->alias = $data['1'];
     }
 
@@ -191,7 +191,10 @@ class BannerModel extends AdminModel
     {
         // Check against the category.
         if (!empty($record->catid)) {
-            return $this->getCurrentUser()->authorise('core.edit.state', 'com_banners.category.' . (int) $record->catid);
+            return $this->getCurrentUser()->authorise(
+                'core.edit.state',
+                'com_banners.category.' . (int) $record->catid,
+            );
         }
 
         // Default to component settings if category not known.
@@ -253,7 +256,7 @@ class BannerModel extends AdminModel
     protected function loadFormData()
     {
         // Check the session for previously entered form data.
-        $app  = Factory::getApplication();
+        $app = Factory::getApplication();
         $data = $app->getUserState('com_banners.edit.banner.data', []);
 
         if (empty($data)) {
@@ -261,7 +264,7 @@ class BannerModel extends AdminModel
 
             // Prime some default values.
             if ($this->getState('banner.id') == 0) {
-                $filters     = (array) $app->getUserState('com_banners.banners.filter');
+                $filters = (array) $app->getUserState('com_banners.banners.filter');
                 $filterCatId = $filters['category_id'] ?? null;
 
                 $data->set('catid', $app->getInput()->getInt('catid', $filterCatId));
@@ -287,7 +290,7 @@ class BannerModel extends AdminModel
     {
         /** @var \Joomla\Component\Banners\Administrator\Table\BannerTable $table */
         $table = $this->getTable();
-        $pks   = (array) $pks;
+        $pks = (array) $pks;
 
         // Access checks.
         foreach ($pks as $i => $pk) {
@@ -295,7 +298,10 @@ class BannerModel extends AdminModel
                 if (!$this->canEditState($table)) {
                     // Prune items that you can't change.
                     unset($pks[$i]);
-                    Factory::getApplication()->enqueueMessage(Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'error');
+                    Factory::getApplication()->enqueueMessage(
+                        Text::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'),
+                        'error',
+                    );
                 }
             }
         }
@@ -323,10 +329,7 @@ class BannerModel extends AdminModel
     {
         $db = $this->getDatabase();
 
-        return [
-            $db->quoteName('catid') . ' = ' . (int) $table->catid,
-            $db->quoteName('state') . ' >= 0',
-        ];
+        return [$db->quoteName('catid') . ' = ' . (int) $table->catid, $db->quoteName('state') . ' >= 0'];
     }
 
     /**
@@ -345,14 +348,15 @@ class BannerModel extends AdminModel
 
         if (empty($table->id)) {
             // Set the values
-            $table->created    = $date->toSql();
+            $table->created = $date->toSql();
             $table->created_by = $user->id;
-            $table->version    = 1;
+            $table->version = 1;
 
             // Set ordering to the last item if not set
             if (empty($table->ordering)) {
-                $db    = $this->getDatabase();
-                $query = $db->getQuery(true)
+                $db = $this->getDatabase();
+                $query = $db
+                    ->getQuery(true)
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
                     ->from($db->quoteName('#__banners'));
 
@@ -363,7 +367,7 @@ class BannerModel extends AdminModel
             }
         } else {
             // Set the values
-            $table->modified    = $date->toSql();
+            $table->modified = $date->toSql();
             $table->modified_by = $user->id;
             $table->version++;
         }
@@ -417,16 +421,18 @@ class BannerModel extends AdminModel
         if ($createCategory && $this->canCreateCategory()) {
             $category = [
                 // Remove #new# prefix, if exists.
-                'title'     => str_starts_with($data['catid'], '#new#') ? substr($data['catid'], 5) : $data['catid'],
+                'title' => str_starts_with($data['catid'], '#new#') ? substr($data['catid'], 5) : $data['catid'],
                 'parent_id' => 1,
                 'extension' => 'com_banners',
-                'language'  => $data['language'],
+                'language' => $data['language'],
                 'published' => 1,
             ];
 
             /** @var \Joomla\Component\Categories\Administrator\Model\CategoryModel $categoryModel */
-            $categoryModel = Factory::getApplication()->bootComponent('com_categories')
-                ->getMVCFactory()->createModel('Category', 'Administrator', ['ignore_request' => true]);
+            $categoryModel = Factory::getApplication()
+                ->bootComponent('com_categories')
+                ->getMVCFactory()
+                ->createModel('Category', 'Administrator', ['ignore_request' => true]);
 
             // Create new category.
             if (!$categoryModel->save($category)) {
@@ -447,8 +453,8 @@ class BannerModel extends AdminModel
 
             if ($data['name'] == $origTable->name) {
                 [$name, $alias] = $this->generateNewTitle($data['catid'], $data['alias'], $data['name']);
-                $data['name']   = $name;
-                $data['alias']  = $alias;
+                $data['name'] = $name;
+                $data['alias'] = $alias;
             } else {
                 if ($data['alias'] == $origTable->alias) {
                     $data['alias'] = '';
@@ -459,7 +465,7 @@ class BannerModel extends AdminModel
         }
 
         if ($input->get('task') == 'save2copy' || $input->get('task') == 'copy') {
-            $data['clicks']  = 0;
+            $data['clicks'] = 0;
             $data['impmade'] = 0;
         }
 

@@ -13,7 +13,7 @@ namespace Joomla\Component\Actionlogs\Administrator\Plugin;
 use Joomla\CMS\Plugin\CMSPlugin;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -67,7 +67,7 @@ abstract class ActionLogPlugin extends CMSPlugin
      */
     protected function addLog($messages, $messageLanguageKey, $context, $userId = null)
     {
-        $app  = $this->getApplication() ?: $this->app;
+        $app = $this->getApplication() ?: $this->app;
         $user = $app->getIdentity();
 
         foreach ($messages as $index => $message) {
@@ -95,8 +95,10 @@ abstract class ActionLogPlugin extends CMSPlugin
         }
 
         /** @var \Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel $model */
-        $model = $app->bootComponent('com_actionlogs')
-            ->getMVCFactory()->createModel('Actionlog', 'Administrator', ['ignore_request' => true]);
+        $model = $app
+            ->bootComponent('com_actionlogs')
+            ->getMVCFactory()
+            ->createModel('Actionlog', 'Administrator', ['ignore_request' => true]);
 
         $model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
     }

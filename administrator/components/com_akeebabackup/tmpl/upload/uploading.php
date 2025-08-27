@@ -9,7 +9,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <form action="index.php?option=com_akeebabackup&task=Upload.upload&tmpl=component"
 	  method="post" name="akeebauploadform">
@@ -19,9 +18,14 @@ use Joomla\CMS\Language\Text;
 </form>
 
 <div class="alert alert-info">
-	<?php if($this->frag == 0): ?>
-		<?= Text::sprintf('COM_AKEEBABACKUP_TRANSFER_MSG_UPLOADINGPART', $this->part+1, max($this->parts, 1)) ?>
+	<?php if ($this->frag == 0): ?>
+		<?= Text::sprintf('COM_AKEEBABACKUP_TRANSFER_MSG_UPLOADINGPART', $this->part + 1, max($this->parts, 1)) ?>
 	<?php else: ?>
-		<?= Text::sprintf('COM_AKEEBABACKUP_TRANSFER_MSG_UPLOADINGFRAG', $this->part+1, max($this->parts, 1), max(++$this->frag, 1)) ?>
-	<?php endif ?>
+		<?= Text::sprintf(
+      'COM_AKEEBABACKUP_TRANSFER_MSG_UPLOADINGFRAG',
+      $this->part + 1,
+      max($this->parts, 1),
+      max(++$this->frag, 1),
+  ) ?>
+	<?php endif; ?>
 </div>

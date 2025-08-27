@@ -8,7 +8,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
@@ -18,17 +18,18 @@ use Joomla\CMS\Session\Session;
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->getDocument()->getWebAssetManager();
 $wa->useScript('form.validate');
-
 ?>
 <div class="container-popup">
     <form
         class="form-horizontal form-validate"
         id="download-form"
         name="adminForm"
-        action="<?php echo Route::_('index.php?option=com_banners&task=tracks.display&format=raw&' . Session::getFormToken() . '=1'); ?>"
+        action="<?php echo Route::_(
+            'index.php?option=com_banners&task=tracks.display&format=raw&' . Session::getFormToken() . '=1',
+        ); ?>"
         method="post">
 
-        <?php foreach ($this->form->getFieldset() as $field) : ?>
+        <?php foreach ($this->form->getFieldset() as $field): ?>
             <?php echo $this->form->renderField($field->fieldname); ?>
         <?php endforeach; ?>
 

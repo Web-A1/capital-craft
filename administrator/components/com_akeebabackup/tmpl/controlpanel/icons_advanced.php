@@ -13,14 +13,12 @@ defined('_JEXEC') || die();
 use Joomla\CMS\Language\Text;
 
 // All of the buttons in this panel require the Configure privilege
-if (!$this->permissions['configure'])
-{
-	return;
+if (!$this->permissions['configure']) {
+    return;
 }
 
-if (!AKEEBABACKUP_PRO)
-{
-	return;
+if (!AKEEBABACKUP_PRO) {
+    return;
 }
 ?>
 <div class="card mb-2">
@@ -30,7 +28,7 @@ if (!AKEEBABACKUP_PRO)
 
 	<div class="card-body">
 		<div class="akeeba-cpanel-container d-flex flex-row flex-wrap align-items-stretch">
-			<?php if($this->permissions['configure']): ?>
+			<?php if ($this->permissions['configure']): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Schedule">
 					<div class="bg-primary text-white d-block text-center p-3 h2">
@@ -40,9 +38,9 @@ if (!AKEEBABACKUP_PRO)
 					<?= Text::_('COM_AKEEBABACKUP_SCHEDULE') ?>
 				</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
-			<?php if($this->permissions['configure']): ?>
+			<?php if ($this->permissions['configure']): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-warning text-dark border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Discover">
 					<div class="bg-warning d-block text-center p-3 h2">
@@ -52,9 +50,9 @@ if (!AKEEBABACKUP_PRO)
 						<?= Text::_('COM_AKEEBABACKUP_DISCOVER') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
-			<?php if($this->permissions['configure']): ?>
+			<?php if ($this->permissions['configure']): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-warning text-dark border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=S3import">
 					<div class="bg-warning d-block text-center p-3 h2">
@@ -64,7 +62,7 @@ if (!AKEEBABACKUP_PRO)
 					<?= Text::_('COM_AKEEBABACKUP_S3IMPORT') ?>
 				</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

@@ -7,24 +7,23 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Mixin;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Toolbar\Toolbar;
 
 trait ViewToolbarTrait
 {
-	protected function getToolbarCompat(): Toolbar
-	{
-		$document = $this->getDocument();
+    protected function getToolbarCompat(): Toolbar
+    {
+        $document = $this->getDocument();
 
-		// Joomla 5 and later
-		if (method_exists($document, 'getToolbar'))
-		{
-			return $document->getToolbar();
-		}
+        // Joomla 5 and later
+        if (method_exists($document, 'getToolbar')) {
+            return $document->getToolbar();
+        }
 
-		// Joomla 4.x
-		/** @noinspection PhpDeprecationInspection */
-		return Toolbar::getInstance();
-	}
+        // Joomla 4.x
+        /** @noinspection PhpDeprecationInspection */
+        return Toolbar::getInstance();
+    }
 }

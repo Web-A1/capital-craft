@@ -14,7 +14,6 @@ use Joomla\CMS\Language\Text;
 echo $this->loadAnyTemplate('commontemplates/errormodal');
 echo $this->loadAnyTemplate('commontemplates/profilename');
 echo $this->loadAnyTemplate('commontemplates/folderbrowser');
-
 ?>
 <div class="card">
 	<div id="ak_list_container" class="card-body">

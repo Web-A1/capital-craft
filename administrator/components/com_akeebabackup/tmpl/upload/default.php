@@ -9,7 +9,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <form action="index.php?option=com_akeebabackup&task=Upload.upload&tmpl=component"
 	  method="post" name="akeebauploadform">

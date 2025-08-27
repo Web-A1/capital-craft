@@ -14,7 +14,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 /** @var  $this  \Akeeba\Component\AkeebaBackup\Administrator\View\Transfer\HtmlView */
-
 ?>
 <div class="card mb-3">
 	<h3 class="card-header bg-primary text-white">
@@ -33,7 +32,7 @@ use Joomla\CMS\Uri\Uri;
 					<div class="input-group">
 						<input class="form-control" id="akeeba-transfer-url" placeholder="http://www.example.com"
 							   type="url" autocomplete="off"
-							   value="<?= $this->escape($this->newSiteUrl)?>">
+							   value="<?= $this->escape($this->newSiteUrl) ?>">
 						<button class="btn btn-dark"
 								id="akeeba-transfer-btn-url" type="button">
 							<?= Text::_('COM_AKEEBABACKUP_TRANSFER_ERR_NEWURL_BTN') ?>
@@ -97,8 +96,17 @@ use Joomla\CMS\Uri\Uri;
                 </label>
 
 				<div class="col-sm-9">
-					<?= HTMLHelper::_('select.genericlist', $this->transferOptions, 'akeeba-transfer-ftp-method', ['list.attr' => ['class' => 'form-select']], 'value', 'text', $this->transferOption, 'akeeba-transfer-ftp-method') ?>
-					<?php if($this->hasFirewalledMethods): ?>
+					<?= HTMLHelper::_(
+         'select.genericlist',
+         $this->transferOptions,
+         'akeeba-transfer-ftp-method',
+         ['list.attr' => ['class' => 'form-select']],
+         'value',
+         'text',
+         $this->transferOption,
+         'akeeba-transfer-ftp-method',
+     ) ?>
+					<?php if ($this->hasFirewalledMethods): ?>
 					<div class="alert alert-warning">
 						<h5>
 							<?= Text::_('COM_AKEEBABACKUP_TRANSFER_WARN_FIREWALLED_HEAD') ?>
@@ -107,7 +115,7 @@ use Joomla\CMS\Uri\Uri;
 							<?= Text::_('COM_AKEEBABACKUP_TRANSFER_WARN_FIREWALLED_BODY') ?>
 						</p>
 					</div>
-					<?php endif ?>
+					<?php endif; ?>
 				</div>
 
             </div>
@@ -120,7 +128,7 @@ use Joomla\CMS\Uri\Uri;
 				<div class="col-sm-9">
                 	<input class="form-control" id="akeeba-transfer-ftp-host" placeholder="ftp.example.com"
 						   type="text"
-						   value="<?= $this->escape($this->ftpHost)?>" />
+						   value="<?= $this->escape($this->ftpHost) ?>" />
 				</div>
             </div>
 
@@ -131,7 +139,7 @@ use Joomla\CMS\Uri\Uri;
                 </label>
 				<div class="col-sm-9">
                 	<input class="form-control" id="akeeba-transfer-ftp-port" placeholder="21"
-						   type="text" value="<?= $this->escape($this->ftpPort)?>" />
+						   type="text" value="<?= $this->escape($this->ftpPort) ?>" />
 				</div>
             </div>
 
@@ -142,7 +150,7 @@ use Joomla\CMS\Uri\Uri;
                 </label>
 				<div class="col-sm-9">
                 	<input class="form-control" id="akeeba-transfer-ftp-username" placeholder="myUserName" type="text"
-						   value="<?= $this->escape($this->ftpUsername)?>" />
+						   value="<?= $this->escape($this->ftpUsername) ?>" />
 				</div>
             </div>
 
@@ -153,7 +161,7 @@ use Joomla\CMS\Uri\Uri;
                 </label>
 				<div class="col-sm-9">
                 	<input class="form-control" id="akeeba-transfer-ftp-password" placeholder="myPassword"
-						   type="password" value="<?= $this->escape($this->ftpPassword)?>" />
+						   type="password" value="<?= $this->escape($this->ftpPassword) ?>" />
 				</div>
             </div>
 
@@ -163,9 +171,11 @@ use Joomla\CMS\Uri\Uri;
                     <?= Text::_('COM_AKEEBABACKUP_TRANSFER_LBL_FTP_PUBKEY') ?>
                 </label>
 				<div class="col-sm-9">
-                	<input class="form-control" id="akeeba-transfer-ftp-pubkey" placeholder="<?= $this->escape(JPATH_SITE . DIRECTORY_SEPARATOR)?>id_rsa.pub"
+                	<input class="form-control" id="akeeba-transfer-ftp-pubkey" placeholder="<?= $this->escape(
+                     JPATH_SITE . DIRECTORY_SEPARATOR,
+                 ) ?>id_rsa.pub"
 						   type="text"
-						   value="<?= $this->escape($this->ftpPubKey)?>" />
+						   value="<?= $this->escape($this->ftpPubKey) ?>" />
 				</div>
             </div>
 
@@ -176,9 +186,9 @@ use Joomla\CMS\Uri\Uri;
                 </label>
 				<div class="col-sm-9">
                 	<input class="form-control" id="akeeba-transfer-ftp-privatekey"
-						   placeholder="<?= $this->escape(JPATH_SITE . DIRECTORY_SEPARATOR)?>id_rsa"
+						   placeholder="<?= $this->escape(JPATH_SITE . DIRECTORY_SEPARATOR) ?>id_rsa"
 						   type="text"
-						   value="<?= $this->escape($this->ftpPrivateKey)?>" />
+						   value="<?= $this->escape($this->ftpPrivateKey) ?>" />
 				</div>
             </div>
 
@@ -189,7 +199,7 @@ use Joomla\CMS\Uri\Uri;
                 </label>
 				<div class="col-sm-9">
                 	<input class="form-control" id="akeeba-transfer-ftp-directory"
-						   placeholder="public_html" type="text" value="<?= $this->escape($this->ftpDirectory)?>" />
+						   placeholder="public_html" type="text" value="<?= $this->escape($this->ftpDirectory) ?>" />
 				</div>
             </div>
 
@@ -200,7 +210,16 @@ use Joomla\CMS\Uri\Uri;
                     <?= Text::_('COM_AKEEBABACKUP_TRANSFER_LBL_TRANSFERMODE') ?>
                 </label>
 				<div class="col-sm-9">
-					<?= HTMLHelper::_('select.genericlist', $this->chunkOptions, 'akeeba-transfer-chunkmode', ['list.attr' => ['class' => 'form-select']], 'value', 'text', $this->chunkMode, 'akeeba-transfer-chunkmode') ?>
+					<?= HTMLHelper::_(
+         'select.genericlist',
+         $this->chunkOptions,
+         'akeeba-transfer-chunkmode',
+         ['list.attr' => ['class' => 'form-select']],
+         'value',
+         'text',
+         $this->chunkMode,
+         'akeeba-transfer-chunkmode',
+     ) ?>
 					<p class="form-text">
 						<?= Text::_('COM_AKEEBABACKUP_TRANSFER_LBL_TRANSFERMODE_INFO') ?>
 					</p>
@@ -214,7 +233,16 @@ use Joomla\CMS\Uri\Uri;
                     <?= Text::_('COM_AKEEBABACKUP_TRANSFER_LBL_CHUNKSIZE') ?>
                 </label>
 				<div class="col-sm-9">
-					<?= HTMLHelper::_('select.genericlist', $this->chunkSizeOptions, 'akeeba-transfer-chunksize', ['list.attr' => ['class' => 'form-select']], 'value', 'text', $this->chunkSize, 'akeeba-transfer-chunksize') ?>
+					<?= HTMLHelper::_(
+         'select.genericlist',
+         $this->chunkSizeOptions,
+         'akeeba-transfer-chunksize',
+         ['list.attr' => ['class' => 'form-select']],
+         'value',
+         'text',
+         $this->chunkSize,
+         'akeeba-transfer-chunksize',
+     ) ?>
 					<p class="form-text">
 						<?= Text::_('COM_AKEEBABACKUP_TRANSFER_LBL_CHUNKSIZE_INFO') ?>
 					</p>

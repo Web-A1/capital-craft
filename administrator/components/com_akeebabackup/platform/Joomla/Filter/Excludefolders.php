@@ -17,33 +17,25 @@ use Akeeba\Engine\Factory;
  */
 class Excludefolders extends Base
 {
-	public function __construct()
-	{
-		$this->object      = 'dir';
-		$this->subtype     = 'all';
-		$this->method      = 'direct';
-		$this->filter_name = 'Excludefolders';
+    public function __construct()
+    {
+        $this->object = 'dir';
+        $this->subtype = 'all';
+        $this->method = 'direct';
+        $this->filter_name = 'Excludefolders';
 
-		// Get the site's root
-		$configuration = Factory::getConfiguration();
+        // Get the site's root
+        $configuration = Factory::getConfiguration();
 
-		if ($configuration->get('akeeba.platform.override_root', 0))
-		{
-			$root = $configuration->get('akeeba.platform.newroot', '[SITEROOT]');
-		}
-		else
-		{
-			$root = '[SITEROOT]';
-		}
+        if ($configuration->get('akeeba.platform.override_root', 0)) {
+            $root = $configuration->get('akeeba.platform.newroot', '[SITEROOT]');
+        } else {
+            $root = '[SITEROOT]';
+        }
 
-		// We take advantage of the filter class magic to inject our custom filters
-		$this->filter_data[$root] = [
-			'.cagefs',
-			'awstats',
-			'cgi-bin',
-		];
+        // We take advantage of the filter class magic to inject our custom filters
+        $this->filter_data[$root] = ['.cagefs', 'awstats', 'cgi-bin'];
 
-		parent::__construct();
-	}
-
+        parent::__construct();
+    }
 }

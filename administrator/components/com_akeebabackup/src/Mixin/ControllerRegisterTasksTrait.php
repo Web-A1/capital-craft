@@ -7,56 +7,57 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Mixin;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use ReflectionMethod;
 use ReflectionObject;
 
 trait ControllerRegisterTasksTrait
 {
-	/**
-	 * Automatically register controller tasks.
-	 *
-	 * Only public, user defined methods whose names do not start with 'onBefore', 'onAfter' or '_' are registered as
-	 * controller tasks.
-	 *
-	 * @param   string|null  $defaultTask  The default task. NULL to use 'main' or 'default', whichever exists.
-	 */
-	protected function registerControllerTasks(?string $defaultTask = null)
-	{
-		$defaultTask = $defaultTask ?? (method_exists($this, 'main') ? 'main' : 'display');
+    /**
+     * Automatically register controller tasks.
+     *
+     * Only public, user defined methods whose names do not start with 'onBefore', 'onAfter' or '_' are registered as
+     * controller tasks.
+     *
+     * @param   string|null  $defaultTask  The default task. NULL to use 'main' or 'default', whichever exists.
+     */
+    protected function registerControllerTasks(?string $defaultTask = null)
+    {
+        $defaultTask = $defaultTask ?? (method_exists($this, 'main') ? 'main' : 'display');
 
-		$this->registerDefaultTask($defaultTask);
+        $this->registerDefaultTask($defaultTask);
 
-		$refObj = new ReflectionObject($this);
+        $refObj = new ReflectionObject($this);
 
-		/** @var ReflectionMethod $refMethod */
-		foreach ($refObj->getMethods(ReflectionMethod::IS_PUBLIC) as $refMethod)
-		{
-			if (
-				!$refMethod->isUserDefined() ||
-				$refMethod->isStatic() || $refMethod->isAbstract() || $refMethod->isClosure() ||
-				$refMethod->isConstructor() || $refMethod->isDestructor()
+        /** @var ReflectionMethod $refMethod */
+        foreach ($refObj->getMethods(ReflectionMethod::IS_PUBLIC) as $refMethod) {
+            if (
+                !$refMethod->isUserDefined() ||
+                $refMethod->isStatic() ||
+                $refMethod->isAbstract() ||
+                $refMethod->isClosure() ||
+                $refMethod->isConstructor() ||
+                $refMethod->isDestructor()
+            ) {
+                continue;
+            }
 
-			) {
-				continue;
-			}
+            $method = $refMethod->getName();
 
-			$method = $refMethod->getName();
+            if (substr($method, 0, 1) == '_') {
+                continue;
+            }
 
-			if (substr($method, 0, 1) == '_') {
-				continue;
-			}
+            if (substr($method, 0, 8) == 'onBefore') {
+                continue;
+            }
 
-			if (substr($method, 0, 8) == 'onBefore') {
-				continue;
-			}
+            if (substr($method, 0, 7) == 'onAfter') {
+                continue;
+            }
 
-			if (substr($method, 0, 7) == 'onAfter') {
-				continue;
-			}
-
-			$this->registerTask($method, $method);
-		}
-	}
+            $this->registerTask($method, $method);
+        }
+    }
 }

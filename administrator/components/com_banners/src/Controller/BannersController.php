@@ -19,7 +19,7 @@ use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -82,10 +82,10 @@ class BannersController extends AdminController
         // Check for request forgeries.
         $this->checkToken();
 
-        $ids    = (array) $this->input->get('cid', [], 'int');
+        $ids = (array) $this->input->get('cid', [], 'int');
         $values = ['sticky_publish' => 1, 'sticky_unpublish' => 0];
-        $task   = $this->getTask();
-        $value  = ArrayHelper::getValue($values, $task, 0, 'int');
+        $task = $this->getTask();
+        $value = ArrayHelper::getValue($values, $task, 0, 'int');
 
         // Remove zero values resulting from input filter
         $ids = array_filter($ids);
@@ -133,7 +133,7 @@ class BannersController extends AdminController
 
         $result['amount'] = $amount;
         $result['sronly'] = Text::plural('COM_BANNERS_N_QUICKICON_SRONLY', $amount);
-        $result['name']   = Text::plural('COM_BANNERS_N_QUICKICON', $amount);
+        $result['name'] = Text::plural('COM_BANNERS_N_QUICKICON', $amount);
 
         echo new JsonResponse($result);
     }

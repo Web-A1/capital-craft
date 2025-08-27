@@ -23,7 +23,7 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -67,8 +67,9 @@ class BannerTable extends Table implements VersionableTableInterface
      */
     public function clicks()
     {
-        $id    = (int) $this->id;
-        $query = $this->_db->getQuery(true)
+        $id = (int) $this->id;
+        $query = $this->_db
+            ->getQuery(true)
             ->update($this->_db->quoteName('#__banners'))
             ->set($this->_db->quoteName('clicks') . ' = ' . $this->_db->quoteName('clicks') . ' + 1')
             ->where($this->_db->quoteName('id') . ' = :id')
@@ -111,7 +112,7 @@ class BannerTable extends Table implements VersionableTableInterface
         }
 
         // Check for a valid category.
-        if (!$this->catid = (int) $this->catid) {
+        if (!($this->catid = (int) $this->catid)) {
             $this->setError(Text::_('JLIB_DATABASE_ERROR_CATEGORY_REQUIRED'));
 
             return false;
@@ -144,7 +145,14 @@ class BannerTable extends Table implements VersionableTableInterface
             $this->ordering = 0;
         } elseif (empty($this->ordering)) {
             // Set ordering to last if ordering was 0
-            $this->ordering = $this->getNextOrder($this->_db->quoteName('catid') . ' = ' . ((int) $this->catid) . ' AND ' . $this->_db->quoteName('state') . ' >= 0');
+            $this->ordering = $this->getNextOrder(
+                $this->_db->quoteName('catid') .
+                    ' = ' .
+                    ((int) $this->catid) .
+                    ' AND ' .
+                    $this->_db->quoteName('state') .
+                    ' >= 0',
+            );
         }
 
         // Set modified to created if not set
@@ -176,19 +184,29 @@ class BannerTable extends Table implements VersionableTableInterface
             $registry = new Registry($array['params']);
 
             if ((int) $registry->get('width', 0) < 0) {
-                $this->setError(Text::sprintf('JLIB_DATABASE_ERROR_NEGATIVE_NOT_PERMITTED', Text::_('COM_BANNERS_FIELD_WIDTH_LABEL')));
+                $this->setError(
+                    Text::sprintf(
+                        'JLIB_DATABASE_ERROR_NEGATIVE_NOT_PERMITTED',
+                        Text::_('COM_BANNERS_FIELD_WIDTH_LABEL'),
+                    ),
+                );
 
                 return false;
             }
 
             if ((int) $registry->get('height', 0) < 0) {
-                $this->setError(Text::sprintf('JLIB_DATABASE_ERROR_NEGATIVE_NOT_PERMITTED', Text::_('COM_BANNERS_FIELD_HEIGHT_LABEL')));
+                $this->setError(
+                    Text::sprintf(
+                        'JLIB_DATABASE_ERROR_NEGATIVE_NOT_PERMITTED',
+                        Text::_('COM_BANNERS_FIELD_HEIGHT_LABEL'),
+                    ),
+                );
 
                 return false;
             }
 
             // Converts the width and height to an absolute numeric value:
-            $width  = abs((int) $registry->get('width', 0));
+            $width = abs((int) $registry->get('width', 0));
             $height = abs((int) $registry->get('height', 0));
 
             // Sets the width and height to an empty string if = 0
@@ -234,19 +252,19 @@ class BannerTable extends Table implements VersionableTableInterface
                     $this->reset = null;
                     break;
                 case 2:
-                    $date        = Factory::getDate('+1 year ' . date('Y-m-d'));
+                    $date = Factory::getDate('+1 year ' . date('Y-m-d'));
                     $this->reset = $date->toSql();
                     break;
                 case 3:
-                    $date        = Factory::getDate('+1 month ' . date('Y-m-d'));
+                    $date = Factory::getDate('+1 month ' . date('Y-m-d'));
                     $this->reset = $date->toSql();
                     break;
                 case 4:
-                    $date        = Factory::getDate('+7 day ' . date('Y-m-d'));
+                    $date = Factory::getDate('+7 day ' . date('Y-m-d'));
                     $this->reset = $date->toSql();
                     break;
                 case 5:
-                    $date        = Factory::getDate('+1 day ' . date('Y-m-d'));
+                    $date = Factory::getDate('+1 day ' . date('Y-m-d'));
                     $this->reset = $date->toSql();
                     break;
             }
@@ -264,7 +282,10 @@ class BannerTable extends Table implements VersionableTableInterface
             // Verify that the alias is unique
             $table = new self($db, $this->getDispatcher());
 
-            if ($table->load(['alias' => $this->alias, 'catid' => $this->catid]) && ($table->id != $this->id || $this->id == 0)) {
+            if (
+                $table->load(['alias' => $this->alias, 'catid' => $this->catid]) &&
+                ($table->id != $this->id || $this->id == 0)
+            ) {
                 $this->setError(Text::_('COM_BANNERS_ERROR_UNIQUE_ALIAS'));
 
                 return false;
@@ -276,7 +297,14 @@ class BannerTable extends Table implements VersionableTableInterface
             // Need to reorder ?
             if ($oldrow->state >= 0 && ($this->state < 0 || $oldrow->catid != $this->catid)) {
                 // Reorder the oldrow
-                $this->reorder($this->_db->quoteName('catid') . ' = ' . ((int) $oldrow->catid) . ' AND ' . $this->_db->quoteName('state') . ' >= 0');
+                $this->reorder(
+                    $this->_db->quoteName('catid') .
+                        ' = ' .
+                        ((int) $oldrow->catid) .
+                        ' AND ' .
+                        $this->_db->quoteName('state') .
+                        ' >= 0',
+                );
             }
         }
 
@@ -301,9 +329,9 @@ class BannerTable extends Table implements VersionableTableInterface
         $k = $this->_tbl_key;
 
         // Sanitize input.
-        $pks    = ArrayHelper::toInteger($pks);
+        $pks = ArrayHelper::toInteger($pks);
         $userId = (int) $userId;
-        $state  = (int) $state;
+        $state = (int) $state;
 
         // If there are no primary keys set check to see if the instance key is set.
         if (empty($pks)) {
@@ -330,8 +358,8 @@ class BannerTable extends Table implements VersionableTableInterface
             // Verify checkout
             if (\is_null($table->checked_out) || $table->checked_out == $userId) {
                 // Change the state
-                $table->sticky           = $state;
-                $table->checked_out      = null;
+                $table->sticky = $state;
+                $table->checked_out = null;
                 $table->checked_out_time = null;
 
                 // Check the row

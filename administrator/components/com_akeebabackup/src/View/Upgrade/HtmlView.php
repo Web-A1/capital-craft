@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\View\Upgrade;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ViewLoadAnyTemplateTrait;
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ViewTaskBasedEventsTrait;
@@ -21,35 +21,44 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 #[\AllowDynamicProperties]
 class HtmlView extends BaseHtmlView
 {
-	use ViewTaskBasedEventsTrait;
-	use ViewLoadAnyTemplateTrait;
-	use ViewToolbarTrait;
+    use ViewTaskBasedEventsTrait;
+    use ViewLoadAnyTemplateTrait;
+    use ViewToolbarTrait;
 
-	public $needsMigration = false;
+    public $needsMigration = false;
 
-	public $hasCompatibleVersion = false;
+    public $hasCompatibleVersion = false;
 
-	protected function onBeforeMain()
-	{
-		$this->addToolbar();
+    protected function onBeforeMain()
+    {
+        $this->addToolbar();
 
-		/** @var UpgradeModel $model */
-		$model = $this->getModel();
+        /** @var UpgradeModel $model */
+        $model = $this->getModel();
 
-		$this->needsMigration = in_array(true, $model->runCustomHandlerEvent('onNeedsMigration'), true);
-		$this->hasCompatibleVersion = in_array(true, $model->runCustomHandlerEvent('onHasCompatibleAkeebaVersion'), true);
-	}
+        $this->needsMigration = in_array(true, $model->runCustomHandlerEvent('onNeedsMigration'), true);
+        $this->hasCompatibleVersion = in_array(
+            true,
+            $model->runCustomHandlerEvent('onHasCompatibleAkeebaVersion'),
+            true,
+        );
+    }
 
-	private function addToolbar(): void
-	{
-		$toolbar = $this->getToolbarCompat();
-		ToolbarHelper::title(Text::_('COM_AKEEBABACKUP_UPGRADE'), 'icon-akeeba');
+    private function addToolbar(): void
+    {
+        $toolbar = $this->getToolbarCompat();
+        ToolbarHelper::title(Text::_('COM_AKEEBABACKUP_UPGRADE'), 'icon-akeeba');
 
-		$toolbar->back()
-			->text('COM_AKEEBABACKUP_CONTROLPANEL')
-			->icon('fa fa-' . (Factory::getApplication()->getLanguage()->isRtl() ? 'arrow-right' : 'arrow-left'))
-			->url('index.php?option=com_akeebabackup');
+        $toolbar
+            ->back()
+            ->text('COM_AKEEBABACKUP_CONTROLPANEL')
+            ->icon('fa fa-' . (Factory::getApplication()->getLanguage()->isRtl() ? 'arrow-right' : 'arrow-left'))
+            ->url('index.php?option=com_akeebabackup');
 
-		$toolbar->help(null, false, 'https://www.akeeba.com/documentation/akeeba-backup-joomla/using-akeeba-backup-component.html#menu-upgrade');
-	}
+        $toolbar->help(
+            null,
+            false,
+            'https://www.akeeba.com/documentation/akeeba-backup-joomla/using-akeeba-backup-component.html#menu-upgrade',
+        );
+    }
 }

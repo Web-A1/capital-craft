@@ -22,33 +22,29 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-$this->getDocument()->getWebAssetManager()
-	->usePreset('choicesjs')
-	->useScript('webcomponent.field-fancy-select');
+$this->getDocument()->getWebAssetManager()->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
 ?>
 <div class="akeeba-panel">
 	<form action="<?= Route::_('index.php?option=com_akeebabackup&task=Controlpanel.Switchprofile') ?>" method="post"
 		  name="switchActiveProfileForm" id="switchActiveProfileForm"
 		  class="akeebabackup-profile-switch-container d-md-flex flex-md-row justify-content-md-evenly align-items-center border border-1 bg-light border-rounded rounded-2 mt-1 mb-2 p-2">
-		<?php if(isset($returnURL)): ?>
+		<?php if (isset($returnURL)): ?>
 		<input type="hidden" name="returnurl" value="<?= $this->escape($returnURL) ?>" />
-		<?php endif ?>
+		<?php endif; ?>
 		<?= HTMLHelper::_('form.token') ?>
 
 		<div class="m-2">
 			<label>
-				<?= Text::_('COM_AKEEBABACKUP_CPANEL_PROFILE_TITLE') ?>: #<?= (int)$this->profileId ?>
+				<?= Text::_('COM_AKEEBABACKUP_CPANEL_PROFILE_TITLE') ?>: #<?= (int) $this->profileId ?>
 			</label>
 		</div>
 		<div class="flex-grow-1">
 			<joomla-field-fancy-select
 					search-placeholder="<?= Text::_('COM_AKEEBABACKUP_BUADMIN_LABEL_PROFILEID') ?>"
-			><?=
-				HTMLHelper::_('select.genericlist', $this->profileList, 'profileid', [
-						'list.select' => $this->profileId,
-						'id' => 'comAkeebaControlPanelProfileSwitch',
-				])
-			?></joomla-field-fancy-select>
+			><?= HTMLHelper::_('select.genericlist', $this->profileList, 'profileid', [
+       'list.select' => $this->profileId,
+       'id' => 'comAkeebaControlPanelProfileSwitch',
+   ]) ?></joomla-field-fancy-select>
 		</div>
 
 		<div class="m-2">

@@ -59,7 +59,7 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 				<?= $this->escape($this->backupRecord['comment']) ?>
 			</div>
 		</div>
-		<?php endif ?>
+		<?php endif; ?>
 		<div class="row mb-1">
 			<div class="col-sm-3">
 				<?= Text::_('COM_AKEEBABACKUP_BUADMIN_LABEL_START') ?>
@@ -80,18 +80,26 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 					<?= Text::_('COM_AKEEBABACKUP_RESTORE_LABEL_EXTRACTIONMETHOD') ?>
 				</label>
 				<div class="col-sm-9">
-					<?= HTMLHelper::_('select.genericlist', $this->extractionmodes, 'procengine', [
-						'list.attr' => [
-							'class' => 'form-select'
-						]
-					], 'value', 'text', $this->ftpparams['procengine']) ?>
+					<?= HTMLHelper::_(
+         'select.genericlist',
+         $this->extractionmodes,
+         'procengine',
+         [
+             'list.attr' => [
+                 'class' => 'form-select',
+             ],
+         ],
+         'value',
+         'text',
+         $this->ftpparams['procengine'],
+     ) ?>
 					<p class="form-text text-muted">
 						<?= Text::_('COM_AKEEBABACKUP_RESTORE_LABEL_REMOTETIP') ?>
 					</p>
 				</div>
 			</div>
 
-			<?php if($cParams->get('showDeleteOnRestore', 0) == 1): ?>
+			<?php if ($cParams->get('showDeleteOnRestore', 0) == 1): ?>
 				<div class="row mb-3">
 					<label for="zapbefore" class="col-sm-3 col-form-label">
 						<?= Text::_('COM_AKEEBABACKUP_RESTORE_LABEL_ZAPBEFORE') ?>
@@ -109,7 +117,7 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 						</p>
 					</div>
 				</div>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<div class="row mb-3">
 				<label for="stealthmode" class="col-sm-3 col-form-label">
@@ -129,7 +137,7 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 				</div>
 			</div>
 
-			<?php if($this->extension == 'jps'): ?>
+			<?php if ($this->extension == 'jps'): ?>
 				<div class="row mb-3">
 					<label for="jps_key" class="col-sm-3 col-form-label">
 						<?= Text::_('COM_AKEEBABACKUP_CONFIG_JPS_KEY_TITLE') ?>
@@ -138,7 +146,7 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 						<input id="jps_key" name="jps_key" value="" type="password" class="form-control" autocomplete="off" />
 					</div>
 				</div>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<div class="row mb-3">
 				<div class="col-sm-9 offset-sm-3">
@@ -172,7 +180,9 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 					<?= Text::_('COM_AKEEBABACKUP_CONFIG_DIRECTFTP_HOST_TITLE') ?>
 				</label>
 				<div class="col-sm-9">
-					<input id="ftp_host" name="" value="<?= $this->escape($this->ftpparams['ftp_host']) ?>" type="text" class="form-control"/>
+					<input id="ftp_host" name="" value="<?= $this->escape(
+         $this->ftpparams['ftp_host'],
+     ) ?>" type="text" class="form-control"/>
 				</div>
 			</div>
 
@@ -181,7 +191,9 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 					<?= Text::_('COM_AKEEBABACKUP_CONFIG_DIRECTFTP_PORT_TITLE') ?>
 				</label>
 				<div class="col-sm-9">
-					<input id="ftp_port" name="ftp_port" value="<?= $this->escape($this->ftpparams['ftp_port']) ?>" type="text" class="form-control"/>
+					<input id="ftp_port" name="ftp_port" value="<?= $this->escape(
+         $this->ftpparams['ftp_port'],
+     ) ?>" type="text" class="form-control"/>
 				</div>
 			</div>
 
@@ -190,7 +202,9 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 					<?= Text::_('COM_AKEEBABACKUP_CONFIG_DIRECTFTP_USER_TITLE') ?>
 				</label>
 				<div class="col-sm-9">
-					<input id="ftp_user" name="ftp_user" value="<?= $this->escape($this->ftpparams['ftp_user']) ?>" type="text" class="form-control"/>
+					<input id="ftp_user" name="ftp_user" value="<?= $this->escape(
+         $this->ftpparams['ftp_user'],
+     ) ?>" type="text" class="form-control"/>
 				</div>
 			</div>
 
@@ -199,7 +213,9 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 					<?= Text::_('COM_AKEEBABACKUP_CONFIG_DIRECTFTP_PASSWORD_TITLE') ?>
 				</label>
 				<div class="col-sm-9">
-					<input id="ftp_pass" name="ftp_pass" value="<?= $this->escape($this->ftpparams['ftp_pass'])?>" type="password" autocomplete="off" class="form-control"/>
+					<input id="ftp_pass" name="ftp_pass" value="<?= $this->escape(
+         $this->ftpparams['ftp_pass'],
+     ) ?>" type="password" autocomplete="off" class="form-control"/>
 				</div>
 			</div>
 			<div class="row mb-3">
@@ -207,7 +223,9 @@ $cParams = ComponentHelper::getParams('com_akeebabackup');
 					<?= Text::_('COM_AKEEBABACKUP_CONFIG_DIRECTFTP_INITDIR_TITLE') ?>
 				</label>
 				<div class="col-sm-9">
-					<input id="ftp_initial_directory" name="ftp_root" value="<?= $this->escape($this->ftpparams['ftp_root']) ?>" type="text" class="form-control"/>
+					<input id="ftp_initial_directory" name="ftp_root" value="<?= $this->escape(
+         $this->ftpparams['ftp_root'],
+     ) ?>" type="text" class="form-control"/>
 				</div>
 			</div>
 		</div>

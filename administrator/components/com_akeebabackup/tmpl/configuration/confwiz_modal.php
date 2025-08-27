@@ -13,14 +13,13 @@ defined('_JEXEC') || die();
 /** @var \Joomla\CMS\MVC\View\HtmlView|\Akeeba\Component\AkeebaBackup\Administrator\Mixin\ViewLoadAnyTemplateTrait $this */
 
 // Make sure we only ever add this HTML and JS once per page
-if (defined('AKEEBA_VIEW_JAVASCRIPT_CONFWIZ_MODAL'))
-{
-	return;
+if (defined('AKEEBA_VIEW_JAVASCRIPT_CONFWIZ_MODAL')) {
+    return;
 }
 
 define('AKEEBA_VIEW_JAVASCRIPT_CONFWIZ_MODAL', 1);
 
-$js = <<< JS
+$js = <<<JS
 window.addEventListener('DOMContentLoaded', function() {
 	new window.bootstrap.Modal(document.getElementById('akeeba-config-confwiz-bubble'), {
 	        backdrop: 'static',
@@ -31,9 +30,10 @@ window.addEventListener('DOMContentLoaded', function() {
 
 JS;
 
-$this->getDocument()->getWebAssetManager()
-	->useScript('bootstrap.modal')
-	->addInlineScript($js, [], [], ['bootstrap.modal']);
+$this->getDocument()
+    ->getWebAssetManager()
+    ->useScript('bootstrap.modal')
+    ->addInlineScript($js, [], [], ['bootstrap.modal']);
 ?>
 
 <div id="akeeba-config-confwiz-bubble"

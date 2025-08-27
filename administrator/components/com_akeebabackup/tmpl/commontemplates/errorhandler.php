@@ -17,23 +17,21 @@ $code = $e->getCode();
 $code = !empty($code) ? $code : 500;
 
 // 403 and 404 are re-thrown
-if (in_array($code, [403, 404]))
-{
-	throw $e;
+if (in_array($code, [403, 404])) {
+    throw $e;
 }
 
-$app          = \Joomla\CMS\Factory::getApplication();
-$user         = $app->getIdentity();
-$isSuper      = !is_null($user) && $user->authorise('core.admin');
-$isFrontend   = $app->isClient('site');
-$hideTheError = $isFrontend && !(defined('JDEBUG') && (JDEBUG == 1)) && !$isSuper;
-$isPro        = !isset($isPro) ? false : $isPro;
+$app = \Joomla\CMS\Factory::getApplication();
+$user = $app->getIdentity();
+$isSuper = !is_null($user) && $user->authorise('core.admin');
+$isFrontend = $app->isClient('site');
+$hideTheError = $isFrontend && !(defined('JDEBUG') && JDEBUG == 1) && !$isSuper;
+$isPro = !isset($isPro) ? false : $isPro;
 
 $app->setHeader('Status', $code);
 
-if (!$isFrontend)
-{
-	\Joomla\CMS\Toolbar\ToolbarHelper::title($title . ' <small>Unhandled Exception</small>');
+if (!$isFrontend) {
+    \Joomla\CMS\Toolbar\ToolbarHelper::title($title . ' <small>Unhandled Exception</small>');
 }
 ?>
 
@@ -47,7 +45,7 @@ if (!$isFrontend)
 			</p>
 		</div>
 	</div>
-	<?php return true; endif; ?>
+	<?php return true;endif; ?>
 <div class="card my-3">
 	<h1 class="card-header bg-danger text-white">
 		<?= $title ?> - An unhandled Exception has been detected
@@ -108,7 +106,9 @@ if (!$isFrontend)
 				<?= htmlentities($e->getMessage()) ?>
 			</strong>
 			<p>
-				File <code><?= htmlentities(str_ireplace(JPATH_ROOT, '&lt;root&gt;', $e->getFile())) ?></code> Line <span class="label label-info"><?= (int) $e->getLine() ?></span>
+				File <code><?= htmlentities(
+        str_ireplace(JPATH_ROOT, '&lt;root&gt;', $e->getFile()),
+    ) ?></code> Line <span class="label label-info"><?= (int) $e->getLine() ?></span>
 			</p>
 			<p>
 				Exception type: <code><?= htmlentities(get_class($e)) ?></code>
@@ -136,7 +136,7 @@ if (!$isFrontend)
 			</tr>
 			<tr>
 				<td>Server identity</td>
-				<td><?= htmlentities($_SERVER['SERVER_SOFTWARE'] ?? getenv('SERVER_SOFTWARE') ?? '') ?></td>
+				<td><?= htmlentities($_SERVER['SERVER_SOFTWARE'] ?? (getenv('SERVER_SOFTWARE') ?? '')) ?></td>
 			</tr>
 			<tr>
 				<td>Browser identity</td>
@@ -147,9 +147,8 @@ if (!$isFrontend)
 				<td><?= JVERSION ?></td>
 			</tr>
 			<?php
-			$db = \Joomla\CMS\Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
-			if (!is_null($db)):
-				?>
+   $db = \Joomla\CMS\Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+   if (!is_null($db)): ?>
 				<tr>
 					<td>Database driver name</td>
 					<td><?= $db->getName() ?></td>
@@ -170,14 +169,17 @@ if (!$isFrontend)
 					<td>Database connection collation</td>
 					<td><?= $db->getConnectionCollation() ?></td>
 				</tr>
-			<?php endif; ?>
+			<?php endif;
+   ?>
 			<tr>
 				<td>PHP Memory limit</td>
 				<td><?= function_exists('ini_get') ? htmlentities(ini_get('memory_limit')) : 'N/A' ?></td>
 			</tr>
 			<tr>
 				<td>Peak Memory usage</td>
-				<td><?= function_exists('memory_get_peak_usage') ? sprintf('%0.2fM', (memory_get_peak_usage() / 1024 / 1024)) : 'N/A' ?></td>
+				<td><?= function_exists('memory_get_peak_usage')
+        ? sprintf('%0.2fM', memory_get_peak_usage() / 1024 / 1024)
+        : 'N/A' ?></td>
 			</tr>
 			<tr>
 				<td>PHP Timeout (seconds)</td>
@@ -199,32 +201,26 @@ if (!$isFrontend)
 		<pre><?= htmlentities(print_r($app->getSession()->all(), true)) ?></pre>
 
 		<?php
-		try
-		{
-			/** @var \Joomla\CMS\MVC\Factory\MVCFactoryInterface $factory */
-			$factory = $app->bootComponent('com_admin')->getMVCFactory();
-			/** @var \Joomla\Component\Admin\Administrator\Model\SysinfoModel $model */
-			$model = $factory->createModel('Sysinfo', 'Administrator');
-		}
-		catch (Exception $e)
-		{
-			return;
-		}
+  try {
+      /** @var \Joomla\CMS\MVC\Factory\MVCFactoryInterface $factory */
+      $factory = $app->bootComponent('com_admin')->getMVCFactory();
+      /** @var \Joomla\Component\Admin\Administrator\Model\SysinfoModel $model */
+      $model = $factory->createModel('Sysinfo', 'Administrator');
+  } catch (Exception $e) {
+      return;
+  }
 
-		$directories = $model->getDirectory();
+  $directories = $model->getDirectory();
 
-		try
-		{
-			$extensions = $model->getExtensions();
-		}
-		catch (Exception $e)
-		{
-			$extension = [];
-		}
+  try {
+      $extensions = $model->getExtensions();
+  } catch (Exception $e) {
+      $extension = [];
+  }
 
-		$phpSettings = $model->getPhpSettings();
-		$hasPHPInfo  = $model->phpinfoEnabled();
-		?>
+  $phpSettings = $model->getPhpSettings();
+  $hasPHPInfo = $model->phpinfoEnabled();
+  ?>
 
 		<h3>PHP Settings</h3>
 		<table class="table table-striped">
@@ -237,14 +233,13 @@ if (!$isFrontend)
 		</table>
 
 		<?php if ($hasPHPInfo):
-			$phpInfo = $model->getPhpInfoArray(); ?>
+      $phpInfo = $model->getPhpInfoArray(); ?>
 			<h3>Loaded PHP Extensions</h3>
 			<table class="table table-striped">
 				<?php foreach ($phpInfo as $section => $data):
-					if ($section == 'Core')
-					{
-						continue;
-					} ?>
+        if ($section == 'Core') {
+            continue;
+        } ?>
 					<tr>
 						<td><?= htmlentities($section) ?></td>
 						<td>
@@ -253,17 +248,18 @@ if (!$isFrontend)
 							<?php endif; ?>
 						</td>
 					</tr>
-				<?php endforeach; ?>
+				<?php
+    endforeach; ?>
 			</table>
-		<?php endif; ?>
+		<?php
+  endif; ?>
 
 		<h3>Enabled Extensions</h3>
 		<table class="table table-striped">
 			<?php foreach ($extensions as $extension => $info):
-				if (strtoupper($info['state']) != 'ENABLED')
-				{
-					continue;
-				} ?>
+       if (strtoupper($info['state']) != 'ENABLED') {
+           continue;
+       } ?>
 				<tr>
 					<td><?= htmlentities($extension) ?></td>
 					<td><?= htmlentities($info['version']) ?></td>
@@ -271,7 +267,8 @@ if (!$isFrontend)
 					<td><?= htmlentities($info['author']) ?></td>
 					<td><?= htmlentities($info['authorUrl']) ?></td>
 				</tr>
-			<?php endforeach; ?>
+			<?php
+   endforeach; ?>
 		</table>
 
 		<h3>Directory Status</h3>

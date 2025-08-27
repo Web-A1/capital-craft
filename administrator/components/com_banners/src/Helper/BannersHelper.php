@@ -19,7 +19,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -38,28 +38,21 @@ class BannersHelper extends ContentHelper
      */
     public static function updateReset()
     {
-        $db      = Factory::getDbo();
+        $db = Factory::getDbo();
         $nowDate = Factory::getDate()->toSql();
-        $app     = Factory::getApplication();
-        $user    = $app->getIdentity();
+        $app = Factory::getApplication();
+        $user = $app->getIdentity();
 
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->select('*')
             ->from($db->quoteName('#__banners'))
-            ->where(
-                [
-                    $db->quoteName('reset') . ' <= :date',
-                    $db->quoteName('reset') . ' IS NOT NULL',
-                ]
-            )
+            ->where([$db->quoteName('reset') . ' <= :date', $db->quoteName('reset') . ' IS NOT NULL'])
             ->bind(':date', $nowDate)
             ->extendWhere(
                 'AND',
-                [
-                    $db->quoteName('checked_out') . ' IS NULL',
-                    $db->quoteName('checked_out') . ' = :userId',
-                ],
-                'OR'
+                [$db->quoteName('checked_out') . ' IS NULL', $db->quoteName('checked_out') . ' = :userId'],
+                'OR',
             )
             ->bind(':userId', $user->id, ParameterType::INTEGER);
 
@@ -84,7 +77,7 @@ class BannersHelper extends ContentHelper
             }
 
             if ($purchaseType < 0) {
-                $params       = ComponentHelper::getParams('com_banners');
+                $params = ComponentHelper::getParams('com_banners');
                 $purchaseType = $params->get('purchase_type');
             }
 
@@ -93,33 +86,32 @@ class BannersHelper extends ContentHelper
                     $reset = null;
                     break;
                 case 2:
-                    $date  = Factory::getDate('+1 year ' . date('Y-m-d'));
+                    $date = Factory::getDate('+1 year ' . date('Y-m-d'));
                     $reset = $date->toSql();
                     break;
                 case 3:
-                    $date  = Factory::getDate('+1 month ' . date('Y-m-d'));
+                    $date = Factory::getDate('+1 month ' . date('Y-m-d'));
                     $reset = $date->toSql();
                     break;
                 case 4:
-                    $date  = Factory::getDate('+7 day ' . date('Y-m-d'));
+                    $date = Factory::getDate('+7 day ' . date('Y-m-d'));
                     $reset = $date->toSql();
                     break;
                 case 5:
-                    $date  = Factory::getDate('+1 day ' . date('Y-m-d'));
+                    $date = Factory::getDate('+1 day ' . date('Y-m-d'));
                     $reset = $date->toSql();
                     break;
             }
 
             // Update the row ordering field.
-            $query = $db->getQuery(true)
+            $query = $db
+                ->getQuery(true)
                 ->update($db->quoteName('#__banners'))
-                ->set(
-                    [
-                        $db->quoteName('reset') . ' = :reset',
-                        $db->quoteName('impmade') . ' = 0',
-                        $db->quoteName('clicks') . ' = 0',
-                    ]
-                )
+                ->set([
+                    $db->quoteName('reset') . ' = :reset',
+                    $db->quoteName('impmade') . ' = 0',
+                    $db->quoteName('clicks') . ' = 0',
+                ])
                 ->where($db->quoteName('id') . ' = :id')
                 ->bind(':reset', $reset, $reset === null ? ParameterType::NULL : ParameterType::STRING)
                 ->bind(':id', $row->id, ParameterType::INTEGER);
@@ -147,14 +139,10 @@ class BannersHelper extends ContentHelper
     {
         $options = [];
 
-        $db    = Factory::getDbo();
-        $query = $db->getQuery(true)
-            ->select(
-                [
-                    $db->quoteName('id', 'value'),
-                    $db->quoteName('name', 'text'),
-                ]
-            )
+        $db = Factory::getDbo();
+        $query = $db
+            ->getQuery(true)
+            ->select([$db->quoteName('id', 'value'), $db->quoteName('name', 'text')])
             ->from($db->quoteName('#__banner_clients', 'a'))
             ->where($db->quoteName('a.state') . ' = 1')
             ->order($db->quoteName('a.name'));

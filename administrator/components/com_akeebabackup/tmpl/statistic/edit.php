@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 /** @var \Akeeba\Component\AkeebaBackup\Administrator\View\Profile\HtmlView $this */
 
@@ -14,11 +14,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 $wa = $this->getDocument()->getWebAssetManager();
-$wa->useScript('keepalive')
-	->useScript('form.validate');
-
+$wa->useScript('keepalive')->useScript('form.validate');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_akeebabackup&view=Statistic&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo Route::_(
+    'index.php?option=com_akeebabackup&view=Statistic&layout=edit&id=' . (int) $this->item->id,
+); ?>"
       method="post" name="adminForm" id="profile-form"
       aria-label="<?php echo Text::_('COM_AKEEBABACKUP_BUADMIN_LOG_EDITCOMMENT', true); ?>"
       class="form-validate">

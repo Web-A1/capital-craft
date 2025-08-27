@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <h2>
     <?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_CHECK_BACKUPS') ?>
@@ -19,11 +18,17 @@ use Joomla\CMS\Language\Text;
 
 <?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_CHECKHEADERINFO') ?>
 
-<?php //  CLI CRON jobs ?>
+<?php
+//  CLI CRON jobs
+?>
 <?= $this->loadAnyTemplate('schedule/check_cli') ?>
 
-<?php // Alternate CLI CRON jobs (using legacy front-end) ?>
+<?php
+// Alternate CLI CRON jobs (using legacy front-end)
+?>
 <?= $this->loadAnyTemplate('schedule/check_altcli') ?>
 
-<?php // Legacy front-end backup ?>
+<?php
+// Legacy front-end backup
+?>
 <?= $this->loadAnyTemplate('schedule/check_legacy') ?>

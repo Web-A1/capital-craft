@@ -17,135 +17,123 @@ use Akeeba\Engine\Factory;
  */
 trait ModelExclusionFilterTrait
 {
-	protected $knownFilterTypes = [];
+    protected $knownFilterTypes = [];
 
-	/**
-	 * Modifies a filter
-	 *
-	 * @param   string  $type     Filter type
-	 * @param   string  $root     The filter's root
-	 * @param   mixed   $node     The filter node to modify
-	 * @param   string  $action   The action to take: set, remove, toggle, swap
-	 * @param   string  $oldNode  Only for swap: The old node which will be swapped with $node
-	 *
-	 * @return  array  Array with keys success and newstate
-	 */
-	protected function applyExclusionFilter($type, $root, $node, $action = 'set', $oldNode = '')
-	{
-		$ret = [
-			'success'  => false,
-			'newstate' => false,
-		];
+    /**
+     * Modifies a filter
+     *
+     * @param   string  $type     Filter type
+     * @param   string  $root     The filter's root
+     * @param   mixed   $node     The filter node to modify
+     * @param   string  $action   The action to take: set, remove, toggle, swap
+     * @param   string  $oldNode  Only for swap: The old node which will be swapped with $node
+     *
+     * @return  array  Array with keys success and newstate
+     */
+    protected function applyExclusionFilter($type, $root, $node, $action = 'set', $oldNode = '')
+    {
+        $ret = [
+            'success' => false,
+            'newstate' => false,
+        ];
 
-		$filter   = Factory::getFilterObject($type);
-		$newState = null;
+        $filter = Factory::getFilterObject($type);
+        $newState = null;
 
-		switch ($action)
-		{
-			case 'set':
-				$ret['success'] = $filter->set($root, $node);
-				break;
+        switch ($action) {
+            case 'set':
+                $ret['success'] = $filter->set($root, $node);
+                break;
 
-			case 'remove':
-				$ret['success'] = $filter->remove($root, $node);
-				break;
+            case 'remove':
+                $ret['success'] = $filter->remove($root, $node);
+                break;
 
-			case 'toggle':
-				$ret['success'] = $filter->toggle($root, $node, $newState);
-				break;
+            case 'toggle':
+                $ret['success'] = $filter->toggle($root, $node, $newState);
+                break;
 
-			case 'swap':
-				$ret['success'] = true;
+            case 'swap':
+                $ret['success'] = true;
 
-				if (empty($node))
-				{
-					$ret['success'] = false;
-				}
+                if (empty($node)) {
+                    $ret['success'] = false;
+                }
 
-				if ($ret['success'] && !empty($oldNode))
-				{
-					$ret = $this->applyExclusionFilter($type, $root, $oldNode, 'remove');
-				}
+                if ($ret['success'] && !empty($oldNode)) {
+                    $ret = $this->applyExclusionFilter($type, $root, $oldNode, 'remove');
+                }
 
-				if ($ret['success'])
-				{
-					$ret = $this->applyExclusionFilter($type, $root, $node, 'set');
-				}
-				break;
-		}
+                if ($ret['success']) {
+                    $ret = $this->applyExclusionFilter($type, $root, $node, 'set');
+                }
+                break;
+        }
 
-		$ret['newstate'] = $newState;
+        $ret['newstate'] = $newState;
 
-		if (is_null($newState))
-		{
-			$ret['newstate'] = $ret['success'];
-		}
+        if (is_null($newState)) {
+            $ret['newstate'] = $ret['success'];
+        }
 
-		if ($ret['success'])
-		{
-			$filters = Factory::getFilters();
-			$filters->save();
-		}
+        if ($ret['success']) {
+            $filters = Factory::getFilters();
+            $filters->save();
+        }
 
-		return $ret;
-	}
+        return $ret;
+    }
 
+    /**
+     * Retrieves the filters as an array. Used for the tabular filter editor.
+     *
+     * @param   string  $root  The root node to search filters on
+     *
+     * @return  array  A collection of hash arrays containing node and type for each filtered element
+     */
+    protected function &getTabularFilters($root)
+    {
+        // A reference to the global Akeeba Engine filter object
+        $filters = Factory::getFilters();
 
-	/**
-	 * Retrieves the filters as an array. Used for the tabular filter editor.
-	 *
-	 * @param   string  $root  The root node to search filters on
-	 *
-	 * @return  array  A collection of hash arrays containing node and type for each filtered element
-	 */
-	protected function &getTabularFilters($root)
-	{
-		// A reference to the global Akeeba Engine filter object
-		$filters = Factory::getFilters();
+        // Initialize the return array
+        $ret = [];
 
-		// Initialize the return array
-		$ret = [];
+        foreach ($this->knownFilterTypes as $type) {
+            $rawFilterData = $filters->getFilterData($type);
 
-		foreach ($this->knownFilterTypes as $type)
-		{
-			$rawFilterData = $filters->getFilterData($type);
+            if (array_key_exists($root, $rawFilterData)) {
+                if (!empty($rawFilterData[$root])) {
+                    foreach ($rawFilterData[$root] as $node) {
+                        $ret[] = [
+                            'node' => substr($node, 0), // Make sure we get a COPY, not a reference to the original data
+                            'type' => $type,
+                        ];
+                    }
+                }
+            }
+        }
 
-			if (array_key_exists($root, $rawFilterData))
-			{
-				if (!empty($rawFilterData[$root]))
-				{
-					foreach ($rawFilterData[$root] as $node)
-					{
-						$ret[] = [
-							'node' => substr($node, 0), // Make sure we get a COPY, not a reference to the original data
-							'type' => $type,
-						];
-					}
-				}
-			}
-		}
+        return $ret;
+    }
 
-		return $ret;
-	}
+    /**
+     * Resets the filters
+     *
+     * @param   string  $root  Root directory
+     *
+     * @return  void
+     */
+    protected function resetAllFilters($root)
+    {
+        // Get a reference to the global Filters object
+        $filters = Factory::getFilters();
 
-	/**
-	 * Resets the filters
-	 *
-	 * @param   string  $root  Root directory
-	 *
-	 * @return  void
-	 */
-	protected function resetAllFilters($root)
-	{
-		// Get a reference to the global Filters object
-		$filters = Factory::getFilters();
+        foreach ($this->knownFilterTypes as $filterName) {
+            $filter = Factory::getFilterObject($filterName);
+            $filter->reset($root);
+        }
 
-		foreach ($this->knownFilterTypes as $filterName)
-		{
-			$filter = Factory::getFilterObject($filterName);
-			$filter->reset($root);
-		}
-
-		$filters->save();
-	}
+        $filters->save();
+    }
 }

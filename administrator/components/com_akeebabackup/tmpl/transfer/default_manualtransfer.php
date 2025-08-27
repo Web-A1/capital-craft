@@ -13,10 +13,9 @@ use Joomla\CMS\Language\Text;
 
 /** @var  $this  \Akeeba\Component\AkeebaBackup\Administrator\View\Transfer\HtmlView */
 
-$dotPos    = strrpos($this->latestBackup['archivename'], '.');
+$dotPos = strrpos($this->latestBackup['archivename'], '.');
 $extension = substr($this->latestBackup['archivename'], $dotPos + 1);
-$bareName  = basename($this->latestBackup['archivename'], '.' . $extension);
-
+$bareName = basename($this->latestBackup['archivename'], '.' . $extension);
 ?>
 <div id="akeeba-transfer-manualtransfer" class="card mb-3" style="display: none;">
 	<h3 class="card-header bg-primary text-white">
@@ -46,29 +45,29 @@ $bareName  = basename($this->latestBackup['archivename'], '.' . $extension);
 		</h5>
 
 		<p>
-			<?php if($this->latestBackup['multipart'] < 2): ?>
+			<?php if ($this->latestBackup['multipart'] < 2): ?>
 				<?= $this->escape($this->latestBackup['archivename']) ?>
 			<?php else: ?>
 				<?= Text::sprintf('COM_AKEEBABACKUP_TRANSFER_LBL_MANUALTRANSFER_MULTIPART', $this->latestBackup['multipart']) ?>
-			<?php endif ?>
+			<?php endif; ?>
 		</p>
 
-		<?php if($this->latestBackup['multipart'] >= 2): ?>
+		<?php if ($this->latestBackup['multipart'] >= 2): ?>
 			<ul>
-				<?php for($i = 1; $i < $this->latestBackup['multipart']; $i++): ?>
+				<?php for ($i = 1; $i < $this->latestBackup['multipart']; $i++): ?>
 					<li><?= $this->escape($bareName . '.' . substr($extension, 0, 1) . sprintf('%02u', $i)) ?></li>
-				<?php endfor ?>
+				<?php endfor; ?>
 				<li>
 					<?= $this->escape($this->latestBackup['archivename']) ?>
 				</li>
 			</ul>
-		<?php endif ?>
+		<?php endif; ?>
 
 		<h5>
 			<?= Text::_('COM_AKEEBABACKUP_BUADMIN_LBL_ARCHIVEPATH') ?>
 		</h5>
 		<p>
-			<?= $this->escape(Utils::getRelativePath(JPATH_SITE, dirname($this->latestBackup['absolute_path'])))?>
+			<?= $this->escape(Utils::getRelativePath(JPATH_SITE, dirname($this->latestBackup['absolute_path']))) ?>
 		</p>
 	</div>
 </div>

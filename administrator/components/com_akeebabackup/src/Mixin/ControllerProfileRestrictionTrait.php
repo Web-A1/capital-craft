@@ -16,21 +16,23 @@ use Joomla\CMS\Language\Text;
  */
 trait ControllerProfileRestrictionTrait
 {
-	use ControllerProfileAccessTrait;
+    use ControllerProfileAccessTrait;
 
-	protected function onBeforeExecute(&$task)
-	{
-		// Before doing anything, triple check that we truly have access to this profile
-		$profileId = Platform::getInstance()->get_active_profile();
+    protected function onBeforeExecute(&$task)
+    {
+        // Before doing anything, triple check that we truly have access to this profile
+        $profileId = Platform::getInstance()->get_active_profile();
 
-		if (!$this->checkProfileAccess($profileId))
-		{
-			Factory::getApplication()->getSession()->set('akeebabackup.profile', 1);
+        if (!$this->checkProfileAccess($profileId)) {
+            Factory::getApplication()->getSession()->set('akeebabackup.profile', 1);
 
-			$this->setRedirect('index.php?option=com_akeebabackup', Text::_('COM_AKEEBABACKUP_PROFILE_ERR_NOACCESS'), 'error');
+            $this->setRedirect(
+                'index.php?option=com_akeebabackup',
+                Text::_('COM_AKEEBABACKUP_PROFILE_ERR_NOACCESS'),
+                'error',
+            );
 
-			$this->redirect();
-		}
-	}
-
+            $this->redirect();
+        }
+    }
 }

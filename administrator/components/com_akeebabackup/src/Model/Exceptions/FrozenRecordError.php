@@ -12,7 +12,4 @@ defined('_JEXEC') || die();
 
 use RuntimeException;
 
-class FrozenRecordError extends RuntimeException
-{
-
-}
+class FrozenRecordError extends RuntimeException {}

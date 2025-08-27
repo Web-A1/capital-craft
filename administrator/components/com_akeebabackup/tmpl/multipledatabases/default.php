@@ -11,7 +11,6 @@ defined('_JEXEC') || die();
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
-
 ?>
 <div id="akEditorDialog"
 	 class="modal fade"
@@ -34,17 +33,26 @@ use Joomla\CMS\Language\Text;
 				<div id="ak_editor_table">
 					<div class="row mb-3">
 						<label class="col-xs-3 col-form-label" for="ake_driver">
-							<?= Text::_('COM_AKEEBABACKUP_MULTIDB_GUI_LBL_DRIVER')?>
+							<?= Text::_('COM_AKEEBABACKUP_MULTIDB_GUI_LBL_DRIVER') ?>
 						</label>
 						<div class="col-xs-9">
-							<?= HTMLHelper::_('select.genericlist', [
-								'mysqli'   => 'MySQLi',
-								'pdomysql' => 'PDO MySQL',
-							], 'ake_driver', [
-								'list.attr' => [
-									'class' => 'form-select',
-								],
-							], 'value', 'text', null, 'ake_driver') ?>
+							<?= HTMLHelper::_(
+           'select.genericlist',
+           [
+               'mysqli' => 'MySQLi',
+               'pdomysql' => 'PDO MySQL',
+           ],
+           'ake_driver',
+           [
+               'list.attr' => [
+                   'class' => 'form-select',
+               ],
+           ],
+           'value',
+           'text',
+           null,
+           'ake_driver',
+       ) ?>
 						</div>
 					</div>
 
@@ -68,7 +76,7 @@ use Joomla\CMS\Language\Text;
 
 					<div class="row mb-3">
 						<label class="col-xs-3 col-form-label" for="ake_username">
-							<?= Text::_('COM_AKEEBABACKUP_MULTIDB_GUI_LBL_USERNAME')  ?>
+							<?= Text::_('COM_AKEEBABACKUP_MULTIDB_GUI_LBL_USERNAME') ?>
 						</label>
 						<div class="col-xs-9">
 							<input id="ake_username" type="text" class="form-control" />

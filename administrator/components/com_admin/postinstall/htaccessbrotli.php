@@ -12,7 +12,7 @@
  */
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -29,7 +29,9 @@ function admin_postinstall_htaccessbrotli_condition()
     $htaccessContent = '';
 
     if (is_file(JPATH_ROOT . '/.htaccess') || is_file(JPATH_ROOT . '/htaccess.txt')) {
-        $htaccessContent = file_get_contents(is_file(JPATH_ROOT . '/.htaccess') ? JPATH_ROOT . '/.htaccess' : JPATH_ROOT . '/htaccess.txt');
+        $htaccessContent = file_get_contents(
+            is_file(JPATH_ROOT . '/.htaccess') ? JPATH_ROOT . '/.htaccess' : JPATH_ROOT . '/htaccess.txt',
+        );
     }
 
     return !str_contains($htaccessContent, 'E=no-brotli:1');

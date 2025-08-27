@@ -17,26 +17,29 @@ use Joomla\CMS\Uri\Uri;
 /** @var \Akeeba\Component\AkeebaBackup\Administrator\View\Browser\HtmlView $this */
 
 Text::script('COM_AKEEBABACKUP_CONFIG_UI_ROOTDIR', true);
-
 ?>
-<?php if(empty($this->folder)): ?>
+<?php if (empty($this->folder)): ?>
 <form action="<?= Route::_('index.php?option=com_akeebabackup&view=Browser&format=html&tmpl=component') ?>"
 	  method="post" name="adminForm" id="adminForm">
 	<input type="hidden" name="folder" id="folder" value="" />
 	<input type="hidden" name="processfolder" id="processfolder" value="0" />
 	<input type="hidden" name="<?= Factory::getApplication()->getFormToken() ?>" value="1" />
 </form>
-<?php endif ?>
+<?php endif; ?>
 
-<?php if(!(empty($this->folder))): ?>
+<?php if (!empty($this->folder)): ?>
 <div x-class="border border-1 border-primary p-2 pt-3 m-1 mb-3">
-	<form action="<?= Route::_('index.php?option=com_akeebabackup&view=Browser&tmpl=component') ?>" method="get" name="adminForm" id="adminForm"
+	<form action="<?= Route::_(
+     'index.php?option=com_akeebabackup&view=Browser&tmpl=component',
+ ) ?>" method="get" name="adminForm" id="adminForm"
 		  class="card card-body mb-3 border-1 border-primary rounded-2 pb-3"
 	>
 
 		<div class="d-flex flex-row align-items-center w-100">
 			<div class="me-2 mb-1">
-				<span title="<?= Text::_($this->writable ? 'COM_AKEEBABACKUP_CPANEL_LBL_WRITABLE' : 'COM_AKEEBABACKUP_CPANEL_LBL_UNWRITABLE') ?>"
+				<span title="<?= Text::_(
+        $this->writable ? 'COM_AKEEBABACKUP_CPANEL_LBL_WRITABLE' : 'COM_AKEEBABACKUP_CPANEL_LBL_UNWRITABLE',
+    ) ?>"
 					  class="rounded-2 p-2 text-white <?= $this->writable ? 'bg-success' : 'bg-danger' ?>"
 				>
 					<span class="<?= $this->writable ? 'fa fa-check-circle' : 'fa fa-ban' ?>"></span>
@@ -75,16 +78,20 @@ Text::script('COM_AKEEBABACKUP_CONFIG_UI_ROOTDIR', true);
 	</form>
 </div>
 
-<?php if(count($this->breadcrumbs)): ?>
+<?php if (count($this->breadcrumbs)): ?>
 <nav aria-label="breadcrumb">
 	<ul class="breadcrumb p-3 rounded-2" data-bs-theme="light">
-		<?php $i = 0 ?>
-		<?php foreach($this->breadcrumbs as $crumb): ?>
+		<?php $i = 0; ?>
+		<?php foreach ($this->breadcrumbs as $crumb): ?>
 			<?php $i++; ?>
-			<li class="breadcrumb-item <?= ($i < count($this->breadcrumbs)) ? '' : 'active' ?>">
-				<?php if($i < count($this->breadcrumbs)): ?>
+			<li class="breadcrumb-item <?= $i < count($this->breadcrumbs) ? '' : 'active' ?>">
+				<?php if ($i < count($this->breadcrumbs)): ?>
 					<a class="text-decoration-none fw-bold"
-					   href="<?= $this->escape(Uri::base() . "index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=" . urlencode($crumb['folder'])) ?>"
+					   href="<?= $this->escape(
+            Uri::base() .
+                'index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=' .
+                urlencode($crumb['folder']),
+        ) ?>"
 					>
 						<?= $this->escape($crumb['label']) ?>
 					</a>
@@ -92,44 +99,52 @@ Text::script('COM_AKEEBABACKUP_CONFIG_UI_ROOTDIR', true);
 					<span class="fw-bold">
 						<?= $this->escape($crumb['label']) ?>
 					</span>
-				<?php endif ?>
+				<?php endif; ?>
 			</li>
 		<?php endforeach; ?>
 	</ul>
 </nav>
-<?php endif ?>
+<?php endif; ?>
 
 <div class="border border-1 border-muted rounded-2 p-2 px-3">
 	<div>
-		<?php if(count($this->subfolders)): ?>
+		<?php if (count($this->subfolders)): ?>
 		<table class="table table-striped">
 			<tr>
 				<td>
 					<a class="btn btn-dark btn-sm p-2 text-decoration-none"
-					   href="<?= $this->escape(Uri::base()) ?>index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=<?= $this->escape($this->parent) ?>">
+					   href="<?= $this->escape(
+            Uri::base(),
+        ) ?>index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=<?= $this->escape($this->parent) ?>">
 						<span class="akion-arrow-up-a"></span>
 						<?= Text::_('COM_AKEEBABACKUP_BROWSER_LBL_GOPARENT') ?>
 					</a>
 				</td>
 			</tr>
-			<?php foreach($this->subfolders as $subfolder): ?>
+			<?php foreach ($this->subfolders as $subfolder): ?>
 			<tr>
 				<td>
-					<a class="akeeba-browser-folder text-decoration-none" href="<?= $this->escape(Uri::base()) ?>index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=<?= $this->escape($this->folder . '/' . $subfolder) ?>"><?= $this->escape($subfolder) ?></a>
+					<a class="akeeba-browser-folder text-decoration-none" href="<?= $this->escape(
+         Uri::base(),
+     ) ?>index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=<?= $this->escape(
+    $this->folder . '/' . $subfolder,
+) ?>"><?= $this->escape($subfolder) ?></a>
 				</td>
 			</tr>
-			<?php endforeach ?>
+			<?php endforeach; ?>
 		</table>
-		<?php else: ?>
-			<?php if(!$this->exists): ?>
+		<?php // secondary block
+
+      else: ?>
+			<?php if (!$this->exists): ?>
 			<div class="alert alert-danger">
 				<?= Text::_('COM_AKEEBABACKUP_BROWSER_ERR_NOTEXISTS') ?>
 			</div>
-			<?php elseif(!$this->inRoot): ?>
+			<?php elseif (!$this->inRoot): ?>
 			<div class="alert alert-warning">
 				<?= Text::_('COM_AKEEBABACKUP_BROWSER_ERR_NONROOT') ?>
 			</div>
-			<?php elseif($this->openbasedirRestricted): ?>
+			<?php elseif ($this->openbasedirRestricted): ?>
 			<div class="alert alert-danger">
 				<?= Text::_('COM_AKEEBABACKUP_BROWSER_ERR_BASEDIR') ?>
 			</div>
@@ -138,16 +153,22 @@ Text::script('COM_AKEEBABACKUP_CONFIG_UI_ROOTDIR', true);
 				<tr>
 					<td>
 						<a class="btn btn-dark btn-sm p-2 text-decoration-none"
-						   href="<?= $this->escape(Uri::base()) ?>index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=<?= $this->escape($this->parent) ?>">
+						   href="<?= $this->escape(
+             Uri::base(),
+         ) ?>index.php?option=com_akeebabackup&view=Browser&tmpl=component&folder=<?= $this->escape($this->parent) ?>">
 							<span class="akion-arrow-up-a"></span>
 							<?= Text::_('COM_AKEEBABACKUP_BROWSER_LBL_GOPARENT') ?>
 						</a>
 					</td>
 				</tr>
 			</table>
-			<?php endif // secondary block ?>
-		<?php endif // for the count($this->subfolders) block ?>
+			<?php endif;
+      // secondary block
+      ?>
+		<?php endif;
+    // for the count($this->subfolders) block
+    ?>
 	</div>
 </div>
-<?php endif ?>
+<?php endif; ?>
 

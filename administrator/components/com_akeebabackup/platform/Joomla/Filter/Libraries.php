@@ -24,53 +24,47 @@ use Akeeba\Engine\Platform;
  */
 class Libraries extends Base
 {
-	public function __construct()
-	{
-		$this->object      = 'dir';
-		$this->subtype     = 'inclusion';
-		$this->method      = 'direct';
-		$this->filter_name = 'Libraries';
+    public function __construct()
+    {
+        $this->object = 'dir';
+        $this->subtype = 'inclusion';
+        $this->method = 'direct';
+        $this->filter_name = 'Libraries';
 
-		parent::__construct();
+        parent::__construct();
 
-		$this->initialise();
-	}
+        $this->initialise();
+    }
 
-	private function initialise()
-	{
-		// Bail out if the user has provided a custom (alternate) root to back up
-		if (Factory::getConfiguration()->get('akeeba.platform.override_root', 0))
-		{
-			return;
-		}
+    private function initialise()
+    {
+        // Bail out if the user has provided a custom (alternate) root to back up
+        if (Factory::getConfiguration()->get('akeeba.platform.override_root', 0)) {
+            return;
+        }
 
-		if (defined('JPATH_LIBRARIES'))
-		{
-			$jLibrariesDir = JPATH_LIBRARIES;
-		}
-		/** @deprecated Deprecated since Joomla! 4.4, we can remove it in Joomla! 6.0 */
-		elseif (defined('JPATH_PLATFORM'))
-		{
-			/** @noinspection PhpDeprecationInspection */
-			$jLibrariesDir = JPATH_PLATFORM;
-		}
-		else
-		{
-			return;
-		}
+        if (defined('JPATH_LIBRARIES')) {
+            $jLibrariesDir = JPATH_LIBRARIES;
+        } /** @deprecated Deprecated since Joomla! 4.4, we can remove it in Joomla! 6.0 */ elseif (
+            defined('JPATH_PLATFORM')
+        ) {
+            /** @noinspection PhpDeprecationInspection */
+            $jLibrariesDir = JPATH_PLATFORM;
+        } else {
+            return;
+        }
 
-		$jLibrariesDir    = Factory::getFilesystemTools()->TranslateWinPath($jLibrariesDir);
-		$defaultLibraries = Factory::getFilesystemTools()->TranslateWinPath(JPATH_ROOT . '/libraries');
+        $jLibrariesDir = Factory::getFilesystemTools()->TranslateWinPath($jLibrariesDir);
+        $defaultLibraries = Factory::getFilesystemTools()->TranslateWinPath(JPATH_ROOT . '/libraries');
 
-		if ($defaultLibraries === $jLibrariesDir)
-		{
-			return;
-		}
+        if ($defaultLibraries === $jLibrariesDir) {
+            return;
+        }
 
-		// The path differs, add it here
-		$this->filter_data['JPATH_LIBRARIES'] = 			[
-			Factory::getFilesystemTools()->rebaseFolderToStockDirs($jLibrariesDir),
-			'JPATH_LIBRARIES',
-		];
-	}
+        // The path differs, add it here
+        $this->filter_data['JPATH_LIBRARIES'] = [
+            Factory::getFilesystemTools()->rebaseFolderToStockDirs($jLibrariesDir),
+            'JPATH_LIBRARIES',
+        ];
+    }
 }

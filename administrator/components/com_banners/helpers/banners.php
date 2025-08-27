@@ -11,7 +11,7 @@
  */
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -22,6 +22,4 @@
  * @deprecated  4.3 will be removed in 6.0
  *              Use \Joomla\Component\Banners\Administrator\Helper\BannersHelper instead
  */
-class BannersHelper extends \Joomla\Component\Banners\Administrator\Helper\BannersHelper
-{
-}
+class BannersHelper extends \Joomla\Component\Banners\Administrator\Helper\BannersHelper {}

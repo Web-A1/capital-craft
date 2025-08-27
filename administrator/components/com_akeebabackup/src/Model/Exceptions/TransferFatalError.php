@@ -12,7 +12,4 @@ defined('_JEXEC') || die();
 
 use RuntimeException;
 
-class TransferFatalError extends RuntimeException
-{
-
-}
+class TransferFatalError extends RuntimeException {}

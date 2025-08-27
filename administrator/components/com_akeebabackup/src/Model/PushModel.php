@@ -15,16 +15,15 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Model;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Akeeba\WebPush\WebPush\WebPush;
 use Akeeba\WebPush\WebPushModelTrait;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-if (!class_exists(WebPush::class))
-{
-	require_once JPATH_ADMINISTRATOR . '/components/com_akeebabackup/vendor/autoload.php';
+if (!class_exists(WebPush::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_akeebabackup/vendor/autoload.php';
 }
 
 /**
@@ -35,13 +34,13 @@ if (!class_exists(WebPush::class))
 #[\AllowDynamicProperties]
 class PushModel extends BaseDatabaseModel
 {
-	use WebPushModelTrait;
+    use WebPushModelTrait;
 
-	public function __construct($config = [], MVCFactoryInterface $factory = null)
-	{
-		parent::__construct($config, $factory);
+    public function __construct($config = [], MVCFactoryInterface $factory = null)
+    {
+        parent::__construct($config, $factory);
 
-		// This is required
-		$this->initialiseWebPush('com_akeebabackup', 'vapidKey');
-	}
+        // This is required
+        $this->initialiseWebPush('com_akeebabackup', 'vapidKey');
+    }
 }

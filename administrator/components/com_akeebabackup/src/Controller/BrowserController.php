@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Controller;
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerCustomACLTrait;
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerEventsTrait;
@@ -21,42 +21,44 @@ use Joomla\Input\Input;
 
 class BrowserController extends BaseController
 {
-	use ControllerEventsTrait;
-	use ControllerCustomACLTrait;
-	use ControllerRegisterTasksTrait;
-	use ControllerReusableModelsTrait;
+    use ControllerEventsTrait;
+    use ControllerCustomACLTrait;
+    use ControllerRegisterTasksTrait;
+    use ControllerReusableModelsTrait;
 
-	/**
-	 * The default view.
-	 *
-	 * @var    string
-	 * @since  1.6
-	 */
-	protected $default_view = 'Browser';
+    /**
+     * The default view.
+     *
+     * @var    string
+     * @since  1.6
+     */
+    protected $default_view = 'Browser';
 
-	public function __construct($config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
-	{
-		parent::__construct($config, $factory, $app, $input);
+    public function __construct(
+        $config = [],
+        MVCFactoryInterface $factory = null,
+        ?CMSApplication $app = null,
+        ?Input $input = null,
+    ) {
+        parent::__construct($config, $factory, $app, $input);
 
-		$this->registerControllerTasks('main');
-	}
+        $this->registerControllerTasks('main');
+    }
 
-	public function onBeforeMain()
-	{
-		$folder        = $this->input->get('folder', '', 'string');
-		$processFolder = $this->input->get('processfolder', 0, 'int');
+    public function onBeforeMain()
+    {
+        $folder = $this->input->get('folder', '', 'string');
+        $processFolder = $this->input->get('processfolder', 0, 'int');
 
-		/** @var BrowserModel $model */
-		$model = $this->getModel('Browser', 'Administrator', ['base_path' => $this->basePath]);
-		$model->setState('folder', $folder);
-		$model->setState('processfolder', $processFolder);
-		$model->makeListing();
-	}
+        /** @var BrowserModel $model */
+        $model = $this->getModel('Browser', 'Administrator', ['base_path' => $this->basePath]);
+        $model->setState('folder', $folder);
+        $model->setState('processfolder', $processFolder);
+        $model->makeListing();
+    }
 
-	public function main()
-	{
-		$this->display(false);
-	}
-
-
+    public function main()
+    {
+        $this->display(false);
+    }
 }

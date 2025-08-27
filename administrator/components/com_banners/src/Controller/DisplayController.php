@@ -16,7 +16,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\Component\Banners\Administrator\Helper\BannersHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -49,9 +49,9 @@ class DisplayController extends BaseController
     {
         BannersHelper::updateReset();
 
-        $view   = $this->input->get('view', 'banners');
+        $view = $this->input->get('view', 'banners');
         $layout = $this->input->get('layout', 'default');
-        $id     = $this->input->getInt('id');
+        $id = $this->input->getInt('id');
 
         // Check for edit form.
         if ($view === 'banner' && $layout === 'edit' && !$this->checkEditId('com_banners.edit.banner', $id)) {

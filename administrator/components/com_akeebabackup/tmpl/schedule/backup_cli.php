@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-3">
 	<h3 class="card-header">
@@ -56,7 +55,7 @@ use Joomla\CMS\Language\Text;
 					<?= Text::sprintf('COM_AKEEBABACKUP_SCHEDULE_LBL_CLIGENERICINFO', $this->croninfo->info->php_path) ?>
 				<?php else: ?>
 					<?= Text::sprintf('COM_AKEEBABACKUP_SCHEDULE_LBL_ACCURATEINFO', $this->croninfo->info->php_path) ?>
-				<?php endif ?>
+				<?php endif; ?>
 			</p>
 		<?php endif; ?>
 	</div>

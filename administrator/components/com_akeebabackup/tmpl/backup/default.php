@@ -16,23 +16,23 @@ use Joomla\CMS\Router\Route;
 HTMLHelper::_('formbehavior.chosen');
 
 // Configuration Wizard pop-up
-if ($this->promptForConfigurationwizard)
-{
-	echo $this->loadAnyTemplate('Configuration/confwiz_modal');
+if ($this->promptForConfigurationwizard) {
+    echo $this->loadAnyTemplate('Configuration/confwiz_modal');
 }
 
 // The Javascript of the page
 echo $this->loadTemplate('script');
-
 ?>
 
-<?php // Backup Setup ?>
+<?php
+// Backup Setup
+?>
 <div id="backup-setup" class="card">
 	<h3 class="card-header bg-primary text-white">
 		<?= Text::_('COM_AKEEBABACKUP_BACKUP_HEADER_STARTNEW') ?>
 	</h3>
 	<div class="card-body">
-		<?php if($this->hasWarnings && !$this->unwriteableOutput): ?>
+		<?php if ($this->hasWarnings && !$this->unwriteableOutput): ?>
 			<div id="quirks" class="alert alert-<?= $this->hasErrors ? 'danger' : 'warning' ?>">
 				<h3 class="alert-heading">
 					<?= Text::_('COM_AKEEBABACKUP_BACKUP_LABEL_DETECTEDQUIRKS') ?>
@@ -43,18 +43,22 @@ echo $this->loadTemplate('script');
 				<?= $this->warningsCell ?>
 
 			</div>
-		<?php endif ?>
+		<?php endif; ?>
 
-		<?php if($this->unwriteableOutput): ?>
+		<?php if ($this->unwriteableOutput): ?>
 			<div id="akeeba-fatal-outputdirectory" class="alert alert-danger">
 				<h3>
 					<?= Text::_('COM_AKEEBABACKUP_BACKUP_ERROR_UNWRITABLEOUTPUT_' . ($this->autoStart ? 'AUTOBACKUP' : 'NORMALBACKUP')) ?>
 				</h3>
 				<p>
-					<?= Text::sprintf('COM_AKEEBABACKUP_BACKUP_ERROR_UNWRITABLEOUTPUT_COMMON', 'index.php?option=com_akeebabackup&view=Configuration', 'https://www.akeeba.com/warnings/q001.html') ?>
+					<?= Text::sprintf(
+         'COM_AKEEBABACKUP_BACKUP_ERROR_UNWRITABLEOUTPUT_COMMON',
+         'index.php?option=com_akeebabackup&view=Configuration',
+         'https://www.akeeba.com/warnings/q001.html',
+     ) ?>
 				</p>
 			</div>
-		<?php endif ?>
+		<?php endif; ?>
 
 		<form action="<?= Route::_('index.php?option=com_akeebabackup&view=Backup') ?>" method="post"
 			  name="flipForm" id="flipForm"
@@ -63,18 +67,16 @@ echo $this->loadTemplate('script');
 
 			<div class="m-2">
 				<label>
-					<?= Text::_('COM_AKEEBABACKUP_CPANEL_PROFILE_TITLE') ?>: #<?= (int)$this->profileId ?>
+					<?= Text::_('COM_AKEEBABACKUP_CPANEL_PROFILE_TITLE') ?>: #<?= (int) $this->profileId ?>
 				</label>
 			</div>
 			<div class="flex-grow-1">
 				<joomla-field-fancy-select
 						search-placeholder="<?= Text::_('COM_AKEEBABACKUP_BUADMIN_LABEL_PROFILEID') ?>"
-				><?=
-					HTMLHelper::_('select.genericlist', $this->profileList, 'profileid', [
-						'list.select' => $this->profileId,
-						'id' => 'comAkeebaControlPanelProfileSwitch',
-					])
-					?></joomla-field-fancy-select>
+				><?= HTMLHelper::_('select.genericlist', $this->profileList, 'profileid', [
+        'list.select' => $this->profileId,
+        'id' => 'comAkeebaControlPanelProfileSwitch',
+    ]) ?></joomla-field-fancy-select>
 			</div>
 
 			<input type="hidden" name="returnurl" value="<?= $this->escape($this->returnURL) ?>"/>
@@ -93,7 +95,7 @@ echo $this->loadTemplate('script');
 					<input type="text" name="description"
 						   class="form-control"
 						   id="backup-description"
-						   value="<?= $this->escape(empty($this->description) ? $this->defaultDescription : $this->description)?>"
+						   value="<?= $this->escape(empty($this->description) ? $this->defaultDescription : $this->description) ?>"
 						   maxlength="255" size="80"  autocomplete="off" />
 					<span class="text-muted"><?= Text::_('COM_AKEEBABACKUP_BACKUP_LABEL_DESCRIPTION_HELP') ?></span>
 				</div>
@@ -130,17 +132,23 @@ echo $this->loadTemplate('script');
 	</div>
 </div>
 
-<?php // Warning for having set an ANGIE password ?>
+<?php
+// Warning for having set an ANGIE password
+?>
 <div id="angie-password-warning" class="alert alert-warning alert-dismissible fade show" style="display: none">
     <h3>
 		<?= Text::_('COM_AKEEBABACKUP_BACKUP_ANGIE_PASSWORD_WARNING_HEADER') ?>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+      'JLIB_HTML_BEHAVIOR_CLOSE',
+  ) ?>"></button>
 	</h3>
     <p><?= Text::_('COM_AKEEBABACKUP_BACKUP_ANGIE_PASSWORD_WARNING_1') ?></p>
     <p><?= Text::_('COM_AKEEBABACKUP_BACKUP_ANGIE_PASSWORD_WARNING_2') ?></p>
 </div>
 
-<?php // Backup in progress ?>
+<?php
+// Backup in progress
+?>
 <div id="backup-progress-pane" style="display: none">
 	<div class="alert alert-info">
 		<?= Text::_('COM_AKEEBABACKUP_BACKUP_TEXT_BACKINGUP') ?>
@@ -171,30 +179,32 @@ echo $this->loadTemplate('script');
 		<span class="fa fa-question-circle"></span>
 		<?= Text::_('COM_AKEEBABACKUP_BACKUP_LBL_UPGRADENAG') ?>
     </div>
-	<?php endif ?>
+	<?php endif; ?>
 </div>
 
-<?php // Backup complete ?>
+<?php
+// Backup complete
+?>
 <div id="backup-complete" style="display: none">
     <div class="card">
 		<h3 class="card-header bg-success text-white">
-		    <?php if(empty($this->returnURL)): ?>
+		    <?php if (empty($this->returnURL)): ?>
 			    <?= Text::_('COM_AKEEBABACKUP_BACKUP_HEADER_BACKUPFINISHED') ?>
 		    <?php else: ?>
 			    <?= Text::_('COM_AKEEBABACKUP_BACKUP_HEADER_BACKUPWITHRETURNURLFINISHED') ?>
-		    <?php endif ?>
+		    <?php endif; ?>
 		</h3>
 
 		<div id="finishedframe" class="card-body">
             <p>
-				<?php if(empty($this->returnURL)): ?>
+				<?php if (empty($this->returnURL)): ?>
 					<?= Text::_('COM_AKEEBABACKUP_BACKUP_TEXT_CONGRATS') ?>
 				<?php else: ?>
 					<?= Text::_('COM_AKEEBABACKUP_BACKUP_TEXT_PLEASEWAITFORREDIRECTION') ?>
-				<?php endif ?>
+				<?php endif; ?>
             </p>
 
-			<?php if(empty($this->returnURL)): ?>
+			<?php if (empty($this->returnURL)): ?>
                 <a class="btn btn-outline-dark btn-lg" href="index.php?option=com_akeebabackup">
                     <span class="fa fa-arrow-left"></span>
 					<?= Text::_('COM_AKEEBABACKUP_CONTROLPANEL') ?>
@@ -207,12 +217,14 @@ echo $this->loadTemplate('script');
                     <span class="fa fa-search"></span>
 					<?= Text::_('COM_AKEEBABACKUP_LOG') ?>
                 </a>
-	        <?php endif ?>
+	        <?php endif; ?>
         </div>
     </div>
 </div>
 
-<?php // Backup warnings ?>
+<?php
+// Backup warnings
+?>
 <div id="backup-warnings-panel" style="display:none">
     <div class="card mt-3">
 		<h3 class="card-header bg-warning">
@@ -223,7 +235,9 @@ echo $this->loadTemplate('script');
     </div>
 </div>
 
-<?php // Backup retry after error ?>
+<?php
+// Backup retry after error
+?>
 <div id="retry-panel" style="display: none">
 	<div class="card mt-3">
 		<h3 class="card-header bg-warning">
@@ -255,7 +269,9 @@ echo $this->loadTemplate('script');
 	</div>
 </div>
 
-<?php // Backup error (halt) ?>
+<?php
+// Backup error (halt)
+?>
 <div id="error-panel" style="display: none">
 	<div class="card mt-3">
 		<h3 class="card-header bg-danger text-white">
@@ -274,29 +290,42 @@ echo $this->loadTemplate('script');
 
 			<div class="alert alert-info" id="error-panel-troubleshooting">
 				<p>
-					<?php if(AKEEBABACKUP_PRO): ?>
+					<?php if (AKEEBABACKUP_PRO): ?>
 					<?= Text::_('COM_AKEEBABACKUP_BACKUP_TEXT_RTFMTOSOLVEPRO') ?>
-					<?php endif ?>
+					<?php endif; ?>
 
-					<?= Text::sprintf('COM_AKEEBABACKUP_BACKUP_TEXT_RTFMTOSOLVE', 'https://www.akeeba.com/documentation/akeeba-backup-joomla/backup-now.html?utm_source=akeeba_backup&utm_campaign=backuperrorlink#troubleshoot-backup') ?>
+					<?= Text::sprintf(
+         'COM_AKEEBABACKUP_BACKUP_TEXT_RTFMTOSOLVE',
+         'https://www.akeeba.com/documentation/akeeba-backup-joomla/backup-now.html?utm_source=akeeba_backup&utm_campaign=backuperrorlink#troubleshoot-backup',
+     ) ?>
 				</p>
 				<p>
-					<?php if(AKEEBABACKUP_PRO): ?>
-					<?= Text::sprintf('COM_AKEEBABACKUP_BACKUP_TEXT_SOLVEISSUE_PRO', 'https://www.akeeba.com/support.html?utm_source=akeeba_backup&utm_campaign=backuperrorpro') ?>
+					<?php if (AKEEBABACKUP_PRO): ?>
+					<?= Text::sprintf(
+         'COM_AKEEBABACKUP_BACKUP_TEXT_SOLVEISSUE_PRO',
+         'https://www.akeeba.com/support.html?utm_source=akeeba_backup&utm_campaign=backuperrorpro',
+     ) ?>
 					<?php else: ?>
-					<?= Text::sprintf('COM_AKEEBABACKUP_BACKUP_TEXT_SOLVEISSUE_CORE', 'https://www.akeeba.com/subscribe.html?utm_source=akeeba_backup&utm_campaign=backuperrorcore','https://www.akeeba.com/support.html?utm_source=akeeba_backup&utm_campaign=backuperrorcore') ?>
-					<?php endif ?>
+					<?= Text::sprintf(
+         'COM_AKEEBABACKUP_BACKUP_TEXT_SOLVEISSUE_CORE',
+         'https://www.akeeba.com/subscribe.html?utm_source=akeeba_backup&utm_campaign=backuperrorcore',
+         'https://www.akeeba.com/support.html?utm_source=akeeba_backup&utm_campaign=backuperrorcore',
+     ) ?>
+					<?php endif; ?>
 
-					<?= Text::sprintf('COM_AKEEBABACKUP_BACKUP_TEXT_SOLVEISSUE_LOG', 'index.php?option=com_akeebabackup&view=Log&latest=1') ?>
+					<?= Text::sprintf(
+         'COM_AKEEBABACKUP_BACKUP_TEXT_SOLVEISSUE_LOG',
+         'index.php?option=com_akeebabackup&view=Log&latest=1',
+     ) ?>
 				</p>
 			</div>
 
-			<?php if(AKEEBABACKUP_PRO): ?>
+			<?php if (AKEEBABACKUP_PRO): ?>
 			<a class="btn btn-success" id="ab-alice-error" href="index.php?option=com_akeebabackup&view=Alice">
 				<span class="fa fa-briefcase-medical"></span>
 				<?= Text::_('COM_AKEEBABACKUP_BACKUP_ANALYSELOG') ?>
 			</a>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<a class="btn btn-primary" href="https://www.akeeba.com/documentation/akeeba-backup-joomla/troubleshoot-backup.html?utm_source=akeeba_backup&utm_campaign=backuperrorbutton">
 				<span class="fa fa-book"></span>

@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 $hasFiles = !empty($this->files);
-$task     = $hasFiles ? 'import' : 'default';
+$task = $hasFiles ? 'import' : 'default';
 ?>
 <?php if (!$hasFiles): ?>
 	<div class="alert alert-warning">
@@ -28,7 +28,7 @@ $task     = $hasFiles ? 'import' : 'default';
 			<?= Text::_('COM_AKEEBABACKUP_DISCOVER_LABEL_GOBACK') ?>
 		</a>
 	</p>
-<?php return ?>
+<?php return; ?>
 <?php endif; ?>
 
 <form name="adminForm" id="adminForm"
@@ -57,7 +57,7 @@ $task     = $hasFiles ? 'import' : 'default';
 					<option value="<?= $this->escape(basename($file)) ?>">
 						<?= $this->escape(basename($file)) ?>
 					</option>
-				<?php endforeach ?>
+				<?php endforeach; ?>
 			</select>
 			<p class="form-text">
 				<?= Text::_('COM_AKEEBABACKUP_DISCOVER_LABEL_SELECTFILES') ?>

@@ -20,7 +20,7 @@ use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 use Joomla\Component\Associations\Administrator\Model\AssociationsModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -130,13 +130,19 @@ class HtmlView extends BaseHtmlView
         /** @var AssociationsModel $model */
         $model = $this->getModel();
 
-        $this->state         = $model->getState();
-        $this->filterForm    = $model->getFilterForm();
+        $this->state = $model->getState();
+        $this->filterForm = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
         if (!Associations::isEnabled()) {
-            $link = Route::_('index.php?option=com_plugins&task=plugin.edit&extension_id=' . AssociationsHelper::getLanguagefilterPluginId());
-            Factory::getApplication()->enqueueMessage(Text::sprintf('COM_ASSOCIATIONS_ERROR_NO_ASSOC', $link), 'warning');
+            $link = Route::_(
+                'index.php?option=com_plugins&task=plugin.edit&extension_id=' .
+                    AssociationsHelper::getLanguagefilterPluginId(),
+            );
+            Factory::getApplication()->enqueueMessage(
+                Text::sprintf('COM_ASSOCIATIONS_ERROR_NO_ASSOC', $link),
+                'warning',
+            );
         } elseif ($this->state->get('itemtype') != '' && $this->state->get('language') != '') {
             $type = null;
 
@@ -156,19 +162,19 @@ class HtmlView extends BaseHtmlView
                 Factory::getApplication()->enqueueMessage(Text::_('COM_ASSOCIATIONS_ERROR_NO_TYPE'), 'warning');
             } else {
                 $this->extensionName = $extensionName;
-                $this->typeName      = $typeName;
-                $this->typeSupports  = [];
-                $this->typeFields    = [];
+                $this->typeName = $typeName;
+                $this->typeSupports = [];
+                $this->typeFields = [];
 
                 $details = $type->get('details');
 
                 if (\array_key_exists('support', $details)) {
-                    $support            = $details['support'];
+                    $support = $details['support'];
                     $this->typeSupports = $support;
                 }
 
                 if (\array_key_exists('fields', $details)) {
-                    $fields           = $details['fields'];
+                    $fields = $details['fields'];
                     $this->typeFields = $fields;
                 }
 
@@ -209,21 +215,27 @@ class HtmlView extends BaseHtmlView
                     if ($this->getLayout() == 'modal') {
                         // We need to change the category filter to only show categories tagged to All or to the forced language.
                         if ($forcedLanguage = Factory::getApplication()->getInput()->get('forcedLanguage', '', 'CMD')) {
-                            $this->filterForm->setFieldAttribute('category_id', 'language', '*,' . $forcedLanguage, 'filter');
+                            $this->filterForm->setFieldAttribute(
+                                'category_id',
+                                'language',
+                                '*,' . $forcedLanguage,
+                                'filter',
+                            );
                         }
                     }
                 }
 
-                $this->items      = $model->getItems();
+                $this->items = $model->getItems();
                 $this->pagination = $model->getPagination();
 
                 $linkParameters = [
-                    'layout'   => 'edit',
+                    'layout' => 'edit',
                     'itemtype' => $extensionName . '.' . $typeName,
-                    'task'     => 'association.edit',
+                    'task' => 'association.edit',
                 ];
 
-                $this->editUri = 'index.php?option=com_associations&view=association&' . http_build_query($linkParameters);
+                $this->editUri =
+                    'index.php?option=com_associations&view=association&' . http_build_query($linkParameters);
             }
         }
 
@@ -250,7 +262,7 @@ class HtmlView extends BaseHtmlView
 
         if (isset($this->typeName, $this->extensionName)) {
             $helper = AssociationsHelper::getExtensionHelper($this->extensionName);
-            $title  = $helper->getTypeTitle($this->typeName);
+            $title = $helper->getTypeTitle($this->typeName);
 
             $languageKey = strtoupper($this->extensionName . '_' . $title . 'S');
 
@@ -259,12 +271,8 @@ class HtmlView extends BaseHtmlView
             }
 
             ToolbarHelper::title(
-                Text::sprintf(
-                    'COM_ASSOCIATIONS_TITLE_LIST',
-                    Text::_($this->extensionName),
-                    Text::_($languageKey)
-                ),
-                'language assoc'
+                Text::sprintf('COM_ASSOCIATIONS_TITLE_LIST', Text::_($this->extensionName), Text::_($languageKey)),
+                'language assoc',
             );
         } else {
             ToolbarHelper::title(Text::_('COM_ASSOCIATIONS_TITLE_LIST_SELECT'), 'language assoc');
@@ -272,12 +280,17 @@ class HtmlView extends BaseHtmlView
 
         $toolbar = $this->getDocument()->getToolbar();
 
-        if ($user->authorise('core.admin', 'com_associations') || $user->authorise('core.options', 'com_associations')) {
+        if (
+            $user->authorise('core.admin', 'com_associations') ||
+            $user->authorise('core.options', 'com_associations')
+        ) {
             if (!isset($this->typeName)) {
-                $toolbar->standardButton('', 'COM_ASSOCIATIONS_PURGE', 'associations.purge')
+                $toolbar
+                    ->standardButton('', 'COM_ASSOCIATIONS_PURGE', 'associations.purge')
                     ->icon('icon-purge')
                     ->listCheck(false);
-                $toolbar->standardButton('', 'COM_ASSOCIATIONS_DELETE_ORPHANS', 'associations.clean')
+                $toolbar
+                    ->standardButton('', 'COM_ASSOCIATIONS_DELETE_ORPHANS', 'associations.clean')
                     ->icon('icon-refresh')
                     ->listCheck(false);
             }

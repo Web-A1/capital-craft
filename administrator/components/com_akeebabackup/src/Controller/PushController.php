@@ -15,7 +15,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Controller;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Akeeba\WebPush\NotificationOptions;
 use Akeeba\WebPush\WebPush\WebPush;
@@ -23,9 +23,8 @@ use Akeeba\WebPush\WebPushControllerTrait;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
-if (!class_exists(WebPush::class))
-{
-	require_once JPATH_ADMINISTRATOR . '/components/com_akeebabackup/vendor/autoload.php';
+if (!class_exists(WebPush::class)) {
+    require_once JPATH_ADMINISTRATOR . '/components/com_akeebabackup/vendor/autoload.php';
 }
 
 /**
@@ -35,34 +34,29 @@ if (!class_exists(WebPush::class))
  */
 class PushController extends BaseController
 {
-	use WebPushControllerTrait;
+    use WebPushControllerTrait;
 
-	/** @inheritDoc */
-	public function getModel($name = 'Push', $prefix = 'Administrator', $config = [])
-	{
-		return parent::getModel($name, $prefix, $config);
-	}
+    /** @inheritDoc */
+    public function getModel($name = 'Push', $prefix = 'Administrator', $config = [])
+    {
+        return parent::getModel($name, $prefix, $config);
+    }
 
-	/**
-	 * Sends an example push notification on push subscription to let the user know everything works.
-	 *
-	 * @param   object|null  $subscription  The push subscription we just registered into the database
-	 *
-	 * @since   9.3.1
-	 */
-	protected function onAfterWebPushSaveSubscription(?object $subscription)
-	{
-		$siteName = $this->app->get('sitename');
+    /**
+     * Sends an example push notification on push subscription to let the user know everything works.
+     *
+     * @param   object|null  $subscription  The push subscription we just registered into the database
+     *
+     * @since   9.3.1
+     */
+    protected function onAfterWebPushSaveSubscription(?object $subscription)
+    {
+        $siteName = $this->app->get('sitename');
 
-		$title = Text::sprintf('COM_AKEEBABACKUP_CONTROLPANEL_WEBPUSH_HELLO_TITLE', $siteName);
-		$options = new NotificationOptions();
-		$options->body = Text::_('COM_AKEEBABACKUP_CONTROLPANEL_WEBPUSH_HELLO_BODY');
+        $title = Text::sprintf('COM_AKEEBABACKUP_CONTROLPANEL_WEBPUSH_HELLO_TITLE', $siteName);
+        $options = new NotificationOptions();
+        $options->body = Text::_('COM_AKEEBABACKUP_CONTROLPANEL_WEBPUSH_HELLO_BODY');
 
-		$this->getModel()->sendNotification(
-			$title,
-			$options->toArray(),
-			null,
-			$subscription
-		);
-	}
+        $this->getModel()->sendNotification($title, $options->toArray(), null, $subscription);
+    }
 }

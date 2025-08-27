@@ -6,9 +6,7 @@
  */
 
 // Protect from unauthorized access
-defined('_JEXEC') or die();
-
-?>
+defined('_JEXEC') or die(); ?>
 
 <div style="margin: 1em">
 	<h1>We have detected that you are running HHVM instead of PHP. This software WILL NOT WORK properly on HHVM. Please switch to PHP 7 instead.</h1>

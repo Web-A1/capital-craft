@@ -17,7 +17,7 @@ use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -52,8 +52,8 @@ class ItemlanguageField extends ListField
         $helper = AssociationsHelper::getExtensionHelper($extensionName);
 
         $languageField = $helper->getTypeFieldName($typeName, 'language');
-        $referenceId   = $input->get('id', 0, 'int');
-        $reference     = ArrayHelper::fromObject(AssociationsHelper::getItem($extensionName, $typeName, $referenceId));
+        $referenceId = $input->get('id', 0, 'int');
+        $reference = ArrayHelper::fromObject(AssociationsHelper::getItem($extensionName, $typeName, $referenceId));
         $referenceLang = $reference[$languageField];
 
         // Get item associations given ID and item type
@@ -74,12 +74,12 @@ class ItemlanguageField extends ListField
                 continue;
             }
 
-            $options[$langCode]       = new \stdClass();
+            $options[$langCode] = new \stdClass();
             $options[$langCode]->text = $language->title;
 
             // If association exists in this language.
             if (isset($associations[$language->lang_code])) {
-                $itemId                    = (int) $associations[$language->lang_code]['id'];
+                $itemId = (int) $associations[$language->lang_code]['id'];
                 $options[$langCode]->value = $language->lang_code . ':' . $itemId . ':edit';
 
                 // Check if user does have permission to edit the associated item.

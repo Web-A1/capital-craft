@@ -22,7 +22,10 @@ $escapedBaseURL = addslashes(Uri::base());
 // Initialization
 $document = $this->getDocument();
 $document->addScriptOptions('akeebabackup.Backup.defaultDescription', addslashes($this->defaultDescription));
-$document->addScriptOptions('akeebabackup.Backup.currentDescription', addslashes(empty($this->description) ? $this->defaultDescription : $this->description));
+$document->addScriptOptions(
+    'akeebabackup.Backup.currentDescription',
+    addslashes(empty($this->description) ? $this->defaultDescription : $this->description),
+);
 $document->addScriptOptions('akeebabackup.Backup.currentComment', addslashes($this->comment));
 $document->addScriptOptions('akeebabackup.Backup.hasAngieKey', $this->hasANGIEPassword);
 
@@ -39,19 +42,34 @@ $document->addScriptOptions('akeebabackup.Backup.maxExecutionTime', (int) $this-
 $document->addScriptOptions('akeebabackup.Backup.runtimeBias', (int) $this->runtimeBias);
 
 // Notifications
-$document->addScriptOptions('akeebabackup.System.notification.iconURL', sprintf("%s../media/com_akeebabackup/icons/logo-48.png", $escapedBaseURL));
-$document->addScriptOptions('akeebabackup.System.notification.hasDesktopNotification', (bool) $this->desktopNotifications);
+$document->addScriptOptions(
+    'akeebabackup.System.notification.iconURL',
+    sprintf('%s../media/com_akeebabackup/icons/logo-48.png', $escapedBaseURL),
+);
+$document->addScriptOptions(
+    'akeebabackup.System.notification.hasDesktopNotification',
+    (bool) $this->desktopNotifications,
+);
 
 // Domain keys
 $document->addScriptOptions('akeebabackup.Backup.domains', $this->domains);
 
 // AJAX proxy, View Log and ALICE URLs
-$document->addScriptOptions('akeebabackup.System.params.AjaxURL', 'index.php?option=com_akeebabackup&view=Backup&task=ajax');
-$document->addScriptOptions('akeebabackup.Backup.URLs.LogURL', sprintf("%sindex.php?option=com_akeebabackup&view=Log", $escapedBaseURL));
-$document->addScriptOptions('akeebabackup.Backup.URLs.AliceURL', sprintf("%sindex.php?option=com_akeebabackup&view=Alice", $escapedBaseURL));
+$document->addScriptOptions(
+    'akeebabackup.System.params.AjaxURL',
+    'index.php?option=com_akeebabackup&view=Backup&task=ajax',
+);
+$document->addScriptOptions(
+    'akeebabackup.Backup.URLs.LogURL',
+    sprintf('%sindex.php?option=com_akeebabackup&view=Log', $escapedBaseURL),
+);
+$document->addScriptOptions(
+    'akeebabackup.Backup.URLs.AliceURL',
+    sprintf('%sindex.php?option=com_akeebabackup&view=Alice', $escapedBaseURL),
+);
 
 // Behavior triggers
-$document->addScriptOptions('akeebabackup.Backup.autostart', (!$this->unwriteableOutput && $this->autoStart) ? 1 : 0);
+$document->addScriptOptions('akeebabackup.Backup.autostart', !$this->unwriteableOutput && $this->autoStart ? 1 : 0);
 
 // Push language strings to Javascript
 Text::script('COM_AKEEBABACKUP_BACKUP_TEXT_LASTRESPONSE');

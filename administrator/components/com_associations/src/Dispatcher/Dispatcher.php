@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -47,8 +47,11 @@ class Dispatcher extends ComponentDispatcher
 
             if (!AssociationsHelper::hasSupport($extensionName)) {
                 throw new \Exception(
-                    Text::sprintf('COM_ASSOCIATIONS_COMPONENT_NOT_SUPPORTED', $this->app->getLanguage()->_($extensionName)),
-                    404
+                    Text::sprintf(
+                        'COM_ASSOCIATIONS_COMPONENT_NOT_SUPPORTED',
+                        $this->app->getLanguage()->_($extensionName),
+                    ),
+                    404,
                 );
             }
 

@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Dispatcher;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Akeeba\Component\AkeebaBackup\Administrator\Helper\SecretWord;
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\AkeebaEngineTrait;
@@ -29,267 +29,247 @@ use Throwable;
 
 class Dispatcher extends ComponentDispatcher
 {
-	use TriggerEventTrait;
-	use AkeebaEngineTrait;
-	use DatabaseAwareTrait;
+    use TriggerEventTrait;
+    use AkeebaEngineTrait;
+    use DatabaseAwareTrait;
 
-	/**
-	 * The application instance
-	 *
-	 * @var    CMSApplication
-	 * @since  4.0.0
-	 */
-	protected $app;
+    /**
+     * The application instance
+     *
+     * @var    CMSApplication
+     * @since  4.0.0
+     */
+    protected $app;
 
-	/**
-	 * The URL option for the component.
-	 *
-	 * @var    string
-	 * @since  9.0.0
-	 */
-	protected $option = 'com_akeebabackup';
+    /**
+     * The URL option for the component.
+     *
+     * @var    string
+     * @since  9.0.0
+     */
+    protected $option = 'com_akeebabackup';
 
-	protected $defaultController = 'controlpanel';
+    protected $defaultController = 'controlpanel';
 
-	public function dispatch()
-	{
-		// Check the minimum supported PHP version
-		$minPHPVersion = '7.4.0';
+    public function dispatch()
+    {
+        // Check the minimum supported PHP version
+        $minPHPVersion = '7.4.0';
 
-		if (version_compare(PHP_VERSION, $minPHPVersion, 'lt')) {
-			throw new \RuntimeException(
-				sprintf(
-					'Akeeba Backup requires at least PHP version %s. Your server currently uses PHP version %s. Please upgrade your PHP version.',
-					$minPHPVersion, PHP_VERSION
-				)
-			);
-		}
+        if (version_compare(PHP_VERSION, $minPHPVersion, 'lt')) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Akeeba Backup requires at least PHP version %s. Your server currently uses PHP version %s. Please upgrade your PHP version.',
+                    $minPHPVersion,
+                    PHP_VERSION,
+                ),
+            );
+        }
 
-		// HHVM made sense in 2013. PHP 7 and later versions are a way better solution than a hybrid PHP interpreter.
-		if (defined('HHVM_VERSION'))
-		{
-			(include_once __DIR__ . '/../../tmpl/commontemplates/hhvm.php') || die('We have detected that you are running HHVM instead of PHP. This software WILL NOT WORK properly on HHVM. Please use PHP 7 or later instead.');
+        // HHVM made sense in 2013. PHP 7 and later versions are a way better solution than a hybrid PHP interpreter.
+        if (defined('HHVM_VERSION')) {
+            (include_once __DIR__ . '/../../tmpl/commontemplates/hhvm.php') ||
+                die(
+                    'We have detected that you are running HHVM instead of PHP. This software WILL NOT WORK properly on HHVM. Please use PHP 7 or later instead.'
+                );
 
-			return;
-		}
+            return;
+        }
 
-		try
-		{
-			$this->triggerEvent('onBeforeDispatch');
+        try {
+            $this->triggerEvent('onBeforeDispatch');
 
-			parent::dispatch();
+            parent::dispatch();
 
-			// This will only execute if there is no redirection set by the Controller
-			$this->triggerEvent('onAfterDispatch');
-		}
-		catch (Throwable $e)
-		{
-			$title = 'Akeeba Backup';
-			$isPro = defined(AKEEBABACKUP_PRO) ? AKEEBABACKUP_PRO : @is_dir(__DIR__ . '/../../AliceChecks');
+            // This will only execute if there is no redirection set by the Controller
+            $this->triggerEvent('onAfterDispatch');
+        } catch (Throwable $e) {
+            $title = 'Akeeba Backup';
+            $isPro = defined(AKEEBABACKUP_PRO) ? AKEEBABACKUP_PRO : @is_dir(__DIR__ . '/../../AliceChecks');
 
-			if (!(include_once __DIR__ . '/../../tmpl/commontemplates/errorhandler.php'))
-			{
-				throw $e;
-			}
-		}
-	}
+            if (!include_once __DIR__ . '/../../tmpl/commontemplates/errorhandler.php') {
+                throw $e;
+            }
+        }
+    }
 
-	protected function onBeforeDispatch()
-	{
-		// Make sure we have a version loaded
-		@include_once(__DIR__ . '/../../version.php');
+    protected function onBeforeDispatch()
+    {
+        // Make sure we have a version loaded
+        @include_once __DIR__ . '/../../version.php';
 
-		if (!defined('AKEEBABACKUP_VERSION'))
-		{
-			define('AKEEBABACKUP_VERSION', 'dev');
-			define('AKEEBABACKUP_DATE', date('Y-m-d'));
-		}
+        if (!defined('AKEEBABACKUP_VERSION')) {
+            define('AKEEBABACKUP_VERSION', 'dev');
+            define('AKEEBABACKUP_DATE', date('Y-m-d'));
+        }
 
-		if (!defined('AKEEBABACKUP_PRO'))
-		{
-			define('AKEEBABACKUP_PRO', @is_dir(__DIR__ . '/../../AliceChecks'));
-		}
+        if (!defined('AKEEBABACKUP_PRO')) {
+            define('AKEEBABACKUP_PRO', @is_dir(__DIR__ . '/../../AliceChecks'));
+        }
 
-		// Load the languages
-		$this->loadLanguage();
+        // Load the languages
+        $this->loadLanguage();
 
-		// Apply the view and controller from the request, falling back to the default view/controller if necessary
-		$this->applyViewAndController();
+        // Apply the view and controller from the request, falling back to the default view/controller if necessary
+        $this->applyViewAndController();
 
-		// Access control
-		$this->checkAccess();
+        // Access control
+        $this->checkAccess();
 
-		// Load Akeeba Engine
-		$this->loadAkeebaEngine($this->getDatabase(), $this->mvcFactory);
+        // Load Akeeba Engine
+        $this->loadAkeebaEngine($this->getDatabase(), $this->mvcFactory);
 
-		// Load the Akeeba Engine configuration
-		try
-		{
-			$this->loadAkeebaEngineConfiguration();
-		}
-		catch (Exception $e)
-		{
-			// Maybe the tables are not installed?
-			$msg = Text::_('COM_AKEEBABACKUP_CONTROLPANEL_MSG_REBUILTTABLES');
-			$this->app->enqueueMessage($msg, 'warning');
-			$this->app->redirect(Uri::base(), 307);
-		}
+        // Load the Akeeba Engine configuration
+        try {
+            $this->loadAkeebaEngineConfiguration();
+        } catch (Exception $e) {
+            // Maybe the tables are not installed?
+            $msg = Text::_('COM_AKEEBABACKUP_CONTROLPANEL_MSG_REBUILTTABLES');
+            $this->app->enqueueMessage($msg, 'warning');
+            $this->app->redirect(Uri::base(), 307);
+        }
 
-		// Prevents the "SQLSTATE[HY000]: General error: 2014" due to resource sharing with Akeeba Engine
-		$this->fixPDOMySQLResourceSharing();
+        // Prevents the "SQLSTATE[HY000]: General error: 2014" due to resource sharing with Akeeba Engine
+        $this->fixPDOMySQLResourceSharing();
 
-		// Load the utils helper library
-		Platform::getInstance()->load_version_defines();
-		Platform::getInstance()->apply_quirk_definitions();
+        // Load the utils helper library
+        Platform::getInstance()->load_version_defines();
+        Platform::getInstance()->apply_quirk_definitions();
 
-		// Set up Alice's autoloader
-		if (defined('AKEEBABACKUP_PRO') && AKEEBABACKUP_PRO)
-		{
-			JLoader::registerNamespace('Akeeba\Alice', __DIR__ . '/../../AliceChecks');
-		}
+        // Set up Alice's autoloader
+        if (defined('AKEEBABACKUP_PRO') && AKEEBABACKUP_PRO) {
+            JLoader::registerNamespace('Akeeba\Alice', __DIR__ . '/../../AliceChecks');
+        }
 
-		// Make sure the front-end backup Secret Word is stored encrypted
-		$params = ComponentHelper::getParams($this->option);
-		SecretWord::enforceEncryption($params, 'frontend_secret_word');
+        // Make sure the front-end backup Secret Word is stored encrypted
+        $params = ComponentHelper::getParams($this->option);
+        SecretWord::enforceEncryption($params, 'frontend_secret_word');
 
-		$this->loadCommonStaticMedia();
-	}
+        $this->loadCommonStaticMedia();
+    }
 
-	/**
-	 * Prevents the "SQLSTATE[HY000]: General error: 2014" due to resource sharing with Akeeba Engine.
-	 *
-	 * @since 7.5.2
-	 */
-	protected function fixPDOMySQLResourceSharing(): void
-	{
-		// This fix only applies to PHP 7.x, not 8.x
-		if (version_compare(PHP_VERSION, '8.0', 'ge'))
-		{
-			return;
-		}
+    /**
+     * Prevents the "SQLSTATE[HY000]: General error: 2014" due to resource sharing with Akeeba Engine.
+     *
+     * @since 7.5.2
+     */
+    protected function fixPDOMySQLResourceSharing(): void
+    {
+        // This fix only applies to PHP 7.x, not 8.x
+        if (version_compare(PHP_VERSION, '8.0', 'ge')) {
+            return;
+        }
 
-		$dbDriver = $this->getDatabase()->getName() ?? $this->getDatabase()->name ?? 'mysql';
+        $dbDriver = $this->getDatabase()->getName() ?? ($this->getDatabase()->name ?? 'mysql');
 
-		if ($dbDriver !== 'pdomysql')
-		{
-			return;
-		}
+        if ($dbDriver !== 'pdomysql') {
+            return;
+        }
 
-		$this->getDatabase()->disconnect();
-	}
+        $this->getDatabase()->disconnect();
+    }
 
-	/**
-	 * Load the language.
-	 *
-	 * Automatically loads en-GB and the site's fallback language (if different), then merges it with the language of
-	 * the current user. First tries loading languages from the site's main folders before falling back to the ones
-	 * shipped with the component itself.
-	 *
-	 * @return  void
-	 *
-	 * @since   9.0.0
-	 */
-	protected function loadLanguage()
-	{
-		$jLang = $this->app->getLanguage();
+    /**
+     * Load the language.
+     *
+     * Automatically loads en-GB and the site's fallback language (if different), then merges it with the language of
+     * the current user. First tries loading languages from the site's main folders before falling back to the ones
+     * shipped with the component itself.
+     *
+     * @return  void
+     *
+     * @since   9.0.0
+     */
+    protected function loadLanguage()
+    {
+        $jLang = $this->app->getLanguage();
 
-		$jLang->load($this->option, JPATH_BASE, 'en-GB', true, true) ||
-		$jLang->load($this->option, JPATH_ADMINISTRATOR . '/components/com_akeebabackup', 'en-GB', true, true);
+        $jLang->load($this->option, JPATH_BASE, 'en-GB', true, true) ||
+            $jLang->load($this->option, JPATH_ADMINISTRATOR . '/components/com_akeebabackup', 'en-GB', true, true);
 
-		$jLang->load($this->option, JPATH_BASE, null, true) ||
-		$jLang->load($this->option, JPATH_ADMINISTRATOR . '/components/com_akeebabackup', null, true);
-	}
+        $jLang->load($this->option, JPATH_BASE, null, true) ||
+            $jLang->load($this->option, JPATH_ADMINISTRATOR . '/components/com_akeebabackup', null, true);
+    }
 
-	protected function loadCommonStaticMedia()
-	{
-		// Make sure we run under a CMS application
-		if (!($this->app instanceof CMSApplication))
-		{
-			return;
-		}
+    protected function loadCommonStaticMedia()
+    {
+        // Make sure we run under a CMS application
+        if (!($this->app instanceof CMSApplication)) {
+            return;
+        }
 
-		// Make sure the document is HTML
-		$document = $this->app->getDocument();
+        // Make sure the document is HTML
+        $document = $this->app->getDocument();
 
-		if (!($document instanceof HtmlDocument))
-		{
-			return;
-		}
+        if (!($document instanceof HtmlDocument)) {
+            return;
+        }
 
-		/**
-		 * Joomla applies its own version string in OUR assets which is totally dumb. It inherently assumes that third
-		 * party extensions assets are only updated when Joomla itself is updated. Typical Joomla core development,
-		 * can't see past its own nose. We will work around that.
-		 */
-		$versionModifier    = $this->app->get('debug') ? microtime() : '';
-		$akeebaMediaVersion = ApplicationHelper::getHash(AKEEBABACKUP_VERSION . AKEEBABACKUP_DATE . $versionModifier);
+        /**
+         * Joomla applies its own version string in OUR assets which is totally dumb. It inherently assumes that third
+         * party extensions assets are only updated when Joomla itself is updated. Typical Joomla core development,
+         * can't see past its own nose. We will work around that.
+         */
+        $versionModifier = $this->app->get('debug') ? microtime() : '';
+        $akeebaMediaVersion = ApplicationHelper::getHash(AKEEBABACKUP_VERSION . AKEEBABACKUP_DATE . $versionModifier);
 
-		$webAssetManager = $document->getWebAssetManager();
-		$waRegistry      = $webAssetManager->getRegistry();
-		$waRegistry->get('preset', 'com_akeebabackup.common');
+        $webAssetManager = $document->getWebAssetManager();
+        $waRegistry = $webAssetManager->getRegistry();
+        $waRegistry->get('preset', 'com_akeebabackup.common');
 
-		$refObj  = new ReflectionObject($waRegistry);
-		$refProp = $refObj->getProperty('assets');
-		$refProp->setAccessible(true);
-		$registeredAssets = $refProp->getValue($waRegistry);
+        $refObj = new ReflectionObject($waRegistry);
+        $refProp = $refObj->getProperty('assets');
+        $refProp->setAccessible(true);
+        $registeredAssets = $refProp->getValue($waRegistry);
 
+        foreach ($registeredAssets as $area => $assets) {
+            $temp = [];
 
-		foreach ($registeredAssets as $area => $assets)
-		{
-			$temp = [];
+            /** @var WebAssetItem $assetItem */
+            foreach ($assets as $key => $assetItem) {
+                if (substr($key, 0, 17) != 'com_akeebabackup.') {
+                    $temp[$key] = $assetItem;
 
-			/** @var WebAssetItem $assetItem */
-			foreach ($assets as $key => $assetItem)
-			{
-				if (substr($key, 0, 17) != 'com_akeebabackup.')
-				{
-					$temp[$key] = $assetItem;
+                    continue;
+                }
 
-					continue;
-				}
+                $refAI = new ReflectionObject($assetItem);
+                $refVersion = $refAI->getProperty('version');
+                $refVersion->setAccessible(true);
+                $refVersion->setValue($assetItem, $akeebaMediaVersion);
 
-				$refAI      = new ReflectionObject($assetItem);
-				$refVersion = $refAI->getProperty('version');
-				$refVersion->setAccessible(true);
-				$refVersion->setValue($assetItem, $akeebaMediaVersion);
+                $temp[$key] = $assetItem;
+            }
 
-				$temp[$key] = $assetItem;
-			}
+            $registeredAssets[$area] = $temp;
+            unset($temp);
+        }
 
-			$registeredAssets[$area] = $temp;
-			unset($temp);
-		}
+        $refProp->setValue($waRegistry, $registeredAssets);
 
-		$refProp->setValue($waRegistry, $registeredAssets);
+        // Finally, load our 'common' preset
+        $webAssetManager->usePreset('com_akeebabackup.common');
 
-		// Finally, load our 'common' preset
-		$webAssetManager
-			->usePreset('com_akeebabackup.common');
+        if (version_compare(JVERSION, '4.999.999', 'gt')) {
+            $webAssetManager->useStyle('com_akeebabackup.j5')->useStyle('com_akeebabackup.j5dark');
+        }
+    }
 
-		if (version_compare(JVERSION, '4.999.999', 'gt'))
-		{
-			$webAssetManager
-				->useStyle('com_akeebabackup.j5')
-				->useStyle('com_akeebabackup.j5dark');
-		}
-	}
+    private function applyViewAndController(): void
+    {
+        // Handle a custom default controller name
+        $view = $this->input->getCmd('view', $this->defaultController);
+        $controller = $this->input->getCmd('controller', $view);
+        $task = $this->input->getCmd('task', 'main');
 
-	private function applyViewAndController(): void
-	{
-		// Handle a custom default controller name
-		$view       = $this->input->getCmd('view', $this->defaultController);
-		$controller = $this->input->getCmd('controller', $view);
-		$task       = $this->input->getCmd('task', 'main');
+        // Check for a controller.task command.
+        if (strpos($task, '.') !== false) {
+            // Explode the controller.task command.
+            [$controller, $task] = explode('.', $task);
+        }
 
-		// Check for a controller.task command.
-		if (strpos($task, '.') !== false)
-		{
-			// Explode the controller.task command.
-			[$controller, $task] = explode('.', $task);
-		}
-
-		$this->input->set('view', $controller);
-		$this->input->set('controller', $controller);
-		$this->input->set('task', $task);
-	}
+        $this->input->set('view', $controller);
+        $this->input->set('controller', $controller);
+        $this->input->set('task', $task);
+    }
 }

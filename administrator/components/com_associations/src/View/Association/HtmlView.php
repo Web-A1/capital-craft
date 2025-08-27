@@ -26,7 +26,7 @@ use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -229,26 +229,26 @@ class HtmlView extends BaseHtmlView
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
-        $this->app  = Factory::getApplication();
+        $this->app = Factory::getApplication();
         $this->form = $model->getForm();
         /** @var Input $input */
-        $input             = $this->app->getInput();
+        $input = $this->app->getInput();
         $this->referenceId = $input->get('id', 0, 'int');
 
         [$extensionName, $typeName] = explode('.', $input->get('itemtype', '', 'string'), 2);
 
         /** @var Registry $extension */
         $extension = AssociationsHelper::getSupportedExtension($extensionName);
-        $types     = $extension->get('types');
+        $types = $extension->get('types');
 
         if (\array_key_exists($typeName, $types)) {
-            $this->type         = $types[$typeName];
+            $this->type = $types[$typeName];
             $this->typeSupports = [];
-            $details            = $this->type->get('details');
-            $this->save2copy    = false;
+            $details = $this->type->get('details');
+            $this->save2copy = false;
 
             if (\array_key_exists('support', $details)) {
-                $support            = $details['support'];
+                $support = $details['support'];
                 $this->typeSupports = $support;
             }
 
@@ -258,15 +258,15 @@ class HtmlView extends BaseHtmlView
         }
 
         $this->extensionName = $extensionName;
-        $this->typeName      = $typeName;
-        $this->itemType      = $extensionName . '.' . $typeName;
+        $this->typeName = $typeName;
+        $this->itemType = $extensionName . '.' . $typeName;
 
         $languageField = AssociationsHelper::getTypeFieldName($extensionName, $typeName, 'language');
-        $referenceId   = $input->get('id', 0, 'int');
-        $reference     = ArrayHelper::fromObject(AssociationsHelper::getItem($extensionName, $typeName, $referenceId));
+        $referenceId = $input->get('id', 0, 'int');
+        $reference = ArrayHelper::fromObject(AssociationsHelper::getItem($extensionName, $typeName, $referenceId));
 
-        $this->referenceLanguage   = $reference[$languageField];
-        $this->referenceTitle      = AssociationsHelper::getTypeFieldName($extensionName, $typeName, 'title');
+        $this->referenceLanguage = $reference[$languageField];
+        $this->referenceTitle = AssociationsHelper::getTypeFieldName($extensionName, $typeName, 'title');
         $this->referenceTitleValue = $reference[$this->referenceTitle];
 
         // Check for special case category
@@ -280,17 +280,17 @@ class HtmlView extends BaseHtmlView
             }
 
             $options = [
-                'option'    => 'com_categories',
-                'view'      => 'category',
+                'option' => 'com_categories',
+                'view' => 'category',
                 'extension' => $extensionName,
-                'tmpl'      => 'component',
+                'tmpl' => 'component',
             ];
         } else {
             $options = [
-                'option'    => $extensionName,
-                'view'      => $typeName,
+                'option' => $extensionName,
+                'view' => $typeName,
                 'extension' => $extensionName,
-                'tmpl'      => 'component',
+                'tmpl' => 'component',
             ];
         }
 
@@ -298,26 +298,33 @@ class HtmlView extends BaseHtmlView
         $this->editUri = 'index.php?' . http_build_query($options);
 
         // Get target language.
-        $this->targetId         = '0';
-        $this->targetLanguage   = '';
+        $this->targetId = '0';
+        $this->targetLanguage = '';
         $this->defaultTargetSrc = '';
-        $this->targetAction     = '';
-        $this->targetTitle      = '';
+        $this->targetAction = '';
+        $this->targetTitle = '';
 
         if ($target = $input->get('target', '', 'string')) {
-            $matches              = preg_split("#[\:]+#", $target);
-            $this->targetAction   = $matches[2];
-            $this->targetId       = $matches[1];
+            $matches = preg_split('#[\:]+#', $target);
+            $this->targetAction = $matches[2];
+            $this->targetId = $matches[1];
             $this->targetLanguage = $matches[0];
-            $this->targetTitle    = AssociationsHelper::getTypeFieldName($extensionName, $typeName, 'title');
-            $task                 = $typeName . '.' . $this->targetAction;
+            $this->targetTitle = AssociationsHelper::getTypeFieldName($extensionName, $typeName, 'title');
+            $task = $typeName . '.' . $this->targetAction;
 
             /**
              * Let's put the target src into a variable to use in the javascript code
              * to avoid race conditions when the reference iframe loads.
              */
-            $this->getDocument()->addScriptOptions('targetSrc', Route::_($this->editUri . '&task=' . $task . '&id=' . (int) $this->targetId));
-            $this->form->setValue('itemlanguage', '', $this->targetLanguage . ':' . $this->targetId . ':' . $this->targetAction);
+            $this->getDocument()->addScriptOptions(
+                'targetSrc',
+                Route::_($this->editUri . '&task=' . $task . '&id=' . (int) $this->targetId),
+            );
+            $this->form->setValue(
+                'itemlanguage',
+                '',
+                $this->targetLanguage . ':' . $this->targetId . ':' . $this->targetAction,
+            );
         }
 
         $this->addToolbar();
@@ -340,7 +347,7 @@ class HtmlView extends BaseHtmlView
         $this->app->getInput()->set('hidemainmenu', 1);
 
         $helper = AssociationsHelper::getExtensionHelper($this->extensionName);
-        $title  = $helper->getTypeTitle($this->typeName);
+        $title = $helper->getTypeTitle($this->typeName);
 
         $languageKey = strtoupper($this->extensionName . '_' . $title . 'S');
 
@@ -349,27 +356,32 @@ class HtmlView extends BaseHtmlView
         }
 
         ToolbarHelper::title(
-            Text::sprintf(
-                'COM_ASSOCIATIONS_TITLE_EDIT',
-                Text::_($this->extensionName),
-                Text::_($languageKey)
-            ),
-            'language assoc'
+            Text::sprintf('COM_ASSOCIATIONS_TITLE_EDIT', Text::_($this->extensionName), Text::_($languageKey)),
+            'language assoc',
         );
 
         $toolbar = $this->getDocument()->getToolbar();
-        $toolbar->customButton('reference')
-            ->html('<joomla-toolbar-button><button onclick="Joomla.submitbutton(\'reference\')" '
-            . 'class="btn btn-success"><span class="icon-save" aria-hidden="true"></span>'
-            . Text::_('COM_ASSOCIATIONS_SAVE_REFERENCE') . '</button></joomla-toolbar-button>');
+        $toolbar
+            ->customButton('reference')
+            ->html(
+                '<joomla-toolbar-button><button onclick="Joomla.submitbutton(\'reference\')" ' .
+                    'class="btn btn-success"><span class="icon-save" aria-hidden="true"></span>' .
+                    Text::_('COM_ASSOCIATIONS_SAVE_REFERENCE') .
+                    '</button></joomla-toolbar-button>',
+            );
 
-        $toolbar->customButton('target')
-            ->html('<joomla-toolbar-button id="toolbar-target"><button onclick="Joomla.submitbutton(\'target\')" '
-            . 'class="btn btn-success"><span class="icon-save" aria-hidden="true"></span>'
-            . Text::_('COM_ASSOCIATIONS_SAVE_TARGET') . '</button></joomla-toolbar-button>');
+        $toolbar
+            ->customButton('target')
+            ->html(
+                '<joomla-toolbar-button id="toolbar-target"><button onclick="Joomla.submitbutton(\'target\')" ' .
+                    'class="btn btn-success"><span class="icon-save" aria-hidden="true"></span>' .
+                    Text::_('COM_ASSOCIATIONS_SAVE_TARGET') .
+                    '</button></joomla-toolbar-button>',
+            );
 
         if ($this->typeName === 'category' || $this->extensionName === 'com_menus' || $this->save2copy === true) {
-            $toolbar->standardButton('copy', 'COM_ASSOCIATIONS_COPY_REFERENCE', 'copy')
+            $toolbar
+                ->standardButton('copy', 'COM_ASSOCIATIONS_COPY_REFERENCE', 'copy')
                 ->icon('icon-copy')
                 ->listCheck(false);
         }

@@ -20,23 +20,22 @@ use Joomla\DI\ServiceProviderInterface;
 
 class ComponentParameters implements ServiceProviderInterface
 {
-	private $defaultExtension;
+    private $defaultExtension;
 
-	public function __construct(string $defaultExtension)
-	{
-		$this->defaultExtension = $defaultExtension;
-	}
+    public function __construct(string $defaultExtension)
+    {
+        $this->defaultExtension = $defaultExtension;
+    }
 
-	public function register(Container $container)
-	{
-		$container->set(
-			\Akeeba\Component\AkeebaBackup\Administrator\Service\ComponentParameters::class,
-			function (Container $container) {
-				return new \Akeeba\Component\AkeebaBackup\Administrator\Service\ComponentParameters(
-					$container->get(\Akeeba\Component\AkeebaBackup\Administrator\Service\CacheCleaner::class),
-					$this->defaultExtension
-				);
-			}
-		);
-	}
+    public function register(Container $container)
+    {
+        $container->set(\Akeeba\Component\AkeebaBackup\Administrator\Service\ComponentParameters::class, function (
+            Container $container,
+        ) {
+            return new \Akeeba\Component\AkeebaBackup\Administrator\Service\ComponentParameters(
+                $container->get(\Akeeba\Component\AkeebaBackup\Administrator\Service\CacheCleaner::class),
+                $this->defaultExtension,
+            );
+        });
+    }
 }

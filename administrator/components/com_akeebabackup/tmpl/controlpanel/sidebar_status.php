@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-2">
 	<h3 class="card-header">
@@ -19,18 +18,24 @@ use Joomla\CMS\Language\Text;
 	</h3>
 
 	<div class="card-body">
-        <?php // Backup status summary ?>
+        <?php
+// Backup status summary
+?>
         <?= $this->statusCell ?>
 
-		<?php // Warnings ?>
-        <?php if($this->countWarnings): ?>
+		<?php
+// Warnings
+?>
+        <?php if ($this->countWarnings): ?>
             <div class="akeebabackup-engine-warnings-container">
                 <?= $this->detailsCell ?>
             </div>
             <hr />
-        <?php endif ?>
+        <?php endif; ?>
 
-        <?php // Version ?>
+        <?php
+// Version
+?>
         <p class="ak_version">
 			<strong><?= Text::_('COM_AKEEBABACKUP_' . (AKEEBABACKUP_PRO ? 'PRO' : 'CORE')) ?></strong>
 			<?= AKEEBABACKUP_VERSION ?>
@@ -40,7 +45,9 @@ use Joomla\CMS\Language\Text;
         </p>
 
 		<div class="d-flex flex-column">
-			<?php // Changelog ?>
+			<?php
+// Changelog
+?>
 			<button type="button"
 					id="btnchangelog" class="btn btn-outline-primary mb-2 me-2"
 					data-bs-toggle="modal" data-bs-target="#akeeba-changelog">
@@ -48,24 +55,28 @@ use Joomla\CMS\Language\Text;
 				CHANGELOG
 			</button>
 
-			<?php // Donation CTA ?>
-			<?php if(!AKEEBABACKUP_PRO): ?>
+			<?php
+// Donation CTA
+?>
+			<?php if (!AKEEBABACKUP_PRO): ?>
 				<a
 						href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=KDVQPB4EREBPY&source=url"
 						class="btn btn-outline-success mb-2 me-2">
 					<span class="fa fa-donate"></span>
 					Donate via PayPal
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
-			<?php // Pro upsell ?>
-			<?php if(!AKEEBABACKUP_PRO && (time() - $this->lastUpsellDismiss < 1296000)): ?>
+			<?php
+// Pro upsell
+?>
+			<?php if (!AKEEBABACKUP_PRO && time() - $this->lastUpsellDismiss < 1296000): ?>
 				<a href="https://www.akeeba.com/landing/akeeba-backup.html"
 				   class="btn btn-sm btn-outline-dark mb-2 me-2">
 					<span class="icon-akeeba"></span>
 					<?= Text::_('COM_AKEEBABACKUP_CONTROLPANEL_BTN_LEARNMORE') ?>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 		</div>
 
     </div>
@@ -80,7 +91,9 @@ use Joomla\CMS\Language\Text;
 				<h3 class="modal-title" id="akeeba-changelog-header">
 					<?= Text::_('CHANGELOG') ?>
 				</h3>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= Text::_(
+        'JLIB_HTML_BEHAVIOR_CLOSE',
+    ) ?>"></button>
 			</div>
 			<div class="modal-body p-3">
 				<?= $this->formattedChangelog ?>

@@ -7,37 +7,35 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Mixin;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseModel;
 
 trait ControllerAjaxTrait
 {
-	protected $decodeJsonAsArray = false;
+    protected $decodeJsonAsArray = false;
 
-	public function ajax()
-	{
-		// Parse the JSON data and reset the action query param to the resulting array
-		$action_json = $this->input->get('action', '', 'raw');
-		$action      = json_decode($action_json, $this->decodeJsonAsArray);
+    public function ajax()
+    {
+        // Parse the JSON data and reset the action query param to the resulting array
+        $action_json = $this->input->get('action', '', 'raw');
+        $action = json_decode($action_json, $this->decodeJsonAsArray);
 
-		/** @var BaseModel $model */
-		$model = $this->getModel($this->getName(), 'Administrator');
+        /** @var BaseModel $model */
+        $model = $this->getModel($this->getName(), 'Administrator');
 
-		$model->setState('action', $action);
+        $model->setState('action', $action);
 
-		$ret = $model->doAjax();
+        $ret = $model->doAjax();
 
-		@ob_end_clean();
-		echo '###' . json_encode($ret) . '###';
+        @ob_end_clean();
+        echo '###' . json_encode($ret) . '###';
 
-		if (ComponentHelper::getParams('com_akeebabackup')->get('no_flush', 0) != 1)
-		{
-			flush();
-		}
+        if (ComponentHelper::getParams('com_akeebabackup')->get('no_flush', 0) != 1) {
+            flush();
+        }
 
-		$this->app->close();
-	}
-
+        $this->app->close();
+    }
 }

@@ -21,7 +21,7 @@ use Joomla\Component\Actionlogs\Administrator\Helper\ActionlogsHelper;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogsModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -101,15 +101,15 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null)
     {
         /** @var ActionlogsModel $model */
-        $model               = $this->getModel();
-        $this->items         = $model->getItems();
-        $this->state         = $model->getState();
-        $this->pagination    = $model->getPagination();
-        $this->filterForm    = $model->getFilterForm();
+        $model = $this->getModel();
+        $this->items = $model->getItems();
+        $this->state = $model->getState();
+        $this->pagination = $model->getPagination();
+        $this->filterForm = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
-        $params              = ComponentHelper::getParams('com_actionlogs');
-        $this->showIpColumn  = (bool) $params->get('ip_logging', 0);
-        $this->dateRelative  = (bool) $params->get('date_relative', 1);
+        $params = ComponentHelper::getParams('com_actionlogs');
+        $this->showIpColumn = (bool) $params->get('ip_logging', 0);
+        $this->dateRelative = (bool) $params->get('date_relative', 1);
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
@@ -135,18 +135,20 @@ class HtmlView extends BaseHtmlView
         ToolbarHelper::title(Text::_('COM_ACTIONLOGS_MANAGER_USERLOGS'), 'icon-list-2');
         $toolbar = $this->getDocument()->getToolbar();
 
-        $toolbar->standardButton('download', 'COM_ACTIONLOGS_EXPORT_CSV', 'actionlogs.exportSelectedLogs')
+        $toolbar
+            ->standardButton('download', 'COM_ACTIONLOGS_EXPORT_CSV', 'actionlogs.exportSelectedLogs')
             ->icon('icon-download')
             ->listCheck(true);
 
-        $toolbar->standardButton('download', 'COM_ACTIONLOGS_EXPORT_ALL_CSV', 'actionlogs.exportLogs')
+        $toolbar
+            ->standardButton('download', 'COM_ACTIONLOGS_EXPORT_ALL_CSV', 'actionlogs.exportLogs')
             ->icon('icon-download')
             ->listCheck(false);
 
-        $toolbar->delete('actionlogs.delete')
-            ->message('JGLOBAL_CONFIRM_DELETE');
+        $toolbar->delete('actionlogs.delete')->message('JGLOBAL_CONFIRM_DELETE');
 
-        $toolbar->confirmButton('delete', 'COM_ACTIONLOGS_TOOLBAR_PURGE', 'actionlogs.purge')
+        $toolbar
+            ->confirmButton('delete', 'COM_ACTIONLOGS_TOOLBAR_PURGE', 'actionlogs.purge')
             ->message('COM_ACTIONLOGS_PURGE_CONFIRM')
             ->listCheck(false);
 

@@ -8,16 +8,19 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Joomla\Component\Admin\Administrator\View\Sysinfo\HtmlView $this */
-
 ?>
 <div class="main-card">
-        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', ['active' => 'site', 'recall' => true, 'breakpoint' => 768]); ?>
+        <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', [
+            'active' => 'site',
+            'recall' => true,
+            'breakpoint' => 768,
+        ]); ?>
 
         <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'site', Text::_('COM_ADMIN_SYSTEM_INFORMATION')); ?>
         <?php echo $this->loadTemplate('system'); ?>

@@ -22,7 +22,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Banners\Administrator\Model\ClientModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -78,9 +78,9 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var ClientModel $model */
-        $model       = $this->getModel();
-        $this->form  = $model->getForm();
-        $this->item  = $model->getItem();
+        $model = $this->getModel();
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
         $this->state = $model->getState();
         $this->canDo = ContentHelper::getActions('com_banners');
 
@@ -107,15 +107,15 @@ class HtmlView extends BaseHtmlView
     {
         Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
-        $user       = $this->getCurrentUser();
-        $isNew      = ($this->item->id == 0);
+        $user = $this->getCurrentUser();
+        $isNew = $this->item->id == 0;
         $checkedOut = !(\is_null($this->item->checked_out) || $this->item->checked_out == $user->id);
-        $canDo      = $this->canDo;
-        $toolbar    = $this->getDocument()->getToolbar();
+        $canDo = $this->canDo;
+        $toolbar = $this->getDocument()->getToolbar();
 
         ToolbarHelper::title(
             $isNew ? Text::_('COM_BANNERS_MANAGER_CLIENT_NEW') : Text::_('COM_BANNERS_MANAGER_CLIENT_EDIT'),
-            'bookmark banners-clients'
+            'bookmark banners-clients',
         );
 
         // If not checked out, can save the item.
@@ -124,30 +124,32 @@ class HtmlView extends BaseHtmlView
         }
 
         $saveGroup = $toolbar->dropdownButton('save-group');
-        $saveGroup->configure(
-            function (Toolbar $childBar) use ($checkedOut, $canDo, $isNew) {
-                // If not checked out, can save the item.
-                if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create'))) {
-                    $childBar->save('client.save');
-                }
-
-                if (!$checkedOut && $canDo->get('core.create')) {
-                    $childBar->save2new('client.save2new');
-                }
-
-                // If an existing item, can save to a copy.
-                if (!$isNew && $canDo->get('core.create')) {
-                    $childBar->save2copy('client.save2copy');
-                }
+        $saveGroup->configure(function (Toolbar $childBar) use ($checkedOut, $canDo, $isNew) {
+            // If not checked out, can save the item.
+            if (!$checkedOut && ($canDo->get('core.edit') || $canDo->get('core.create'))) {
+                $childBar->save('client.save');
             }
-        );
+
+            if (!$checkedOut && $canDo->get('core.create')) {
+                $childBar->save2new('client.save2new');
+            }
+
+            // If an existing item, can save to a copy.
+            if (!$isNew && $canDo->get('core.create')) {
+                $childBar->save2copy('client.save2copy');
+            }
+        });
 
         if (empty($this->item->id)) {
             $toolbar->cancel('client.cancel', 'JTOOLBAR_CANCEL');
         } else {
             $toolbar->cancel('client.cancel');
 
-            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $canDo->get('core.edit')) {
+            if (
+                ComponentHelper::isEnabled('com_contenthistory') &&
+                $this->state->params->get('save_history', 0) &&
+                $canDo->get('core.edit')
+            ) {
                 $toolbar->versions('com_banners.client', $this->item->id);
             }
         }

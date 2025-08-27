@@ -17,9 +17,8 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-if (version_compare(JVERSION, '4.999.999', 'lt'))
-{
-	$this->loadAnyTemplate('Controlpanel/joomla_eol');
+if (version_compare(JVERSION, '4.999.999', 'lt')) {
+    $this->loadAnyTemplate('Controlpanel/joomla_eol');
 }
 
 $cloudFlareTestFile = 'CLOUDFLARE::' . Uri::base() . 'media/com_akeebabackup/ControlPanel.min.js';
@@ -27,12 +26,16 @@ $cloudFlareTestFile .= '?' . ApplicationHelper::getHash(AKEEBABACKUP_VERSION . A
 
 $token = Factory::getApplication()->getFormToken();
 ?>
-<?php // Configuration Wizard pop-up ?>
-<?php if($this->promptForConfigurationwizard && !defined('AKEEBADEBUG')): ?>
+<?php
+// Configuration Wizard pop-up
+?>
+<?php if ($this->promptForConfigurationwizard && !defined('AKEEBADEBUG')): ?>
 	<?= $this->loadAnyTemplate('Configuration/confwiz_modal') ?>
-<?php endif ?>
+<?php endif; ?>
 
-<?php // Potentially web accessible output directory ?>
+<?php
+// Potentially web accessible output directory
+?>
 <!--
 Oh, hi there! It looks like you got curious and are peeking around your browser's developer tools – or just the
 source code of the page that loaded on your browser. Cool! May I explain what we are seeing here?
@@ -48,7 +51,9 @@ So, to recap. These hidden DIVs? They don't indicate a problem with your site. I
 ONLY then – should you do something about it, as instructed. But thank you for being curious. Curiosity is how you
 get involved with and better at web development. Stay curious!
 -->
-<?php // Web accessible output directory that coincides with or is inside in a CMS system folder ?>
+<?php
+// Web accessible output directory that coincides with or is inside in a CMS system folder
+?>
 <details class="alert alert-danger" id="outDirSystem" style="display: none">
 	<summary class="h3 fs-3 m-0 p-0 text-danger">
 		<?= Text::_('COM_AKEEBABACKUP_CPANEL_HEAD_OUTDIR_INVALID') ?>
@@ -65,14 +70,18 @@ get involved with and better at web development. Stay curious!
 	</p>
 </details>
 
-<?php // Output directory can be listed over the web ?>
-<details class="alert alert-<?= $this->hasOutputDirectorySecurityFiles ? 'danger' : 'warning' ?>" id="insecureOutputDirectory" style="display: none">
+<?php
+// Output directory can be listed over the web
+?>
+<details class="alert alert-<?= $this->hasOutputDirectorySecurityFiles
+    ? 'danger'
+    : 'warning' ?>" id="insecureOutputDirectory" style="display: none">
 	<summary class="h3 fs-3 m-0 p-0 text-<?= $this->hasOutputDirectorySecurityFiles ? 'danger' : 'body' ?>">
 		<?php if ($this->hasOutputDirectorySecurityFiles): ?>
 			<?= Text::_('COM_AKEEBABACKUP_CPANEL_HEAD_OUTDIR_UNFIXABLE') ?>
 		<?php else: ?>
 			<?= Text::_('COM_AKEEBABACKUP_CPANEL_HEAD_OUTDIR_INSECURE') ?>
-		<?php endif ?>
+		<?php endif; ?>
 	</summary>
 	<p>
 		<?= Text::sprintf('COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_LISTABLE', realpath($this->getModel()->getOutputDirectory())) ?>
@@ -99,16 +108,21 @@ get involved with and better at web development. Stay curious!
 		<?= Text::_('COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_TRASHHOST') ?>
 		<?= Text::_('COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_DELETEORBEHACKED') ?>
 	</p>
-	<?php endif ?>
+	<?php endif; ?>
 </details>
 
-<?php // Output directory cannot be listed over the web but I can download files ?>
+<?php
+// Output directory cannot be listed over the web but I can download files
+?>
 <details class="alert alert-warning" id="missingRandomFromFilename" style="display: none">
 	<summary class="h3 fs-3 m-0 p-0">
 		<?= Text::_('COM_AKEEBABACKUP_CPANEL_HEAD_OUTDIR_INSECURE_ALT') ?>
 	</summary>
 	<p>
-		<?= Text::sprintf('COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_FILEREADABLE', realpath($this->getModel()->getOutputDirectory())) ?>
+		<?= Text::sprintf(
+      'COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_FILEREADABLE',
+      realpath($this->getModel()->getOutputDirectory()),
+  ) ?>
 	</p>
 	<p>
 		<?= Text::_('COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_CLICKTHEBUTTON') ?>
@@ -117,7 +131,9 @@ get involved with and better at web development. Stay curious!
 		<?= Text::_('COM_AKEEBABACKUP_CPANEL_LBL_OUTDIR_FIX_RANDOM') ?>
 	</p>
 
-	<form action="<?= Route::_('index.php?option=com_akeebabackup&task=Controlpanel.addRandomToFilename') ?>" method="POST" class="akeeba-form--inline">
+	<form action="<?= Route::_(
+     'index.php?option=com_akeebabackup&task=Controlpanel.addRandomToFilename',
+ ) ?>" method="POST" class="akeeba-form--inline">
 		<?= HTMLHelper::_('form.token') ?>
 
 		<button type="submit" class="btn btn-success w-100">
@@ -128,8 +144,10 @@ get involved with and better at web development. Stay curious!
 </details>
 
 
-<?php // mbstring warning ?>
-<?php if(!$this->checkMbstring): ?>
+<?php
+// mbstring warning
+?>
+<?php if (!$this->checkMbstring): ?>
     <details class="alert alert-error">
 		<summary class="h4 fs-4 m-0 p-0 text-danger">
 			<?= Text::_('COM_AKEEBABACKUP_CPANL_ERR_MBSTRING_TITLE') ?>
@@ -138,10 +156,12 @@ get involved with and better at web development. Stay curious!
 			<?= Text::sprintf('COM_AKEEBABACKUP_CPANL_ERR_MBSTRING_BODY', PHP_VERSION) ?>
 		</p>
     </details>
-<?php endif ?>
+<?php endif; ?>
 
-<?php // Front-end backup secret word reminder ?>
-<?php if(!empty($this->frontEndSecretWordIssue)): ?>
+<?php
+// Front-end backup secret word reminder
+?>
+<?php if (!empty($this->frontEndSecretWordIssue)): ?>
     <details class="alert alert-danger alert-dismissible">
         <summary class="h3 fs-3 m-0 p-0 text-danger">
 			<?= Text::_('COM_AKEEBABACKUP_CPANEL_ERR_FESECRETWORD_HEADER') ?>
@@ -160,14 +180,18 @@ get involved with and better at web development. Stay curious!
             </a>
         </p>
     </details>
-<?php endif ?>
+<?php endif; ?>
 
-<?php // Wrong media directory permissions ?>
-<?php if(!$this->areMediaPermissionsFixed): ?>
+<?php
+// Wrong media directory permissions
+?>
+<?php if (!$this->areMediaPermissionsFixed): ?>
     <details id="notfixedperms" class="alert alert-danger alert-dismissible">
         <summary class="h3 fs-3 m-0 p-0 text-danger">
 	        <?= Text::_('COM_AKEEBABACKUP_CONTROLPANEL_WARN_PERMS_L1') ?>
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+       'JLIB_HTML_BEHAVIOR_CLOSE',
+   ) ?>"></button>
 		</summary>
         <p><?= Text::_('COM_AKEEBABACKUP_CONTROLPANEL_WARN_PERMS_L2') ?></p>
         <ol>
@@ -176,16 +200,23 @@ get involved with and better at web development. Stay curious!
         </ol>
         <p><?= Text::_('COM_AKEEBABACKUP_CONTROLPANEL_WARN_PERMS_L4') ?></p>
     </details>
-<?php endif ?>
+<?php endif; ?>
 
-<?php // You need to enter your Download ID ?>
-<?php if($this->needsDownloadID):
-	$updateSiteEditUrl = Route::_('index.php?option=com_installer&task=updatesite.edit&update_site_id=' . $this->updateSiteId); ?>
+<?php
+// You need to enter your Download ID
+?>
+<?php if ($this->needsDownloadID):
+    $updateSiteEditUrl = Route::_(
+        'index.php?option=com_installer&task=updatesite.edit&update_site_id=' . $this->updateSiteId,
+    ); ?>
 	<details class="alert alert-info">
 		<summary class="h3 fs-3 m-0 p-0 text-info">
 			<?= Text::_('COM_AKEEBABACKUP_CPANEL_MSG_MUSTENTERDLID') ?>
 		</summary>
-		<p><?= Text::sprintf('COM_AKEEBABACKUP_LBL_CPANEL_NEEDSDLID','https://www.akeeba.com/download/official/add-on-dlid.html') ?></p>
+		<p><?= Text::sprintf(
+      'COM_AKEEBABACKUP_LBL_CPANEL_NEEDSDLID',
+      'https://www.akeeba.com/download/official/add-on-dlid.html',
+  ) ?></p>
 		<p>
 			<?= Text::sprintf('COM_AKEEBABACKUP_CPANEL_MSG_WHERETOENTERDLID', $updateSiteEditUrl) ?>
 		</p>
@@ -193,26 +224,33 @@ get involved with and better at web development. Stay curious!
 			<?= Text::_('COM_AKEEBABACKUP_CPANEL_MSG_JOOMLABUGGYUPDATES') ?>
 		</p>
 	</details>
-<?php endif ?>
+<?php
+endif; ?>
 
-<?php // You have CORE; you need to upgrade, not just enter a Download ID ?>
-<?php if($this->coreWarningForDownloadID): ?>
+<?php
+// You have CORE; you need to upgrade, not just enter a Download ID
+?>
+<?php if ($this->coreWarningForDownloadID): ?>
     <details class="alert alert-warning">
 		<summary class="h3 fs-3 m-0 p-0">
 			<?= Text::_('COM_AKEEBABACKUP_LBL_CPANEL_NEEDSUPGRADE_HEAD') ?>
 		</summary>
 		<p>
-			<?= Text::sprintf('COM_AKEEBABACKUP_LBL_CPANEL_NEEDSUPGRADE_BODY','http://akee.ba/abcoretopro') ?>
+			<?= Text::sprintf('COM_AKEEBABACKUP_LBL_CPANEL_NEEDSUPGRADE_BODY', 'http://akee.ba/abcoretopro') ?>
 		</p>
     </details>
-<?php endif ?>
+<?php endif; ?>
 
-<?php // Upgrade from Akeeba Backup 7 or 8? ?>
+<?php
+// Upgrade from Akeeba Backup 7 or 8?
+?>
 <?php if ($this->canUpgradeFromAkeebaBackup8): ?>
 	<div class="alert alert-info alert-dismissible">
 		<h3>
 			<?= Text::_('COM_AKEEBABACKUP_LBL_CPANEL_UPGRADE_FROM_AKEEBABACKUP8_HEAD') ?>
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+       'JLIB_HTML_BEHAVIOR_CLOSE',
+   ) ?>"></button>
 		</h3>
 		<p>
 			<?= Text::_('COM_AKEEBABACKUP_LBL_CPANEL_UPGRADE_FROM_AKEEBABACKUP8_BODY') ?>
@@ -226,11 +264,13 @@ get involved with and better at web development. Stay curious!
 			</a>
 		</p>
 	</div>
-<?php elseif(!empty($this->akeebaBackup8PackageId)): ?>
+<?php elseif (!empty($this->akeebaBackup8PackageId)): ?>
 	<div class="alert alert-info alert-dismissible">
 		<h3>
 			<?= Text::_('COM_AKEEBABACKUP_LBL_CPANEL_UPGRADED_FROM_AKEEBABACKUP8_HEAD') ?>
-			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+			<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+       'JLIB_HTML_BEHAVIOR_CLOSE',
+   ) ?>"></button>
 		</h3>
 		<p>
 			<?= Text::_('COM_AKEEBABACKUP_LBL_CPANEL_UPGRADE_FROM_AKEEBABACKUP8_BODY') ?>
@@ -256,22 +296,27 @@ get involved with and better at web development. Stay curious!
 
 <?php endif; ?>
 
-<?php // Warn about CloudFlare Rocket Loader ?>
+<?php
+// Warn about CloudFlare Rocket Loader
+?>
 <details class="alert alert-warning" style="display: none;" id="cloudFlareWarn">
     <summary class="h4 fs-4 m-0 p-0">
-		<?= Text::_('COM_AKEEBABACKUP_CPANEL_MSG_CLOUDFLARE_WARN')?>
+		<?= Text::_('COM_AKEEBABACKUP_CPANEL_MSG_CLOUDFLARE_WARN') ?>
 	</summary>
-    <p><?= Text::sprintf('COM_AKEEBABACKUP_CPANEL_MSG_CLOUDFLARE_WARN1', 'https://support.cloudflare.com/hc/en-us/articles/200169456-Why-is-JavaScript-or-jQuery-not-working-on-my-site-') ?></p>
+    <p><?= Text::sprintf(
+        'COM_AKEEBABACKUP_CPANEL_MSG_CLOUDFLARE_WARN1',
+        'https://support.cloudflare.com/hc/en-us/articles/200169456-Why-is-JavaScript-or-jQuery-not-working-on-my-site-',
+    ) ?></p>
 </details>
-<?php
-/**
+ /**
  * DO NOT REMOVE THE ATTRIBUTES.
  *
  * This is a specialised test which looks for CloudFlare's completely broken RocketLoader feature and warns the user
  * about it.
- */
+ */<?php
 
-$js = <<< JS
+
+$js = <<<JS
 window.addEventListener('DOMContentLoaded', function() {
 	var test = localStorage.getItem('$cloudFlareTestFile');
 	if (test)
@@ -281,9 +326,7 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 
 JS;
-
-$this->getDocument()->getWebAssetManager()->addInlineScript($js, [], [
-		'type' => 'text/javascript',
-		'data-cfasync' => 'true'
-])
-?>
+$this->getDocument()
+    ->getWebAssetManager()
+    ->addInlineScript($js, [], ['type' => 'text/javascript', 'data-cfasync' => 'true']);
+ ?>

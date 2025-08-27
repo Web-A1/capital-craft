@@ -15,13 +15,23 @@ use Joomla\CMS\Language\Text;
 
 echo HTMLHelper::_('uitab.startTabSet', 'akeebabackup-scheduling', ['active' => 'akeebabackup-scheduling-backups']);
 
-echo HTMLHelper::_('uitab.addTab', 'akeebabackup-scheduling', 'akeebabackup-scheduling-backups', Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_RUN_BACKUPS', true));
+echo HTMLHelper::_(
+    'uitab.addTab',
+    'akeebabackup-scheduling',
+    'akeebabackup-scheduling-backups',
+    Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_RUN_BACKUPS', true),
+);
 
 echo $this->loadAnyTemplate('schedule/backup');
 
 echo HTMLHelper::_('uitab.endTab');
 
-echo HTMLHelper::_('uitab.addTab', 'akeebabackup-scheduling', 'akeebabackup-scheduling-checkbackups', Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_CHECK_BACKUPS', true));
+echo HTMLHelper::_(
+    'uitab.addTab',
+    'akeebabackup-scheduling',
+    'akeebabackup-scheduling-checkbackups',
+    Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_CHECK_BACKUPS', true),
+);
 
 echo $this->loadAnyTemplate('schedule/check');
 

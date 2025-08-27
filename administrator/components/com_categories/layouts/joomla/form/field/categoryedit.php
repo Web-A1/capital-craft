@@ -8,7 +8,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -52,10 +52,10 @@ extract($displayData);
  * @var   string   $customPrefix    Optional prefix for new categories.
  */
 
-$html    = [];
+$html = [];
 $classes = [];
-$attr    = '';
-$attr2   = '';
+$attr = '';
+$attr2 = '';
 
 // Initialize some field attributes.
 $attr .= !empty($size) ? ' size="' . $size . '"' : '';
@@ -84,7 +84,7 @@ if ($allowCustom) {
 }
 
 if ($required) {
-    $attr  .= ' required class="required"';
+    $attr .= ' required class="required"';
     $attr2 .= ' required';
 }
 
@@ -99,21 +99,27 @@ if ($readonly) {
         }
 
         foreach ($value as $val) {
-            $html[] = '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($val, ENT_COMPAT, 'UTF-8') . '">';
+            $html[] =
+                '<input type="hidden" name="' .
+                $name .
+                '" value="' .
+                htmlspecialchars($val, ENT_COMPAT, 'UTF-8') .
+                '">';
         }
     } else {
-        $html[] = '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '">';
+        $html[] =
+            '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value, ENT_COMPAT, 'UTF-8') . '">';
     }
 } else {
     // Create a regular list.
     if (count($options) === 0) {
         // All Categories have been deleted, so we need a new category (This will create on save if selected).
-        $options[0]            = new \stdClass();
-        $options[0]->value     = 'Uncategorised';
-        $options[0]->text      = 'Uncategorised';
-        $options[0]->level     = '1';
+        $options[0] = new \stdClass();
+        $options[0]->value = 'Uncategorised';
+        $options[0]->text = 'Uncategorised';
+        $options[0]->level = '1';
         $options[0]->published = '1';
-        $options[0]->lft       = '1';
+        $options[0]->lft = '1';
     }
 
     $html[] = HTMLHelper::_('select.genericlist', $options, $name, trim($attr), 'value', 'text', $value, $id);
@@ -123,8 +129,15 @@ if ($refreshPage === true) {
     $attr2 .= ' data-refresh-catid="' . $refreshCatId . '" data-refresh-section="' . $refreshSection . '"';
     $attr2 .= ' onchange="Joomla.categoryHasChanged(this)"';
 
-    Factory::getDocument()->getWebAssetManager()
-        ->registerAndUseScript('field.category-change', 'layouts/joomla/form/field/category-change.min.js', [], ['defer' => true], ['core'])
+    Factory::getDocument()
+        ->getWebAssetManager()
+        ->registerAndUseScript(
+            'field.category-change',
+            'layouts/joomla/form/field/category-change.min.js',
+            [],
+            ['defer' => true],
+            ['core'],
+        )
         ->useScript('webcomponent.core-loader');
 
     // Pass the element id to the javascript
@@ -136,9 +149,7 @@ if ($refreshPage === true) {
 Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
 Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
 
-Factory::getDocument()->getWebAssetManager()
-    ->usePreset('choicesjs')
-    ->useScript('webcomponent.field-fancy-select');
+Factory::getDocument()->getWebAssetManager()->usePreset('choicesjs')->useScript('webcomponent.field-fancy-select');
 ?>
 
 <joomla-field-fancy-select <?php echo $attr2; ?>><?php echo implode($html); ?></joomla-field-fancy-select>

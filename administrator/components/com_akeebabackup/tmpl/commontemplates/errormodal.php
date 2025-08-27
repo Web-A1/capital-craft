@@ -8,7 +8,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div id="errorDialog"
 	 class="modal fade"

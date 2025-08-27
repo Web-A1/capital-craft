@@ -9,7 +9,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div id="backup-percentage" class="progress">
 	<div class="progress-bar" role="progressbar"
@@ -21,7 +20,6 @@ use Joomla\CMS\Language\Text;
 
 <div class="alert alert-info">
     <p>
-		<?= Text::sprintf('COM_AKEEBABACKUP_REMOTEFILES_LBL_DOWNLOADEDSOFAR',
-			$this->done, $this->total, $this->percent) ?>
+		<?= Text::sprintf('COM_AKEEBABACKUP_REMOTEFILES_LBL_DOWNLOADEDSOFAR', $this->done, $this->total, $this->percent) ?>
     </p>
 </div>

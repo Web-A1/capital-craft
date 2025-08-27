@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-defined('KICKSTART') or die;
+defined('KICKSTART') or die();
 
 /**
  * Akeeba Kickstart Site Transfer Helper add-on feature
@@ -16,266 +16,247 @@ defined('KICKSTART') or die;
  */
 class AKFeatureTransfer
 {
-	/**
-	 * Returns information about the server we're running on.
-	 *
-	 * @param   array  $params
-	 *
-	 * @return  array
-	 */
-	public function serverInfo($params)
-	{
-		$maxExecTime    = 5;
-		$memLimit       = '8M';
-		$baseDir        = '';
-		$disabled       = '';
-		$maxPostSize    = '2M';
-		$uploadMaxSize  = '2M';
+    /**
+     * Returns information about the server we're running on.
+     *
+     * @param   array  $params
+     *
+     * @return  array
+     */
+    public function serverInfo($params)
+    {
+        $maxExecTime = 5;
+        $memLimit = '8M';
+        $baseDir = '';
+        $disabled = '';
+        $maxPostSize = '2M';
+        $uploadMaxSize = '2M';
 
-		if (function_exists('ini_get'))
-		{
-			$maxExecTime    = ini_get("max_execution_time");
-			$memLimit       = ini_get("memory_limit");
-			$baseDir        = ini_get('open_basedir');
-			$disabled       = ini_get("disable_functions");
-			$maxPostSize    = ini_get("post_max_size");
-			$uploadMaxSize  = ini_get("upload_max_filesize");
+        if (function_exists('ini_get')) {
+            $maxExecTime = ini_get('max_execution_time');
+            $memLimit = ini_get('memory_limit');
+            $baseDir = ini_get('open_basedir');
+            $disabled = ini_get('disable_functions');
+            $maxPostSize = ini_get('post_max_size');
+            $uploadMaxSize = ini_get('upload_max_filesize');
 
-			if (empty($maxExecTime))
-			{
-				$maxExecTime = 5;
-			}
-		}
+            if (empty($maxExecTime)) {
+                $maxExecTime = 5;
+            }
+        }
 
-		$server = 'n/a';
+        $server = 'n/a';
 
-		if (isset($_SERVER['SERVER_SOFTWARE']))
-		{
-			$server = $_SERVER['SERVER_SOFTWARE'];
-		}
-		elseif (($sf = getenv('SERVER_SOFTWARE')))
-		{
-			$server = $sf;
-		}
+        if (isset($_SERVER['SERVER_SOFTWARE'])) {
+            $server = $_SERVER['SERVER_SOFTWARE'];
+        } elseif ($sf = getenv('SERVER_SOFTWARE')) {
+            $server = $sf;
+        }
 
-		$infoArray = array(
-			'freeSpace'     => disk_free_space(dirname(__FILE__)),
-			'phpVersion'    => PHP_VERSION,
-			'phpSAPI'       => PHP_SAPI,
-			'phpOS'         => PHP_OS,
-			'osVersion'     => php_uname('s'),
-			'server'        => $server,
-			'canWrite'      => $this->canWriteToFiles(),
-			'canWriteTemp'  => $this->canWriteToFiles('kicktemp'),
-			'maxExecTime'   => $maxExecTime,
-			'memLimit'      => $this->memoryToBytes($memLimit),
-			'maxPost'       => $this->memoryToBytes($maxPostSize),
-			'maxUpload'     => $this->memoryToBytes($uploadMaxSize),
-			'baseDir'       => $baseDir,
-			'disabledFuncs' => $disabled,
-		);
+        $infoArray = [
+            'freeSpace' => disk_free_space(dirname(__FILE__)),
+            'phpVersion' => PHP_VERSION,
+            'phpSAPI' => PHP_SAPI,
+            'phpOS' => PHP_OS,
+            'osVersion' => php_uname('s'),
+            'server' => $server,
+            'canWrite' => $this->canWriteToFiles(),
+            'canWriteTemp' => $this->canWriteToFiles('kicktemp'),
+            'maxExecTime' => $maxExecTime,
+            'memLimit' => $this->memoryToBytes($memLimit),
+            'maxPost' => $this->memoryToBytes($maxPostSize),
+            'maxUpload' => $this->memoryToBytes($uploadMaxSize),
+            'baseDir' => $baseDir,
+            'disabledFuncs' => $disabled,
+        ];
 
-		return $infoArray;
-	}
+        return $infoArray;
+    }
 
-	public function uploadFile($params)
-	{
-		// Get the parameters describing the upload
-		$file      = isset($_GET['file']) ? $_GET['file'] : '';
-		$directory = isset($_GET['directory']) ? $_GET['directory'] : '';
-		$frag      = isset($_GET['frag']) ? $_GET['frag'] : 0;
-		$fragSize  = isset($_GET['fragSize']) ? $_GET['fragSize'] : 1048576;
-		$data      = isset($_POST['data']) ? $_POST['data'] : '';
-		$dataFile  = isset($_GET['dataFile']) ? $_GET['dataFile'] : '';
+    public function uploadFile($params)
+    {
+        // Get the parameters describing the upload
+        $file = isset($_GET['file']) ? $_GET['file'] : '';
+        $directory = isset($_GET['directory']) ? $_GET['directory'] : '';
+        $frag = isset($_GET['frag']) ? $_GET['frag'] : 0;
+        $fragSize = isset($_GET['fragSize']) ? $_GET['fragSize'] : 1048576;
+        $data = isset($_POST['data']) ? $_POST['data'] : '';
+        $dataFile = isset($_GET['dataFile']) ? $_GET['dataFile'] : '';
 
-		// We need a file
-		if (empty($file))
-		{
-			return array(
-				'status'    => false,
-				'message'   => 'You have not specified a file'
-			);
-		}
+        // We need a file
+        if (empty($file)) {
+            return [
+                'status' => false,
+                'message' => 'You have not specified a file',
+            ];
+        }
 
-		// Let's make sure the remote end is not trying to do something nasty
-		$file = basename($file);
-		$pos = strrpos($file, '.');
+        // Let's make sure the remote end is not trying to do something nasty
+        $file = basename($file);
+        $pos = strrpos($file, '.');
 
-		if ($pos === false)
-		{
-			return array(
-				'status'    => false,
-				'message'   => 'Invalid file name specified'
-			);
-		}
+        if ($pos === false) {
+            return [
+                'status' => false,
+                'message' => 'Invalid file name specified',
+            ];
+        }
 
-		$extension = substr($file, $pos + 1);
+        $extension = substr($file, $pos + 1);
 
-		if (empty($extension))
-		{
-			return array(
-				'status'    => false,
-				'message'   => 'Invalid file name specified'
-			);
-		}
+        if (empty($extension)) {
+            return [
+                'status' => false,
+                'message' => 'Invalid file name specified',
+            ];
+        }
 
-		if (!preg_match('(jpa|zip|jps|j[\d]{2,}|z[\d]{2,})', $extension))
-		{
-			return array(
-				'status'    => false,
-				'message'   => 'Invalid file name specified'
-			);
-		}
+        if (!preg_match('(jpa|zip|jps|j[\d]{2,}|z[\d]{2,})', $extension)) {
+            return [
+                'status' => false,
+                'message' => 'Invalid file name specified',
+            ];
+        }
 
-		// We only allow very specific directories
-		$directory = trim($directory, '/');
+        // We only allow very specific directories
+        $directory = trim($directory, '/');
 
-		if (!in_array($directory, array('', 'kicktemp')))
-		{
-			return array(
-				'status'    => false,
-				// Yes, the message is intentionally vague
-				'message'   => 'Invalid directory name specified'
-			);
-		}
+        if (!in_array($directory, ['', 'kicktemp'])) {
+            return [
+                'status' => false,
+                // Yes, the message is intentionally vague
+                'message' => 'Invalid directory name specified',
+            ];
+        }
 
-		// If a data file was given, read it to memory
-		if (empty($data) && !empty($dataFile))
-		{
-			$slashedDir = ($directory === '') ? '/' : sprintf('/%s/', $directory);
+        // If a data file was given, read it to memory
+        if (empty($data) && !empty($dataFile)) {
+            $slashedDir = $directory === '' ? '/' : sprintf('/%s/', $directory);
 
-			// Do not remove the basename(). It makes sure we won't try to read a file outside our directory.
-			$data = @file_get_contents(__DIR__ . $slashedDir . basename($dataFile));
+            // Do not remove the basename(). It makes sure we won't try to read a file outside our directory.
+            $data = @file_get_contents(__DIR__ . $slashedDir . basename($dataFile));
 
-			if (empty($data))
-			{
-				return array(
-					'status'    => false,
-					'message'   => 'The partial data file ' . basename($dataFile) . ' does not seem to have been uploaded.'
-				);
-			}
-		}
+            if (empty($data)) {
+                return [
+                    'status' => false,
+                    'message' =>
+                        'The partial data file ' . basename($dataFile) . ' does not seem to have been uploaded.',
+                ];
+            }
+        }
 
-		// We need some data to write, yes?
-		if (empty($data))
-		{
-			return array(
-				'status'    => false,
-				'message'   => 'No data specified'
-			);
-		}
+        // We need some data to write, yes?
+        if (empty($data)) {
+            return [
+                'status' => false,
+                'message' => 'No data specified',
+            ];
+        }
 
-		if (!empty($directory))
-		{
-			$directory = '/' . $directory;
-		}
+        if (!empty($directory)) {
+            $directory = '/' . $directory;
+        }
 
-		$filename = __DIR__ . $directory . '/' . $file;
+        $filename = __DIR__ . $directory . '/' . $file;
 
-		// Open the file for writing or append
-		$mode = ($frag == 0) ? 'w' : 'a';
-		$fp = @fopen($filename, $mode);
+        // Open the file for writing or append
+        $mode = $frag == 0 ? 'w' : 'a';
+        $fp = @fopen($filename, $mode);
 
-		if ($fp === false)
-		{
-			$modeHuman = ($mode == 'w') ? 'write' : 'append';
+        if ($fp === false) {
+            $modeHuman = $mode == 'w' ? 'write' : 'append';
 
-			return array(
-				'status'    => false,
-				'message'   => "Cannot open $file for $modeHuman"
-			);
-		}
+            return [
+                'status' => false,
+                'message' => "Cannot open $file for $modeHuman",
+            ];
+        }
 
-		// Seek to the correct offset
-		$offset = $frag * $fragSize;
-		@fseek($fp, $offset);
+        // Seek to the correct offset
+        $offset = $frag * $fragSize;
+        @fseek($fp, $offset);
 
-		// Write to the file
-		$written = @fwrite($fp, $data);
+        // Write to the file
+        $written = @fwrite($fp, $data);
 
-		@fclose($fp);
+        @fclose($fp);
 
-		if (!$written || ($written != strlen($data)))
-		{
-			return array(
-				'status'    => false,
-				'message'   => "Cannot write to $file"
-			);
-		}
+        if (!$written || $written != strlen($data)) {
+            return [
+                'status' => false,
+                'message' => "Cannot write to $file",
+            ];
+        }
 
-		return array(
-			'status'    => true,
-			'message'   => ''
-		);
-	}
+        return [
+            'status' => true,
+            'message' => '',
+        ];
+    }
 
-	/**
-	 * Can I write to arbitrary files in the Kickstart directory?
-	 *
-	 * @return   bool
-	 */
-	private function canWriteToFiles($directory = '')
-	{
-		// Try to create a temporary file
-		$directory = dirname(__FILE__) . '/' . $directory;
-		$directory = rtrim($directory, '/');
+    /**
+     * Can I write to arbitrary files in the Kickstart directory?
+     *
+     * @return   bool
+     */
+    private function canWriteToFiles($directory = '')
+    {
+        // Try to create a temporary file
+        $directory = dirname(__FILE__) . '/' . $directory;
+        $directory = rtrim($directory, '/');
 
-		$testFilename = tempnam($directory, 'kst');
+        $testFilename = tempnam($directory, 'kst');
 
-		// Failed completely?
-		if ($testFilename === false)
-		{
-			return false;
-		}
+        // Failed completely?
+        if ($testFilename === false) {
+            return false;
+        }
 
-		// File created in another directory?
-		if (dirname($testFilename) != $directory)
-		{
-			@unlink($testFilename);
+        // File created in another directory?
+        if (dirname($testFilename) != $directory) {
+            @unlink($testFilename);
 
-			return false;
-		}
+            return false;
+        }
 
-		@unlink($testFilename);
+        @unlink($testFilename);
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Converts a human formatted size to integer representation of bytes,
-	 * e.g. 1M to 1024768
-	 *
-	 * @param   string  $setting  The value in human readable format, e.g. "1M"
-	 *
-	 * @return  integer  The value in bytes
-	 */
-	private function memoryToBytes($setting)
-	{
-		$val  = trim($setting);
-		$last = strtolower(substr($val, -1));
+    /**
+     * Converts a human formatted size to integer representation of bytes,
+     * e.g. 1M to 1024768
+     *
+     * @param   string  $setting  The value in human readable format, e.g. "1M"
+     *
+     * @return  integer  The value in bytes
+     */
+    private function memoryToBytes($setting)
+    {
+        $val = trim($setting);
+        $last = strtolower(substr($val, -1));
 
-		if (is_numeric($last))
-		{
-			return $setting;
-		}
+        if (is_numeric($last)) {
+            return $setting;
+        }
 
-		$val = substr($val, 0, -1);
+        $val = substr($val, 0, -1);
 
-		switch ($last)
-		{
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case 't':
-				$val *= 1024;
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case 'g':
-				$val *= 1024;
-			/** @noinspection PhpMissingBreakStatementInspection */
-			case 'm':
-				$val *= 1024;
-			case 'k':
-				$val *= 1024;
-		}
+        switch ($last) {
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 't':
+                $val *= 1024;
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'g':
+                $val *= 1024;
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case 'm':
+                $val *= 1024;
+            case 'k':
+                $val *= 1024;
+        }
 
-		return (int) $val;
-	}
+        return (int) $val;
+    }
 }

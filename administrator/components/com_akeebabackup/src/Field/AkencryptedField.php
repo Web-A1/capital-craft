@@ -18,39 +18,38 @@ use Joomla\Database\DatabaseInterface;
 
 class AkencryptedField extends TextField
 {
-	use AkeebaEngineTrait;
+    use AkeebaEngineTrait;
 
-	protected $type = "Akencrypted";
+    protected $type = 'Akencrypted';
 
-	protected function getInput()
-	{
-		$this->value = $this->conditionalDecrypt($this->value);
+    protected function getInput()
+    {
+        $this->value = $this->conditionalDecrypt($this->value);
 
-		return parent::getInput();
-	}
+        return parent::getInput();
+    }
 
-	private function conditionalDecrypt($value)
-	{
-		// If the Factory is not already loaded we have to load the
-		if (!class_exists('Akeeba\Engine\Factory'))
-		{
-			$dbo = method_exists($this, 'getDatabase')
-				? $this->getDatabase()
-				: JoomlaFactory::getApplication()->bootComponent('com_akeebabackup')->getContainer()->get(DatabaseInterface::class);
+    private function conditionalDecrypt($value)
+    {
+        // If the Factory is not already loaded we have to load the
+        if (!class_exists('Akeeba\Engine\Factory')) {
+            $dbo = method_exists($this, 'getDatabase')
+                ? $this->getDatabase()
+                : JoomlaFactory::getApplication()
+                    ->bootComponent('com_akeebabackup')
+                    ->getContainer()
+                    ->get(DatabaseInterface::class);
 
-			try
-			{
-				$this->loadAkeebaEngine($dbo);
-				$this->loadAkeebaEngineConfiguration();
-			}
-			catch (Exception $e)
-			{
-				return $value;
-			}
-		}
+            try {
+                $this->loadAkeebaEngine($dbo);
+                $this->loadAkeebaEngineConfiguration();
+            } catch (Exception $e) {
+                return $value;
+            }
+        }
 
-		$secureSettings = Factory::getSecureSettings();
+        $secureSettings = Factory::getSecureSettings();
 
-		return $secureSettings->decryptSettings($this->value);
-	}
+        return $secureSettings->decryptSettings($this->value);
+    }
 }

@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Controller;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerCustomACLTrait;
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerEventsTrait;
@@ -22,43 +22,44 @@ use Joomla\Input\Input;
 
 class ConfigurationwizardController extends BaseController
 {
-	use ControllerEventsTrait;
-	use ControllerCustomACLTrait;
-	use ControllerRegisterTasksTrait;
+    use ControllerEventsTrait;
+    use ControllerCustomACLTrait;
+    use ControllerRegisterTasksTrait;
 
-	private bool $noFlush = false;
+    private bool $noFlush = false;
 
-	public function __construct(
-		$config = [], MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null
-	)
-	{
-		parent::__construct($config, $factory, $app, $input);
+    public function __construct(
+        $config = [],
+        MVCFactoryInterface $factory = null,
+        ?CMSApplication $app = null,
+        ?Input $input = null,
+    ) {
+        parent::__construct($config, $factory, $app, $input);
 
-		$this->noFlush = ComponentHelper::getParams('com_akeebabackup')->get('no_flush', 0) == 1;
+        $this->noFlush = ComponentHelper::getParams('com_akeebabackup')->get('no_flush', 0) == 1;
 
-		$this->registerControllerTasks('main');
-	}
+        $this->registerControllerTasks('main');
+    }
 
-	public function main($cachable = false, $urlparams = [])
-	{
-		$this->display($cachable, $urlparams);
-	}
+    public function main($cachable = false, $urlparams = [])
+    {
+        $this->display($cachable, $urlparams);
+    }
 
-	public function ajax($cachable = false, $urlparams = [])
-	{
-		/** @var ConfigurationwizardModel $model */
-		$model = $this->getModel('Configurationwizard', 'Administrator');
-		$model->setState('act', $this->input->getCmd('act', ''));
-		$ret = $model->runAjax();
+    public function ajax($cachable = false, $urlparams = [])
+    {
+        /** @var ConfigurationwizardModel $model */
+        $model = $this->getModel('Configurationwizard', 'Administrator');
+        $model->setState('act', $this->input->getCmd('act', ''));
+        $ret = $model->runAjax();
 
-		@ob_end_clean();
-		echo '###' . json_encode($ret) . '###';
+        @ob_end_clean();
+        echo '###' . json_encode($ret) . '###';
 
-		if (!$this->noFlush)
-		{
-			flush();
-		}
+        if (!$this->noFlush) {
+            flush();
+        }
 
-		Factory::getApplication()->close();
-	}
+        Factory::getApplication()->close();
+    }
 }

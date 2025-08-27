@@ -40,7 +40,7 @@ use Joomla\CMS\Router\Route;
 					   placeholder="<?= Text::_('COM_AKEEBABACKUP_CONFIG_S3SECRETKEY_TITLE') ?>" />
 			</div>
 
-			<?php if(empty($this->buckets)): ?>
+			<?php if (empty($this->buckets)): ?>
 			<div class="col">
 				<button class="btn btn-primary" id="akeebaS3importResetRoot" type="submit">
 					<span class="fa fa-wifi"></span>
@@ -58,7 +58,7 @@ use Joomla\CMS\Router\Route;
 					<?= Text::_('COM_AKEEBABACKUP_S3IMPORT_LABEL_CHANGEBUCKET') ?>
 				</button>
 			</div>
-			<?php endif ?>
+			<?php endif; ?>
 		</div>
     </div>
 
@@ -71,20 +71,27 @@ use Joomla\CMS\Router\Route;
 				<span class="divider">/</span>
 			</li>
 
-			<?php if(!empty($this->crumbs)): ?>
-				<?php $runningCrumb = ''; $i = 0;
-				foreach($this->crumbs as $crumb):
-					$runningCrumb .= $crumb . '/'; $i++; ?>
+			<?php if (!empty($this->crumbs)): ?>
+				<?php
+    $runningCrumb = '';
+    $i = 0;
+    foreach ($this->crumbs as $crumb):
+
+        $runningCrumb .= $crumb . '/';
+        $i++;
+        ?>
 					<li class="breadcrumb-item <?= $i == count($this->crumbs) ? 'active' : '' ?>">
 						<a
 								class="akeebaS3importChangeDirectory" style="cursor: pointer"
 								data-s3prefix="<?= base64_encode($runningCrumb) ?>"
 						>
-							<?= $this->escape( $crumb ) ?>
+							<?= $this->escape($crumb) ?>
 						</a>
 					</li>
-				<?php endforeach; ?>
-			<?php endif ?>
+				<?php
+    endforeach;
+    ?>
+			<?php endif; ?>
 		</ol>
 	</nav>
 
@@ -96,8 +103,8 @@ use Joomla\CMS\Router\Route;
 				</h3>
 
                 <div id="folders" class="card-body overflow-scroll" style="height: 45vh;">
-					<?php if(!empty($this->contents['folders'])): ?>
-						<?php foreach($this->contents['folders'] as $name => $record): ?>
+					<?php if (!empty($this->contents['folders'])): ?>
+						<?php foreach ($this->contents['folders'] as $name => $record): ?>
                             <div class="folder-container">
                                 <span class="folder-icon-container">
                                     <span class="fa fa-folder"></span>
@@ -106,11 +113,11 @@ use Joomla\CMS\Router\Route;
 									  style="cursor: pointer"
                                       data-s3prefix="<?= base64_encode($record['prefix']) ?>"
                                 >
-                                    <?= $this->escape( basename(rtrim($name, '/')) ) ?>
+                                    <?= $this->escape(basename(rtrim($name, '/'))) ?>
                                 </span>
                             </div>
-						<?php endforeach ?>
-					<?php endif ?>
+						<?php endforeach; ?>
+					<?php endif; ?>
                 </div>
             </div>
         </div>
@@ -121,8 +128,8 @@ use Joomla\CMS\Router\Route;
 		            <?= Text::_('COM_AKEEBABACKUP_FILEFILTERS_LABEL_FILES') ?>
 				</h3>
                 <div id="files" class="card-body overflow-scroll" style="height: 45vh;">
-					<?php if(!empty($this->contents['files'])): ?>
-						<?php foreach($this->contents['files'] as $name => $record): ?>
+					<?php if (!empty($this->contents['files'])): ?>
+						<?php foreach ($this->contents['files'] as $name => $record): ?>
                             <div class="file-container">
                                 <span class="file-icon-container">
                                     <span class="fa fa-file"></span>
@@ -130,11 +137,11 @@ use Joomla\CMS\Router\Route;
                                 <span class="file-name file-clickable akeebaS3importObjectDownload"
 									  style="cursor: pointer"
                                       data-s3object="<?= base64_encode($name) ?>">
-                                    <?= $this->escape( basename($record['name']) ) ?>
+                                    <?= $this->escape(basename($record['name'])) ?>
                                 </span>
                             </div>
-                        <?php endforeach ?>
-                    <?php endif ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

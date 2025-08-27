@@ -22,7 +22,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Banners\Administrator\Model\BannerModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -70,9 +70,9 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var BannerModel $model */
-        $model       = $this->getModel();
-        $this->form  = $model->getForm();
-        $this->item  = $model->getItem();
+        $model = $this->getModel();
+        $this->form = $model->getForm();
+        $this->item = $model->getItem();
         $this->state = $model->getState();
 
         // Check for errors.
@@ -97,48 +97,59 @@ class HtmlView extends BaseHtmlView
     {
         Factory::getApplication()->getInput()->set('hidemainmenu', true);
 
-        $user       = $this->getCurrentUser();
-        $userId     = $user->id;
-        $isNew      = ($this->item->id == 0);
+        $user = $this->getCurrentUser();
+        $userId = $user->id;
+        $isNew = $this->item->id == 0;
         $checkedOut = !(\is_null($this->item->checked_out) || $this->item->checked_out == $userId);
-        $toolbar    = $this->getDocument()->getToolbar();
+        $toolbar = $this->getDocument()->getToolbar();
 
         // Since we don't track these assets at the item level, use the category id.
         $canDo = ContentHelper::getActions('com_banners', 'category', $this->item->catid);
 
-        ToolbarHelper::title($isNew ? Text::_('COM_BANNERS_MANAGER_BANNER_NEW') : Text::_('COM_BANNERS_MANAGER_BANNER_EDIT'), 'bookmark banners');
+        ToolbarHelper::title(
+            $isNew ? Text::_('COM_BANNERS_MANAGER_BANNER_NEW') : Text::_('COM_BANNERS_MANAGER_BANNER_EDIT'),
+            'bookmark banners',
+        );
 
         // If not checked out, can save the item.
-        if (!$checkedOut && ($canDo->get('core.edit') || \count($user->getAuthorisedCategories('com_banners', 'core.create')) > 0)) {
+        if (
+            !$checkedOut &&
+            ($canDo->get('core.edit') || \count($user->getAuthorisedCategories('com_banners', 'core.create')) > 0)
+        ) {
             $toolbar->apply('banner.apply');
         }
 
         $saveGroup = $toolbar->dropdownButton('save-group');
 
-        $saveGroup->configure(
-            function (Toolbar $childBar) use ($checkedOut, $canDo, $user, $isNew) {
-                // If not checked out, can save the item.
-                if (!$checkedOut && ($canDo->get('core.edit') || \count($user->getAuthorisedCategories('com_banners', 'core.create')) > 0)) {
-                    $childBar->save('banner.save');
+        $saveGroup->configure(function (Toolbar $childBar) use ($checkedOut, $canDo, $user, $isNew) {
+            // If not checked out, can save the item.
+            if (
+                !$checkedOut &&
+                ($canDo->get('core.edit') || \count($user->getAuthorisedCategories('com_banners', 'core.create')) > 0)
+            ) {
+                $childBar->save('banner.save');
 
-                    if ($canDo->get('core.create')) {
-                        $childBar->save2new('banner.save2new');
-                    }
-                }
-
-                // If an existing item, can save to a copy.
-                if (!$isNew && $canDo->get('core.create')) {
-                    $childBar->save2copy('banner.save2copy');
+                if ($canDo->get('core.create')) {
+                    $childBar->save2new('banner.save2new');
                 }
             }
-        );
+
+            // If an existing item, can save to a copy.
+            if (!$isNew && $canDo->get('core.create')) {
+                $childBar->save2copy('banner.save2copy');
+            }
+        });
 
         if (empty($this->item->id)) {
             $toolbar->cancel('banner.cancel', 'JTOOLBAR_CANCEL');
         } else {
             $toolbar->cancel('banner.cancel');
 
-            if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $canDo->get('core.edit')) {
+            if (
+                ComponentHelper::isEnabled('com_contenthistory') &&
+                $this->state->params->get('save_history', 0) &&
+                $canDo->get('core.edit')
+            ) {
                 $toolbar->versions('com_banners.banner', $this->item->id);
             }
         }

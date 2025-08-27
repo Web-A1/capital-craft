@@ -7,7 +7,7 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Controller;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerAjaxTrait;
 use Akeeba\Component\AkeebaBackup\Administrator\Mixin\ControllerCustomACLTrait;
@@ -19,22 +19,20 @@ use Joomla\CMS\MVC\Controller\BaseController;
 
 class DatabasefiltersController extends BaseController
 {
-	use ControllerEventsTrait;
-	use ControllerCustomACLTrait
-	{
-		ControllerCustomACLTrait::onBeforeExecute as onBeforeExecuteACL;
-	}
-	use ControllerProfileRestrictionTrait
-	{
-		ControllerProfileRestrictionTrait::onBeforeExecute as onBeforeExecuteRestrictedProfile;
-	}
-	use ControllerReusableModelsTrait;
-	use ControllerAjaxTrait;
-	use ControllerProfileAccessTrait;
+    use ControllerEventsTrait;
+    use ControllerCustomACLTrait {
+        ControllerCustomACLTrait::onBeforeExecute as onBeforeExecuteACL;
+    }
+    use ControllerProfileRestrictionTrait {
+        ControllerProfileRestrictionTrait::onBeforeExecute as onBeforeExecuteRestrictedProfile;
+    }
+    use ControllerReusableModelsTrait;
+    use ControllerAjaxTrait;
+    use ControllerProfileAccessTrait;
 
-	protected function onBeforeExecute(&$task)
-	{
-		$this->onBeforeExecuteACL($task);
-		$this->onBeforeExecuteRestrictedProfile($task);
-	}
+    protected function onBeforeExecute(&$task)
+    {
+        $this->onBeforeExecuteACL($task);
+        $this->onBeforeExecuteRestrictedProfile($task);
+    }
 }

@@ -16,16 +16,15 @@ use Joomla\CMS\Router\Route;
 
 // Enable Bootstrap popovers
 HTMLHelper::_('bootstrap.popover', '[rel=popover]', [
-	'html'      => true,
-	'placement' => 'bottom',
-	'trigger'   => 'click hover',
-	'sanitize'  => false,
+    'html' => true,
+    'placement' => 'bottom',
+    'trigger' => 'click hover',
+    'sanitize' => false,
 ]);
 
 // Configuration Wizard pop-up
-if ($this->promptForConfigurationwizard)
-{
-	echo $this->loadAnyTemplate('Configuration/confwiz_modal');
+if ($this->promptForConfigurationwizard) {
+    echo $this->loadAnyTemplate('Configuration/confwiz_modal');
 }
 
 // Modal dialog prototypes
@@ -34,23 +33,29 @@ echo $this->loadAnyTemplate('commontemplates/errormodal');
 echo $this->loadAnyTemplate('commontemplates/folderbrowser');
 ?>
 
-<?php if($this->secureSettings == 1): ?>
+<?php if ($this->secureSettings == 1): ?>
     <div class="alert alert-success alert-dismissible">
 		<?= Text::_('COM_AKEEBABACKUP_CONFIG_UI_SETTINGS_SECURED') ?>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+      'JLIB_HTML_BEHAVIOR_CLOSE',
+  ) ?>"></button>
     </div>
-<?php elseif($this->secureSettings == 0): ?>
+<?php elseif ($this->secureSettings == 0): ?>
     <div class="alert alert-warning alert-dismissible">
 	    <?= Text::_('COM_AKEEBABACKUP_CONFIG_UI_SETTINGS_NOTSECURED') ?>
-		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+      'JLIB_HTML_BEHAVIOR_CLOSE',
+  ) ?>"></button>
     </div>
-<?php endif ?>
+<?php endif; ?>
 
 <?= $this->loadAnyTemplate('commontemplates/profilename') ?>
 
 <div class="alert alert-info alert-dismissible">
 	<?= Text::_('COM_AKEEBABACKUP_CONFIG_WHERE_ARE_THE_FILTERS') ?>
-	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_('JLIB_HTML_BEHAVIOR_CLOSE') ?>"></button>
+	<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="<?= Text::_(
+     'JLIB_HTML_BEHAVIOR_CLOSE',
+ ) ?>"></button>
 </div>
 
 <form name="adminForm" id="adminForm" method="post"

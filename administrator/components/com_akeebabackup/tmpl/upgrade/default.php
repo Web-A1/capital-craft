@@ -5,7 +5,7 @@
  * @license   GNU General Public License version 3, or later
  */
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -36,7 +36,7 @@ $btnWarning = !$this->needsMigration || !$this->hasCompatibleVersion;
 					<span class="fa fa-exclamation-circle"></span>
 				</p>
 				<p>
-					<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WARNING_INCOMPATIBLE_BODY' )?>
+					<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WARNING_INCOMPATIBLE_BODY') ?>
 				</p>
 			</div>
 		<?php else: ?>
@@ -44,12 +44,12 @@ $btnWarning = !$this->needsMigration || !$this->hasCompatibleVersion;
 				<p class="text-danger text-center fs-1">
 					<span class="fa fa-exclamation-circle"></span>
 					<strong>
-						<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WARNING_ALREADY_RAN_HEAD' )?>
+						<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WARNING_ALREADY_RAN_HEAD') ?>
 					</strong>
 					<span class="fa fa-exclamation-circle"></span>
 				</p>
 				<p>
-					<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WARNING_ALREADY_RAN_BODY' )?>
+					<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WARNING_ALREADY_RAN_BODY') ?>
 				</p>
 			</div>
 		<?php endif; ?>
@@ -57,16 +57,20 @@ $btnWarning = !$this->needsMigration || !$this->hasCompatibleVersion;
 
 		<div class="my-2 p-3">
 			<p>
-				<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WHAT_IT_DOES' )?>
+				<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_WHAT_IT_DOES') ?>
 			</p>
 			<p>
-				<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_REMEMBER_TO_UNINSTALL' )?>
+				<?= Text::_('COM_AKEEBABACKUP_UPGRADE_LBL_REMEMBER_TO_UNINSTALL') ?>
 			</p>
 		</div>
 
 		<p>
 			<a class="btn btn-<?= $btnWarning ? 'outline-warning' : 'primary' ?> btn-lg me-4"
-			   href="<?= Route::_('index.php?option=com_akeebabackup&task=Upgrade.migrate&' . Factory::getApplication()->getSession()->getFormToken() . '=1') ?>"
+			   href="<?= Route::_(
+          'index.php?option=com_akeebabackup&task=Upgrade.migrate&' .
+              Factory::getApplication()->getSession()->getFormToken() .
+              '=1',
+      ) ?>"
 			>
 				<span class="fa fa-file-import"></span>
 				<?= Text::_('COM_AKEEBABACKUP_UPGRADE_BTN_PROCEED') ?>

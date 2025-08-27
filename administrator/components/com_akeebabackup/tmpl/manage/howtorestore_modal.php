@@ -13,15 +13,13 @@ defined('_JEXEC') || die();
 /** @var  \Akeeba\Component\AkeebaBackup\Administrator\View\Manage\HtmlView $this */
 
 // Make sure we only ever add this HTML and JS once per page
-if (defined('AKEEBA_VIEW_JAVASCRIPT_HOWTORESTORE'))
-{
-	return;
+if (defined('AKEEBA_VIEW_JAVASCRIPT_HOWTORESTORE')) {
+    return;
 }
 
 define('AKEEBA_VIEW_JAVASCRIPT_HOWTORESTORE', 1);
 
 $this->getDocument()->addScriptOptions('akeebabackup.Manage.ShowHowToRestoreModal', 1);
-
 ?>
 <div id="akeebabackup-config-howtorestore-bubble"
 	 class="modal fade"
@@ -41,11 +39,19 @@ $this->getDocument()->addScriptOptions('akeebabackup.Manage.ShowHowToRestoreModa
 			</div>
 			<div class="modal-body p-3">
 				<p>
-					<?= Text::sprintf('COM_AKEEBABACKUP_BUADMIN_LABEL_HOWDOIRESTORE_TEXT_' . (AKEEBABACKUP_PRO ? 'PRO' : 'CORE'), 'http://akee.ba/abrestoreanywhere', 'index.php?option=com_akeebabackup&view=Transfer', 'https://www.akeeba.com/latest-kickstart-core.zip') ?>
+					<?= Text::sprintf(
+         'COM_AKEEBABACKUP_BUADMIN_LABEL_HOWDOIRESTORE_TEXT_' . (AKEEBABACKUP_PRO ? 'PRO' : 'CORE'),
+         'http://akee.ba/abrestoreanywhere',
+         'index.php?option=com_akeebabackup&view=Transfer',
+         'https://www.akeeba.com/latest-kickstart-core.zip',
+     ) ?>
 				</p>
 				<p>
 					<?php if (!AKEEBABACKUP_PRO): ?>
-						<?= Text::sprintf('COM_AKEEBABACKUP_BUADMIN_LABEL_HOWDOIRESTORE_TEXT_CORE_INFO_ABOUT_PRO', 'https://www.akeeba.com/products/akeeba-backup.html') ?>
+						<?= Text::sprintf(
+          'COM_AKEEBABACKUP_BUADMIN_LABEL_HOWDOIRESTORE_TEXT_CORE_INFO_ABOUT_PRO',
+          'https://www.akeeba.com/products/akeeba-backup.html',
+      ) ?>
 					<?php endif; ?>
 				</p>
 			</div>

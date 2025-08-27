@@ -35,7 +35,7 @@ use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -90,7 +90,7 @@ class CategoryModel extends AdminModel
      */
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
-        $extension       = Factory::getApplication()->getInput()->get('extension', 'com_content');
+        $extension = Factory::getApplication()->getInput()->get('extension', 'com_content');
         $this->typeAlias = $extension . '.category';
 
         // Add a new batch command
@@ -188,7 +188,7 @@ class CategoryModel extends AdminModel
         $this->setState('category.component', $parts[0]);
 
         // Extract the optional section name
-        $this->setState('category.section', (\count($parts) > 1) ? $parts[1] : null);
+        $this->setState('category.section', \count($parts) > 1 ? $parts[1] : null);
 
         // Load the parameters.
         $params = ComponentHelper::getParams('com_categories');
@@ -214,7 +214,7 @@ class CategoryModel extends AdminModel
             }
 
             // Convert the metadata field to an array.
-            $registry         = new Registry($result->metadata);
+            $registry = new Registry($result->metadata);
             $result->metadata = $registry->toArray();
 
             if (!empty($result->id)) {
@@ -227,7 +227,9 @@ class CategoryModel extends AdminModel
 
         if ($assoc) {
             if ($result->id != null) {
-                $result->associations = ArrayHelper::toInteger(CategoriesHelper::getAssociations($result->id, $result->extension));
+                $result->associations = ArrayHelper::toInteger(
+                    CategoriesHelper::getAssociations($result->id, $result->extension),
+                );
             } else {
                 $result->associations = [];
             }
@@ -249,12 +251,12 @@ class CategoryModel extends AdminModel
     public function getForm($data = [], $loadData = true)
     {
         $extension = $this->getState('category.extension');
-        $jinput    = Factory::getApplication()->getInput();
+        $jinput = Factory::getApplication()->getInput();
 
         // A workaround to get the extension into the model for save requests.
         if (empty($extension) && isset($data['extension'])) {
             $extension = $data['extension'];
-            $parts     = explode('.', $extension);
+            $parts = explode('.', $extension);
 
             $this->setState('category.extension', $extension);
             $this->setState('category.component', $parts[0]);
@@ -262,7 +264,10 @@ class CategoryModel extends AdminModel
         }
 
         // Get the form.
-        $form = $this->loadForm('com_categories.category' . $extension, 'category', ['control' => 'jform', 'load_data' => $loadData]);
+        $form = $this->loadForm('com_categories.category' . $extension, 'category', [
+            'control' => 'jform',
+            'load_data' => $loadData,
+        ]);
 
         if (empty($form)) {
             return false;
@@ -274,8 +279,8 @@ class CategoryModel extends AdminModel
         }
 
         $categoryId = $jinput->get('id');
-        $parts      = explode('.', $extension);
-        $assetKey   = $categoryId ? $extension . '.category.' . $categoryId : $parts[0];
+        $parts = explode('.', $extension);
+        $assetKey = $categoryId ? $extension . '.category.' . $categoryId : $parts[0];
 
         if (!$this->getCurrentUser()->authorise('core.edit.state', $assetKey)) {
             // Disable fields for display.
@@ -310,9 +315,7 @@ class CategoryModel extends AdminModel
     {
         $db = $this->getDatabase();
 
-        return [
-            $db->quoteName('extension') . ' = ' . $db->quote($table->extension),
-        ];
+        return [$db->quoteName('extension') . ' = ' . $db->quote($table->extension)];
     }
 
     /**
@@ -325,7 +328,7 @@ class CategoryModel extends AdminModel
     protected function loadFormData()
     {
         // Check the session for previously entered form data.
-        $app  = Factory::getApplication();
+        $app = Factory::getApplication();
         $data = $app->getUserState('com_categories.edit.' . $this->getName() . '.data', []);
 
         if (empty($data)) {
@@ -335,19 +338,26 @@ class CategoryModel extends AdminModel
             if (!$data->id) {
                 // Check for which extension the Category Manager is used and get selected fields
                 $extension = substr($app->getUserState('com_categories.categories.filter.extension', ''), 4);
-                $filters   = (array) $app->getUserState('com_categories.categories.' . $extension . '.filter');
+                $filters = (array) $app->getUserState('com_categories.categories.' . $extension . '.filter');
 
                 $data->set(
                     'published',
-                    $app->getInput()->getInt(
-                        'published',
-                        ((isset($filters['published']) && $filters['published'] !== '') ? $filters['published'] : null)
-                    )
+                    $app
+                        ->getInput()
+                        ->getInt(
+                            'published',
+                            isset($filters['published']) && $filters['published'] !== '' ? $filters['published'] : null,
+                        ),
                 );
-                $data->set('language', $app->getInput()->getString('language', (!empty($filters['language']) ? $filters['language'] : null)));
+                $data->set(
+                    'language',
+                    $app->getInput()->getString('language', !empty($filters['language']) ? $filters['language'] : null),
+                );
                 $data->set(
                     'access',
-                    $app->getInput()->getInt('access', (!empty($filters['access']) ? $filters['access'] : $app->get('access')))
+                    $app
+                        ->getInput()
+                        ->getInt('access', !empty($filters['access']) ? $filters['access'] : $app->get('access')),
                 );
             }
         }
@@ -398,13 +408,13 @@ class CategoryModel extends AdminModel
      */
     protected function preprocessForm(Form $form, $data, $group = 'content')
     {
-        $lang      = Factory::getLanguage();
+        $lang = Factory::getLanguage();
         $component = $this->getState('category.component');
-        $section   = $this->getState('category.section');
+        $section = $this->getState('category.section');
         $extension = Factory::getApplication()->getInput()->get('extension', null);
 
         // Get the component form if it exists
-        $name = 'category' . ($section ? ('.' . $section) : '');
+        $name = 'category' . ($section ? '.' . $section : '');
 
         // Looking first in the component forms folder
         $path = Path::clean(JPATH_ADMINISTRATOR . "/components/$component/forms/$name.xml");
@@ -435,7 +445,7 @@ class CategoryModel extends AdminModel
         } else {
             // Try to find the component helper.
             $eName = str_replace('com_', '', $component);
-            $path  = Path::clean(JPATH_ADMINISTRATOR . "/components/$component/helpers/category.php");
+            $path = Path::clean(JPATH_ADMINISTRATOR . "/components/$component/helpers/category.php");
 
             if (file_exists($path)) {
                 $cName = ucfirst($eName) . ucfirst($section) . 'HelperCategory';
@@ -443,10 +453,16 @@ class CategoryModel extends AdminModel
                 \JLoader::register($cName, $path);
 
                 if (class_exists($cName) && \is_callable([$cName, 'onPrepareForm'])) {
-                    $lang->load($component, JPATH_BASE, null, false, false)
-                        || $lang->load($component, JPATH_BASE . '/components/' . $component, null, false, false)
-                        || $lang->load($component, JPATH_BASE, $lang->getDefault(), false, false)
-                        || $lang->load($component, JPATH_BASE . '/components/' . $component, $lang->getDefault(), false, false);
+                    $lang->load($component, JPATH_BASE, null, false, false) ||
+                        $lang->load($component, JPATH_BASE . '/components/' . $component, null, false, false) ||
+                        $lang->load($component, JPATH_BASE, $lang->getDefault(), false, false) ||
+                        $lang->load(
+                            $component,
+                            JPATH_BASE . '/components/' . $component,
+                            $lang->getDefault(),
+                            false,
+                            false,
+                        );
                     \call_user_func_array([$cName, 'onPrepareForm'], [&$form]);
 
                     // Check for an error.
@@ -469,7 +485,7 @@ class CategoryModel extends AdminModel
 
             if (\count($languages) > 1) {
                 $addform = new \SimpleXMLElement('<form />');
-                $fields  = $addform->addChild('fields');
+                $fields = $addform->addChild('fields');
                 $fields->addAttribute('name', 'associations');
                 $fieldset = $fields->addChild('fieldset');
                 $fieldset->addAttribute('name', 'item_associations');
@@ -508,11 +524,11 @@ class CategoryModel extends AdminModel
      */
     public function save($data)
     {
-        $table      = $this->getTable();
-        $input      = Factory::getApplication()->getInput();
-        $pk         = (!empty($data['id'])) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
-        $isNew      = true;
-        $context    = $this->option . '.' . $this->name;
+        $table = $this->getTable();
+        $input = Factory::getApplication()->getInput();
+        $pk = !empty($data['id']) ? $data['id'] : (int) $this->getState($this->getName() . '.id');
+        $isNew = true;
+        $context = $this->option . '.' . $this->name;
 
         if (!empty($data['tags']) && $data['tags'][0] != '') {
             $table->newTags = $data['tags'];
@@ -539,8 +555,8 @@ class CategoryModel extends AdminModel
 
             if ($data['title'] == $origTable->title) {
                 [$title, $alias] = $this->generateNewTitle($data['parent_id'], $data['alias'], $data['title']);
-                $data['title']   = $title;
-                $data['alias']   = $alias;
+                $data['title'] = $title;
+                $data['alias'] = $alias;
             } else {
                 if ($data['alias'] == $origTable->alias) {
                     $data['alias'] = '';
@@ -605,13 +621,17 @@ class CategoryModel extends AdminModel
             $allLanguage = $table->language == '*';
 
             if ($allLanguage && !empty($associations)) {
-                Factory::getApplication()->enqueueMessage(Text::_('COM_CATEGORIES_ERROR_ALL_LANGUAGE_ASSOCIATED'), 'notice');
+                Factory::getApplication()->enqueueMessage(
+                    Text::_('COM_CATEGORIES_ERROR_ALL_LANGUAGE_ASSOCIATED'),
+                    'notice',
+                );
             }
 
             // Get associationskey for edited item
-            $db    = $this->getDatabase();
-            $id    = (int) $table->id;
-            $query = $db->getQuery(true)
+            $db = $this->getDatabase();
+            $id = (int) $table->id;
+            $query = $db
+                ->getQuery(true)
                 ->select($db->quoteName('key'))
                 ->from($db->quoteName('#__associations'))
                 ->where($db->quoteName('context') . ' = :associationscontext')
@@ -625,13 +645,18 @@ class CategoryModel extends AdminModel
                 $where = [];
 
                 // Deleting old associations for the associated items
-                $query = $db->getQuery(true)
+                $query = $db
+                    ->getQuery(true)
                     ->delete($db->quoteName('#__associations'))
                     ->where($db->quoteName('context') . ' = :associationscontext')
                     ->bind(':associationscontext', $this->associationsContext);
 
                 if ($associations) {
-                    $where[] = $db->quoteName('id') . ' IN (' . implode(',', $query->bindArray(array_values($associations))) . ')';
+                    $where[] =
+                        $db->quoteName('id') .
+                        ' IN (' .
+                        implode(',', $query->bindArray(array_values($associations))) .
+                        ')';
                 }
 
                 if ($oldKey !== null) {
@@ -660,15 +685,10 @@ class CategoryModel extends AdminModel
             if (\count($associations) > 1) {
                 // Adding new association for these items
                 $key = md5(json_encode($associations));
-                $query->clear()
+                $query
+                    ->clear()
                     ->insert($db->quoteName('#__associations'))
-                    ->columns(
-                        [
-                            $db->quoteName('id'),
-                            $db->quoteName('context'),
-                            $db->quoteName('key'),
-                        ]
-                    );
+                    ->columns([$db->quoteName('id'), $db->quoteName('context'), $db->quoteName('key')]);
 
                 foreach ($associations as $id) {
                     $id = (int) $id;
@@ -678,9 +698,9 @@ class CategoryModel extends AdminModel
                             ',',
                             $query->bindArray(
                                 [$id, $this->associationsContext, $key],
-                                [ParameterType::INTEGER, ParameterType::STRING, ParameterType::STRING]
-                            )
-                        )
+                                [ParameterType::INTEGER, ParameterType::STRING, ParameterType::STRING],
+                            ),
+                        ),
                     );
                 }
 
@@ -744,11 +764,14 @@ class CategoryModel extends AdminModel
             PluginHelper::importPlugin('content', null, true, $this->getDispatcher());
 
             // Trigger the onCategoryChangeState event.
-            $this->getDispatcher()->dispatch('onCategoryChangeState', new AfterCategoryChangeStateEvent('onCategoryChangeState', [
-                'context' => $extension,
-                'subject' => $pks,
-                'value'   => $value,
-            ]));
+            $this->getDispatcher()->dispatch(
+                'onCategoryChangeState',
+                new AfterCategoryChangeStateEvent('onCategoryChangeState', [
+                    'context' => $extension,
+                    'subject' => $pks,
+                    'value' => $value,
+                ]),
+            );
 
             return true;
         }
@@ -824,7 +847,7 @@ class CategoryModel extends AdminModel
     {
         $successful = [];
 
-        $db    = $this->getDatabase();
+        $db = $this->getDatabase();
         $query = $db->getQuery(true);
 
         /**
@@ -832,7 +855,8 @@ class CategoryModel extends AdminModel
          * Re-order with max - ordering
          */
         foreach ($pks as $id) {
-            $query->clear()
+            $query
+                ->clear()
                 ->select('MAX(' . $db->quoteName('ordering') . ')')
                 ->from($db->quoteName('#__content'))
                 ->where($db->quoteName('catid') . ' = :catid')
@@ -843,7 +867,8 @@ class CategoryModel extends AdminModel
             $max = (int) $db->loadResult();
             $max++;
 
-            $query->clear()
+            $query
+                ->clear()
                 ->update($db->quoteName('#__content'))
                 ->set($db->quoteName('ordering') . ' = :max - ' . $db->quoteName('ordering'))
                 ->where($db->quoteName('catid') . ' = :catid')
@@ -873,16 +898,16 @@ class CategoryModel extends AdminModel
      */
     protected function batchCopy($value, $pks, $contexts)
     {
-        $type       = new UCMType();
+        $type = new UCMType();
         $this->type = $type->getTypeByAlias($this->typeAlias);
 
         // $value comes as {parent_id}.{extension}
-        $parts    = explode('.', $value);
+        $parts = explode('.', $value);
         $parentId = (int) ArrayHelper::getValue($parts, 0, 1);
 
-        $db        = $this->getDatabase();
+        $db = $this->getDatabase();
         $extension = Factory::getApplication()->getInput()->get('extension', '', 'word');
-        $newIds    = [];
+        $newIds = [];
 
         // Check that the parent exists
         if ($parentId) {
@@ -916,7 +941,7 @@ class CategoryModel extends AdminModel
 
         // If the parent is 0, set it to the ID of the root item in the tree
         if (empty($parentId)) {
-            if (!$parentId = $this->table->getRootId()) {
+            if (!($parentId = $this->table->getRootId())) {
                 $this->setError($this->table->getError());
 
                 return false;
@@ -934,7 +959,8 @@ class CategoryModel extends AdminModel
         $parents = [];
 
         // Calculate the emergency stop count as a precaution against a runaway loop bug
-        $query = $db->getQuery(true)
+        $query = $db
+            ->getQuery(true)
             ->select('COUNT(' . $db->quoteName('id') . ')')
             ->from($db->quoteName('#__categories'));
         $db->setQuery($query);
@@ -971,7 +997,8 @@ class CategoryModel extends AdminModel
             // Copy is a bit tricky, because we also need to copy the children
             $lft = (int) $this->table->lft;
             $rgt = (int) $this->table->rgt;
-            $query->clear()
+            $query
+                ->clear()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__categories'))
                 ->where($db->quoteName('lft') . ' > :lft')
@@ -989,9 +1016,9 @@ class CategoryModel extends AdminModel
             }
 
             // Make a copy of the old ID, Parent ID and Asset ID
-            $oldId       = $this->table->id;
+            $oldId = $this->table->id;
             $oldParentId = $this->table->parent_id;
-            $oldAssetId  = $this->table->asset_id;
+            $oldAssetId = $this->table->asset_id;
 
             // Reset the id because we are making a copy.
             $this->table->id = 0;
@@ -1005,15 +1032,19 @@ class CategoryModel extends AdminModel
 
             // @TODO: Deal with ordering?
             // $this->table->ordering = 1;
-            $this->table->level    = null;
+            $this->table->level = null;
             $this->table->asset_id = null;
-            $this->table->lft      = null;
-            $this->table->rgt      = null;
+            $this->table->lft = null;
+            $this->table->rgt = null;
 
             // Alter the title & alias
-            [$title, $alias]     = $this->generateNewTitle($this->table->parent_id, $this->table->alias, $this->table->title);
-            $this->table->title  = $title;
-            $this->table->alias  = $alias;
+            [$title, $alias] = $this->generateNewTitle(
+                $this->table->parent_id,
+                $this->table->alias,
+                $this->table->title,
+            );
+            $this->table->title = $title;
+            $this->table->alias = $alias;
 
             // Unpublish because we are making a copy
             $this->table->published = 0;
@@ -1032,13 +1063,10 @@ class CategoryModel extends AdminModel
             $newIds[$pk] = $newId;
 
             // Copy rules
-            $query->clear()
+            $query
+                ->clear()
                 ->update($db->quoteName('#__assets', 't'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__assets', 's'),
-                    $db->quoteName('s.id') . ' = :oldid'
-                )
+                ->join('INNER', $db->quoteName('#__assets', 's'), $db->quoteName('s.id') . ' = :oldid')
                 ->bind(':oldid', $oldAssetId, ParameterType::INTEGER)
                 ->set($db->quoteName('t.rules') . ' = ' . $db->quoteName('s.rules'))
                 ->where($db->quoteName('t.id') . ' = :assetid')
@@ -1080,12 +1108,12 @@ class CategoryModel extends AdminModel
      */
     protected function batchMove($value, $pks, $contexts)
     {
-        $parentId   = (int) $value;
-        $type       = new UCMType();
+        $parentId = (int) $value;
+        $type = new UCMType();
         $this->type = $type->getTypeByAlias($this->typeAlias);
 
-        $db        = $this->getDatabase();
-        $query     = $db->getQuery(true);
+        $db = $this->getDatabase();
+        $query = $db->getQuery(true);
         $extension = Factory::getApplication()->getInput()->get('extension', '', 'word');
 
         // Check that the parent exists.
@@ -1159,7 +1187,8 @@ class CategoryModel extends AdminModel
                 $rgt = (int) $this->table->rgt;
 
                 // Add the child node ids to the children array.
-                $query->clear()
+                $query
+                    ->clear()
                     ->select($db->quoteName('id'))
                     ->from($db->quoteName('#__categories'))
                     ->where($db->quoteName('lft') . ' BETWEEN :lft AND :rgt')
@@ -1177,7 +1206,7 @@ class CategoryModel extends AdminModel
 
                 // Verify that the alias is unique before move
                 $conditions = [
-                    'alias'     => $this->table->alias,
+                    'alias' => $this->table->alias,
                     'parent_id' => $parentId,
                     'extension' => $extension,
                 ];
@@ -1283,9 +1312,9 @@ class CategoryModel extends AdminModel
         $extension = $this->getState('category.extension', '');
 
         $this->hasAssociation = Associations::isEnabled();
-        $extension            = explode('.', $extension);
-        $component            = array_shift($extension);
-        $cname                = str_replace('com_', '', $component);
+        $extension = explode('.', $extension);
+        $component = array_shift($extension);
+        $cname = str_replace('com_', '', $component);
 
         if (!$this->hasAssociation || !$component || !$cname) {
             $this->hasAssociation = false;
@@ -1295,7 +1324,10 @@ class CategoryModel extends AdminModel
 
         $componentObject = $this->bootComponent($component);
 
-        if ($componentObject instanceof AssociationServiceInterface && $componentObject instanceof CategoryServiceInterface) {
+        if (
+            $componentObject instanceof AssociationServiceInterface &&
+            $componentObject instanceof CategoryServiceInterface
+        ) {
             $this->hasAssociation = true;
 
             return $this->hasAssociation;

@@ -14,11 +14,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 // Only show in the Core version with a 10% probability
-if (AKEEBABACKUP_PRO) return;
+if (AKEEBABACKUP_PRO) {
+    return;
+}
 
 // Only show if it's at least 15 days since the last time the user dismissed the upsell
-if (time() - $this->lastUpsellDismiss < 1296000) return;
-
+if (time() - $this->lastUpsellDismiss < 1296000) {
+    return;
+}
 ?>
 <div class="card my-4 border border-info">
 	<h3 class="card-header bg-info text-white">

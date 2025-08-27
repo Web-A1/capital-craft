@@ -16,7 +16,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Component\Banners\Administrator\Model\DownloadModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -48,7 +48,7 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var DownloadModel $model */
-        $model      = $this->getModel();
+        $model = $this->getModel();
         $this->form = $model->getForm();
 
         // Check for errors.

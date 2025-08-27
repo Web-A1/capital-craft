@@ -8,9 +8,7 @@
 /** @var $this \Akeeba\Component\AkeebaBackup\Administrator\View\Controlpanel\HtmlView */
 
 // Protect from unauthorized access
-defined('_JEXEC') || die();
-
-?>
+defined('_JEXEC') || die(); ?>
 <div class="akeebabackup-cpanel-footer mt-3 p-3 bg-light border-top border-4 d-flex flex-column">
 	<p class="text-muted">
 		Copyright 2006-<?= date('Y') ?> <a href="https://www.akeeba.com">Akeeba Ltd</a>. All legal rights reserved.
@@ -20,7 +18,7 @@ defined('_JEXEC') || die();
 		at your option - any later version.
 	</p>
 
-	<?php if(AKEEBABACKUP_PRO != 1): ?>
+	<?php if (AKEEBABACKUP_PRO != 1): ?>
 	<p>
 			If you use Akeeba Backup Core, please post a rating and a review at the
 			<a href="https://extensions.joomla.org/extensions/extension/access-a-security/site-security/akeeba-backup/">Joomla! Extensions Directory</a>.

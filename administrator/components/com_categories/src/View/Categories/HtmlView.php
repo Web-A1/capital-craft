@@ -24,7 +24,7 @@ use Joomla\Component\Categories\Administrator\Model\CategoriesModel;
 use Joomla\Filesystem\Path;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -106,15 +106,15 @@ class HtmlView extends BaseHtmlView
         /** @var CategoriesModel $model */
         $model = $this->getModel();
 
-        $this->state         = $model->getState();
-        $this->items         = $model->getItems();
-        $this->pagination    = $model->getPagination();
-        $this->assoc         = $model->getAssoc();
-        $this->filterForm    = $model->getFilterForm();
+        $this->state = $model->getState();
+        $this->items = $model->getItems();
+        $this->pagination = $model->getPagination();
+        $this->assoc = $model->getAssoc();
+        $this->filterForm = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
 
         // Written this way because we only want to call IsEmptyState if no items, to prevent always calling it when not needed.
-        if (!\count($this->items) && $this->isEmptyState = $model->getIsEmptyState()) {
+        if (!\count($this->items) && ($this->isEmptyState = $model->getIsEmptyState())) {
             $this->setLayout('emptystate');
         }
 
@@ -143,7 +143,9 @@ class HtmlView extends BaseHtmlView
 
             if ($forcedLanguage) {
                 // If the language is forced we can't allow to select the language, so transform the language selector filter into a hidden field.
-                $languageXml = new \SimpleXMLElement('<field name="language" type="hidden" default="' . $forcedLanguage . '" />');
+                $languageXml = new \SimpleXMLElement(
+                    '<field name="language" type="hidden" default="' . $forcedLanguage . '" />',
+                );
                 $this->filterForm->setField($languageXml, 'filter', true);
 
                 // Also, unset the active language filter so the search tools is not open by default with this filter.
@@ -177,11 +179,11 @@ class HtmlView extends BaseHtmlView
     protected function addToolbar()
     {
         $categoryId = $this->state->get('filter.category_id');
-        $component  = $this->state->get('filter.component');
-        $section    = $this->state->get('filter.section');
-        $canDo      = ContentHelper::getActions($component, 'category', $categoryId);
-        $user       = $this->getCurrentUser();
-        $toolbar    = $this->getDocument()->getToolbar();
+        $component = $this->state->get('filter.component');
+        $section = $this->state->get('filter.section');
+        $canDo = ContentHelper::getActions($component, 'category', $categoryId);
+        $user = $this->getCurrentUser();
+        $toolbar = $this->getDocument()->getToolbar();
 
         // Avoid nonsense situation.
         if ($component == 'com_categories') {
@@ -190,16 +192,21 @@ class HtmlView extends BaseHtmlView
 
         // Need to load the menu language file as mod_menu hasn't been loaded yet.
         $lang = $this->getLanguage();
-        $lang->load($component, JPATH_BASE)
-        || $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
+        $lang->load($component, JPATH_BASE) ||
+            $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
 
         // If a component categories title string is present, let's use it.
-        if ($lang->hasKey($component_title_key = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORIES_TITLE')) {
+        if (
+            $lang->hasKey(
+                $component_title_key = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORIES_TITLE',
+            )
+        ) {
             $title = Text::_($component_title_key);
         } elseif ($lang->hasKey($component_section_key = strtoupper($component . ($section ? "_$section" : '')))) {
             // Else if the component section string exists, let's use it.
             $title = Text::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', $this->escape(Text::_($component_section_key)));
-        } else { // Else use the base title
+        } else {
+            // Else use the base title
             $title = Text::_('COM_CATEGORIES_CATEGORIES_BASE_TITLE');
         }
 
@@ -215,7 +222,10 @@ class HtmlView extends BaseHtmlView
         }
 
         // Prepare the toolbar.
-        ToolbarHelper::title($title, 'folder categories ' . substr($component, 4) . ($section ? "-$section" : '') . '-categories');
+        ToolbarHelper::title(
+            $title,
+            'folder categories ' . substr($component, 4) . ($section ? "-$section" : '') . '-categories',
+        );
 
         if ($canDo->get('core.create') || \count($user->getAuthorisedCategories($component, 'core.create')) > 0) {
             $toolbar->addNew('category.add');
@@ -223,7 +233,8 @@ class HtmlView extends BaseHtmlView
 
         if (!$this->isEmptyState && ($canDo->get('core.edit.state') || $user->authorise('core.admin'))) {
             /** @var  DropdownButton $dropdown */
-            $dropdown = $toolbar->dropdownButton('status-group', 'JTOOLBAR_CHANGE_STATUS')
+            $dropdown = $toolbar
+                ->dropdownButton('status-group', 'JTOOLBAR_CHANGE_STATUS')
                 ->toggleSplit(false)
                 ->icon('icon-ellipsis-h')
                 ->buttonClass('btn btn-action')
@@ -248,12 +259,9 @@ class HtmlView extends BaseHtmlView
             }
 
             // Add a batch button
-            if (
-                $canDo->get('core.create')
-                && $canDo->get('core.edit')
-                && $canDo->get('core.edit.state')
-            ) {
-                $childBar->popupButton('batch', 'JTOOLBAR_BATCH')
+            if ($canDo->get('core.create') && $canDo->get('core.edit') && $canDo->get('core.edit.state')) {
+                $childBar
+                    ->popupButton('batch', 'JTOOLBAR_BATCH')
                     ->popupType('inline')
                     ->textHeader(Text::_('COM_CATEGORIES_BATCH_OPTIONS'))
                     ->url('#joomla-dialog-batch')
@@ -264,12 +272,16 @@ class HtmlView extends BaseHtmlView
         }
 
         if (!$this->isEmptyState && $canDo->get('core.admin')) {
-            $toolbar->standardButton('refresh', 'JTOOLBAR_REBUILD')
-                ->task('categories.rebuild');
+            $toolbar->standardButton('refresh', 'JTOOLBAR_REBUILD')->task('categories.rebuild');
         }
 
-        if (!$this->isEmptyState && $this->state->get('filter.published') == -2 && $canDo->get('core.delete', $component)) {
-            $toolbar->delete('categories.delete', 'JTOOLBAR_DELETE_FROM_TRASH')
+        if (
+            !$this->isEmptyState &&
+            $this->state->get('filter.published') == -2 &&
+            $canDo->get('core.delete', $component)
+        ) {
+            $toolbar
+                ->delete('categories.delete', 'JTOOLBAR_DELETE_FROM_TRASH')
                 ->message('JGLOBAL_CONFIRM_DELETE')
                 ->listCheck(true);
         }
@@ -279,7 +291,7 @@ class HtmlView extends BaseHtmlView
         }
 
         // Get the component form if it exists for the help key/url
-        $name = 'category' . ($section ? ('.' . $section) : '');
+        $name = 'category' . ($section ? '.' . $section : '');
 
         // Looking first in the component forms folder
         $path = Path::clean(JPATH_ADMINISTRATOR . "/components/$component/forms/$name.xml");
@@ -290,16 +302,16 @@ class HtmlView extends BaseHtmlView
         }
 
         $ref_key = '';
-        $url     = '';
+        $url = '';
 
         // Look first in form for help key and url
         if (file_exists($path)) {
-            if (!$xml = simplexml_load_file($path)) {
+            if (!($xml = simplexml_load_file($path))) {
                 throw new \Exception(Text::_('JERROR_LOADFILE_FAILED'));
             }
 
             $ref_key = (string) $xml->listhelp['key'];
-            $url     = (string) $xml->listhelp['url'];
+            $url = (string) $xml->listhelp['url'];
         }
 
         if (!$ref_key) {
@@ -309,7 +321,10 @@ class HtmlView extends BaseHtmlView
             if ($lang->hasKey($languageKey)) {
                 $ref_key = $languageKey;
             } else {
-                $languageKey = 'JHELP_COMPONENTS_' . strtoupper(substr($component, 4) . ($section ? "_$section" : '')) . '_CATEGORIES';
+                $languageKey =
+                    'JHELP_COMPONENTS_' .
+                    strtoupper(substr($component, 4) . ($section ? "_$section" : '')) .
+                    '_CATEGORIES';
 
                 if ($lang->hasKey($languageKey)) {
                     $ref_key = $languageKey;
@@ -327,7 +342,7 @@ class HtmlView extends BaseHtmlView
         if (!$url) {
             if ($lang->hasKey($lang_help_url = strtoupper($component) . '_HELP_URL')) {
                 $debug = $lang->setDebug(false);
-                $url   = Text::_($lang_help_url);
+                $url = Text::_($lang_help_url);
                 $lang->setDebug($debug);
             }
         }

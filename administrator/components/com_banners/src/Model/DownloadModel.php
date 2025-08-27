@@ -15,7 +15,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\FormModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -45,8 +45,14 @@ class DownloadModel extends FormModel
     {
         $input = Factory::getApplication()->getInput();
 
-        $this->setState('basename', $input->cookie->getString(ApplicationHelper::getHash($this->_context . '.basename'), '__SITE__'));
-        $this->setState('compressed', $input->cookie->getInt(ApplicationHelper::getHash($this->_context . '.compressed'), 1));
+        $this->setState(
+            'basename',
+            $input->cookie->getString(ApplicationHelper::getHash($this->_context . '.basename'), '__SITE__'),
+        );
+        $this->setState(
+            'compressed',
+            $input->cookie->getInt(ApplicationHelper::getHash($this->_context . '.compressed'), 1),
+        );
     }
 
     /**
@@ -81,7 +87,7 @@ class DownloadModel extends FormModel
     protected function loadFormData()
     {
         $data = (object) [
-            'basename'   => $this->getState('basename'),
+            'basename' => $this->getState('basename'),
             'compressed' => $this->getState('compressed'),
         ];
 

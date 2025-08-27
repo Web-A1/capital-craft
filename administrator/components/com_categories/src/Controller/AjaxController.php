@@ -19,7 +19,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Table\Table;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -48,7 +48,7 @@ class AjaxController extends BaseController
         } else {
             $extension = $this->input->get('extension');
 
-            $assocId   = $this->input->getInt('assocId', 0);
+            $assocId = $this->input->getInt('assocId', 0);
 
             if ($assocId == 0) {
                 echo new JsonResponse(null, Text::sprintf('JLIB_FORM_VALIDATE_FIELD_INVALID', 'assocId'), true);
@@ -58,7 +58,15 @@ class AjaxController extends BaseController
 
             $excludeLang = $this->input->get('excludeLang', '', 'STRING');
 
-            $associations = Associations::getAssociations($extension, '#__categories', 'com_categories.item', (int) $assocId, 'id', 'alias', '');
+            $associations = Associations::getAssociations(
+                $extension,
+                '#__categories',
+                'com_categories.item',
+                (int) $assocId,
+                'id',
+                'alias',
+                '',
+            );
 
             unset($associations[$excludeLang]);
 
@@ -76,7 +84,7 @@ class AjaxController extends BaseController
             if (\count($associations) == 0) {
                 $message = Text::_('JGLOBAL_ASSOCIATIONS_PROPAGATE_MESSAGE_NONE');
             } elseif ($countContentLanguages > \count($associations) + 2) {
-                $tags    = implode(', ', array_keys($associations));
+                $tags = implode(', ', array_keys($associations));
                 $message = Text::sprintf('JGLOBAL_ASSOCIATIONS_PROPAGATE_MESSAGE_SOME', $tags);
             } else {
                 $message = Text::_('JGLOBAL_ASSOCIATIONS_PROPAGATE_MESSAGE_ALL');

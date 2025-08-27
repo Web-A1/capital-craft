@@ -11,8 +11,7 @@ defined('_JEXEC') || die();
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-$steps = ['flush', 'minexec', 'directory', 'dbopt', 'maxexec', 'splitsize']
-
+$steps = ['flush', 'minexec', 'directory', 'dbopt', 'maxexec', 'splitsize'];
 ?>
 
 <div id="akeeba-confwiz">
@@ -74,24 +73,26 @@ $steps = ['flush', 'minexec', 'directory', 'dbopt', 'maxexec', 'splitsize']
                 <p>
                     <a
                             class="btn btn-primary btn-lg"
-                            href="<?= $this->escape( Uri::base() )?>index.php?option=com_akeebabackup&view=Backup">
+                            href="<?= $this->escape(Uri::base()) ?>index.php?option=com_akeebabackup&view=Backup">
                         <span class="fa fa-play"></span>
                         <?= Text::_('COM_AKEEBABACKUP_BACKUP') ?>
                     </a>
                     <a
                             class="btn btn-outline-secondary"
-                            href="<?= $this->escape( Uri::base() )?>index.php?option=com_akeebabackup&view=Configuration">
+                            href="<?= $this->escape(
+                                Uri::base(),
+                            ) ?>index.php?option=com_akeebabackup&view=Configuration">
                         <span class="fa fa-wrench"></span>
                         <?= Text::_('COM_AKEEBABACKUP_CONFIG') ?>
                     </a>
-					<?php if(AKEEBABACKUP_PRO): ?>
+					<?php if (AKEEBABACKUP_PRO): ?>
                     <a
                             class="btn btn-outline-dark"
-                            href="<?= $this->escape( Uri::base() )?>index.php?option=com_akeebabackup&view=Schedule">
+                            href="<?= $this->escape(Uri::base()) ?>index.php?option=com_akeebabackup&view=Schedule">
                         <span class="fa fa-calendar"></span>
                         <?= Text::_('COM_AKEEBABACKUP_SCHEDULE') ?>
                     </a>
-                    <?php endif ?>
+                    <?php endif; ?>
                 </p>
             </div>
         </div>

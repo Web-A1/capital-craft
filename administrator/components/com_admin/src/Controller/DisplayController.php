@@ -13,7 +13,7 @@ namespace Joomla\Component\Admin\Administrator\Controller;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -37,7 +37,7 @@ class DisplayController extends BaseController
     public function display($cachable = false, $urlparams = [])
     {
         $viewName = $this->input->get('view', $this->default_view);
-        $format   = $this->input->get('format', 'html');
+        $format = $this->input->get('format', 'html');
 
         // Check CSRF token for sysinfo export views
         if ($viewName === 'sysinfo' && ($format === 'text' || $format === 'json')) {

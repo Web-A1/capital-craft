@@ -11,16 +11,15 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-2">
 	<h3 class="card-header">
-		<?= Text::_('COM_AKEEBABACKUP_CPANEL_HEADER_TROUBLESHOOTING')?>
+		<?= Text::_('COM_AKEEBABACKUP_CPANEL_HEADER_TROUBLESHOOTING') ?>
 	</h3>
 
 	<div class="card-body">
 		<div class="akeeba-cpanel-container d-flex flex-row flex-wrap align-items-stretch">
-			<?php if($this->permissions['backup']): ?>
+			<?php if ($this->permissions['backup']): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Log">
 					<div class="bg-primary text-white d-block text-center p-3 h2">
@@ -30,9 +29,9 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_LOG') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
-			<?php if(AKEEBABACKUP_PRO && $this->permissions['configure']): ?>
+			<?php if (AKEEBABACKUP_PRO && $this->permissions['configure']): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Alice">
 					<div class="bg-primary text-white d-block text-center p-3 h2">
@@ -42,7 +41,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_ALICE') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

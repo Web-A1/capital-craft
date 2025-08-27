@@ -12,7 +12,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 /** @var  $this  \Akeeba\Component\AkeebaBackup\Administrator\View\Transfer\HtmlView */
-
 ?>
 <div class="card mb-3">
 	<h3 class="card-header <?= empty($this->latestBackup) ? 'bg-danger' : 'bg-success' ?> text-white">
@@ -29,24 +28,24 @@ use Joomla\CMS\Router\Route;
 					</strong>
 					<br/>
 					<small>
-						<?php if(empty($this->latestBackup)): ?>
+						<?php if (empty($this->latestBackup)): ?>
 							<?= Text::_('COM_AKEEBABACKUP_TRANSFER_ERR_COMPLETEBACKUP') ?>
 						<?php else: ?>
 							<?= Text::sprintf('COM_AKEEBABACKUP_TRANSFER_LBL_COMPLETEBACKUP_INFO', $this->lastBackupDate) ?>
-						<?php endif ?>
+						<?php endif; ?>
 					</small>
 				</td>
 				<td width="20%">
-					<?php if(empty($this->latestBackup)): ?>
+					<?php if (empty($this->latestBackup)): ?>
 						<a href="<?= Route::_('index.php?option=com_akeebabackup&view=Backup') ?>"
 						   class="btn btn-success"
 						   id="akeeba-transfer-btn-backup">
 							<?= Text::_('COM_AKEEBABACKUP_BACKUP_LABEL_START') ?>
 						</a>
-					<?php endif ?>
+					<?php endif; ?>
 				</td>
 			</tr>
-			<?php if(!(empty($this->latestBackup))): ?>
+			<?php if (!empty($this->latestBackup)): ?>
 				<tr>
 					<td>
 						<strong>
@@ -60,7 +59,7 @@ use Joomla\CMS\Router\Route;
 					<td>
 					</td>
 				</tr>
-			<?php endif ?>
+			<?php endif; ?>
 			</tbody>
 		</table>
 	</div>

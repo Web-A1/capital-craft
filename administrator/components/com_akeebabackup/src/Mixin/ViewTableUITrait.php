@@ -7,40 +7,33 @@
 
 namespace Akeeba\Component\AkeebaBackup\Administrator\Mixin;
 
-defined('_JEXEC') || die;
+defined('_JEXEC') || die();
 
 trait ViewTableUITrait
 {
-	public function tableColumnsAutohide(): void
-	{
-		try
-		{
-			$this->getDocument()->getWebAssetManager()->useScript('table.columns');
-		}
-		catch (\Throwable $e)
-		{
-			// This might indeed fail on old Joomla! versions.
-		}
-	}
+    public function tableColumnsAutohide(): void
+    {
+        try {
+            $this->getDocument()->getWebAssetManager()->useScript('table.columns');
+        } catch (\Throwable $e) {
+            // This might indeed fail on old Joomla! versions.
+        }
+    }
 
-	public function tableColumnsMultiselect(?string $tableSelector = null): void
-	{
-		try
-		{
-			$this->getDocument()->getWebAssetManager()->useScript('multiselect');
+    public function tableColumnsMultiselect(?string $tableSelector = null): void
+    {
+        try {
+            $this->getDocument()->getWebAssetManager()->useScript('multiselect');
 
-			if (empty($tableSelector))
-			{
-				return;
-			}
+            if (empty($tableSelector)) {
+                return;
+            }
 
-			$this->getDocument()->addScriptOptions('js-multiselect', [
-				'formName' => $tableSelector
-			]);
-		}
-		catch (\Throwable $e)
-		{
-			// This might indeed fail on old Joomla! versions.
-		}
-	}
+            $this->getDocument()->addScriptOptions('js-multiselect', [
+                'formName' => $tableSelector,
+            ]);
+        } catch (\Throwable $e) {
+            // This might indeed fail on old Joomla! versions.
+        }
+    }
 }

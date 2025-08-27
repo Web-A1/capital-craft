@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-2">
 	<h3 class="card-header">
@@ -30,7 +29,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_BACKUP') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<?php if ($this->permissions['download'] && AKEEBABACKUP_PRO): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-success border-0" style="width: 10em"
@@ -42,7 +41,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_TRANSFER') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
 			   href="index.php?option=com_akeebabackup&view=Manage">
@@ -64,7 +63,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_CONFIG') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<?php if ($this->permissions['configure']): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-primary border-0" style="width: 10em"
@@ -76,7 +75,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_PROFILES') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 		</div>
 	</div>
 </div>

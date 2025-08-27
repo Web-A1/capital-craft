@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\Component\Actionlogs\Administrator\Helper\ActionlogsHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -44,8 +44,9 @@ class LogtypeField extends ListField
      */
     public function getOptions()
     {
-        $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $db = $this->getDatabase();
+        $query = $db
+            ->getQuery(true)
             ->select($db->quoteName('extension'))
             ->from($db->quoteName('#__action_logs_extensions'));
 
@@ -55,8 +56,12 @@ class LogtypeField extends ListField
 
         foreach ($extensions as $extension) {
             ActionlogsHelper::loadTranslationFiles($extension);
-            $extensionName                                                                = Text::_($extension);
-            $options[ApplicationHelper::stringURLSafe($extensionName) . '_' . $extension] = HTMLHelper::_('select.option', $extension, $extensionName);
+            $extensionName = Text::_($extension);
+            $options[ApplicationHelper::stringURLSafe($extensionName) . '_' . $extension] = HTMLHelper::_(
+                'select.option',
+                $extension,
+                $extensionName,
+            );
         }
 
         ksort($options);

@@ -8,21 +8,21 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 /** @var \Joomla\Component\Categories\Administrator\View\Category\HtmlView $this */
 
-$icon     = 'icon-check';
-$title    = $this->item ? $this->item->title : '';
-$content  = $this->item ? $this->item->alias : '';
-$data     = ['contentType' => $this->state->get('category.component') . '.category'];
+$icon = 'icon-check';
+$title = $this->item ? $this->item->title : '';
+$content = $this->item ? $this->item->alias : '';
+$data = ['contentType' => $this->state->get('category.component') . '.category'];
 
 if ($this->item) {
-    $data['id']    = $this->item->id;
+    $data['id'] = $this->item->id;
     $data['title'] = $this->item->title;
-    $data['uri']   = RouteHelper::getCategoryRoute($this->item->id, $this->item->language);
+    $data['uri'] = RouteHelper::getCategoryRoute($this->item->id, $this->item->language);
 }
 
 // Add Content select script
@@ -32,7 +32,6 @@ $wa->useScript('modal-content-select');
 
 // The data for Content select script
 $this->getDocument()->addScriptOptions('content-select-on-load', $data, false);
-
 ?>
 
 <div class="px-4 py-5 my-5 text-center">

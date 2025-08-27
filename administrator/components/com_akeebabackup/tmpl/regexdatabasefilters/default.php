@@ -13,7 +13,6 @@ use Joomla\CMS\Language\Text;
 
 echo $this->loadAnyTemplate('commontemplates/errormodal');
 echo $this->loadAnyTemplate('commontemplates/profilename');
-
 ?>
 <div class="border row row-cols-lg-auto g-3 align-items-center my-3 mx-1 pb-3">
 

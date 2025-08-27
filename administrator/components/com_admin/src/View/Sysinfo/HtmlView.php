@@ -19,7 +19,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Admin\Administrator\Model\SysinfoModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die;
+\defined('_JEXEC') or die();
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -88,12 +88,12 @@ class HtmlView extends BaseHtmlView
         }
 
         /** @var SysinfoModel $model */
-        $model             = $this->getModel();
+        $model = $this->getModel();
         $this->phpSettings = $model->getPhpSettings();
-        $this->config      = $model->getConfig();
-        $this->info        = $model->getInfo();
-        $this->phpInfo     = $model->getPHPInfo();
-        $this->directory   = $model->getDirectory();
+        $this->config = $model->getConfig();
+        $this->info = $model->getInfo();
+        $this->phpInfo = $model->getPHPInfo();
+        $this->directory = $model->getDirectory();
 
         $this->addToolbar();
 
@@ -111,10 +111,12 @@ class HtmlView extends BaseHtmlView
     {
         ToolbarHelper::title(Text::_('COM_ADMIN_SYSTEM_INFORMATION'), 'info-circle systeminfo');
         $toolbar = $this->getDocument()->getToolbar();
-        $toolbar->linkButton('download', 'COM_ADMIN_DOWNLOAD_SYSTEM_INFORMATION_TEXT')
+        $toolbar
+            ->linkButton('download', 'COM_ADMIN_DOWNLOAD_SYSTEM_INFORMATION_TEXT')
             ->url(Route::_('index.php?option=com_admin&view=sysinfo&format=text&' . Session::getFormToken() . '=1'));
 
-        $toolbar->linkButton('download', 'COM_ADMIN_DOWNLOAD_SYSTEM_INFORMATION_JSON')
+        $toolbar
+            ->linkButton('download', 'COM_ADMIN_DOWNLOAD_SYSTEM_INFORMATION_JSON')
             ->url(Route::_('index.php?option=com_admin&view=sysinfo&format=json&' . Session::getFormToken() . '=1'));
 
         $toolbar->help('Site_System_Information');

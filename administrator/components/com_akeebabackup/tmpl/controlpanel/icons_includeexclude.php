@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 
 <div class="card mb-2">
@@ -21,7 +20,7 @@ use Joomla\CMS\Language\Text;
 
 	<div class="card-body">
 		<div class="akeeba-cpanel-container d-flex flex-row flex-wrap align-items-stretch">
-			<?php if(AKEEBABACKUP_PRO): ?>
+			<?php if (AKEEBABACKUP_PRO): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-success border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Multipledatabases">
 					<div class="bg-success text-white d-block text-center p-3 h2">
@@ -41,7 +40,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_INCLUDEFOLDER') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-danger border-0" style="width: 10em"
 			   href="index.php?option=com_akeebabackup&view=Databasefilters">
@@ -63,7 +62,7 @@ use Joomla\CMS\Language\Text;
 				</span>
 			</a>
 
-			<?php if(AKEEBABACKUP_PRO): ?>
+			<?php if (AKEEBABACKUP_PRO): ?>
 				<a class="akeeba-cpanel-button text-center align-self-stretch btn btn-outline-danger border-0" style="width: 10em"
 				   href="index.php?option=com_akeebabackup&view=Regexdatabasefilters">
 					<div class="bg-danger text-white d-block text-center p-3 h2">
@@ -83,7 +82,7 @@ use Joomla\CMS\Language\Text;
 						<?= Text::_('COM_AKEEBABACKUP_REGEXFSFILTERS') ?>
 					</span>
 				</a>
-			<?php endif ?>
+			<?php endif; ?>
 
 		</div>
 	</div>

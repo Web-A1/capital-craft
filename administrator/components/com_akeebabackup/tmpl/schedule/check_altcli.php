@@ -11,7 +11,6 @@
 defined('_JEXEC') || die();
 
 use Joomla\CMS\Language\Text;
-
 ?>
 <div class="card mb-3">
 	<h3 class="card-header">
@@ -19,7 +18,7 @@ use Joomla\CMS\Language\Text;
 	</h3>
 
 	<div class="card-body">
-		<?php if(!$this->checkinfo->info->legacyapi): ?>
+		<?php if (!$this->checkinfo->info->legacyapi): ?>
 			<div class="alert alert-danger">
 				<p>
 					<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_LEGACYAPI_DISABLED') ?>
@@ -30,7 +29,7 @@ use Joomla\CMS\Language\Text;
 					</a>
 				</p>
 			</div>
-		<?php elseif(!trim($this->checkinfo->info->secret)): ?>
+		<?php elseif (!trim($this->checkinfo->info->secret)): ?>
 			<div class="alert alert-danger">
 				<p>
 					<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_FRONTEND_SECRET') ?>
@@ -45,8 +44,8 @@ use Joomla\CMS\Language\Text;
 			<p>
 				<?= Text::_('COM_AKEEBABACKUP_SCHEDULE_LBL_GENERICUSECLI') ?><br/>
 				<code>
-					<?= $this->escape($this->checkinfo->info->php_path); ?>
-					<?= $this->escape($this->checkinfo->altcli->path); ?>
+					<?= $this->escape($this->checkinfo->info->php_path) ?>
+					<?= $this->escape($this->checkinfo->altcli->path) ?>
 				</code>
 			</p>
 			<p>
@@ -57,8 +56,8 @@ use Joomla\CMS\Language\Text;
 					<?= Text::sprintf('COM_AKEEBABACKUP_SCHEDULE_LBL_CLIGENERICINFO', $this->checkinfo->info->php_path) ?>
 				<?php else: ?>
 					<?= Text::sprintf('COM_AKEEBABACKUP_SCHEDULE_LBL_ACCURATEINFO', $this->checkinfo->info->php_path) ?>
-				<?php endif ?>
+				<?php endif; ?>
 			</p>
-		<?php endif ?>
+		<?php endif; ?>
 	</div>
 </div>
