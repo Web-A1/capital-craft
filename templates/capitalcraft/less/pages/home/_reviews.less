@@ -17,7 +17,7 @@
     flex-direction: column;
     gap: 40px;
     align-items: center;
-    
+
     .media(mobile, {
       gap: 50px;
     });
@@ -53,6 +53,11 @@
     width: 100%;
     max-width: 1170px;
     position: relative;
+
+    .media(mobile, {
+      flex-direction: column;
+      gap: 15px; // Между отзывом и пагинацией
+    });
     
     // Фиксированные кавычки на фоне
     &::before {
@@ -73,11 +78,6 @@
         top: 3%;
       });
     }
-    
-    .media(mobile, {
-      flex-direction: column;
-      gap: 20px;
-    });
   }
 
   &__swiper {
