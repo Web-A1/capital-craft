@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Универсальный мониторинг файлов проекта
-# Запуск: ./watch-all.sh (работает в фоне)
+# Запуск: ./watch-all.sh
 
 echo "🚀 Запуск универсального мониторинга файлов..."
 echo "📁 Отслеживаю изменения в проекте..."
@@ -27,6 +27,7 @@ command -v npx >/dev/null || { echo "❌ Не найден npx"; exit 1; }
 LESS_CHANGED=false
 JS_CHANGED=false
 PHP_CHANGED=false
+SYSTEM_CHANGED=false
 
 # Защита от повторной обработки одного файла в рамках одного цикла
 PROCESSED_FILES=""
@@ -211,6 +212,13 @@ execute_final_actions() {
         fi
     fi
     
+    if [ "$SYSTEM_CHANGED" = true ]; then
+        actions+=("System files update")
+        if [ -z "$changed_file" ]; then
+            changed_file="system"
+        fi
+    fi
+    
     if [ ${#actions[@]} -gt 0 ]; then
         message=$(IFS=" + "; echo "${actions[*]}")
         
@@ -240,6 +248,12 @@ execute_final_actions() {
             if [[ -n "$php_files" ]]; then
                 all_files+="PHP: $php_files "
             fi
+        fi
+        
+        # Добавляем системные файлы
+        local system_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E '(watch-all\.sh|package\.json|\.prettierrc|\.php-cs-fixer\.php|robots\.txt|\.gitignore|README\.md)' | sed 's/.*\///' | tr '\n' ' ')
+        if [[ -n "$system_files" ]]; then
+            all_files+="SYSTEM: $system_files "
         fi
         
         commit_message="$all_files"
@@ -318,6 +332,13 @@ execute_final_actions() {
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | xargs -I {} git add {}
         fi
         
+        # Добавляем системные файлы
+        local system_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E '(watch-all\.sh|package\.json|\.prettierrc|\.php-cs-fixer\.php|robots\.txt|\.gitignore|README\.md)')
+        if [[ -n "$system_files" ]]; then
+            echo "📦 Добавляю системные файлы..."
+            echo "$system_files" | xargs -I {} git add {}
+        fi
+        
         git commit -m "$commit_message"
         git push origin dev
         echo "✅ Изменения автоматически отправлены в dev ветку!"
@@ -326,6 +347,7 @@ execute_final_actions() {
         LESS_CHANGED=false
         JS_CHANGED=false
         PHP_CHANGED=false
+        SYSTEM_CHANGED=false
         
         # Очищаем список обработанных файлов
         PROCESSED_FILES=""
@@ -384,7 +406,11 @@ process_file() {
       echo "🐘 Обрабатываю как PHP файл: $file"
       handle_php "$file" 
       ;;
-
+    watch-all.sh|package.json|.prettierrc|.php-cs-fixer.php|robots.txt|.gitignore|README.md)
+      echo "⚙️ Изменён системный файл: $file"
+      # Системные файлы только добавляем в PROCESSED_FILES, без специальной обработки
+      SYSTEM_CHANGED=true
+      ;;
     *)       
       echo "📄 Изменён файл: $file (не обрабатывается)"
       ;;
@@ -463,10 +489,14 @@ while IFS= read -r line; do
   ) &
   
 done < <(npx chokidar-cli \
-  "templates/capitalcraft/less/**" \
-  "templates/capitalcraft/js/**/*.js" \
-  "templates/capitalcraft/**/*.php" \
-
+  "templates/capitalcraft/**" \
+  "watch-all.sh" \
+  "package.json" \
+  ".prettierrc" \
+  ".php-cs-fixer.php" \
+  "robots.txt" \
+  ".gitignore" \
+  "README.md" \
   --ignore "**/*.css" \
   --ignore "**/*.map" \
   --ignore "**/*bundle.js" \
@@ -475,7 +505,7 @@ done < <(npx chokidar-cli \
   --ignore "**/vendor/**" \
   --ignore "**/.vscode/**" \
   --ignore "format-php.sh" \
-  --ignore ".php-cs-fixer.php" \
-  --ignore ".prettierrc" \
+  --ignore "sitemap.xml" \
+  --ignore "temp_file" \
   --await-write-finish 200 \
   --debounce 800)
