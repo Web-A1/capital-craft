@@ -1,22 +1,28 @@
 <?php
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 // Получаем объект меню и проверяем: активный пункт = главный?
-$app    = JFactory::getApplication();
-$menu   = $app->getMenu();
+$app = JFactory::getApplication();
+$menu = $app->getMenu();
 $active = $menu->getActive();
 $isHome = $active == $menu->getDefault();
-$isFaq  = $active && $active->alias === 'faq';
+$isFaq = $active && $active->alias === 'faq';
 
 $document = JFactory::getDocument();
-$document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/base.css');
+$document->addStyleSheet(
+  $this->baseurl . '/templates/capitalcraft/css/base.css',
+);
 
 if ($isHome) {
-  $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/home.css');
+  $document->addStyleSheet(
+    $this->baseurl . '/templates/capitalcraft/css/home.css',
+  );
 }
 
 if ($isFaq) {
-  $document->addStyleSheet($this->baseurl . '/templates/capitalcraft/css/faq.css');
+  $document->addStyleSheet(
+    $this->baseurl . '/templates/capitalcraft/css/faq.css',
+  );
 }
 ?>
 
@@ -178,7 +184,7 @@ if ($isFaq) {
 
     <?php include __DIR__ . '/partials/_header.php'; ?>
 
-    <?php if ($this->countModules('breadcrumbs')) : ?>
+    <?php if ($this->countModules('breadcrumbs')): ?>
       <div class="breadcrumbs-wrapper">
         <div class="frame">
           <jdoc:include type="modules" name="breadcrumbs" style="none" />
