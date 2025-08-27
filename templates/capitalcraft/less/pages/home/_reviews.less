@@ -121,6 +121,7 @@
     // Ограничиваем максимальную высоту текста
     max-height: 135px;
     overflow: hidden;
+    margin: 0;
 
     .media(mobile, {
       font-size: 18px;
@@ -128,9 +129,10 @@
     });
   }
 
-  // Убираем старые селекторы - теперь используются более специфичные выше
-  // &__author-name { ... } - удален
-  // &__company-name { ... } - удален
+  // Дополнительные стили подписи
+  &__author-name {
+    font-style: normal;
+  }
 
   // Навигационные стрелки
   &__arrow {
@@ -143,6 +145,9 @@
     z-index: 10;
     transition: all 0.3s ease;
     flex-shrink: 0;
+    background: transparent;
+    border: none;
+    padding: 0;
     
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
