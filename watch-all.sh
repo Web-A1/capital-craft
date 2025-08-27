@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-# Универсальный мониторинг файлов проекта
+# тест Универсальный мониторинг файлов проекта
 # Запуск: ./watch-all.sh
 
 echo "🚀 Запуск универсального мониторинга файлов..."
@@ -298,50 +298,76 @@ execute_final_actions() {
             commit_message+=" | $all_changes"
         fi
         
-        echo "📝 Сообщение коммита: $commit_message"
+        echo ""
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "📝 СООБЩЕНИЕ КОММИТА: $commit_message"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo ""
         
         # Умно добавляем только нужные файлы вместо git add .
         if [[ "$LESS_CHANGED" == true ]]; then
-            # Добавляем LESS файлы и соответствующие CSS
-            echo "📦 Добавляю LESS файлы и CSS..."
+            echo "🎨 LESS ФАЙЛЫ И CSS:"
+            echo "   └─ Добавляю LESS файлы..."
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | xargs -I {} git add {}
             
             # Добавляем соответствующие CSS файлы
             if echo "$PROCESSED_FILES" | grep -q "pages/home"; then
+                echo "   └─ Добавляю CSS: home.css"
                 git add templates/capitalcraft/css/home.css
             fi
             if echo "$PROCESSED_FILES" | grep -q "base.less"; then
+                echo "   └─ Добавляю CSS: base.css"
                 git add templates/capitalcraft/css/base.css
             fi
             if echo "$PROCESSED_FILES" | grep -q "critical.less"; then
+                echo "   └─ Добавляю CSS: critical.css"
                 git add templates/capitalcraft/css/critical.css
             fi
             if echo "$PROCESSED_FILES" | grep -q "faq.less"; then
+                echo "   └─ Добавляю CSS: faq.css"
                 git add templates/capitalcraft/css/faq.css
             fi
+            echo ""
         fi
         
         if [[ "$JS_CHANGED" == true ]]; then
-            echo "📦 Добавляю JS файлы..."
+            echo "⚡ JS ФАЙЛЫ:"
+            echo "   └─ Добавляю JS файлы..."
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | xargs -I {} git add {}
+            echo "   └─ Добавляю bundle: bundle.js"
             git add templates/capitalcraft/js/global/bundle.js
+            echo ""
         fi
         
         if [[ "$PHP_CHANGED" == true ]]; then
-            echo "📦 Добавляю PHP файлы..."
+            echo "🐘 PHP ФАЙЛЫ:"
+            echo "   └─ Добавляю PHP файлы..."
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | xargs -I {} git add {}
+            echo ""
         fi
         
         # Добавляем системные файлы
         local system_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E '(watch-all\.sh|package\.json|\.prettierrc|\.php-cs-fixer\.php|robots\.txt|\.gitignore|README\.md)')
         if [[ -n "$system_files" ]]; then
-            echo "📦 Добавляю системные файлы..."
+            echo "⚙️ СИСТЕМНЫЕ ФАЙЛЫ:"
+            echo "   └─ Добавляю системные файлы..."
             echo "$system_files" | xargs -I {} git add {}
+            echo ""
         fi
+        
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "🚀 ВЫПОЛНЯЮ КОММИТ И ПУШ..."
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo ""
         
         git commit -m "$commit_message"
         git push origin dev
-        echo "✅ Изменения автоматически отправлены в dev ветку!"
+        
+        echo ""
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo "✅ ИЗМЕНЕНИЯ УСПЕШНО ОТПРАВЛЕНЫ В DEV ВЕТКУ!"
+        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+        echo ""
         
         # Сбрасываем флаги
         LESS_CHANGED=false
