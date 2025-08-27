@@ -87,27 +87,27 @@ handle_less() {
         return
     fi
     
-    echo "🎨 Изменен LESS файл: $file"
-    echo "🔄 Запускаю форматирование..."
+    echo "Изменен LESS файл: $file"
+    echo "Запускаю форматирование..."
     
     # 1. Форматируем LESS код
-    echo "   1️⃣ Prettier..."
+    echo "   1. Prettier..."
     if [ -f "node_modules/.bin/prettier" ]; then
         npx prettier --write "$file"
-        echo "      ✅ Prettier завершен"
+        echo "     Prettier завершен"
     else
-        echo "      ❌ Prettier не найден"
+        echo "     Prettier не найден"
     fi
     
-    echo "🔄 Умная компиляция LESS..."
+    echo "Умная компиляция LESS..."
     
     compile_less_file "$file"
     
     if [ $? -eq 0 ]; then
-        echo "✅ LESS компиляция завершена!"
+        echo "LESS компиляция завершена!"
         LESS_CHANGED=true
     else
-        echo "❌ Ошибка компиляции LESS!"
+        echo "Ошибка компиляции LESS!"
     fi
 }
 
@@ -121,27 +121,27 @@ handle_js() {
         return
     fi
     
-    echo "⚡ Изменен JS файл: $file"
-    echo "🔄 Запускаю форматирование..."
+    echo "Изменен JS файл: $file"
+    echo "Запускаю форматирование..."
     
     # 1. Форматируем JavaScript код
-    echo "   1️⃣ Prettier..."
+    echo "   1. Prettier..."
     if [ -f "node_modules/.bin/prettier" ]; then
         npx prettier --write "$file"
-        echo "      ✅ Prettier завершен"
+        echo "     Prettier завершен"
     else
-        echo "      ❌ Prettier не найден"
+        echo "     Prettier не найден"
     fi
     
-    echo "🔄 Пересобираю JavaScript..."
+    echo "Пересобираю JavaScript..."
     
     npm run js:build
     
     if [ $? -eq 0 ]; then
-        echo "✅ JavaScript пересборка завершена!"
+        echo "JavaScript пересборка завершена!"
         JS_CHANGED=true
     else
-        echo "❌ Ошибка пересборки JavaScript!"
+        echo "Ошибка пересборки JavaScript!"
     fi
 }
 
@@ -421,24 +421,24 @@ process_file() {
   # Сначала обрабатываем файл, потом добавляем в PROCESSED_FILES
   case "$file" in
     *.less)  
-      echo "🎨 Обрабатываю как LESS файл: $file"
+      echo "Обрабатываю как LESS файл: $file"
       handle_less "$file" 
       ;;
     *.js)
-      echo "⚡ Обрабатываю как JS файл: $file"
+      echo "Обрабатываю как JS файл: $file"
       handle_js "$file"
       ;;
     *.php)   
-      echo "🐘 Обрабатываю как PHP файл: $file"
+      echo "Обрабатываю как PHP файл: $file"
       handle_php "$file" 
       ;;
     watch-all.sh|package.json|.prettierrc|.php-cs-fixer.php|robots.txt|.gitignore|README.md)
-      echo "⚙️ Изменён системный файл: $file"
+      echo "Изменён системный файл: $file"
       # Системные файлы только добавляем в PROCESSED_FILES, без специальной обработки
       SYSTEM_CHANGED=true
       ;;
     *)       
-      echo "📄 Изменён файл: $file (не обрабатывается)"
+      echo "Изменён файл: $file (не обрабатывается)"
       ;;
   esac
 
