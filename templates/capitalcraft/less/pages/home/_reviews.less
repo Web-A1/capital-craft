@@ -1,132 +1,113 @@
 // out: false
 
 .reviews {
-  padding: @section-padding 0;
   display: flex;
   flex-direction: column;
   gap: @section-padding;
+  padding: @section-padding 0;
 
   // mobile overrides for the root block
-  .media(mobile, {
-    padding: 40px 0;
-    gap: 30px;
-  });
+  ;
 
   &__inner {
+    align-items: center;
     display: flex;
     flex-direction: column;
     gap: 40px;
-    align-items: center;
 
-    .media(mobile, {
-      gap: 50px;
-    });
-
+    ;
   }
 
   &__subtitle {
+    align-items: center;
+    color: lighten(@color-text, 20%);
     display: flex;
     flex-direction: column;
-    gap: @subtitle-title-gap;
-    align-items: center;
-    text-align: center;
-    color: lighten(@color-text, 20%);
     font-family: @font-body;
     font-size: @font-size-sub;
     font-weight: 400;
+    gap: @subtitle-title-gap;
     letter-spacing: 0.175em;
-    text-transform: uppercase;
     line-height: 1;
     margin: 0;
-    
-      .media(mobile, {
-        font-size: @font-size-sub;
-        letter-spacing: 0.15em;
-      });
+    text-align: center;
+    text-transform: uppercase;
+
+    ;
   }
 
   // Новый контейнер для слайдера и стрелок
   &__slider-container {
-    display: flex;
     align-items: center;
+    display: flex;
     justify-content: space-between;
-    width: 100%;
     max-width: 1170px;
     position: relative;
+    width: 100%;
 
-    .media(mobile, {
-      flex-direction: column;
-      gap: 15px; // Между отзывом и пагинацией
-    });
-    
+    ;
+
     // Фиксированные кавычки на фоне
     &::before {
-      content: '\201C'; //Левая двойная кавычка Unicode
-      position: absolute;
-      top: 9%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      color: rgba(0, 0, 0, 0.03);
+      content: "\201C"; //Левая двойная кавычка Unicode
       font-family: @font-title;
       font-size: 100px;
       font-weight: 300;
-      color: rgba(0, 0, 0, 0.03);
-      z-index: 1;
+      left: 50%;
       pointer-events: none;
+      position: absolute;
+      top: 9%;
+      transform: translate(-50%, -50%);
       user-select: none;
-      
-      .media(mobile, {
-        top: 3%;
-      });
+      z-index: 1;
+
+      ;
     }
   }
 
   &__swiper {
+    flex: 1;
+    height: 190px;
+    max-width: 870px;
     position: relative;
     width: 100%;
-    max-width: 870px;
-    flex: 1;
-     height: 190px;
 
-    .media(mobile, {
-      max-width: 100%;
-      height: 320px;
-    });
+    ;
   }
 
   // Повышаем специфичность для перебивания Swiper стилей
   .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 30px; // Отступ между цитатой и именем клиента
-    text-align: center;
     height: 100%; // Занимает всю высоту слайдера
     justify-content: center; // Центрируем содержимое по вертикали
+    text-align: center;
     z-index: 2; // Поверх фоновых кавычек
 
-    .media(mobile, {
-      gap: 30px; // Меньший отступ для мобильных
-    });
+    ;
   }
 
   // Повышаем специфичность для quote-text
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__quote-text {
+  .reviews__swiper
+    .swiper-wrapper
+    .swiper-slide.reviews__slide
+    .reviews__quote-text {
+    color: @color-heading;
     font-family: @font-body;
     font-size: (@font-size-base * 1.375);
     font-weight: 400;
     line-height: 1.4;
-    color: @color-heading;
-    text-align: center;
-    width: 100%;
+    margin: 0;
     // Ограничиваем максимальную высоту текста
     max-height: 135px;
     overflow: hidden;
-    margin: 0;
+    text-align: center;
+    width: 100%;
 
-    .media(mobile, {
-      font-size: (@font-size-base * 1.125);
-      max-height: 150px;
-    });
+    ;
   }
 
   // Дополнительные стили подписи
@@ -136,29 +117,29 @@
 
   // Навигационные стрелки
   &__arrow {
-    width: 140px; // Увеличиваем для предотвращения обрезания
-    height: 100px; // Увеличиваем для предотвращения обрезания
-    display: flex;
     align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    transition: all 0.3s ease;
-    flex-shrink: 0;
-    background: transparent;
-    border: none;
-    padding: 0;
-    
+
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
-    
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    flex-shrink: 0;
+    height: 100px; // Увеличиваем для предотвращения обрезания
+    justify-content: center;
+    padding: 0;
+    transition: all 0.3s ease;
+    width: 140px; // Увеличиваем для предотвращения обрезания
+    z-index: 10;
+
     // Универсальные SVG классы
     .arrow-svg {
-      width: 80px;
       height: 80px;
       transition: all 0.3s ease;
+      width: 80px;
     }
-    
+
     // Hover эффект - меняем цвет только круга
     &:hover {
       .arrow-circle {
@@ -166,56 +147,41 @@
       }
       // Стрелка остается черной
     }
-    
+
     &--prev {
-      .media(mobile, {
-        display: none;
-      });
+      ;
     }
-    
+
     &--next {
-      .media(mobile, {
-        display: none;
-      });
+      ;
     }
-    
+
     // Адаптивность для мобильных
-    .media(mobile, {
-      width: 100px; // Увеличиваем мобильный контейнер
-      height: 80px; // Увеличиваем мобильный контейнер
-      margin-top: 25px; // Меньший отступ для мобильных
-      
-      .arrow-svg {
-        width: 60px;
-        height: 60px;
-      }
-    });
+    ;
   }
 
   // Пагинация для мобильных
   &__pagination {
+    bottom: auto !important; // Убираем bottom от Swiper
     // Пагинация теперь вне слайдера - естественно следует за ним
     display: none;
-    text-align: center;
     position: static !important; // Убираем абсолютное позиционирование
-    bottom: auto !important; // Убираем bottom от Swiper
+    text-align: center;
     z-index: auto !important; // Убираем z-index от Swiper
 
-    .media(mobile, {
-      display: block;
-    });
+    ;
 
     .swiper-pagination-bullet {
-      width: 8px;
-      height: 8px;
       background-color: lighten(@color-text, 40%);
+      height: 8px;
+      margin: 0 4px;
       opacity: 0.5;
       transition: all 0.3s ease;
-      margin: 0 4px;
+      width: 8px;
 
       &-active {
-        opacity: 1;
         background-color: @color-heading;
+        opacity: 1;
       }
     }
   }
@@ -223,41 +189,48 @@
   // Пагинация управляется Swiper - убираем ненужные стили
 
   // Повышаем специфичность для signature
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature {
+  .reviews__swiper
+    .swiper-wrapper
+    .swiper-slide.reviews__slide
+    .reviews__signature {
+    align-items: center;
     display: flex;
     flex-direction: column;
     gap: 6px; // Отступ между именем автора и компанией
-    align-items: center;
     text-align: center;
   }
 
   // Повышаем специфичность для author-name
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__author-name {
+  .reviews__swiper
+    .swiper-wrapper
+    .swiper-slide.reviews__slide
+    .reviews__signature
+    .reviews__author-name {
+    color: @color-heading;
     font-family: @font-body;
     font-size: (@font-size-base * 1.375);
     font-weight: 400;
     line-height: 1;
-    color: @color-heading;
     text-align: center;
 
-    .media(mobile, {
-      font-size: (@font-size-base * 1.125);
-    });
+    ;
   }
 
   // Повышаем специфичность для company-name
-  .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__signature .reviews__company-name {
+  .reviews__swiper
+    .swiper-wrapper
+    .swiper-slide.reviews__slide
+    .reviews__signature
+    .reviews__company-name {
+    color: lighten(@color-text, 30%);
     font-family: @font-body;
     font-size: @font-size-sub;
-     font-weight: 400;
-    line-height: 1;
-    color: lighten(@color-text, 30%);
-    text-transform: uppercase;
+    font-weight: 400;
     letter-spacing: 0.35em;
+    line-height: 1;
     text-align: center;
+    text-transform: uppercase;
 
-    .media(mobile, {
-      letter-spacing: 0.25em;
-    });
+    ;
   }
 }
