@@ -131,6 +131,14 @@
   // Дополнительные стили подписи
   &__author-name {
     font-style: normal;
+    font-family: @font-body;
+    font-size: (@font-size-base * 1.375);
+    font-weight: 400;
+
+    .media(mobile, {
+      font-size: (@font-size-base * 1.125);
+    });
+
   }
 
   // Навигационные стрелки
