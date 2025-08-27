@@ -4,13 +4,13 @@ set -euo pipefail
 # тест Универсальный мониторинг файлов проекта
 # Запуск: ./watch-all.sh
 
-echo "🚀 Запуск универсального мониторинга файлов..."
-echo "📁 Отслеживаю изменения в проекте..."
-echo "🔄 Логика обработки:"
+echo "Запуск универсального мониторинга файлов..."
+echo "Отслеживаю изменения в проекте..."
+echo "Логика обработки:"
 echo "   • LESS файлы → форматирование + компиляция + подготовка к коммиту"
 echo "   • JS файлы → форматирование + пересборка + подготовка к коммиту"
 echo "   • PHP файлы → форматирование + подготовка к коммиту"
-echo "⏹️  Для остановки: Ctrl+C"
+echo "Для остановки: Ctrl+C"
 echo ""
 
 # Guardrails
@@ -53,26 +53,26 @@ has_git_changes() {
 compile_less_file() {
     local file="$1"
     
-    echo "🔍 Анализирую зависимости для: $file"
+    echo "Анализирую зависимости для: $file"
     
     # Определяем, какие CSS файлы нужно перекомпилировать
     if [[ "$file" == *"/_variables.less" || "$file" == *"/_buttons.less" || "$file" == *"/_header.less" || "$file" == *"/_footer.less" || "$file" == *"/_modal.less" || "$file" == *"/_scroll-top.less" || "$file" == *"/_breadcrumbs.less" ]]; then
-        echo "    📦 Переменные/компоненты - компилирую все файлы"
+        echo "    Переменные/компоненты - компилирую все файлы"
         npm run less:all
     elif [[ "$file" == *"/base.less" ]]; then
-        echo "    🎯 Базовые стили - компилирую base.css"
+        echo "    Базовые стили - компилирую base.css"
         npm run less:base
     elif [[ "$file" == *"/home.less" || "$file" == *"/pages/home/"* || "$file" == *"/_reviews.less" || "$file" == *"/_hero.less" || "$file" == *"/_partners.less" || "$file" == *"/_faq-home.less" || "$file" == *"/_show_case.less" || "$file" == *"/_philosophy.less" || "$file" == *"/_products.less" || "$file" == *"/_team.less" ]]; then
-        echo "    🏠 Главная страница - компилирую home.css"
+        echo "    Главная страница - компилирую home.css"
         npm run less:home
     elif [[ "$file" == *"/faq.less" || "$file" == *"/pages/faq/"* ]]; then
-        echo "    ❓ FAQ - компилирую faq.css"
+        echo "    FAQ - компилирую faq.css"
         npm run less:faq
     elif [[ "$file" == *"/critical.less" ]]; then
-        echo "    ⚡ Критические стили - компилирую critical.css"
+        echo "    Критические стили - компилирую critical.css"
         npm run less:critical
     else
-        echo "    ❓ Неизвестный файл - компилирую все для безопасности"
+        echo "    Неизвестный файл - компилирую все для безопасности"
         npm run less:all
     fi
 }
@@ -83,7 +83,7 @@ handle_less() {
     
     # Проверяем, действительно ли файл изменился
     if ! has_git_changes "$file"; then
-        echo "📝 LESS файл не изменился: $file (пропускаю)"
+        echo "LESS файл не изменился: $file (пропускаю)"
         return
     fi
     
@@ -117,7 +117,7 @@ handle_js() {
     
     # Проверяем, действительно ли файл изменился
     if ! has_git_changes "$file"; then
-        echo "📝 JS файл не изменился: $file (пропускаю)"
+        echo "JS файл не изменился: $file (пропускаю)"
         return
     fi
     
@@ -151,7 +151,7 @@ handle_php() {
     
     # Проверяем, действительно ли файл изменился
     if ! has_git_changes "$file"; then
-        echo "📝 PHP файл не изменился: $file (пропускаю)"
+        echo "PHP файл не изменился: $file (пропускаю)"
         return
     fi
     
@@ -223,7 +223,7 @@ execute_final_actions() {
         message=$(IFS=" + "; echo "${actions[*]}")
         
         # Автоматически коммитим и пушим изменения
-        echo "🚀 Автоматически коммичу и пушу изменения..."
+        echo "Автоматически коммичу и пушу изменения..."
         
         # Создаем информативное сообщение коммита для всех типов файлов
         local commit_message=""
@@ -300,13 +300,13 @@ execute_final_actions() {
         
         echo ""
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "📝 СООБЩЕНИЕ КОММИТА: $commit_message"
+        echo "СООБЩЕНИЕ КОММИТА: $commit_message"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
         
         # Умно добавляем только нужные файлы вместо git add .
         if [[ "$LESS_CHANGED" == true ]]; then
-            echo "🎨 LESS ФАЙЛЫ И CSS:"
+            echo "LESS ФАЙЛЫ И CSS:"
             echo "   └─ Добавляю LESS файлы..."
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | xargs -I {} git add {}
             
@@ -331,7 +331,7 @@ execute_final_actions() {
         fi
         
         if [[ "$JS_CHANGED" == true ]]; then
-            echo "⚡ JS ФАЙЛЫ:"
+            echo "JS ФАЙЛЫ:"
             echo "   └─ Добавляю JS файлы..."
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | xargs -I {} git add {}
             echo "   └─ Добавляю bundle: bundle.js"
@@ -340,7 +340,7 @@ execute_final_actions() {
         fi
         
         if [[ "$PHP_CHANGED" == true ]]; then
-            echo "🐘 PHP ФАЙЛЫ:"
+            echo "PHP ФАЙЛЫ:"
             echo "   └─ Добавляю PHP файлы..."
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | xargs -I {} git add {}
             echo ""
@@ -349,14 +349,14 @@ execute_final_actions() {
         # Добавляем системные файлы
         local system_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E '(watch-all\.sh|package\.json|\.prettierrc|\.php-cs-fixer\.php|robots\.txt|\.gitignore|README\.md)')
         if [[ -n "$system_files" ]]; then
-            echo "⚙️ СИСТЕМНЫЕ ФАЙЛЫ:"
+            echo "СИСТЕМНЫЕ ФАЙЛЫ:"
             echo "   └─ Добавляю системные файлы..."
             echo "$system_files" | xargs -I {} git add {}
             echo ""
         fi
         
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "🚀 ВЫПОЛНЯЮ КОММИТ И ПУШ..."
+        echo "ВЫПОЛНЯЮ КОММИТ И ПУШ..."
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
         
@@ -365,7 +365,7 @@ execute_final_actions() {
         
         echo ""
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "✅ ИЗМЕНЕНИЯ УСПЕШНО ОТПРАВЛЕНЫ В DEV ВЕТКУ!"
+        echo "ИЗМЕНЕНИЯ УСПЕШНО ОТПРАВЛЕНЫ В DEV ВЕТКУ!"
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
         
@@ -377,7 +377,7 @@ execute_final_actions() {
         
         # Очищаем список обработанных файлов
         PROCESSED_FILES=""
-        echo "🧹 Очистил список обработанных файлов"
+        echo "Очистил список обработанных файлов"
     fi
 }
 
@@ -445,22 +445,22 @@ process_file() {
   # Добавляем в PROCESSED_FILES только если файл еще не добавлен
   if [[ "$PROCESSED_FILES" != *"|$file|"* ]]; then
     PROCESSED_FILES="$PROCESSED_FILES|$file|"
-    echo "✅ Файл добавлен в PROCESSED_FILES: $file"
+    echo "Файл добавлен в PROCESSED_FILES: $file"
   else
-    echo "🔄 Файл уже в PROCESSED_FILES: $file (компиляция выполнена)"
+    echo "Файл уже в PROCESSED_FILES: $file (компиляция выполнена)"
   fi
 }
 
 # --- запуск chokidar с дебаунсом и завершением записи ---
 trap 'kill ${chokidar_pid:-0} 2>/dev/null || true; exit' INT TERM EXIT
 
-echo "🔄 Запускаю chokidar..."
-echo "📝 Ожидаю события..."
+echo "Запускаю chokidar..."
+echo "Ожидаю события..."
 echo ""
 
 # Запускаем chokidar и читаем его вывод напрямую
-echo "🔍 Запускаю chokidar с отладкой..."
-echo "⏰ Использую дебаунс 800ms для группировки событий..."
+echo "Запускаю chokidar с отладкой..."
+echo "Использую дебаунс 800ms для группировки событий..."
 
 # Переменная для отслеживания времени последнего события
 last_event_time=0
@@ -470,34 +470,34 @@ while IFS= read -r line; do
   # Используем секунды вместо миллисекунд для совместимости с macOS
   current_time=$(date +%s)
   
-  echo "📨 Получено событие: $line"
+  echo "Получено событие: $line"
   
   # Формат строки: "change: path" / "add: path" / "unlink: path"
   case "$line" in
     change:*) 
       file=$(echo "$line" | cut -d: -f2-)
-      echo "🔄 Обрабатываю изменение: $file"
+      echo "Обрабатываю изменение: $file"
       process_file "$file" "change" 
       ;;
     add:*)    
       file=$(echo "$line" | cut -d: -f2-)
-      echo "➕ Обрабатываю добавление: $file"
+      echo "Обрабатываю добавление: $file"
       process_file "$file" "add" 
       ;;
     unlink:*) 
       file=$(echo "$line" | cut -d: -f2-)
-      echo "🗑️ Обрабатываю удаление: $file"
+      echo "Обрабатываю удаление: $file"
       process_file "$file" "unlink"
       
       # Автоматически коммитим и пушим удаление файла
-      echo "🚀 Автоматически коммичу и пушу удаление файла..."
+      echo "Автоматически коммичу и пушу удаление файла..."
       git add -A
       git commit -m "DELETE: $(basename "$file") | $(date +%H:%M:%S_%d/%m)"
       git push origin dev
-      echo "✅ Удаление файла автоматически отправлено в dev ветку!"
+      echo "Удаление файла автоматически отправлено в dev ветку!"
       ;;
     *) 
-      echo "❓ Неизвестное событие: $line"
+      echo "Неизвестное событие: $line"
       ;;
   esac
   
@@ -509,7 +509,7 @@ while IFS= read -r line; do
     sleep 0.8  # 800ms дебаунс
     current_check_time=$(date +%s)
     if [ $((current_check_time - last_event_time)) -ge 1 ]; then
-      echo "⏰ Дебаунс завершен, выполняю финальные действия..."
+      echo "Дебаунс завершен, выполняю финальные действия..."
       execute_final_actions
     fi
   ) &
