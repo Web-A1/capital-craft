@@ -7,10 +7,10 @@ set -euo pipefail
 echo "🚀 Запуск универсального мониторинга файлов..."
 echo "📁 Отслеживаю изменения в проекте..."
 echo "🔄 Логика обработки:"
-echo "   • LESS файлы → компиляция + commit + push"
-echo "   • JS файлы → пересборка + commit + push"
-echo "   • PHP файлы → commit + push"
-echo "   • sitemap.xml → только commit + push"
+echo "   • LESS файлы → форматирование + компиляция + подготовка к коммиту"
+echo "   • JS файлы → форматирование + пересборка + подготовка к коммиту"
+echo "   • PHP файлы → форматирование + подготовка к коммиту"
+echo "   • PHP файлы → форматирование + подготовка к коммиту"
 echo "⏹️  Для остановки: Ctrl+C"
 echo ""
 
@@ -35,12 +35,41 @@ PROCESSED_FILES=""
 # Функция для проверки реальных изменений в git
 has_git_changes() {
     local file="$1"
-    if git diff --quiet "$file" 2>/dev/null; then
-        if git diff --cached --quiet "$file" 2>/dev/null; then
-            return 1  # Нет изменений
-        fi
+    
+    # Простая проверка: если файл существует и не пустой, считаем измененным
+    if [ -f "$file" ] && [ -s "$file" ]; then
+        return 0  # Есть изменения
     fi
-    return 0  # Есть изменения
+    
+    return 1  # Нет изменений
+}
+
+# Функция для умной компиляции LESS файлов
+compile_less_file() {
+    local file="$1"
+    
+    echo "🔍 Анализирую зависимости для: $file"
+    
+    # Определяем, какие CSS файлы нужно перекомпилировать
+    if [[ "$file" == *"/_variables.less" || "$file" == *"/_buttons.less" || "$file" == *"/_header.less" || "$file" == *"/_footer.less" || "$file" == *"/_modal.less" || "$file" == *"/_scroll-top.less" || "$file" == *"/_breadcrumbs.less" ]]; then
+        echo "    📦 Переменные/компоненты - компилирую все файлы"
+        npm run less:all
+    elif [[ "$file" == *"/base.less" ]]; then
+        echo "    🎯 Базовые стили - компилирую base.css"
+        npm run less:base
+    elif [[ "$file" == *"/home.less" || "$file" == *"/pages/home/"* || "$file" == *"/_reviews.less" || "$file" == *"/_hero.less" || "$file" == *"/_partners.less" || "$file" == *"/_faq-home.less" || "$file" == *"/_show_case.less" || "$file" == *"/_philosophy.less" || "$file" == *"/_products.less" || "$file" == *"/_team.less" ]]; then
+        echo "    🏠 Главная страница - компилирую home.css"
+        npm run less:home
+    elif [[ "$file" == *"/faq.less" || "$file" == *"/pages/faq/"* ]]; then
+        echo "    ❓ FAQ - компилирую faq.css"
+        npm run less:faq
+    elif [[ "$file" == *"/critical.less" ]]; then
+        echo "    ⚡ Критические стили - компилирую critical.css"
+        npm run less:critical
+    else
+        echo "    ❓ Неизвестный файл - компилирую все для безопасности"
+        npm run less:all
+    fi
 }
 
 # Функция для обработки LESS файлов
@@ -54,9 +83,20 @@ handle_less() {
     fi
     
     echo "🎨 Изменен LESS файл: $file"
-    echo "🔄 Компилирую LESS..."
+    echo "🔄 Запускаю форматирование..."
     
-    npm run less:all
+    # 1. Форматируем LESS код
+    echo "   1️⃣ Prettier..."
+    if [ -f "node_modules/.bin/prettier" ]; then
+        npx prettier --write "$file"
+        echo "      ✅ Prettier завершен"
+    else
+        echo "      ❌ Prettier не найден"
+    fi
+    
+    echo "🔄 Умная компиляция LESS..."
+    
+    compile_less_file "$file"
     
     if [ $? -eq 0 ]; then
         echo "✅ LESS компиляция завершена!"
@@ -77,6 +117,17 @@ handle_js() {
     fi
     
     echo "⚡ Изменен JS файл: $file"
+    echo "🔄 Запускаю форматирование..."
+    
+    # 1. Форматируем JavaScript код
+    echo "   1️⃣ Prettier..."
+    if [ -f "node_modules/.bin/prettier" ]; then
+        npx prettier --write "$file"
+        echo "      ✅ Prettier завершен"
+    else
+        echo "      ❌ Prettier не найден"
+    fi
+    
     echo "🔄 Пересобираю JavaScript..."
     
     npm run js:build
@@ -134,22 +185,89 @@ handle_php() {
 execute_final_actions() {
     local message=""
     local actions=()
+    local changed_file=""
     
     if [ "$LESS_CHANGED" = true ]; then
         actions+=("LESS compilation")
+        # Находим последний измененный LESS файл
+        changed_file=$(find templates/capitalcraft/less/ -name "*.less" -newer templates/capitalcraft/css/home.css 2>/dev/null | head -1 || echo "")
     fi
     
     if [ "$JS_CHANGED" = true ]; then
         actions+=("JS rebuild")
+        if [ -z "$changed_file" ]; then
+            changed_file=$(find templates/capitalcraft/js/ -name "*.js" -newer templates/capitalcraft/js/global/bundle.js 2>/dev/null | head -1 || echo "")
+        fi
     fi
     
     if [ "$PHP_CHANGED" = true ]; then
         actions+=("PHP update")
+        if [ -z "$changed_file" ]; then
+            changed_file=$(find templates/capitalcraft/ -name "*.php" -newer templates/capitalcraft/css/home.css 2>/dev/null | head -1 || echo "")
+        fi
     fi
     
     if [ ${#actions[@]} -gt 0 ]; then
         message=$(IFS=" + "; echo "${actions[*]}")
-        commit_and_push "$message"
+        prepare_for_commit "$message" "$changed_file"
+        
+        # Автоматически коммитим и пушим изменения
+        echo "🚀 Автоматически коммичу и пушу изменения..."
+        
+        # Создаем информативное сообщение коммита
+        local commit_message=""
+        if [[ "$LESS_CHANGED" == true ]]; then
+            commit_message="LESS: "
+            # Получаем только имена файлов (без путей)
+            local less_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | sed 's/.*\///' | tr '\n' ' ')
+            commit_message+="$less_files"
+        elif [[ "$JS_CHANGED" == true ]]; then
+            commit_message="JS: "
+            local js_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | sed 's/.*\///' | tr '\n' ' ')
+            commit_message+="$js_files"
+        elif [[ "$PHP_CHANGED" == true ]]; then
+            commit_message="PHP: "
+            local php_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | sed 's/.*\///' | tr '\n' ' ')
+            commit_message+="$php_files"
+        fi
+        
+        # Добавляем временную метку в формате: время_день/месяц
+        commit_message+=" | $(date +%H:%M:%S_%d/%m)"
+        
+        # Добавляем информацию об изменениях
+        if [[ "$LESS_CHANGED" == true ]]; then
+            # Получаем номера измененных строк для LESS файлов
+            local less_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | head -1)
+            if [[ -n "$less_file" ]]; then
+                local changed_lines=$(git diff --unified=0 "$less_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
+                if [[ -n "$changed_lines" ]]; then
+                    commit_message+=" | lines: $changed_lines"
+                fi
+            fi
+        elif [[ "$JS_CHANGED" == true ]]; then
+            local js_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | head -1)
+            if [[ -n "$js_file" ]]; then
+                local changed_lines=$(git diff --unified=0 "$js_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
+                if [[ -n "$changed_lines" ]]; then
+                    commit_message+=" | lines: $changed_lines"
+                fi
+            fi
+        elif [[ "$PHP_CHANGED" == true ]]; then
+            local php_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | head -1)
+            if [[ -n "$php_file" ]]; then
+                local changed_lines=$(git diff --unified=0 "$php_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
+                if [[ -n "$changed_lines" ]]; then
+                    commit_message+=" | lines: $changed_lines"
+                fi
+            fi
+        fi
+        
+        echo "📝 Сообщение коммита: $commit_message"
+        
+        git add .
+        git commit -m "$commit_message"
+        git push origin dev
+        echo "✅ Изменения автоматически отправлены в dev ветку!"
         
         # Сбрасываем флаги
         LESS_CHANGED=false
@@ -162,33 +280,62 @@ execute_final_actions() {
     fi
 }
 
-# --- commit/push (оптимизированная версия) ---
-commit_and_push() {
+# --- подготовка к коммиту (без автоматического push) ---
+prepare_for_commit() {
   local message="$1"
+  local changed_file="$2"
 
-  # Стадим всё, включая удаления
-  git add -A
-
-  # Безопасная проверка на изменения (HEAD может отсутствовать)
-  if git diff --cached --quiet; then
-    echo "📝 Нет изменений для коммита"
-    echo ""; return
+  echo "📝 Подготавливаю изменения к коммиту..."
+  
+  # Очищаем staged area от предыдущих изменений
+  git reset HEAD
+  
+  # Добавляем файлы из PROCESSED_FILES (файлы, которые мы реально обработали)
+  if [[ -n "$PROCESSED_FILES" ]]; then
+    echo "📦 Добавляю обработанные файлы:"
+    
+    # Разбиваем PROCESSED_FILES на массив
+    IFS='|' read -ra FILES <<< "$PROCESSED_FILES"
+    
+    for file in "${FILES[@]}"; do
+      if [[ -n "$file" ]]; then
+        echo "   • $file"
+        git add "$file"
+        
+        # Для LESS файлов добавляем соответствующие CSS
+        if [[ "$file" == *".less" ]]; then
+          if [[ "$file" == *"/pages/home/"* ]]; then
+            echo "   • templates/capitalcraft/css/home.css"
+            git add templates/capitalcraft/css/home.css
+          elif [[ "$file" == *"/base.less" ]]; then
+            echo "   • templates/capitalcraft/css/base.css"
+            git add templates/capitalcraft/css/base.css
+          elif [[ "$file" == *"/critical.less" ]]; then
+            echo "   • templates/capitalcraft/css/critical.css"
+            git add templates/capitalcraft/css/critical.css
+          elif [[ "$file" == *"/faq.less" ]]; then
+            echo "   • templates/capitalcraft/css/faq.css"
+            git add templates/capitalcraft/css/faq.css
+          fi
+        fi
+      fi
+    done
   fi
+  
 
-  echo "📝 Коммичу изменения..."
-  git commit -m "$message $(date '+%Y-%m-%d %H:%M:%S')"
-
-  echo "🚀 Пушим в dev..."
-  for i in 1 2 3; do
-    if git push origin dev; then
-      echo "✅ Изменения отправлены в dev!"
-      echo ""; return
-    fi
-    echo "⚠️ Push не удался, попытка $i/3 → pull --rebase --autostash…"
-    git pull --rebase --autostash origin dev || true
-    sleep 2
-  done
-  echo "❌ Не удалось отправить изменения"; echo ""
+  
+  # Показываем количество изменений
+  local changed_files=$(git diff --cached --name-only | wc -l)
+  echo "📊 Готово к коммиту: $changed_files файлов изменено"
+  
+  # Показываем список изменений
+  echo "📝 Измененные файлы:"
+  git diff --cached --name-only | sed 's/^/   • /'
+  
+  echo ""
+  echo "🚀 Для отправки изменений выполните:"
+  echo "   npm run push:dev"
+  echo ""
 }
 
 # --- обработка unlink и игноры ---
@@ -199,7 +346,8 @@ process_file() {
   echo "🔍 process_file: обработка $kind для файла '$file'"
 
   # Защита от повторной обработки одного файла в рамках одного цикла
-  if [[ "$PROCESSED_FILES" == *"|$file|"* ]]; then
+  # НО для LESS файлов разрешаем повторную обработку (компиляция при каждом сохранении)
+  if [[ "$PROCESSED_FILES" == *"|$file|"* && "$file" != *".less" ]]; then
     echo "🔄 Файл уже обработан в этом цикле: $file (пропускаю)"
     return
   fi
@@ -207,13 +355,14 @@ process_file() {
   # Игноры выходных/служебных
   case "$file" in
     *.css|*.map|*/bundle.js|*/bundle.min.js) echo "📄 Игнор артефакта: $file"; return ;;
+    .prettierrc|.php-cs-fixer.php|.editorconfig|.gitignore|.cursorrules|README*.md|format-php.sh|temp_file) echo "📄 Игнор конфигурации: $file"; return ;;
   esac
-  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* || "$file" == *".vscode/"* || "$file" == "format-php.sh" ]] && { echo "📄 Игнор служебного: $file"; return; }
+  [[ "$file" == *node_modules/* || "$file" == *vendor/* || "$file" == *".git/"* || "$file" == *".vscode/"* ]] && { echo "📄 Игнор служебного: $file"; return; }
 
   # Для unlink файла уже нет на диске — всё равно коммитим удаление
   if [[ "$kind" == "unlink" ]]; then
     echo "🗑️ Удалён файл: $file"
-    commit_and_push "Remove file"
+    prepare_for_commit "Remove file"
     return
   fi
 
@@ -239,17 +388,19 @@ process_file() {
       echo "🐘 Обрабатываю как PHP файл: $file"
       handle_php "$file" 
       ;;
-    sitemap.xml)
-      echo "🗺️ Изменен sitemap.xml: $file"
-      ;;
+
     *)       
       echo "📄 Изменён файл: $file (не обрабатывается)"
       ;;
   esac
 
-  # Добавляем в PROCESSED_FILES только после успешной обработки
-  PROCESSED_FILES="$PROCESSED_FILES|$file|"
-  echo "✅ Файл добавлен в PROCESSED_FILES: $file"
+  # Добавляем в PROCESSED_FILES только если файл еще не добавлен
+  if [[ "$PROCESSED_FILES" != *"|$file|"* ]]; then
+    PROCESSED_FILES="$PROCESSED_FILES|$file|"
+    echo "✅ Файл добавлен в PROCESSED_FILES: $file"
+  else
+    echo "🔄 Файл уже в PROCESSED_FILES: $file (компиляция выполнена)"
+  fi
 }
 
 # --- запуск chokidar с дебаунсом и завершением записи ---
@@ -312,7 +463,7 @@ done < <(npx chokidar-cli \
   "templates/capitalcraft/less/**" \
   "templates/capitalcraft/js/**/*.js" \
   "templates/capitalcraft/**/*.php" \
-  "sitemap.xml" \
+
   --ignore "**/*.css" \
   --ignore "**/*.map" \
   --ignore "**/*bundle.js" \

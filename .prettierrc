@@ -19,6 +19,17 @@
       }
     },
     {
+      "files": "*.js",
+      "options": {
+        "parser": "babel",
+        "singleQuote": false,
+        "semi": true,
+        "printWidth": 80,
+        "trailingComma": "none",
+        "arrowParens": "avoid"
+      }
+    },
+    {
       "files": "*.php",
       "options": {
         "parser": "html",

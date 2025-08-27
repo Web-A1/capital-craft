@@ -10,8 +10,8 @@
 @color-outside: #dcd8cf;
 
 // Шрифты
-@font-body: 'Golos Text', sans-serif;
-@font-title: 'Onest', sans-serif;
+@font-body: "Golos Text", sans-serif;
+@font-title: "Onest", sans-serif;
 
 // Типографика
 @font-size-base: 16px;
@@ -31,14 +31,14 @@
 
 //Адаптация для мобильных
 @mobile-side-padding: 20px;
-@screen-mobile: ~'only screen and (max-width: 767px)';
+@screen-mobile: ~"only screen and (max-width: 767px)";
 .media(@breakpoint, @rules) when (@breakpoint = mobile) {
   @media @screen-mobile {
     @rules();
   }
 }
 
-@screen-tablet: ~'only screen and (min-width: 768px) and (max-width: 1023px)';
+@screen-tablet: ~"only screen and (min-width: 768px) and (max-width: 1023px)";
 .media(@breakpoint, @rules) when (@breakpoint = tablet) {
   @media @screen-tablet {
     @rules();
