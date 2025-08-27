@@ -61,7 +61,7 @@
       left: 50%;
       transform: translate(-50%, -50%);
       font-family: @font-title;
-      font-size: 200px;
+      font-size: 100px;
       font-weight: 300;
       color: rgba(0, 0, 0, 0.03);
       z-index: 1;
@@ -69,7 +69,6 @@
       user-select: none;
       
       .media(mobile, {
-        font-size: 120px;
         top: 6%;
       });
     }
@@ -83,7 +82,7 @@
   &__swiper {
     position: relative;
     width: 100%;
-    max-width: 830px;
+    max-width: 890px;
     flex: 1;
     height: 280px;
 
@@ -112,7 +111,7 @@
   // Повышаем специфичность для quote-text
   .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide .reviews__quote-text {
     font-family: @font-body;
-    font-size: 25px;
+    font-size: (@font-size-base * 1.375);
     font-weight: 400;
     line-height: 1.4;
     color: @color-heading;
@@ -124,7 +123,7 @@
     margin: 0;
 
     .media(mobile, {
-      font-size: 18px;
+      font-size: (@font-size-base * 1.125);
       max-height: 120px;
     });
   }
