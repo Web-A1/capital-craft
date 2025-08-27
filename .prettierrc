@@ -25,9 +25,7 @@
         "bracketSpacing": true,
         "bracketSameLine": false,
         "arrowParens": "avoid",
-        "endOfLine": "lf",
-        "insertFinalNewline": true,
-        "trimTrailingWhitespace": true
+        "endOfLine": "lf"
       }
     }
   ]
