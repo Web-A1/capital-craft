@@ -155,28 +155,28 @@ handle_php() {
         return
     fi
     
-    echo "🐘 Изменен PHP файл: $file"
-    echo "🔄 Запускаю форматирование..."
+    echo "Изменен PHP файл: $file"
+    echo "Запускаю форматирование..."
     
     # 1. Форматируем PHP код
-    echo "   1️⃣ PHP CS Fixer..."
+    echo "   1. PHP CS Fixer..."
     if command -v php-cs-fixer >/dev/null 2>&1; then
         php-cs-fixer fix "$file" --using-cache=no
-        echo "      ✅ PHP CS Fixer завершен"
+        echo "     PHP CS Fixer завершен"
     else
-        echo "      ❌ PHP CS Fixer не найден"
+        echo "     PHP CS Fixer не найден"
     fi
     
     # 2. Форматируем HTML код
-    echo "   2️⃣ Prettier..."
+    echo "   2. Prettier..."
     if [ -f "node_modules/.bin/prettier" ]; then
         npx prettier --write "$file"
-        echo "      ✅ Prettier завершен"
+        echo "     Prettier завершен"
     else
-        echo "      ❌ Prettier не найден"
+        echo "     Prettier не найден"
     fi
     
-    echo "🎨 Форматирование PHP файла завершено!"
+    echo "Форматирование PHP файла завершено!"
     
     # Небольшая задержка для стабильности записи файла
     sleep 0.5
