@@ -99,15 +99,32 @@ handle_php() {
         return
     fi
     
-    # Проверяем, что изменилось - только форматирование или реальный контент
-    local content_changes=$(git diff "$file" | grep -E '^[+-]' | grep -v '^[+-][[:space:]]*$' | wc -l)
+    echo "🐘 Изменен PHP файл: $file"
+    echo "🔄 Запускаю форматирование..."
     
-    if [ "$content_changes" -eq 0 ]; then
-        echo "📝 PHP файл изменился только форматирование: $file (пропускаю)"
-        return
+    # 1. Форматируем PHP код
+    echo "   1️⃣ PHP CS Fixer..."
+    if command -v php-cs-fixer >/dev/null 2>&1; then
+        php-cs-fixer fix "$file" --using-cache=no
+        echo "      ✅ PHP CS Fixer завершен"
+    else
+        echo "      ❌ PHP CS Fixer не найден"
     fi
     
-    echo "🐘 Изменен PHP файл (контент): $file"
+    # 2. Форматируем HTML код
+    echo "   2️⃣ Prettier..."
+    if [ -f "node_modules/.bin/prettier" ]; then
+        npx prettier --write "$file"
+        echo "      ✅ Prettier завершен"
+    else
+        echo "      ❌ Prettier не найден"
+    fi
+    
+    echo "🎨 Форматирование PHP файла завершено!"
+    
+    # Небольшая задержка для стабильности записи файла
+    sleep 0.5
+    
     PHP_CHANGED=true
 }
 
