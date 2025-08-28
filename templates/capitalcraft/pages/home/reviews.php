@@ -1,13 +1,12 @@
 <?php
-require __DIR__ . '/../../data/reviews_data.php';
-?>
+require __DIR__ . "/../../data/reviews_data.php"; ?>
 
 <section class="reviews frame section-with-divider">
     <div class="container reviews__inner">
+
+<h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
         
-    <h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
-        
-        <!-- Новый контейнер для слайдера и стрелок -->
+        <!-- тест_Новый контейнер для слайдера и стрелок -->
         <div class="reviews__slider-container">
             <!-- Левая стрелка - вынесена на уровень выше -->
             <button class="reviews__arrow reviews__arrow--prev" type="button" aria-label="Предыдущий отзыв">
@@ -24,14 +23,14 @@ require __DIR__ . '/../../data/reviews_data.php';
                         <div class="reviews__slide swiper-slide">
                             <!-- Упрощенная структура слайда -->
                             <blockquote class="reviews__quote-text">
-                                <?= htmlspecialchars($review['text'], ENT_QUOTES, 'UTF-8') ?>
+                                <?= htmlspecialchars($review["text"], ENT_QUOTES, "UTF-8") ?>
                             </blockquote>
                             <div class="reviews__signature">
                                 <cite class="reviews__author-name">
-                                    <?= htmlspecialchars($review['author'], ENT_QUOTES, 'UTF-8') ?>
+                                    <?= htmlspecialchars($review["author"], ENT_QUOTES, "UTF-8") ?>
                                 </cite>
                                 <div class="reviews__company-name">
-                                    <?= htmlspecialchars($review['company'], ENT_QUOTES, 'UTF-8') ?>
+                                    <?= htmlspecialchars($review["company"], ENT_QUOTES, "UTF-8") ?>
                                 </div>
                             </div>
                         </div>
@@ -57,25 +56,29 @@ require __DIR__ . '/../../data/reviews_data.php';
 // Structured data for reviews
 $structured_reviews = array_map(function ($review) {
     return [
-        '@type' => 'Review',
-        'reviewBody' => $review['text'],
-        'author' => [
-            '@type' => 'Person',
-            'name' => $review['author'],
-            'affiliation' => [
-                '@type' => 'Organization',
-                'name' => $review['company'],
+        "@type" => "Review",
+        "reviewBody" => $review["text"],
+        "author" => [
+            "@type" => "Person",
+            "name" => $review["author"],
+            "affiliation" => [
+                "@type" => "Organization",
+                "name" => $review["company"],
             ],
         ],
     ];
 }, $reviews_data);
 
 echo "\n<script type=\"application/ld+json\">";
-echo json_encode([
-    '@context' => 'https://schema.org',
-    '@type' => 'Organization',
-    'name' => 'Capital Craft',
-    'review' => $structured_reviews,
-], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-echo '</script>';
+echo json_encode(
+    [
+        "@context" => "https://schema.org",
+        "@type" => "Organization",
+        "name" => "Capital Craft",
+        "review" => $structured_reviews,
+    ],
+    JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
+);
+echo "</script>";
+
 ?>
