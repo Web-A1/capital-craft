@@ -97,7 +97,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px; // Отступ между цитатой и именем клиента
+    gap: 30px; // Отступ между элементами внутри figure (сохраняем для резервного варианта)
     text-align: center;
     height: 100%; // Занимает всю высоту слайдера
     justify-content: center; // Центрируем содержимое по вертикали
@@ -105,6 +105,22 @@
 
     .media(mobile, {
     gap: 30px; // Меньший отступ для мобильных
+  });
+  }
+
+  // Внутри слайда используем семантический контейнер figure
+  &__figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px; // Отступ между цитатой и подписью
+    text-align: center;
+    margin: 0; // Сбрасываем дефолтные отступы figure
+    height: 100%;
+
+    .media(mobile, {
+    gap: 30px;
   });
   }
 
