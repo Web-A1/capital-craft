@@ -147,27 +147,40 @@
   });
   }
 
-  // Desktop reveal animation for quote
-  @keyframes reviewsQuoteWipe {
-    0% {
-      clip-path: inset(0 100% 0 0);
-      opacity: 0;
-      filter: blur(2px);
+  // Desktop crossfade + micro-scale on quote; delayed fade for signature
+  .media(desktop, {
+    .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
+      .reviews__quote-text {
+        opacity: 0;
+        transform: scale(0.98);
+        transition: opacity 320ms ease-out, transform 320ms ease-out;
+        will-change: opacity, transform;
+      }
+      .reviews__signature {
+        opacity: 0;
+        transition: opacity 260ms ease-out 100ms;
+        will-change: opacity;
+      }
+      &.reviews__slide--animate {
+        .reviews__quote-text { opacity: 1; transform: scale(1); }
+        .reviews__signature { opacity: 1; }
+      }
     }
-    60% {
-      opacity: 1;
-      filter: blur(0);
-    }
-    100% {
-      clip-path: inset(0 0 0 0);
-      opacity: 1;
-    }
-  }
+  });
 
-  // Triggered by JS when slide becomes active
-  .reviews__quote--enter {
-    animation: reviewsQuoteWipe 520ms ease-out both;
-    will-change: clip-path, opacity, filter;
+  @media (prefers-reduced-motion: reduce) {
+    .reviews__swiper
+      .swiper-wrapper
+      .swiper-slide.reviews__slide
+      .reviews__quote-text,
+    .reviews__swiper
+      .swiper-wrapper
+      .swiper-slide.reviews__slide
+      .reviews__signature {
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
   }
 
   // Дополнительные стили подписи
