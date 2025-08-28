@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clickable: true
     },
     breakpoints: {
-      // Мобильные устройства
+      // _Мобильные устройства
       320: {
         direction: "horizontal",
         pagination: {
