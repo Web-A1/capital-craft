@@ -1,4 +1,3 @@
-// Reviews swiper: desktop uses fade, mobile uses slide
 document.addEventListener("DOMContentLoaded", () => {
   const mqlDesktop = window.matchMedia("(min-width: 768px)");
 
@@ -7,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return {
       slidesPerView: 1,
       loop: true,
-      //_На десктопе используем исчезновение вместо слайдов
+      // На десктопе используем исчезновение вместо слайдов
       effect: isDesktop ? "fade" : "slide",
       fadeEffect: { crossFade: true },
       speed: 450,
