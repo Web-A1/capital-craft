@@ -7,7 +7,7 @@ require __DIR__ . '/../../data/reviews_data.php';
         
     <h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
         
-        <!-- Новый контейнер для слайдера и стрелок -->
+        <!-- _Новый контейнер для слайдера и стрелок -->
         <div class="reviews__slider-container">
             <!-- Левая стрелка - вынесена на уровень выше -->
             <button class="reviews__arrow reviews__arrow--prev" type="button" aria-label="Предыдущий отзыв">
