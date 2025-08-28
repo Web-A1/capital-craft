@@ -274,6 +274,8 @@
     gap: 6px; // Отступ между именем автора и компанией
     align-items: center;
     text-align: center;
+    opacity: 1;
+    transition: opacity 320ms ease;
   }
 
   // Повышаем специфичность для author-name
@@ -292,6 +294,14 @@
     .media(mobile, {
     font-size: (@font-size-base * 1.125);
   });
+  }
+
+  // Подпись: состояния
+  .reviews__signature--hidden {
+    opacity: 0;
+  }
+  .reviews__signature--fadein {
+    opacity: 1;
   }
 
   // Повышаем специфичность для company-name
