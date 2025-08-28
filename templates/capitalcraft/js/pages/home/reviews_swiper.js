@@ -1,55 +1,55 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const reviewsSwiper = new Swiper('.reviews__swiper', {
+document.addEventListener("DOMContentLoaded", () => {
+  const reviewsSwiper = new Swiper(".reviews__swiper", {
     slidesPerView: 1,
-    direction: 'horizontal',
+    direction: "horizontal",
     loop: true,
     navigation: {
-      nextEl: '.reviews__arrow--next',
-      prevEl: '.reviews__arrow--prev',
+      nextEl: ".reviews__arrow--next",
+      prevEl: ".reviews__arrow--prev"
     },
     pagination: {
-      el: '.reviews__pagination',
-      clickable: true,
+      el: ".reviews__pagination",
+      clickable: true
     },
     breakpoints: {
-      // Мобильные устройства
+      // _Мобильные устройства
       320: {
-        direction: 'horizontal',
+        direction: "horizontal",
         pagination: {
-          el: '.reviews__pagination',
-          clickable: true,
+          el: ".reviews__pagination",
+          clickable: true
         },
         navigation: {
           nextEl: null,
-          prevEl: null,
-        },
+          prevEl: null
+        }
       },
       // Планшеты и выше
       768: {
-        direction: 'horizontal',
+        direction: "horizontal",
         pagination: false,
         navigation: {
-          nextEl: '.reviews__arrow--next',
-          prevEl: '.reviews__arrow--prev',
-        },
-      },
+          nextEl: ".reviews__arrow--next",
+          prevEl: ".reviews__arrow--prev"
+        }
+      }
     },
     // Плавные переходы
-    effect: 'slide',
+    effect: "slide",
     speed: 600,
     // Предзагрузка следующего слайда
     preloadImages: true,
     // Ленивая загрузка изображений
     lazy: {
-      loadPrevNext: true,
-    },
+      loadPrevNext: true
+    }
   });
 
   // Добавляем обработчики для клавиатуры
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') {
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowLeft") {
       reviewsSwiper.slidePrev();
-    } else if (e.key === 'ArrowRight') {
+    } else if (e.key === "ArrowRight") {
       reviewsSwiper.slideNext();
     }
   });
