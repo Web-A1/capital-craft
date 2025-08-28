@@ -28,6 +28,8 @@ LESS_CHANGED=false
 JS_CHANGED=false
 PHP_CHANGED=false
 SYSTEM_CHANGED=false
+# Флаг: был ли выполнен пересбор всех less (по триггеру общих partial-ов)
+LESS_ALL_BUILT=false
 
 # Защита от повторной обработки одного файла в рамках одного цикла
 PROCESSED_FILES=""
@@ -41,12 +43,12 @@ has_git_changes() {
         return 1
     fi
     
-    # Проверяем, есть ли реальные изменения относительно последнего коммита
-    if git diff --quiet -- "$file" 2>/dev/null; then
-        return 1
+    # Любое состояние в porcelain (включая untracked '??') считаем изменением
+    if [[ -n $(git status --porcelain -- "$file") ]]; then
+        return 0
     fi
     
-    return 0
+    return 1
 }
 
 # Функция для умной компиляции LESS файлов
@@ -59,6 +61,7 @@ compile_less_file() {
     if [[ "$file" == *"/_variables.less" || "$file" == *"/_buttons.less" || "$file" == *"/_header.less" || "$file" == *"/_footer.less" || "$file" == *"/_modal.less" || "$file" == *"/_scroll-top.less" || "$file" == *"/_breadcrumbs.less" ]]; then
         echo "    Переменные/компоненты - компилирую все файлы"
         npm run less:all
+        LESS_ALL_BUILT=true
     elif [[ "$file" == *"/base.less" ]]; then
         echo "    Базовые стили - компилирую base.css"
         npm run less:base
@@ -170,8 +173,12 @@ handle_php() {
     # 2. Форматируем HTML код
     echo "   2. Prettier..."
     if [ -f "node_modules/.bin/prettier" ]; then
-        npx prettier --write "$file"
-        echo "     Prettier завершен"
+        # Мягкий режим для PHP-шаблонов: не падаем при ошибке парсера
+        if npx prettier --write "$file"; then
+            echo "     Prettier завершен"
+        else
+            echo "     Prettier пропущен (ошибка форматирования PHP)"
+        fi
     else
         echo "     Prettier не найден"
     fi
@@ -261,39 +268,31 @@ execute_final_actions() {
         # Добавляем временную метку в формате: время_день/месяц
         commit_message+=" | $(date +%H:%M:%S_%d/%m)"
         
-        # Добавляем информацию об изменениях для всех типов файлов
+        # Добавляем подробную информацию об изменениях по каждому файлу
+        build_lines_block() {
+            local type_label="$1"   # LESS | JS | PHP
+            local pattern="$2"      # \\.less$ | \\.js$ | \\.php$
+            local entries=""
+            while IFS= read -r f; do
+                [[ -z "$f" ]] && continue
+                local name_only=$(basename "$f")
+                if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+                    local lines=$(git diff --unified=0 -- "$f" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr '\n' ' ')
+                    if [[ -n "$lines" ]]; then
+                        entries+="$type_label $name_only: $lines; "
+                    fi
+                else
+                    entries+="$type_label $name_only: NEW; "
+                fi
+            done < <(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E "$pattern")
+            echo "$entries"
+        }
+
         local all_changes=""
-        
-        if [[ "$LESS_CHANGED" == true ]]; then
-            local less_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | head -1)
-            if [[ -n "$less_file" ]]; then
-                local changed_lines=$(git diff --unified=0 "$less_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
-                if [[ -n "$changed_lines" ]]; then
-                    all_changes+="LESS lines: $changed_lines "
-                fi
-            fi
-        fi
-        
-        if [[ "$JS_CHANGED" == true ]]; then
-            local js_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | head -1)
-            if [[ -n "$js_file" ]]; then
-                local changed_lines=$(git diff --unified=0 "$js_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
-                if [[ -n "$changed_lines" ]]; then
-                    all_changes+="JS lines: $changed_lines "
-                fi
-            fi
-        fi
-        
-        if [[ "$PHP_CHANGED" == true ]]; then
-            local php_file=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | head -1)
-            if [[ -n "$php_file" ]]; then
-                local changed_lines=$(git diff --unified=0 "$php_file" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr ',' ' ' | tr '\n' ' ')
-                if [[ -n "$changed_lines" ]]; then
-                    all_changes+="PHP lines: $changed_lines "
-                fi
-            fi
-        fi
-        
+        [[ "$LESS_CHANGED" == true ]] && all_changes+=$(build_lines_block "LESS" "\\.less$")
+        [[ "$JS_CHANGED" == true ]] && all_changes+=$(build_lines_block "JS" "\\.js$")
+        [[ "$PHP_CHANGED" == true ]] && all_changes+=$(build_lines_block "PHP" "\\.php$")
+
         if [[ -n "$all_changes" ]]; then
             commit_message+=" | $all_changes"
         fi
@@ -311,6 +310,13 @@ execute_final_actions() {
             echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | xargs -I {} git add {}
             
             # Добавляем соответствующие CSS файлы
+            if [[ "$LESS_ALL_BUILT" == true ]]; then
+                echo "   └─ Выявлен триггер partial‑ов — добавляю все целевые CSS"
+                git add templates/capitalcraft/css/home.css \
+                        templates/capitalcraft/css/base.css \
+                        templates/capitalcraft/css/critical.css \
+                        templates/capitalcraft/css/faq.css || true
+            fi
             if echo "$PROCESSED_FILES" | grep -q "pages/home"; then
                 echo "   └─ Добавляю CSS: home.css"
                 git add templates/capitalcraft/css/home.css
@@ -360,7 +366,22 @@ execute_final_actions() {
         echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
         echo ""
         
+        # Если нечего коммитить (индекс пуст) — пропускаем коммит/пуш
+        if git diff --cached --quiet; then
+            echo "Нет изменений для коммита — пропускаю пуш"
+            # Сбрасываем флаги и очищаем список обработанных файлов
+            LESS_CHANGED=false
+            JS_CHANGED=false
+            PHP_CHANGED=false
+            SYSTEM_CHANGED=false
+            LESS_ALL_BUILT=false
+            PROCESSED_FILES=""
+            return
+        fi
+
         git commit -m "$commit_message"
+        # Перед пушем подтягиваем изменения с rebase и автосташем, чтобы снизить конфликты
+        git -c rebase.autoStash=true pull --rebase origin dev || true
         git push origin dev
         
         echo ""
@@ -374,6 +395,7 @@ execute_final_actions() {
         JS_CHANGED=false
         PHP_CHANGED=false
         SYSTEM_CHANGED=false
+        LESS_ALL_BUILT=false
         
         # Очищаем список обработанных файлов
         PROCESSED_FILES=""
@@ -475,17 +497,17 @@ while IFS= read -r line; do
   # Формат строки: "change: path" / "add: path" / "unlink: path"
   case "$line" in
     change:*) 
-      file=$(echo "$line" | cut -d: -f2-)
+      file=$(echo "$line" | cut -d: -f2- | sed -E 's/^\s+//')
       echo "Обрабатываю изменение: $file"
       process_file "$file" "change" 
       ;;
     add:*)    
-      file=$(echo "$line" | cut -d: -f2-)
+      file=$(echo "$line" | cut -d: -f2- | sed -E 's/^\s+//')
       echo "Обрабатываю добавление: $file"
       process_file "$file" "add" 
       ;;
     unlink:*) 
-      file=$(echo "$line" | cut -d: -f2-)
+      file=$(echo "$line" | cut -d: -f2- | sed -E 's/^\s+//')
       echo "Обрабатываю удаление: $file"
       process_file "$file" "unlink"
       
@@ -493,6 +515,7 @@ while IFS= read -r line; do
       echo "Автоматически коммичу и пушу удаление файла..."
       git add -A
       git commit -m "DELETE: $(basename "$file") | $(date +%H:%M:%S_%d/%m)"
+      git -c rebase.autoStash=true pull --rebase origin dev || true
       git push origin dev
       echo "Удаление файла автоматически отправлено в dev ветку!"
       ;;
