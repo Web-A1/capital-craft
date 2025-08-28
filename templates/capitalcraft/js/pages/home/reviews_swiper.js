@@ -1,5 +1,26 @@
 document.addEventListener("DOMContentLoaded", () => {
   const mqlDesktop = window.matchMedia("(min-width: 768px)");
+  
+  // Desktop-only reveal animation for quote text
+  const runReveal = (swiper) => {
+    if (!mqlDesktop.matches) return;
+    try {
+      swiper.slides.forEach((slide) => {
+        const q = slide.querySelector(".reviews__quote-text");
+        if (q) q.classList.remove("reviews__quote--enter");
+      });
+      const active = swiper.slides[swiper.activeIndex];
+      const qa = active ? active.querySelector(".reviews__quote-text") : null;
+      if (qa) {
+        // restart animation
+        // eslint-disable-next-line no-unused-expressions
+        qa.offsetWidth;
+        qa.classList.add("reviews__quote--enter");
+      }
+    } catch (_) {
+      /* noop */
+    }
+  };
 
   const makeConfig = () => {
     const isDesktop = mqlDesktop.matches;
@@ -29,6 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
         prevSlideMessage: "Предыдущий отзыв",
         nextSlideMessage: "Следующий отзыв",
         slideLabelMessage: "Отзыв {{index}} из {{slidesLength}}"
+      },
+      on: {
+        init(swiper) {
+          runReveal(swiper);
+        },
+        slideChangeTransitionStart(swiper) {
+          runReveal(swiper);
+        }
       }
     };
   };
