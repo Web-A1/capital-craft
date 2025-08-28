@@ -147,6 +147,29 @@
   });
   }
 
+  // Desktop reveal animation for quote
+  @keyframes reviewsQuoteWipe {
+    0% {
+      clip-path: inset(0 100% 0 0);
+      opacity: 0;
+      filter: blur(2px);
+    }
+    60% {
+      opacity: 1;
+      filter: blur(0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+  }
+
+  // Triggered by JS when slide becomes active
+  .reviews__quote--enter {
+    animation: reviewsQuoteWipe 520ms ease-out both;
+    will-change: clip-path, opacity, filter;
+  }
+
   // Дополнительные стили подписи
   &__author-name {
     font-style: normal;
