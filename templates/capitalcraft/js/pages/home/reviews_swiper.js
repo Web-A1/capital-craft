@@ -1,48 +1,47 @@
+// Reviews swiper: desktop uses fade, mobile uses slide
 document.addEventListener("DOMContentLoaded", () => {
-  const reviewsSwiper = new Swiper(".reviews__swiper", {
-    slidesPerView: 1,
-    direction: "horizontal",
-    loop: true,
-    navigation: {
-      nextEl: ".reviews__arrow--next",
-      prevEl: ".reviews__arrow--prev"
-    },
-    pagination: {
-      el: ".reviews__pagination",
-      clickable: true
-    },
-    breakpoints: {
-      // Мобильные устройства
-      320: {
-        direction: "horizontal",
-        pagination: {
-          el: ".reviews__pagination",
-          clickable: true
-        },
-        navigation: {
-          nextEl: null,
-          prevEl: null
-        }
-      },
-      // Планшеты и выше
-      768: {
-        direction: "horizontal",
-        pagination: false,
-        navigation: {
-          nextEl: ".reviews__arrow--next",
-          prevEl: ".reviews__arrow--prev"
-        }
+  const mqlDesktop = window.matchMedia("(min-width: 768px)");
+
+  const makeConfig = () => {
+    const isDesktop = mqlDesktop.matches;
+    return {
+      slidesPerView: 1,
+      loop: true,
+      //_На десктопе используем исчезновение вместо слайдов
+      effect: isDesktop ? "fade" : "slide",
+      fadeEffect: { crossFade: true },
+      speed: 450,
+      // Управление
+      navigation: isDesktop
+        ? {
+            nextEl: ".reviews__arrow--next",
+            prevEl: ".reviews__arrow--prev"
+          }
+        : {},
+      pagination: !isDesktop
+        ? { el: ".reviews__pagination", clickable: true }
+        : false,
+      // Производительность
+      preloadImages: true,
+      lazy: { loadPrevNext: true },
+      // Доступность по умолчанию (можно расширить при необходимости)
+      a11y: {
+        enabled: true,
+        prevSlideMessage: "Предыдущий отзыв",
+        nextSlideMessage: "Следующий отзыв",
+        slideLabelMessage: "Отзыв {{index}} из {{slidesLength}}"
       }
-    },
-    // Плавные переходы
-    effect: "slide",
-    speed: 600,
-    // Предзагрузка следующего слайда
-    preloadImages: true,
-    // Ленивая загрузка изображений
-    lazy: {
-      loadPrevNext: true
+    };
+  };
+
+  let reviewsSwiper = new Swiper(".reviews__swiper", makeConfig());
+
+  // Пересоздаем слайдер при смене брейкпоинта, чтобы обновить эффект
+  mqlDesktop.addEventListener("change", () => {
+    if (reviewsSwiper && reviewsSwiper.destroy) {
+      reviewsSwiper.destroy(true, true);
     }
+    reviewsSwiper = new Swiper(".reviews__swiper", makeConfig());
   });
 
   // Добавляем обработчики для клавиатуры
@@ -53,7 +52,4 @@ document.addEventListener("DOMContentLoaded", () => {
       reviewsSwiper.slideNext();
     }
   });
-
-  // Запускаем слайдер
-  reviewsSwiper.init();
 });
