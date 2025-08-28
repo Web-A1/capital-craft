@@ -1,9 +1,9 @@
 <?php
 require __DIR__ . "/../../data/reviews_data.php"; ?>
 
-<section class="reviews frame section-with-divider">
+<section class="reviews frame section-with-divider" aria-labelledby="reviews-title">
     <div class="container reviews__inner">
-<h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
+<h2 class="reviews__subtitle" id="reviews-title">Отзывы наших клиентов</h2>
 
         <!-- Новый контейнер для слайдера и стрелок -->
         <div class="reviews__slider-container">
@@ -20,18 +20,20 @@ require __DIR__ . "/../../data/reviews_data.php"; ?>
                 <div class="swiper-wrapper">
                     <?php foreach ($reviews_data as $review): ?>
                         <div class="reviews__slide swiper-slide">
-                            <!-- Упрощенная структура слайда -->
-                            <blockquote class="reviews__quote-text">
-                                <?= htmlspecialchars($review["text"], ENT_QUOTES, "UTF-8") ?>
-                            </blockquote>
-                            <div class="reviews__signature">
-                                <cite class="reviews__author-name">
-                                    <?= htmlspecialchars($review["author"], ENT_QUOTES, "UTF-8") ?>
-                                </cite>
-                                <div class="reviews__company-name">
-                                    <?= htmlspecialchars($review["company"], ENT_QUOTES, "UTF-8") ?>
-                                </div>
-                            </div>
+                            <!-- Семантическая структура: figure > blockquote + figcaption -->
+                            <figure class="reviews__figure">
+                                <blockquote class="reviews__quote-text">
+                                    <?= htmlspecialchars($review["text"], ENT_QUOTES, "UTF-8") ?>
+                                </blockquote>
+                                <figcaption class="reviews__signature">
+                                    <span class="reviews__author-name">
+                                        <?= htmlspecialchars($review["author"], ENT_QUOTES, "UTF-8") ?>
+                                    </span>
+                                    <span class="reviews__company-name">
+                                        <?= htmlspecialchars($review["company"], ENT_QUOTES, "UTF-8") ?>
+                                    </span>
+                                </figcaption>
+                            </figure>
                         </div>
                     <?php endforeach; ?>
                 </div>
