@@ -3,10 +3,9 @@ require __DIR__ . "/../../data/reviews_data.php"; ?>
 
 <section class="reviews frame section-with-divider">
     <div class="container reviews__inner">
+        <h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
 
-<h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
-        
-        <!-- тест_Новый контейнер для слайдера и стрелок -->
+        <!-- Новый контейнер для слайдера и стрелок -->
         <div class="reviews__slider-container">
             <!-- Левая стрелка - вынесена на уровень выше -->
             <button class="reviews__arrow reviews__arrow--prev" type="button" aria-label="Предыдущий отзыв">
@@ -80,5 +79,6 @@ echo json_encode(
     JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT,
 );
 echo "</script>";
+
 
 ?>
