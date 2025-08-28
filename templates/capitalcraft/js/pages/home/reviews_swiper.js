@@ -114,10 +114,13 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       on: {
         init(swiper) {
-          runReveal(swiper);
+          setTimeout(() => playSequence(swiper), 50);
         },
-        slideChangeTransitionStart(swiper) {
-          runReveal(swiper);
+        slideChangeTransitionStart() {
+          stopTyping();
+        },
+        slideChangeTransitionEnd(swiper) {
+          playSequence(swiper);
         }
       }
     };
