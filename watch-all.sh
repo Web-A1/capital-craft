@@ -122,13 +122,12 @@ handle_less() {
 handle_js() {
     local file="$1"
     
-    # Проверяем, действительно ли файл изменился
-    if ! has_git_changes "$file"; then
-        echo "JS файл не изменился: $file (пропускаю)"
-        return
+    # Не полагаемся только на git-status: событие chokidar уже сигнализирует об изменении.
+    if has_git_changes "$file"; then
+        echo "Изменен JS файл: $file"
+    else
+        echo "Получено событие изменения JS, но git чистый: $file (форматирую и пересобираю всё равно)"
     fi
-    
-    echo "Изменен JS файл: $file"
     echo "Запускаю форматирование..."
     
     # 1. Форматируем JavaScript код
@@ -209,6 +208,17 @@ execute_final_actions() {
     local message=""
     local actions=()
     local changed_file=""
+    
+    # Блокировка, чтобы не запускать несколько add/commit/pull/push параллельно
+    if [[ -f "$COMMIT_LOCK_FILE" ]]; then
+        echo "Коммит уже выполняется другим процессом, пропускаю этот цикл..."
+        return
+    fi
+    # Пытаемся создать lock атомарно
+    if ! ( set -o noclobber; echo $$ > "$COMMIT_LOCK_FILE" ) 2>/dev/null; then
+        echo "Не удалось установить lock на коммит, пропускаю..."
+        return
+    fi
     
     if [ "$LESS_CHANGED" = true ]; then
         actions+=("LESS compilation")
@@ -313,11 +323,18 @@ execute_final_actions() {
             less_list=$(echo "$staged_names" | grep -E '\\.less$' | xargs -I {} basename {} | tr '\n' ' ' || true)
             js_list=$(echo "$staged_names" | grep -E '\\.js$' | xargs -I {} basename {} | tr '\n' ' ' || true)
             php_list=$(echo "$staged_names" | grep -E '\\.php$' | xargs -I {} basename {} | tr '\n' ' ' || true)
-            local parts=()
-            [[ -n "$less_list" ]] && parts+=("LESS: ${less_list}")
-            [[ -n "$js_list" ]] && parts+=("JS: ${js_list}")
-            [[ -n "$php_list" ]] && parts+=("PHP: ${php_list}")
-            local subj=$(IFS=" | "; echo "${parts[*]}")
+            local subj=""
+            if [[ -n "$less_list" ]]; then
+              subj="LESS: ${less_list}"
+            fi
+            if [[ -n "$js_list" ]]; then
+              if [[ -n "$subj" ]]; then subj+=" | "; fi
+              subj+="JS: ${js_list}"
+            fi
+            if [[ -n "$php_list" ]]; then
+              if [[ -n "$subj" ]]; then subj+=" | "; fi
+              subj+="PHP: ${php_list}"
+            fi
             echo "$subj"
         }
 
@@ -372,6 +389,9 @@ execute_final_actions() {
         # Очищаем список обработанных файлов
         PROCESSED_FILES=""
         echo "Очистил список обработанных файлов"
+        rm -f "$COMMIT_LOCK_FILE" 2>/dev/null || true
+    else
+        echo "Нет изменений — пропускаю финальные действия"
         rm -f "$COMMIT_LOCK_FILE" 2>/dev/null || true
     fi
 }

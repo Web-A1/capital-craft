@@ -20,7 +20,8 @@
     "format:less:check": "prettier --check \"**/*.less\"",
     "format:php": "vendor/bin/php-cs-fixer fix",
     "format:php:check": "vendor/bin/php-cs-fixer fix --dry-run --diff",
-    "format:php:dry": "vendor/bin/php-cs-fixer fix --dry-run"
+    "format:php:dry": "vendor/bin/php-cs-fixer fix --dry-run",
+    "format:php-html": "node scripts/format-php-html.js"
   },
   "dependencies": {
     "esbuild": "^0.25.9",
