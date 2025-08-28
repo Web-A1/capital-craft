@@ -30,6 +30,10 @@ PHP_CHANGED=false
 SYSTEM_CHANGED=false
 # Флаг: был ли выполнен пересбор всех less (по триггеру общих partial-ов)
 LESS_ALL_BUILT=false
+# Lock для исключения параллельных коммитов
+COMMIT_LOCK_FILE=".git/.watch_commit_lock"
+# Короткий разделитель для финального блока
+SEPARATOR='━━━━━━━━━━━━━━━━━━━━━'
 
 # Защита от повторной обработки одного файла в рамках одного цикла
 PROCESSED_FILES=""
@@ -232,82 +236,16 @@ execute_final_actions() {
         # Автоматически коммитим и пушим изменения
         echo "Автоматически коммичу и пушу изменения..."
         
-        # Создаем информативное сообщение коммита для всех типов файлов
-        local commit_message=""
-        local all_files=""
-        
-        if [[ "$LESS_CHANGED" == true ]]; then
-            local less_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | sed 's/.*\///' | tr '\n' ' ')
-            if [[ -n "$less_files" ]]; then
-                all_files+="LESS: $less_files "
-            fi
-        fi
-        
-        if [[ "$JS_CHANGED" == true ]]; then
-            local js_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | sed 's/.*\///' | tr '\n' ' ')
-            if [[ -n "$js_files" ]]; then
-                all_files+="JS: $js_files "
-            fi
-        fi
-        
-        if [[ "$PHP_CHANGED" == true ]]; then
-            local php_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | sed 's/.*\///' | tr '\n' ' ')
-            if [[ -n "$php_files" ]]; then
-                all_files+="PHP: $php_files "
-            fi
-        fi
-        
-        # Добавляем системные файлы
-        local system_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E '(watch-all\.sh|package\.json|\.prettierrc|\.php-cs-fixer\.php|robots\.txt|\.gitignore|README\.md)' | sed 's/.*\///' | tr '\n' ' ')
-        if [[ -n "$system_files" ]]; then
-            all_files+="SYSTEM: $system_files "
-        fi
-        
-        commit_message="$all_files"
-        
-        # Добавляем временную метку в формате: время_день/месяц
-        commit_message+=" | $(date +%H:%M:%S_%d/%m)"
-        
-        # Добавляем подробную информацию об изменениях по каждому файлу
-        build_lines_block() {
-            local type_label="$1"   # LESS | JS | PHP
-            local pattern="$2"      # \\.less$ | \\.js$ | \\.php$
-            local entries=""
-            while IFS= read -r f; do
-                [[ -z "$f" ]] && continue
-                local name_only=$(basename "$f")
-                if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
-                    local lines=$(git diff --unified=0 -- "$f" | grep '^@@' | sed 's/^@@ -[0-9,]* +\([0-9,]*\) @@.*/\1/' | tr '\n' ' ')
-                    if [[ -n "$lines" ]]; then
-                        entries+="$type_label $name_only: $lines; "
-                    fi
-                else
-                    entries+="$type_label $name_only: NEW; "
-                fi
-            done < <(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E "$pattern")
-            echo "$entries"
-        }
-
-        local all_changes=""
-        [[ "$LESS_CHANGED" == true ]] && all_changes+=$(build_lines_block "LESS" "\\.less$")
-        [[ "$JS_CHANGED" == true ]] && all_changes+=$(build_lines_block "JS" "\\.js$")
-        [[ "$PHP_CHANGED" == true ]] && all_changes+=$(build_lines_block "PHP" "\\.php$")
-
-        if [[ -n "$all_changes" ]]; then
-            commit_message+=" | $all_changes"
-        fi
-        
-        echo ""
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "СООБЩЕНИЕ КОММИТА: $commit_message"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo ""
+        # Коммит‑сообщение сформируем позже, уже из реально проиндексированных файлов
         
         # Умно добавляем только нужные файлы вместо git add .
         if [[ "$LESS_CHANGED" == true ]]; then
-            echo "LESS ФАЙЛЫ И CSS:"
-            echo "   └─ Добавляю LESS файлы..."
-            echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' | xargs -I {} git add {}
+            less_to_add=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.less$' || true)
+            if [[ -n "$less_to_add" ]]; then
+                echo "LESS файлы и CSS:"
+                echo "   └─ Добавляю LESS файлы..."
+                echo "$less_to_add" | xargs -I {} git add {}
+            fi
             
             # Добавляем соответствующие CSS файлы
             if [[ "$LESS_ALL_BUILT" == true ]]; then
@@ -337,34 +275,52 @@ execute_final_actions() {
         fi
         
         if [[ "$JS_CHANGED" == true ]]; then
-            echo "JS ФАЙЛЫ:"
-            echo "   └─ Добавляю JS файлы..."
-            echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' | xargs -I {} git add {}
-            echo "   └─ Добавляю bundle: bundle.js"
-            git add templates/capitalcraft/js/global/bundle.js
-            echo ""
+            js_to_add=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.js$' || true)
+            if [[ -n "$js_to_add" ]]; then
+                echo "JS файлы:"
+                echo "   └─ Добавляю JS файлы..."
+                echo "$js_to_add" | xargs -I {} git add {}
+                echo "   └─ Добавляю bundle: bundle.js"
+                git add templates/capitalcraft/js/global/bundle.js
+                echo ""
+            fi
         fi
         
         if [[ "$PHP_CHANGED" == true ]]; then
-            echo "PHP ФАЙЛЫ:"
-            echo "   └─ Добавляю PHP файлы..."
-            echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' | xargs -I {} git add {}
-            echo ""
+            php_to_add=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep '\.php$' || true)
+            if [[ -n "$php_to_add" ]]; then
+                echo "PHP файлы:"
+                echo "   └─ Добавляю PHP файлы..."
+                echo "$php_to_add" | xargs -I {} git add {}
+                echo ""
+            fi
         fi
         
-        # Добавляем системные файлы
-        local system_files=$(echo "$PROCESSED_FILES" | tr '|' '\n' | grep -E '(watch-all\.sh|package\.json|\.prettierrc|\.php-cs-fixer\.php|robots\.txt|\.gitignore|README\.md)')
-        if [[ -n "$system_files" ]]; then
-            echo "СИСТЕМНЫЕ ФАЙЛЫ:"
-            echo "   └─ Добавляю системные файлы..."
-            echo "$system_files" | xargs -I {} git add {}
-            echo ""
-        fi
-        
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "ВЫПОЛНЯЮ КОММИТ И ПУШ..."
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo ""
+        # Системные файлы не добавляем автоматически, чтобы избежать лишних коммитов
+
+        # Формируем заголовок коммита из реально проиндексированных файлов (staged)
+        build_subject_from_staged() {
+            local staged_names
+            staged_names=$(git diff --cached --name-status | awk '{print $2}')
+            local less_list js_list php_list
+            less_list=$(echo "$staged_names" | grep -E '\\.less$' | xargs -I {} basename {} | tr '\n' ' ' || true)
+            js_list=$(echo "$staged_names" | grep -E '\\.js$' | xargs -I {} basename {} | tr '\n' ' ' || true)
+            php_list=$(echo "$staged_names" | grep -E '\\.php$' | xargs -I {} basename {} | tr '\n' ' ' || true)
+            local parts=()
+            [[ -n "$less_list" ]] && parts+=("LESS: ${less_list}")
+            [[ -n "$js_list" ]] && parts+=("JS: ${js_list}")
+            [[ -n "$php_list" ]] && parts+=("PHP: ${php_list}")
+            local subj=$(IFS=" | "; echo "${parts[*]}")
+            echo "$subj"
+        }
+
+        local commit_message
+        commit_message="$(build_subject_from_staged)"
+        commit_message+=" | $(date +%H:%M\ %d/%m)"
+
+        echo "Коммит: $commit_message"
+
+        echo "выполняю коммит и пуш..."
         
         # Если нечего коммитить (индекс пуст) — пропускаем коммит/пуш
         if git diff --cached --quiet; then
@@ -376,6 +332,7 @@ execute_final_actions() {
             SYSTEM_CHANGED=false
             LESS_ALL_BUILT=false
             PROCESSED_FILES=""
+            rm -f "$COMMIT_LOCK_FILE" 2>/dev/null || true
             return
         fi
 
@@ -383,12 +340,20 @@ execute_final_actions() {
         # Перед пушем подтягиваем изменения с rebase и автосташем, чтобы снизить конфликты
         git -c rebase.autoStash=true pull --rebase origin dev || true
         git push origin dev
+
+        # Единый финальный блок с результатом и содержимым коммита
+        echo "$SEPARATOR"
+        echo "✅  ИЗМЕНЕНИЯ УСПЕШНО ОТПРАВЛЕНЫ В DEV ВЕТКУ"
+        echo ""
+        commit_sha=$(git rev-parse --short HEAD 2>/dev/null || echo "-")
+        commit_subject=$(git log -1 --pretty=%s 2>/dev/null || echo "-")
+        echo "commit: ${commit_sha} — ${commit_subject}"
+        echo ""
+        echo "files:"
+        git show -1 --name-status --pretty=format: HEAD | sed -E 's/^([AMD])\t(.*)$/- \1   \2/'
+        echo "$SEPARATOR"
         
-        echo ""
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo "ИЗМЕНЕНИЯ УСПЕШНО ОТПРАВЛЕНЫ В DEV ВЕТКУ!"
-        echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-        echo ""
+        # удалён старый повторяющийся баннер успеха — используется единый финальный блок выше
         
         # Сбрасываем флаги
         LESS_CHANGED=false
@@ -400,6 +365,7 @@ execute_final_actions() {
         # Очищаем список обработанных файлов
         PROCESSED_FILES=""
         echo "Очистил список обработанных файлов"
+        rm -f "$COMMIT_LOCK_FILE" 2>/dev/null || true
     fi
 }
 
@@ -455,9 +421,8 @@ process_file() {
       handle_php "$file" 
       ;;
     watch-all.sh|package.json|.prettierrc|.php-cs-fixer.php|robots.txt|.gitignore|README.md)
-      echo "Изменён системный файл: $file"
-      # Системные файлы только добавляем в PROCESSED_FILES, без специальной обработки
-      SYSTEM_CHANGED=true
+      echo "Изменён системный файл: $file (не обрабатывается)"
+      return
       ;;
     *)       
       echo "Изменён файл: $file (не обрабатывается)"
@@ -514,7 +479,7 @@ while IFS= read -r line; do
       # Автоматически коммитим и пушим удаление файла
       echo "Автоматически коммичу и пушу удаление файла..."
       git add -A
-      git commit -m "DELETE: $(basename "$file") | $(date +%H:%M:%S_%d/%m)"
+      git commit -m "DELETE: $(basename "$file") | $(date +%H:%M)"
       git -c rebase.autoStash=true pull --rebase origin dev || true
       git push origin dev
       echo "Удаление файла автоматически отправлено в dev ветку!"
@@ -539,13 +504,6 @@ while IFS= read -r line; do
   
 done < <(npx chokidar-cli \
   "templates/capitalcraft/**" \
-  "watch-all.sh" \
-  "package.json" \
-  ".prettierrc" \
-  ".php-cs-fixer.php" \
-  "robots.txt" \
-  ".gitignore" \
-  "README.md" \
   --ignore "**/*.css" \
   --ignore "**/*.map" \
   --ignore "**/*bundle.js" \
