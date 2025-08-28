@@ -288,7 +288,7 @@
     align-items: center;
     text-align: center;
     opacity: 1;
-    transition: opacity 320ms ease;
+    transition: opacity 320ms ease; // базовый переход для мобилки
   }
 
   // Повышаем специфичность для author-name
@@ -309,13 +309,7 @@
   });
   }
 
-  // Подпись: состояния
-  .reviews__signature--hidden {
-    opacity: 0;
-  }
-  .reviews__signature--fadein {
-    opacity: 1;
-  }
+  // Убраны временные классы подписи
 
   // Повышаем специфичность для company-name
   .reviews__swiper
