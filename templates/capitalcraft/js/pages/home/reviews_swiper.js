@@ -1,86 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const mqlDesktop = window.matchMedia("(min-width: 768px)");
-  const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  // Контроллер печати, чтобы прерывать при смене слайда
-  let typingState = { raf: null, running: false };
-
-  const stopTyping = () => {
-    if (typingState.raf) cancelAnimationFrame(typingState.raf);
-    typingState = { raf: null, running: false };
-  };
-
-  const ensureDatasets = (swiper) => {
-    swiper.slides.forEach((slide) => {
-      const q = slide.querySelector(".reviews__quote-text");
-      if (q && !q.dataset.fulltext) {
-        q.dataset.fulltext = q.textContent || "";
-      }
-    });
-  };
-
-  // Последовательность для десктопа: печать текста, затем fade-in подписи
-  const playSequence = (swiper) => {
-    if (!mqlDesktop.matches || prefersReduce.matches) return; // мобайл или reduce motion — без печати
-
-    ensureDatasets(swiper);
-    stopTyping();
-
+  // Помечаем активный слайд классом для CSS-анимаций цитаты/подписи
+  const applySlideAnimations = (swiper) => {
+    if (!mqlDesktop.matches) return; // Анимация только на десктопе
+    swiper.slides.forEach((slide) => slide.classList.remove("reviews__slide--animate"));
     const active = swiper.slides[swiper.activeIndex];
-    if (!active) return;
-    const quote = active.querySelector(".reviews__quote-text");
-    const sign = active.querySelector(".reviews__signature");
-    if (!quote || !sign) return;
-
-    // Прячем подпись
-    sign.classList.add("reviews__signature--hidden");
-
-    // Готовим текст для печати
-    const full = quote.dataset.fulltext || quote.textContent || "";
-    quote.textContent = "";
-
-    const total = full.length;
-    const stepChars = Math.max(2, Math.ceil(total / 60)); // ~до 60 кадров
-    let i = 0;
-
-    const typeStep = () => {
-      typingState.running = true;
-      const next = full.slice(i, i + stepChars);
-      quote.textContent += next;
-      i += stepChars;
-      if (i < total) {
-        typingState.raf = requestAnimationFrame(typeStep);
-      } else {
-        typingState.running = false;
-        // Плавно показываем подпись после печати
-        sign.classList.remove("reviews__signature--hidden");
-        sign.classList.add("reviews__signature--fadein");
-        setTimeout(() => sign.classList.remove("reviews__signature--fadein"), 400);
-      }
-    };
-
-    typingState.raf = requestAnimationFrame(typeStep);
-  };
-  
-  // Desktop-only reveal animation for quote text
-  const runReveal = (swiper) => {
-    if (!mqlDesktop.matches) return;
-    try {
-      swiper.slides.forEach((slide) => {
-        const q = slide.querySelector(".reviews__quote-text");
-        if (q) q.classList.remove("reviews__quote--enter");
-      });
-      const active = swiper.slides[swiper.activeIndex];
-      const qa = active ? active.querySelector(".reviews__quote-text") : null;
-      if (qa) {
-        // restart animation
-        // eslint-disable-next-line no-unused-expressions
-        qa.offsetWidth;
-        qa.classList.add("reviews__quote--enter");
-      }
-    } catch (_) {
-      /* noop */
-    }
+    if (active) active.classList.add("reviews__slide--animate");
   };
 
   const makeConfig = () => {
@@ -114,13 +40,10 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       on: {
         init(swiper) {
-          setTimeout(() => playSequence(swiper), 50);
-        },
-        slideChangeTransitionStart() {
-          stopTyping();
+          applySlideAnimations(swiper);
         },
         slideChangeTransitionEnd(swiper) {
-          playSequence(swiper);
+          applySlideAnimations(swiper);
         }
       }
     };
