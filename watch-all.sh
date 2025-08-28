@@ -165,20 +165,27 @@ handle_php() {
     echo "Изменен PHP файл: $file"
     echo "Запускаю форматирование..."
     
-    # 1. Форматируем PHP код
+    # 0. Проверяем синтаксис PHP (мягко: при ошибке файл пропускаем)
+    if command -v php >/dev/null 2>&1; then
+        if ! php -l "$file" >/dev/null 2>&1; then
+            echo "     Ошибка синтаксиса PHP (php -l). Пропускаю форматирование."
+            return
+        fi
+    fi
+
+    # 1. Форматируем PHP код (PSR-12 и правила)
     echo "   1. PHP CS Fixer..."
     if command -v php-cs-fixer >/dev/null 2>&1; then
-        php-cs-fixer fix "$file" --using-cache=no
+        php-cs-fixer fix "$file"
         echo "     PHP CS Fixer завершен"
     else
         echo "     PHP CS Fixer не найден"
     fi
     
-    # 2. Форматируем HTML код
-    echo "   2. Prettier..."
+    # 2. Приводим PHP+HTML через Prettier с php-плагином
+    echo "   2. Prettier (PHP)..."
     if [ -f "node_modules/.bin/prettier" ]; then
-        # Мягкий режим для PHP-шаблонов: не падаем при ошибке парсера
-        if npx prettier --write "$file"; then
+        if npx prettier --plugin=@prettier/plugin-php --write "$file"; then
             echo "     Prettier завершен"
         else
             echo "     Prettier пропущен (ошибка форматирования PHP)"

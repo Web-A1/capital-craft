@@ -32,10 +32,9 @@
     {
       "files": "*.php",
       "options": {
-        "parser": "html",
+        "parser": "php",
         "tabWidth": 4,
-        "printWidth": 120,
-        "htmlWhitespaceSensitivity": "css"
+        "printWidth": 120
       }
     }
   ]

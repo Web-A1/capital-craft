@@ -23,10 +23,14 @@ return (new PhpCsFixer\Config())
         'no_unused_imports' => true,
         'single_quote' => true,
         'trailing_comma_in_multiline' => true,
-        
+        'indentation_type' => true,
+        'ordered_imports' => true,
+        'no_closing_tag' => true,
+        'line_ending' => true,
+    
         // Специальные правила для HTML в PHP
         'phpdoc_to_comment' => false, // Отключаем для HTML комментариев
     ])
     ->setFinder($finder)
     ->setRiskyAllowed(true)
-    ->setUsingCache(false);
+    ->setUsingCache(true);
