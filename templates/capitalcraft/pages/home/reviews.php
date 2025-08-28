@@ -3,8 +3,7 @@ require __DIR__ . "/../../data/reviews_data.php"; ?>
 
 <section class="reviews frame section-with-divider">
     <div class="container reviews__inner">
-<
-h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
+<h2 class="reviews__subtitle">Отзывы наших клиентов</h2>
 
         <!-- Новый контейнер для слайдера и стрелок -->
         <div class="reviews__slider-container">
