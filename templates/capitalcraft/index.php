@@ -25,6 +25,8 @@ if ($isFaq) {
 
 <head>
 
+  <jdoc:include type="head" />
+
   <?php if ($isHome): ?>
     
     <!-- Open Graph теги для социальных сетей -->
@@ -161,8 +163,6 @@ if ($isFaq) {
 
   <!-- Критические стили -->
   <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
-
-  <jdoc:include type="head" />
 
   <!-- Верификация Яндекс.Вебмастера -->
   <meta name="yandex-verification" content="277972e517ae7eff" />
