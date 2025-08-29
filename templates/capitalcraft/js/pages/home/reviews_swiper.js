@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return {
       slidesPerView: 1,
       loop: true,
-      // Автоподгонка высоты под контент слайда, чтобы исключить лишние отступы
-      autoHeight: true,
+      // Фиксированная высота: зададим вручную по самому высокому слайду
+      autoHeight: false,
       // На десктопе используем исчезновение вместо слайдов
       effect: isDesktop ? "fade" : "slide",
       fadeEffect: { crossFade: true },
@@ -45,6 +45,15 @@ document.addEventListener("DOMContentLoaded", () => {
       on: {
         init(swiper) {
           applySlideAnimations(swiper);
+          // Вычисляем максимальную высоту слайда и фиксируем её
+          setTimeout(() => setFixedHeight(swiper), 0);
+        },
+        resize(swiper) {
+          // Пересчитываем при изменении размера/ориентации
+          setTimeout(() => setFixedHeight(swiper), 0);
+        },
+        imagesReady(swiper) {
+          setTimeout(() => setFixedHeight(swiper), 0);
         },
         slideChangeTransitionEnd(swiper) {
           applySlideAnimations(swiper);
@@ -61,6 +70,8 @@ document.addEventListener("DOMContentLoaded", () => {
       reviewsSwiper.destroy(true, true);
     }
     reviewsSwiper = new Swiper(".reviews__swiper", makeConfig());
+    // После пересоздания фиксируем высоту
+    setTimeout(() => setFixedHeight(reviewsSwiper), 0);
   });
 
   // Добавляем обработчики для клавиатуры
@@ -71,4 +82,25 @@ document.addEventListener("DOMContentLoaded", () => {
       reviewsSwiper.slideNext();
     }
   });
+
+  // Утилита: фиксируем высоту контейнера по самому высокому слайду
+  function setFixedHeight(swiper) {
+    if (!swiper || !swiper.el) return;
+    const root = swiper.el;
+    const slides = root.querySelectorAll('.swiper-slide');
+    let max = 0;
+    slides.forEach(slide => {
+      const content = slide.querySelector('.reviews__figure') || slide;
+      const h = content.getBoundingClientRect().height;
+      if (h > max) max = h;
+    });
+    if (max > 0) {
+      root.style.height = `${Math.ceil(max)}px`;
+    }
+  }
+
+  // Дополнительно ждём загрузки шрифтов (в Safari поддерживается)
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => setFixedHeight(reviewsSwiper));
+  }
 });

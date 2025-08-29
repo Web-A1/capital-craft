@@ -1,7 +1,7 @@
 // out: ../css/critical.css
-@import '_variables.less';
-@import '_header.less';
-@import '_buttons.less';
+@import "_variables.less";
+@import "_header.less";
+@import "_buttons.less";
 
 /* Сброс отступов и box-sizing */
 *,
@@ -22,10 +22,17 @@ body {
 }
 
 /* Предотвращаем авто-масштабирование текста в iOS Safari */
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+}
 
 /* Сброс базовых стилей заголовков */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   padding: 0;
   font-size: inherit;
@@ -91,7 +98,7 @@ section,
 .section-with-divider:not(.site-header) {
   position: relative;
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
