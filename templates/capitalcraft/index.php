@@ -1,28 +1,22 @@
 <?php
-defined('_JEXEC') or die();
+defined("_JEXEC") or die();
 
 // Получаем объект меню и проверяем: активный пункт = главный?
 $app = JFactory::getApplication();
 $menu = $app->getMenu();
 $active = $menu->getActive();
 $isHome = $active == $menu->getDefault();
-$isFaq = $active && $active->alias === 'faq';
+$isFaq = $active && $active->alias === "faq";
 
 $document = JFactory::getDocument();
-$document->addStyleSheet(
-    $this->baseurl . '/templates/capitalcraft/css/base.css',
-);
+$document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css");
 
 if ($isHome) {
-    $document->addStyleSheet(
-        $this->baseurl . '/templates/capitalcraft/css/home.css',
-    );
+    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/home.css");
 }
 
 if ($isFaq) {
-    $document->addStyleSheet(
-        $this->baseurl . '/templates/capitalcraft/css/faq.css',
-    );
+    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/faq.css");
 }
 ?>
 
@@ -31,21 +25,20 @@ if ($isFaq) {
 
 <head>
 
-  <!-- тест SEO мета-теги для главной страницы -->
   <?php if ($isHome): ?>
     
     <!-- Open Graph теги для социальных сетей -->
-    <?php $ogTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, 'UTF-8'); ?>
-    <?php $ogDesc = htmlspecialchars((string) $document->getMetaData('description'), ENT_QUOTES, 'UTF-8'); ?>
+    <?php $ogTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, "UTF-8"); ?>
+    <?php $ogDesc = htmlspecialchars((string) $document->getMetaData("description"), ENT_QUOTES, "UTF-8"); ?>
     <meta property="og:title" content="<?= $ogTitle ?>">
     <?php if (!empty($ogDesc)): ?>
       <meta property="og:description" content="<?= $ogDesc ?>">
     <?php endif; ?>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<?= JURI::root(); ?>">
+    <meta property="og:url" content="<?= JURI::root() ?>">
     <meta property="og:site_name" content="Capital Craft">
     <meta property="og:locale" content="ru_RU">
-    <meta property="og:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta property="og:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Capital Craft — превью">
@@ -56,11 +49,11 @@ if ($isFaq) {
     <?php if (!empty($ogDesc)): ?>
       <meta name="twitter:description" content="<?= $ogDesc ?>">
     <?php endif; ?>
-    <meta name="twitter:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta name="twitter:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
     <meta name="twitter:image:alt" content="Capital Craft — превью">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="<?= JURI::root(); ?>">
+    <link rel="canonical" href="<?= JURI::root() ?>">
     
     <!-- Hreflang для языковой версии -->
     <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
@@ -133,20 +126,20 @@ if ($isFaq) {
       <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
       
       <!-- Canonical URL для FAQ (динамически) -->
-      <link rel="canonical" href="<?= JURI::current(); ?>">
+      <link rel="canonical" href="<?= JURI::current() ?>">
       
       <!-- Open Graph теги для FAQ -->
-      <?php $faqTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, 'UTF-8'); ?>
-      <?php $faqDesc = htmlspecialchars((string) $document->getMetaData('description'), ENT_QUOTES, 'UTF-8'); ?>
+      <?php $faqTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, "UTF-8"); ?>
+      <?php $faqDesc = htmlspecialchars((string) $document->getMetaData("description"), ENT_QUOTES, "UTF-8"); ?>
       <meta property="og:title" content="<?= $faqTitle ?>">
       <?php if (!empty($faqDesc)): ?>
         <meta property="og:description" content="<?= $faqDesc ?>">
       <?php endif; ?>
       <meta property="og:type" content="website">
-      <meta property="og:url" content="<?= JURI::current(); ?>">
+      <meta property="og:url" content="<?= JURI::current() ?>">
       <meta property="og:site_name" content="Capital Craft">
       <meta property="og:locale" content="ru_RU">
-      <meta property="og:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta property="og:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
       <meta property="og:image:width" content="1200">
       <meta property="og:image:height" content="630">
       
@@ -156,7 +149,7 @@ if ($isFaq) {
       <?php if (!empty($faqDesc)): ?>
         <meta name="twitter:description" content="<?= $faqDesc ?>">
       <?php endif; ?>
-      <meta name="twitter:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta name="twitter:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
       
       <!-- Hreflang для FAQ -->
       <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/faq">
@@ -192,9 +185,9 @@ if ($isFaq) {
 <body>
   <div class="page-wrapper">
 
-    <?php include __DIR__ . '/partials/_header.php'; ?>
+    <?php include __DIR__ . "/partials/_header.php"; ?>
 
-    <?php if ($this->countModules('breadcrumbs')): ?>
+    <?php if ($this->countModules("breadcrumbs")): ?>
       <div class="breadcrumbs-wrapper">
         <div class="frame">
           <jdoc:include type="modules" name="breadcrumbs" style="none" />
@@ -203,14 +196,14 @@ if ($isFaq) {
     <?php endif; ?>
 
     <?php if ($isHome): ?>
-      <?php include __DIR__ . '/pages/home/hero.php'; ?>
-      <?php include __DIR__ . '/pages/home/partners.php'; ?>
-      <?php include __DIR__ . '/pages/home/philosophy.php'; ?>
-      <?php include __DIR__ . '/pages/home/team.php'; ?>
-      <?php include __DIR__ . '/pages/home/faq-home.php'; ?>
-      <?php include __DIR__ . '/pages/home/products.php'; ?>
-      <?php include __DIR__ . '/pages/home/show_case.php'; ?>
-      <?php include __DIR__ . '/pages/home/reviews.php'; ?>
+      <?php include __DIR__ . "/pages/home/hero.php"; ?>
+      <?php include __DIR__ . "/pages/home/partners.php"; ?>
+      <?php include __DIR__ . "/pages/home/philosophy.php"; ?>
+      <?php include __DIR__ . "/pages/home/team.php"; ?>
+      <?php include __DIR__ . "/pages/home/faq-home.php"; ?>
+      <?php include __DIR__ . "/pages/home/products.php"; ?>
+      <?php include __DIR__ . "/pages/home/show_case.php"; ?>
+      <?php include __DIR__ . "/pages/home/reviews.php"; ?>
 
     <?php else: ?>
       <main>
@@ -218,8 +211,8 @@ if ($isFaq) {
       </main>
     <?php endif; ?>
 
-    <?php include __DIR__ . '/partials/_footer.php'; ?>
-    <?php include __DIR__ . '/partials/_modal.php'; ?>
+    <?php include __DIR__ . "/partials/_footer.php"; ?>
+    <?php include __DIR__ . "/partials/_modal.php"; ?>
     <div class="container">
       <button class="scroll-top" aria-label="Наверх">
         <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
