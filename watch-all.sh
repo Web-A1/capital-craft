@@ -211,8 +211,14 @@ execute_final_actions() {
     
     # Блокировка, чтобы не запускать несколько add/commit/pull/push параллельно
     if [[ -f "$COMMIT_LOCK_FILE" ]]; then
-        echo "Коммит уже выполняется другим процессом, пропускаю этот цикл..."
-        return
+        existing_pid="$(cat "$COMMIT_LOCK_FILE" 2>/dev/null || echo "")"
+        if [[ -n "$existing_pid" ]] && kill -0 "$existing_pid" 2>/dev/null; then
+            echo "Коммит уже выполняется другим процессом (PID $existing_pid), пропускаю этот цикл..."
+            return
+        else
+            echo "Обнаружен устаревший lock (PID $existing_pid не активен). Удаляю lock и продолжаю..."
+            rm -f "$COMMIT_LOCK_FILE" 2>/dev/null || true
+        fi
     fi
     # Пытаемся создать lock атомарно
     if ! ( set -o noclobber; echo $$ > "$COMMIT_LOCK_FILE" ) 2>/dev/null; then
