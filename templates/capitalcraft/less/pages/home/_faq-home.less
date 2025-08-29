@@ -183,7 +183,10 @@
     }
 
     &--mobile {
+      // Скрываем на десктопах с большей специфичностью,
+      // чтобы перебить глобальный .btn-main { display: inline-flex }
       display: none;
+      .faq-home__btn& { display: none; }
 
       .media(mobile, {
         display: inline-flex;
