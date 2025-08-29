@@ -167,7 +167,7 @@ if ($isFaq) {
   <!-- Верификация Яндекс.Вебмастера -->
   <meta name="yandex-verification" content="277972e517ae7eff" />
   <!-- Адаптивная SVG-фавиконка (переключается через prefers-color-scheme внутри SVG) -->
-  <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon.svg" type="image/svg+xml" sizes="any">
+  <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon.svg?v=2" type="image/svg+xml" sizes="any">
 
   <!-- Apple и mask icon -->
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
