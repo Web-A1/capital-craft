@@ -107,11 +107,8 @@ $this->tableColumnsMultiselect('#articleList');
 
 								<td scope="row">
 									<div class="break-word">
-										<a href="<?= Route::_('index.php?option=com_akeebabackup&task=Profile.edit&id=' . (int) $item->id) ?>"
-										   title="<?=
-             Text::_('JACTION_EDIT')
-             $this->escape($item->description)
-             ?>">
+									<a href="<?= Route::_('index.php?option=com_akeebabackup&task=Profile.edit&id=' . (int) $item->id) ?>"
+										   title="<?= Text::_('JACTION_EDIT') . ' ' . $this->escape($item->description) ?>">
 											<?= $this->escape($item->description) ?>
 										</a>
 										<div class="small">

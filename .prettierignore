@@ -2,6 +2,19 @@
 node_modules/
 vendor/
 
+# Core Joomla and extensions (do not reformat)
+administrator/
+components/
+libraries/
+modules/
+plugins/
+includes/
+installation/
+media/
+api/
+cli/
+templates/system/
+
 # Build outputs
 *.min.js
 *.min.css
