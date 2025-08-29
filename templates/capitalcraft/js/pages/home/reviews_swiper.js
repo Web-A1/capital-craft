@@ -2,9 +2,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const mqlDesktop = window.matchMedia("(min-width: 768px)");
 
   // Помечаем активный слайд классом для CSS-анимаций цитаты/подписи
-  const applySlideAnimations = (swiper) => {
+  const applySlideAnimations = swiper => {
     if (!mqlDesktop.matches) return; // Анимация только на десктопе
-    swiper.slides.forEach((slide) => slide.classList.remove("reviews__slide--animate"));
+    swiper.slides.forEach(slide =>
+      slide.classList.remove("reviews__slide--animate")
+    );
     const active = swiper.slides[swiper.activeIndex];
     if (active) active.classList.add("reviews__slide--animate");
   };
@@ -14,6 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return {
       slidesPerView: 1,
       loop: true,
+      // Автоподгонка высоты под контент слайда, чтобы исключить лишние отступы
+      autoHeight: true,
       // На десктопе используем исчезновение вместо слайдов
       effect: isDesktop ? "fade" : "slide",
       fadeEffect: { crossFade: true },
