@@ -1,8 +1,18 @@
 /**
- * Обрезает описания товаров на мобильных устройствах до трёх строк
- * с добавлением "… read more" и переключением полного текста по клику.
+ * Обрезает описания товаров на мобильных устройствах до трёх/четырёх строк
+ * и позволяет разворачивать/сворачивать по клику.
  */
+
+// Храним обработчики, чтобы не дублировать слушатели и уметь их снимать
+const blockHandlers = new WeakMap();
+
 export function initTextTruncate() {
+  // Если DOM ещё не готов — инициализируем после загрузки
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTextTruncate, { once: true });
+    return;
+  }
+
   if (window.innerWidth > 767) return;
 
   const blocks = document.querySelectorAll('.products__item-description');
@@ -46,16 +56,21 @@ export function initTextTruncate() {
     p.classList.add('truncated');
     block.style.cursor = 'pointer';
 
-    block.addEventListener('click', () => {
-      const collapsed = p.classList.contains('truncated');
-      if (collapsed) {
-        p.textContent = p.dataset.originalText;
-      } else {
-        p.innerHTML = p.dataset.truncatedText + ` … <span class="products__read-more">${suffix}</span>`;
-      }
-      p.classList.toggle('truncated', !collapsed);
-      p.classList.toggle('expanded', collapsed);
-    });
+    // Не добавляем обработчик повторно при реинициализации (resize и т.п.)
+    if (!blockHandlers.has(block)) {
+      const handler = () => {
+        const collapsed = p.classList.contains('truncated');
+        if (collapsed) {
+          p.textContent = p.dataset.originalText;
+        } else {
+          p.innerHTML = p.dataset.truncatedText + ` … <span class="products__read-more">${suffix}</span>`;
+        }
+        p.classList.toggle('truncated', !collapsed);
+        p.classList.toggle('expanded', collapsed);
+      };
+      block.addEventListener('click', handler);
+      blockHandlers.set(block, handler);
+    }
   });
 }
 
@@ -63,6 +78,14 @@ function resetTextTruncate() {
   document.querySelectorAll('.products__item-description').forEach(block => {
     const p = block.querySelector('p');
     if (!p) return;
+
+    // Снимаем обработчик клика, если он был навешан
+    const handler = blockHandlers.get(block);
+    if (handler) {
+      block.removeEventListener('click', handler);
+      blockHandlers.delete(block);
+    }
+
     p.classList.remove('truncated', 'expanded');
     p.textContent = p.dataset.originalText || p.textContent;
     delete p.dataset.originalText;
@@ -81,4 +104,3 @@ window.addEventListener('resize', () => {
 });
 
 export default initTextTruncate;
-
