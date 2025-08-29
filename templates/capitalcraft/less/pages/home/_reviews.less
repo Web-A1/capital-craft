@@ -84,11 +84,12 @@
     width: 100%;
     max-width: 870px;
     flex: 1;
-    height: 190px;
+    // высота управляется содержимым и Swiper autoHeight
+    // оставляем небольшой запас только если понадобится стабильность раскладки
+    // min-height можно настроить под дизайн при необходимости
 
     .media(mobile, {
     max-width: 100%;
-    height: 320px;
   });
   }
 
@@ -99,8 +100,8 @@
     align-items: center;
     gap: 30px; // Отступ между элементами внутри figure (сохраняем для резервного варианта)
     text-align: center;
-    height: 100%; // Занимает всю высоту слайдера
-    justify-content: center; // Центрируем содержимое по вертикали
+    // без фиксированной высоты — слайд растягивается по контенту
+    // при необходимости центрирования используйте внешние отступы
     z-index: 2; // Поверх фоновых кавычек
 
     .media(mobile, {
@@ -117,7 +118,7 @@
     gap: 30px; // Отступ между цитатой и подписью
     text-align: center;
     margin: 0; // Сбрасываем дефолтные отступы figure
-    height: 100%;
+    // высота зависит от контента
 
     .media(mobile, {
     gap: 30px;
@@ -136,14 +137,16 @@
     color: @color-heading;
     text-align: center;
     width: 100%;
-    // Ограничиваем максимальную высоту текста
-    max-height: 135px;
+    // Ограничиваем по количеству строк вместо пикселей
+    display: -webkit-box;
+    -webkit-line-clamp: 6; // десктоп
+    -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0;
 
     .media(mobile, {
     font-size: (@font-size-base * 1.125);
-    max-height: 150px;
+    -webkit-line-clamp: 8; // мобильная версия — можно показать больше строк
   });
   }
 
