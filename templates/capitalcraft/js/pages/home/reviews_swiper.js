@@ -30,7 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         : {},
       pagination: !isDesktop
-        ? { el: ".reviews__pagination", clickable: true }
+        ? {
+            el: ".reviews__pagination",
+            type: "fraction",
+            renderFraction: (currentClass, totalClass) =>
+              `<span class="reviews__pagination-current ${currentClass}"></span>/<span class="reviews__pagination-total ${totalClass}"></span>`
+          }
         : false,
       // Производительность
       preloadImages: true,
@@ -87,10 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function setFixedHeight(swiper) {
     if (!swiper || !swiper.el) return;
     const root = swiper.el;
-    const slides = root.querySelectorAll('.swiper-slide');
+    const slides = root.querySelectorAll(".swiper-slide");
     let max = 0;
     slides.forEach(slide => {
-      const content = slide.querySelector('.reviews__figure') || slide;
+      const content = slide.querySelector(".reviews__figure") || slide;
       const h = content.getBoundingClientRect().height;
       if (h > max) max = h;
     });

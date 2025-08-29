@@ -252,28 +252,26 @@
 
   // Пагинация для мобильных
   &__pagination {
-    // Пагинация теперь вне слайдера - естественно следует за ним
+    // Вынесена за слайдер, показываем на мобиле
     display: none;
     text-align: center;
-    position: static !important; // Убираем абсолютное позиционирование
-    bottom: auto !important; // Убираем bottom от Swiper
-    z-index: auto !important; // Убираем z-index от Swiper
+    position: static !important;
+    bottom: auto !important;
+    z-index: auto !important;
 
-    .media(mobile, {
-    display: block;
-  });
+    .media(mobile, { display: block; });
 
-    .swiper-pagination-bullet {
-      width: 8px;
-      height: 8px;
-      background-color: lighten(@color-text, 40%);
-      opacity: 0.5;
-      transition: all 0.3s ease;
-      margin: 0 4px;
+    // Стиль для дробной пагинации 1/3
+    &.swiper-pagination-fraction {
+      font-family: @font-body;
+      font-size: @font-size-sub;
+      color: lighten(@color-text, 30%);
+      letter-spacing: 0.08em;
+      line-height: 1;
 
-      &-active {
-        opacity: 1;
-        background-color: @color-heading;
+      .swiper-pagination-current,
+      .swiper-pagination-total {
+        color: @color-heading;
       }
     }
   }
