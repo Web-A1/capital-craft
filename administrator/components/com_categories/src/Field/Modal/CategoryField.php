@@ -81,7 +81,7 @@ class CategoryField extends ModalSelectField
         $this->canDo['propagate'] = (string) $this->element['propagate'] == 'true' && \count($languages) > 2;
 
         // Prepare Urls
-        $linkItems = new Uri()->setPath(Uri::base(true) . '/index.php');
+        $linkItems = (new Uri())->setPath(Uri::base(true) . '/index.php');
         $linkItems->setQuery([
             'option' => 'com_categories',
             'view' => 'categories',
@@ -92,7 +92,7 @@ class CategoryField extends ModalSelectField
         ]);
         $linkItem = clone $linkItems;
         $linkItem->setVar('view', 'category');
-        $linkCheckin = new Uri()->setPath(Uri::base(true) . '/index.php');
+        $linkCheckin = (new Uri())->setPath(Uri::base(true) . '/index.php');
         $linkCheckin->setQuery([
             'option' => 'com_categories',
             'task' => 'categories.checkin',

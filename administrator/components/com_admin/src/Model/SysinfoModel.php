@@ -332,7 +332,7 @@ class SysinfoModel extends BaseDatabaseModel
             'phpversion' => PHP_VERSION,
             'server' => $_SERVER['SERVER_SOFTWARE'] ?? getenv('SERVER_SOFTWARE'),
             'sapi_name' => PHP_SAPI,
-            'version' => new Version()->getLongVersion(),
+            'version' => (new Version())->getLongVersion(),
             'compatpluginenabled' => PluginHelper::isEnabled('behaviour', 'compat'),
             'compatpluginparameters' => $this->getCompatPluginParameters(),
             'useragent' => $_SERVER['HTTP_USER_AGENT'] ?? '',

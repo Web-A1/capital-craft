@@ -3,14 +3,17 @@
 # =============================================================================
 # AUTO-MERGE: Автоматический мердж dev в main с разрешением конфликтов
 # =============================================================================
-# Использование: ./auto-merge.sh [--force] [--dry-run]
+# Использование: ./auto-merge.sh [--force] [--dry-run] [--sync-exact]
 # 
 # Опции:
-#   --force     - принудительный мердж (пропустить некоторые проверки)
-#   --dry-run   - только проверка без выполнения мерджа
+#   --force       - принудительный мердж (пропустить некоторые проверки)
+#   --dry-run     - только проверка без выполнения мерджа
+#   --sync-exact  - ЖЁСТКАЯ синхронизация: main станет точной копией dev
 # =============================================================================
 
 set -e  # Остановка при ошибке
+# Лучше поведение пайплайнов и неинициализированных переменных
+set -o pipefail
 
 # =============================================================================
 # КОНФИГУРАЦИЯ
@@ -28,6 +31,7 @@ NC='\033[0m' # No Color
 # Флаги
 FORCE_MERGE=false
 DRY_RUN=false
+SYNC_EXACT=false
 
 # Счетчик проблем
 ISSUES_COUNT=0
@@ -90,8 +94,9 @@ check_current_branch() {
     
     if [ "$CURRENT_BRANCH" != "dev" ]; then
         log_warning "Рекомендуется работать на ветке dev"
-        if [ "$FORCE_MERGE" = false ]; then
-            log_error "Для мерджа необходимо быть на ветке dev"
+        # В режиме точной синхронизации не блокируем запуск
+        if [ "$SYNC_EXACT" = false ] && [ "$FORCE_MERGE" = false ]; then
+            log_error "Для мерджа рекомендуется быть на ветке dev (или используйте --force)"
             add_issue "Неверная ветка для мерджа"
             return 1
         fi
@@ -104,16 +109,8 @@ check_working_tree() {
     if git diff-index --quiet HEAD --; then
         log_success "Рабочее дерево чистое"
     else
-        log_warning "Есть незакоммиченные изменения:"
+        log_warning "Есть незакоммиченные изменения — продолжу, изменения будут временно сохранены в stash при переключении веток"
         git status --porcelain
-        
-        if [ "$FORCE_MERGE" = false ]; then
-            log_error "Закоммитьте изменения перед мерджем или используйте --force"
-            add_issue "Незакоммиченные изменения"
-            return 1
-        else
-            log_warning "Продолжаю мердж с незакоммиченными изменениями (--force)"
-        fi
     fi
 }
 
@@ -187,7 +184,8 @@ check_dev_ahead() {
     if [ "$COMMITS_AHEAD" -gt 0 ]; then
         log_success "Ветка dev опережает main на $COMMITS_AHEAD коммитов"
         log_info "Последние коммиты в dev:"
-        git log --oneline main..dev | head -5
+        # Без пайпа, чтобы избежать проблем с pipefail
+        git log --oneline -n 5 main..dev || true
     elif [ "$COMMITS_BEHIND" -gt 0 ]; then
         log_warning "Ветка dev отстает от main на $COMMITS_BEHIND коммитов"
         log_info "Будет выполнен мердж для синхронизации веток"
@@ -197,6 +195,7 @@ check_dev_ahead() {
         log_info "Мердж будет выполнен для обновления main"
         # Не считаем это проблемой - мердж все равно выполнится
     fi
+    return 0
 }
 
 # Проверка доступности remote репозитория
@@ -246,7 +245,7 @@ resolve_conflicts_automatically() {
     log_merge "Автоматически разрешаю конфликты..."
     
     # Получаем список конфликтующих файлов
-    CONFLICT_FILES=$(git status --porcelain | grep "^UU\|^AA\|^DD" | awk '{print $2}' || true)
+    CONFLICT_FILES=$(git diff --name-only --diff-filter=U || true)
     
     if [ -n "$CONFLICT_FILES" ]; then
         log_info "Конфликтующие файлы:"
@@ -254,15 +253,13 @@ resolve_conflicts_automatically() {
         
         # Для каждого конфликтующего файла выбираем версию из dev
         for file in $CONFLICT_FILES; do
-            if [ -f "$file" ]; then
-                log_info "Разрешаю конфликт в файле: $file"
-                # Выбираем версию из dev (--theirs, так как мы на main и мерджим dev)
-                git checkout --theirs "$file" 2>/dev/null || git checkout HEAD -- "$file" 2>/dev/null
-            fi
+            log_info "Разрешаю конфликт в файле: $file"
+            # Выбираем версию из dev (--theirs, т.к. мы на main и мерджим dev)
+            git checkout --theirs -- "$file" || true
         done
         
         # Добавляем разрешенные файлы
-        git add .
+        git add -A
         log_success "Все конфликты автоматически разрешены"
     else
         log_info "Конфликтующих файлов не обнаружено"
@@ -272,15 +269,34 @@ resolve_conflicts_automatically() {
 # Выполнение мерджа
 perform_merge() {
     log_merge "Переключаюсь на ветку main..."
+    # Перед переключением убедимся, что локальные изменения не помешают
+    STASHED=0
+    if ! git diff-index --quiet HEAD --; then
+        log_warning "Найдены незакоммиченные изменения — временно сохраняю в stash"
+        git stash push -u -m "auto-merge stash $(date)"
+        STASHED=1
+    fi
+
     git checkout main
 
     log_merge "Обновляю main с remote..."
     git pull origin main
 
+    # (Опционально) подтянуть dev, если есть remote/dev
+    if git show-ref --verify --quiet refs/remotes/origin/dev; then
+        log_merge "Обновляю dev с remote..."
+        git checkout dev
+        # Пытаемся fast-forward; если не получается — просто продолжаем с локальным состоянием
+        if ! git pull --ff-only origin dev; then
+            log_warning "Не удалось fast-forward dev, продолжаю с локальной веткой dev"
+        fi
+        git checkout main
+    fi
+
     log_merge "Мерджу dev в main..."
     
     # Пытаемся выполнить мердж
-    if git merge dev --no-ff -m "Merge dev into main - $(date)"; then
+    if git merge dev --no-ff -X theirs -m "Merge dev into main - $(date)"; then
         log_success "Мердж выполнен успешно"
     else
         log_warning "Мердж завершился с конфликтами, разрешаю автоматически..."
@@ -289,7 +305,7 @@ perform_merge() {
         resolve_conflicts_automatically
         
         # Коммитим разрешенные конфликты
-        if git add . && git commit -m "Merge dev into main - конфликты разрешены автоматически - $(date)"; then
+        if git add -A && git commit -m "Merge dev into main - конфликты разрешены автоматически - $(date)"; then
             log_success "Конфликты разрешены и закоммичены"
         else
             log_error "Не удалось закоммитить разрешенные конфликты"
@@ -302,6 +318,12 @@ perform_merge() {
 
     log_merge "Возвращаюсь на ветку dev..."
     git checkout dev
+
+    # Вернуть stash, если был
+    if [ "$STASHED" -eq 1 ]; then
+        log_merge "Возвращаю сохранённые изменения из stash..."
+        git stash pop || log_warning "Не удалось применить stash автоматически, проверьте конфликты"
+    fi
 }
 
 # =============================================================================
@@ -322,9 +344,14 @@ parse_arguments() {
                 log_info "Режим тестирования (--dry-run)"
                 shift
                 ;;
+            --sync-exact)
+                SYNC_EXACT=true
+                log_warning "Включён режим ЖЁСТКОЙ синхронизации: main станет ТОЧНОЙ копией dev (перепишется история main)"
+                shift
+                ;;
             *)
                 log_error "Неизвестный аргумент: $1"
-                echo "Использование: $0 [--force] [--dry-run]"
+                echo "Использование: $0 [--force] [--dry-run] [--sync-exact]"
                 exit 1
                 ;;
         esac
@@ -356,9 +383,14 @@ main() {
         exit 0
     fi
     
-    # Выполнение мерджа
-    log_merge "Начинаю выполнение мерджа..."
-    perform_merge
+    if [ "$SYNC_EXACT" = true ]; then
+        log_merge "Начинаю ЖЁСТКУЮ синхронизацию: main = dev (точная копия) ..."
+        perform_exact_sync
+    else
+        # Обычный мердж с предпочтением dev
+        log_merge "Начинаю выполнение мерджа..."
+        perform_merge
+    fi
     
     # Итоговый результат
     echo ""
@@ -371,6 +403,45 @@ main() {
     echo "  - Возврат на ветку dev"
     echo ""
     log_merge "🚀 Ветка main теперь содержит то же содержимое что и dev!"
+}
+
+# Жёсткая синхронизация main = dev (переписывает историю main)
+perform_exact_sync() {
+    log_merge "Подготавливаю рабочее дерево..."
+    STASHED=0
+    if ! git diff-index --quiet HEAD --; then
+        log_warning "Найдены незакоммиченные изменения — временно сохраняю в stash"
+        git stash push -u -m "auto-merge exact-sync stash $(date)"
+        STASHED=1
+    fi
+
+    log_merge "Переключаюсь на ветку main..."
+    git checkout main
+
+    log_merge "Обновляю информацию о remote..."
+    git fetch origin --prune
+
+    # По желанию можно актуализировать dev, но берём локальный dev как источник правды
+    if git show-ref --verify --quiet refs/heads/dev; then
+        log_info "Источник синхронизации: локальная ветка dev ($(git rev-parse --short dev))"
+    else
+        log_error "Ветка dev не найдена — нечем синхронизировать"
+        return 1
+    fi
+
+    log_merge "Делаю reset --hard main -> dev (точная копия)"
+    git reset --hard dev
+
+    log_merge "Публикую изменения: push --force-with-lease"
+    git push --force-with-lease origin main
+
+    log_merge "Возвращаюсь на ветку dev..."
+    git checkout dev
+
+    if [ "$STASHED" -eq 1 ]; then
+        log_merge "Возвращаю сохранённые изменения из stash..."
+        git stash pop || log_warning "Не удалось применить stash автоматически, проверьте конфликты"
+    fi
 }
 
 # =============================================================================
