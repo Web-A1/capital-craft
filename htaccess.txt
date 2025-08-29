@@ -59,7 +59,12 @@ Options -Indexes
 
 ## These directives are only enabled if the Apache mod_rewrite module is enabled
 <IfModule mod_rewrite.c>
-	RewriteEngine On
+    RewriteEngine On
+
+    # Redirect sitemap.xml to OSMap XML (301)
+    # Note: ensure no physical sitemap.xml file exists in site root
+    RewriteCond %{REQUEST_URI} ^/sitemap\.xml$ [NC]
+    RewriteRule ^sitemap\.xml$ /component/osmap?view=xml&id=1&format=xml [R=301,L]
 
 	## Begin - Rewrite rules to block out some common exploits.
 	# If you experience problems on your site then comment out the operations listed

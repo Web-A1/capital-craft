@@ -39,11 +39,9 @@ if ($isFAQPage) {
         $doc->setTitle($this->item->title . ' - Capital Craft | Инвестиционные решения');
     }
 
-    // Улучшенный description
-    if (!empty($this->item->introtext)) {
-        $description = strip_tags($this->item->introtext);
-        $description = substr($description, 0, 160); // Ограничиваем длину
-        $doc->setDescription($description);
+    // Description берём только из админки (без автогенерации)
+    if (!empty($this->item->metadesc)) {
+        $doc->setDescription($this->item->metadesc);
     }
 
     // Canonical URL
@@ -52,21 +50,45 @@ if ($isFAQPage) {
 
     // Open Graph теги
     $doc->addCustomTag('<meta property="og:title" content="' . htmlspecialchars($this->item->title, ENT_QUOTES, 'UTF-8') . '" />');
-    $doc->addCustomTag('<meta property="og:description" content="' . htmlspecialchars($description, ENT_QUOTES, 'UTF-8') . '" />');
+    $ogDescription = $doc->getMetaData('description');
+    if (!empty($ogDescription)) {
+        $doc->addCustomTag('<meta property="og:description" content="' . htmlspecialchars($ogDescription, ENT_QUOTES, 'UTF-8') . '" />');
+    }
     $doc->addCustomTag('<meta property="og:type" content="article" />');
     $doc->addCustomTag('<meta property="og:url" content="' . $canonical . '" />');
     $doc->addCustomTag('<meta property="og:site_name" content="Capital Craft" />');
     $doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
 
+    // OG image: берём изображение материала, иначе дефолт
+    $ogImage = '';
+    if (!empty($this->item->images)) {
+        $imagesObj = json_decode($this->item->images);
+        if (!empty($imagesObj->image_fulltext)) {
+            $ogImage = $imagesObj->image_fulltext;
+        } elseif (!empty($imagesObj->image_intro)) {
+            $ogImage = $imagesObj->image_intro;
+        }
+    }
+    if (!empty($ogImage)) {
+        if (strpos($ogImage, 'http') !== 0) {
+            $ogImage = JURI::root() . ltrim($ogImage, '/');
+        }
+    } else {
+        $ogImage = JURI::root() . 'templates/capitalcraft/images/og/OG-image.webp';
+    }
+    $doc->addCustomTag('<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') . '" />');
+    $doc->addCustomTag('<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') . '" />');
+
     // Robots meta
     $doc->setMetaData('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
 
     // Структурированные данные для статьи
+    $schemaDescription = $doc->getMetaData('description');
     $articleSchema = [
         '@context' => 'https://schema.org',
         '@type' => 'Article',
         'headline' => $this->item->title,
-        'description' => $description,
+        'description' => $schemaDescription,
         'url' => $canonical,
         'datePublished' => $this->item->publish_up,
         'dateModified' => $this->item->modified,

@@ -28,3 +28,6 @@ Thumbs.db
 site-*.jpa
 kickstart.php
 /configuration.php
+
+# tooling caches
+/.php-cs-fixer.cache

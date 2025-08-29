@@ -33,30 +33,34 @@ if ($isFaq) {
 
   <!-- тест SEO мета-теги для главной страницы -->
   <?php if ($isHome): ?>
-    <title>Capital Craft - Инвестиционные решения для бизнеса | Привлечение финансирования</title>
-    <meta name="description" content="CAPITAL CRAFT — бутиковое агентство инвестиционных решений. Помогаем компаниям привлечь финансирование, найти стратегии роста и реализовать потенциал. Работаем с банками и лизинговыми компаниями.">
     
     <!-- Open Graph теги для социальных сетей -->
-    <meta property="og:title" content="Capital Craft - Инвестиционные решения для бизнеса">
-    <meta property="og:description" content="Бутиковое агентство инвестиционных решений для привлечения финансирования. Помогаем компаниям найти оптимальные стратегии роста.">
+    <?php $ogTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, 'UTF-8'); ?>
+    <?php $ogDesc = htmlspecialchars((string) $document->getMetaData('description'), ENT_QUOTES, 'UTF-8'); ?>
+    <meta property="og:title" content="<?= $ogTitle ?>">
+    <?php if (!empty($ogDesc)): ?>
+      <meta property="og:description" content="<?= $ogDesc ?>">
+    <?php endif; ?>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://capital-craft.ru/">
+    <meta property="og:url" content="<?= JURI::root(); ?>">
     <meta property="og:site_name" content="Capital Craft">
     <meta property="og:locale" content="ru_RU">
-    <meta property="og:image" content="https://capital-craft.ru/templates/capitalcraft/images/home/sphere.svg">
+    <meta property="og:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="Capital Craft - Инвестиционные решения для бизнеса">
+    <meta property="og:image:alt" content="Capital Craft — превью">
     
     <!-- Twitter Card разметка -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Capital Craft - Инвестиционные решения для бизнеса">
-    <meta name="twitter:description" content="Бутиковое агентство инвестиционных решений для привлечения финансирования">
-    <meta name="twitter:image" content="https://capital-craft.ru/templates/capitalcraft/images/home/sphere.svg">
-    <meta name="twitter:image:alt" content="Capital Craft - Инвестиционные решения для бизнеса">
+    <meta name="twitter:title" content="<?= $ogTitle ?>">
+    <?php if (!empty($ogDesc)): ?>
+      <meta name="twitter:description" content="<?= $ogDesc ?>">
+    <?php endif; ?>
+    <meta name="twitter:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta name="twitter:image:alt" content="Capital Craft — превью">
     
     <!-- Canonical URL -->
-    <link rel="canonical" href="https://capital-craft.ru/">
+    <link rel="canonical" href="<?= JURI::root(); ?>">
     
     <!-- Hreflang для языковой версии -->
     <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
@@ -120,9 +124,7 @@ if ($isFaq) {
     
     <!-- Специальные мета-теги для FAQ страницы -->
     <?php if ($isFaq): ?>
-      <!-- Title и Description для FAQ -->
-      <title>Часто задаваемые вопросы - Capital Craft | Инвестиционные решения</title>
-      <meta name="description" content="Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса. Экспертные консультации от Capital Craft.">
+      <!-- Title и Description берутся из пункта меню/админки -->
       
       <!-- Keywords, Author, Publisher -->
       <meta name="keywords" content="инвестиции, финансирование, капитал, бизнес, лизинг, банки, привлечение средств">
@@ -130,23 +132,31 @@ if ($isFaq) {
       <meta name="publisher" content="Capital Craft">
       <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
       
-      <!-- Canonical URL для FAQ -->
-      <link rel="canonical" href="https://capital-craft.ru/faq">
+      <!-- Canonical URL для FAQ (динамически) -->
+      <link rel="canonical" href="<?= JURI::current(); ?>">
       
       <!-- Open Graph теги для FAQ -->
-      <meta property="og:title" content="FAQ — Часто задаваемые вопросы | Capital Craft">
-      <meta property="og:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях">
+      <?php $faqTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, 'UTF-8'); ?>
+      <?php $faqDesc = htmlspecialchars((string) $document->getMetaData('description'), ENT_QUOTES, 'UTF-8'); ?>
+      <meta property="og:title" content="<?= $faqTitle ?>">
+      <?php if (!empty($faqDesc)): ?>
+        <meta property="og:description" content="<?= $faqDesc ?>">
+      <?php endif; ?>
       <meta property="og:type" content="website">
-      <meta property="og:url" content="https://capital-craft.ru/faq">
+      <meta property="og:url" content="<?= JURI::current(); ?>">
       <meta property="og:site_name" content="Capital Craft">
       <meta property="og:locale" content="ru_RU">
-      <meta property="og:image" content="https://capital-craft.ru/templates/capitalcraft/images/faq/faq_hand.webp">
+      <meta property="og:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta property="og:image:width" content="1200">
+      <meta property="og:image:height" content="630">
       
       <!-- Twitter Card для FAQ -->
       <meta name="twitter:card" content="summary_large_image">
-      <meta name="twitter:title" content="FAQ — Часто задаваемые вопросы | Capital Craft">
-      <meta name="twitter:description" content="Ответы на популярные вопросы о привлечении капитала и инвестициях">
-      <meta name="twitter:image" content="https://capital-craft.ru/templates/capitalcraft/images/faq/faq_hand.webp">
+      <meta name="twitter:title" content="<?= $faqTitle ?>">
+      <?php if (!empty($faqDesc)): ?>
+        <meta name="twitter:description" content="<?= $faqDesc ?>">
+      <?php endif; ?>
+      <meta name="twitter:image" content="<?= JURI::root(); ?>templates/capitalcraft/images/og/OG-image.webp">
       
       <!-- Hreflang для FAQ -->
       <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/faq">

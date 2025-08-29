@@ -100,6 +100,14 @@ Options -Indexes
 	# www redirect (or vice versa), place that code here. Ensure those
 	# redirects use the correct RewriteRule syntax and the [R=301,L] flags.
 	#
+	# Force HTTPS for primary domain
+	RewriteCond %{HTTPS} off
+	RewriteCond %{HTTP_HOST} ^(www\.)?capital-craft\.ru$ [NC]
+	RewriteRule ^ https://capital-craft.ru%{REQUEST_URI} [L,R=301]
+
+	# Redirect sitemap.xml to OSMap XML (301)
+	RewriteCond %{REQUEST_URI} ^/sitemap\.xml$ [NC]
+	RewriteRule ^sitemap\.xml$ /component/osmap?view=xml&id=1&format=xml [R=301,L]
 	## End - Custom redirects
 
 	##
