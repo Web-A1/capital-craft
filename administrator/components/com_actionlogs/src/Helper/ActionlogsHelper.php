@@ -75,7 +75,7 @@ class ActionlogsHelper
                 'id' => $log->id,
                 'message' => self::escapeCsvFormula(strip_tags(static::getHumanReadableLogMessage($log, false))),
                 'extension' => self::escapeCsvFormula(Text::_($extension)),
-                'date' => new Date($log->log_date, new \DateTimeZone('UTC'))->format('Y-m-d H:i:s T'),
+                'date' => (new Date($log->log_date, new \DateTimeZone('UTC')))->format('Y-m-d H:i:s T'),
                 'name' => self::escapeCsvFormula($log->name),
                 'ip_address' => self::escapeCsvFormula(
                     $log->ip_address === 'COM_ACTIONLOGS_DISABLED' ? $disabledText : $log->ip_address,
@@ -357,3 +357,4 @@ class ActionlogsHelper
         return $value;
     }
 }
+

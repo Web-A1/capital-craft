@@ -441,7 +441,7 @@ class Joomla extends BasePlatform
      */
     public function get_timestamp_database($date = 'now')
     {
-        return new Date($date)->toSql();
+        return (new Date($date))->toSql();
     }
 
     /**
