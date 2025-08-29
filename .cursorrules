@@ -23,7 +23,7 @@ stack = "Joomla 5.3.2, PHP 8.3+, Less, native JavaScript, esbuild build scripts"
 build_commands = [
   "npm run less:all  # compile all Less to CSS",
   "npm run js:build  # rebuild global JavaScript bundle",
-  "npm run build     # full production build (less + js + sitemap)",
+  "npm run build     # full production build (less + js)",
   "npm run watch:all # watch for changes during development"
 ]
 
@@ -76,3 +76,24 @@ build_commands = [
 - When performing any git reset, rollback, or branch switch, always preserve the file `.cursorrules`.
 - If rolling back to a previous commit, first stash or save `.cursorrules`, then restore it after the reset.
 - Never delete or overwrite `.cursorrules` unless explicitly instructed.
+
+[dev_workflow]
+# Agreed default flow for tasks executed by Codex
+mode = "task-end-push"          # every task ends with push
+branch = "dev"                  # target branch
+watcher = false                  # do not use watch-all.sh by default
+auto_commit = true               # Codex commits changes itself
+auto_push = true                 # Codex pushes to dev when task is done
+commit_style = "conventional"   # e.g. fix(styles): message
+commit_scopes = ["styles","js","php","build","docs"]
+
+# Build behavior
+build_strategy = "targeted"     # compile only what changed
+less_targets = ["base","critical","home","faq"]
+js_bundle = "templates/capitalcraft/js/global/bundle.js"
+css_outputs = [
+  "templates/capitalcraft/css/base.css",
+  "templates/capitalcraft/css/critical.css",
+  "templates/capitalcraft/css/home.css",
+  "templates/capitalcraft/css/faq.css"
+]

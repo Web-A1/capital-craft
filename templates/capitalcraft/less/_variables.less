@@ -45,6 +45,16 @@
   }
 }
 
+// Единый стиль подзаголовка (визуально),
+// который семантически является главным заголовком
+.subtitle() {
+  color: lighten(@color-text, 20%);
+  font-family: @font-body;
+  font-size: @font-size-sub;
+  letter-spacing: 0.175em;
+  text-transform: uppercase;
+}
+
 //Инверсия svg
 .invertable-icon(@size: 40px) {
   display: inline-flex;
