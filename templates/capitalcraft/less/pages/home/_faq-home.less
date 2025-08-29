@@ -171,25 +171,19 @@
 
   &__btn {
     &--desktop {
-      // position: absolute; // убираем, используем flexbox
-      // bottom: 0; // убираем
-      // left: 0; // убираем
-      // z-index: 10; // убираем
-
+      // Перебиваем глобальный .btn-main на мобильных
       .media(mobile, {
-        display: none;
+        .faq-home__btn& { display: none; }
         position: static; // убираем абсолютное позиционирование для мобильной версии
       });
     }
 
     &--mobile {
-      // Скрываем на десктопах с большей специфичностью,
-      // чтобы перебить глобальный .btn-main { display: inline-flex }
-      display: none;
+      // Десктоп: скрыть, перебивая глобальный .btn-main
       .faq-home__btn& { display: none; }
-
+      // Мобильные: показать тем же уровнем специфичности
       .media(mobile, {
-        display: inline-flex;
+        .faq-home__btn& { display: inline-flex; }
       });
     }
   }
