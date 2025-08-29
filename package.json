@@ -10,7 +10,7 @@
     "less:all": "npm-run-all less:base less:critical less:home less:faq",
     "js:build": "esbuild templates/capitalcraft/js/global/script.js --bundle --format=esm --minify --target=es2019 --outfile=templates/capitalcraft/js/global/bundle.js",
     "sitemap": "node scripts/generate-sitemap.js",
-    "build": "npm run less:all && npm run js:build",
+    "build": "npm run less:all && npm run js:build && npm run sitemap",
     "watch:all": "./watch-all.sh",
     "push:dev": "git add . && git commit -m \"Ready changes $(date +%Y-%m-%d_%H:%M:%S)\" && git push origin dev",
     "status": "git status --porcelain",
