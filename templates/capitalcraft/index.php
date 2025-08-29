@@ -55,13 +55,12 @@ if ($isFaq) {
     <!-- Canonical URL -->
     <link rel="canonical" href="<?= JURI::root() ?>">
     
-    <!-- Hreflang для языковой версии -->
+    <!-- Hreflang для языковой версии (только для главной) -->
     <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
     <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/">
     
     <!-- Мета-теги для поисковых роботов -->
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="revisit-after" content="7 days">
     
     <!-- Дополнительные SEO мета-теги для главной страницы -->
     <meta name="keywords" content="инвестиционные решения, привлечение финансирования, капитал, бизнес, лизинг, банки, инвестиции, финансирование, рост бизнеса, стратегия развития">
@@ -111,9 +110,7 @@ if ($isFaq) {
     <meta property="og:locale" content="ru_RU">
     <meta property="og:type" content="website">
     
-    <!-- Hreflang для языковой версии -->
-    <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
-    <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/">
+    <!-- Hreflang на уровне остальных страниц не задаём глобально -->
     
     <!-- Специальные мета-теги для FAQ страницы -->
     <?php if ($isFaq): ?>
