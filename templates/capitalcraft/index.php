@@ -168,10 +168,19 @@ if ($isFaq) {
   <meta name="yandex-verification" content="277972e517ae7eff" />
   <!-- Адаптивная SVG-фавиконка (переключается через prefers-color-scheme внутри SVG) -->
   <link rel="icon" href="<?php echo $this->baseurl; ?>/favicon.svg?v=2" type="image/svg+xml" sizes="any">
+  <!-- PNG fallback для поисковиков/старых клиентов -->
+  <link rel="icon" type="image/png" sizes="32x32" href="<?php echo $this->baseurl; ?>/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="<?php echo $this->baseurl; ?>/favicon-16.png">
+  <!-- PWA манифест -->
+  <link rel="manifest" href="<?php echo $this->baseurl; ?>/site.webmanifest">
 
   <!-- Apple и mask icon -->
   <link rel="apple-touch-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/apple-touch-icon.png">
   <link rel="mask-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon_black.svg" color="#000">
+
+  <!-- Цвет оболочки браузера -->
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
