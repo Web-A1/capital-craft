@@ -135,6 +135,7 @@
     // Ограничиваем по количеству строк вместо пикселей
     display: -webkit-box;
     -webkit-line-clamp: 6; // десктоп
+    line-clamp: 6; // стандартное свойство для совместимости
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0;
@@ -142,6 +143,7 @@
     .media(mobile, {
     font-size: (@font-size-base * 1.125);
     -webkit-line-clamp: 8; // мобильная версия — можно показать больше строк
+    line-clamp: 8; // стандартное свойство для совместимости
   });
   }
 
