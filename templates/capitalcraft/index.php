@@ -12,7 +12,8 @@ $active = $menu->getActive();
 // Главная страница: активный пункт помечен как домашний.
 // Исключение: прямой просмотр статьи без Itemid (non‑SEF) — option=com_content&view=article,
 // в этом случае Joomla тоже активирует главную, но это не должна быть домашняя вёрстка.
-$isHome = ($active && !empty($active->home));
+$default = $menu->getDefault();
+$isHome  = ($active && $default && ($active->id === $default->id));
 $isDirectArticle = $app->input->getCmd('option') === 'com_content'
     && $app->input->getCmd('view') === 'article'
     && $app->input->getInt('id', 0) > 0;
