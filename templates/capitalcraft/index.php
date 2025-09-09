@@ -7,6 +7,8 @@ $menu = $app->getMenu();
 $active = $menu->getActive();
 $isHome = $active == $menu->getDefault();
 $isFaq = $active && $active->alias === "faq";
+// Блоговые страницы: сам блог, поиск по блогу, страницы тегов
+$isBlog = $active && in_array($active->alias ?? '', ['blog', 'blog-search', 'tags'], true);
 
 $document = JFactory::getDocument();
 $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css");
@@ -17,6 +19,10 @@ if ($isHome) {
 
 if ($isFaq) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/faq.css");
+}
+
+if ($isBlog) {
+    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/blog.css");
 }
 ?>
 
