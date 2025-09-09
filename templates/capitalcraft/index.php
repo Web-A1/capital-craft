@@ -9,7 +9,16 @@ $active = $menu->getActive();
 // Более точное определение главной: активный пункт = дом, и нет параметра option в запросе.
 // Это предотвращает ситуацию, когда при прямых URL без Itemid (например, /component/content/article)
 // Joomla активирует дом как текущий пункт меню, и шаблон ошибочно рендерит главную.
-$isHome = ($active && !empty($active->home) && $app->input->getCmd('option', '') === '');
+// Главная страница: активный пункт помечен как домашний.
+// Исключение: прямой просмотр статьи без Itemid (non‑SEF) — option=com_content&view=article,
+// в этом случае Joomla тоже активирует главную, но это не должна быть домашняя вёрстка.
+$isHome = ($active && !empty($active->home));
+$isDirectArticle = $app->input->getCmd('option') === 'com_content'
+    && $app->input->getCmd('view') === 'article'
+    && $app->input->getInt('id', 0) > 0;
+if ($isDirectArticle) {
+    $isHome = false;
+}
 
 $isFaq = $active && $active->alias === "faq";
 // Блоговые страницы: сам блог, поиск по блогу, страницы тегов
