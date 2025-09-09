@@ -10,8 +10,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 // Prepare category description plugins like core does
 $this->category->text = $this->category->description;
-$this->getCurrentLanguage(); // keep parity with core pipeline
-$app = \JFactory::getApplication();
+$app = JFactory::getApplication();
 $app->triggerEvent('onContentPrepare', [$this->category->extension . '.categories', &$this->category, &$this->params, 0]);
 $this->category->description = $this->category->text;
 
@@ -89,4 +88,3 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
   </div>
 </section>
-
