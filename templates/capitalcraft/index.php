@@ -2,10 +2,15 @@
 defined("_JEXEC") or die();
 
 // Получаем объект меню и проверяем: активный пункт = главный?
-$app = JFactory::getApplication();
-$menu = $app->getMenu();
+$app    = JFactory::getApplication();
+$menu   = $app->getMenu();
 $active = $menu->getActive();
-$isHome = $active == $menu->getDefault();
+
+// Более точное определение главной: активный пункт = дом, и нет параметра option в запросе.
+// Это предотвращает ситуацию, когда при прямых URL без Itemid (например, /component/content/article)
+// Joomla активирует дом как текущий пункт меню, и шаблон ошибочно рендерит главную.
+$isHome = ($active && !empty($active->home) && $app->input->getCmd('option', '') === '');
+
 $isFaq = $active && $active->alias === "faq";
 // Блоговые страницы: сам блог, поиск по блогу, страницы тегов
 $isBlog = $active && in_array($active->alias ?? '', ['blog', 'blog-search', 'tags'], true);
