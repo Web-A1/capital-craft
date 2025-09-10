@@ -1,0 +1,15 @@
+{
+  // VS Code sometimes ругается на Less-миксины вида .media(mobile, { ... });
+  // Отключаем встроенный валидатор для .less в рамках воркспейса,
+  // сборка остаётся через lessc и watch-all.sh
+  "less.validate": false,
+
+  // Форматирование оставляем за Prettier
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+
+  // На всякий случай — трактовать *.less как less
+  "files.associations": {
+    "*.less": "less"
+  }
+}
