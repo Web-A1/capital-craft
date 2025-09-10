@@ -34,7 +34,7 @@ if (empty($this->items)): ?>
         $date = $item->core_created_time ?? ($item->core_publish_up ?? "");
         $excerpt = HTMLHelper::_("string.truncate", strip_tags($item->core_body ?? ""), 350);
         ?>
-      <article class="blog-card">
+      <article class="blog-card" data-href="<?php echo $link; ?>" role="link" tabindex="0">
         <div class="blog-card__grid">
           <div class="blog-card__main">
             <header class="blog-card__header">

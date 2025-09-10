@@ -39,3 +39,19 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
   </div>
 </section>
 
+<script>
+  document.addEventListener('click', function(e) {
+    const tagLink = e.target.closest('.blog-card__tag-link');
+    if (tagLink) return;
+    const card = e.target.closest('.blog-card');
+    if (!card) return;
+    const href = card.dataset.href;
+    if (href) window.location.href = href;
+  });
+  document.addEventListener('keydown', function(e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('blog-card')) {
+      const href = e.target.dataset.href;
+      if (href) { e.preventDefault(); window.location.href = href; }
+    }
+  });
+</script>

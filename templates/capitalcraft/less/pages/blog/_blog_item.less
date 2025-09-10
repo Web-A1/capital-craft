@@ -8,6 +8,16 @@
     0 8px 32px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 12px 40px rgba(0, 0, 0, 0.14),
+      0 6px 22px rgba(0, 0, 0, 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  }
 
   &__title {
     margin: 0 0 8px;
@@ -29,6 +39,9 @@
       color: @color-accent;
     }
   }
+
+  // Title accent on card hover (clickable anywhere)
+  &:hover &__title-link { color: @color-accent; }
 
   &__excerpt {
     color: @color-text;
@@ -90,8 +103,13 @@
     display: block;
     object-fit: cover;
     border-radius: @radius;
+    filter: grayscale(100%);
+    transition: filter .2s ease;
   }
 }
+
+// Remove grayscale on hover
+.blog-card:hover .blog-card__image img { filter: none; }
 
 .blog-card__main {
   min-width: 0;

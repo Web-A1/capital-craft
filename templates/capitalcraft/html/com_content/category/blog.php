@@ -4,6 +4,8 @@ defined('_JEXEC') or die;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
+use Joomla\CMS\Router\Route;
+use Joomla\Component\Content\Site\Helper\RouteHelper as ContentRouteHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var \Joomla\Component\Content\Site\View\Category\HtmlView $this */
@@ -52,7 +54,8 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
     <div class="blog-list">
       <?php if (!empty($this->lead_items)) : ?>
         <?php foreach ($this->lead_items as &$item) : ?>
-          <article class="blog-card blog-card--lead">
+          <?php $cardLink = Route::_(ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language)); ?>
+          <article class="blog-card blog-card--lead" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php $this->item = &$item; echo $this->loadTemplate('item'); ?>
           </article>
         <?php endforeach; ?>
@@ -60,7 +63,8 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
       <?php if (!empty($this->intro_items)) : ?>
         <?php foreach ($this->intro_items as &$item) : ?>
-          <article class="blog-card">
+          <?php $cardLink = Route::_(ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language)); ?>
+          <article class="blog-card" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php $this->item = &$item; echo $this->loadTemplate('item'); ?>
           </article>
         <?php endforeach; ?>
@@ -84,3 +88,20 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
   </div>
 </section>
+
+<script>
+  document.addEventListener('click', function(e) {
+    const tagLink = e.target.closest('.blog-card__tag-link');
+    if (tagLink) return;
+    const card = e.target.closest('.blog-card');
+    if (!card) return;
+    const href = card.dataset.href;
+    if (href) window.location.href = href;
+  });
+  document.addEventListener('keydown', function(e) {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('blog-card')) {
+      const href = e.target.dataset.href;
+      if (href) { e.preventDefault(); window.location.href = href; }
+    }
+  });
+</script>
