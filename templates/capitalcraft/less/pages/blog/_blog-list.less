@@ -73,3 +73,21 @@
     &:hover { color: @color-accent; }
   }
 }
+
+// Grid inside the card: text left, image right
+.blog-card__grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 20px;
+
+  .media(mobile, {
+    grid-template-columns: 1fr;
+  });
+}
+
+.blog-card__image {
+  align-self: start;
+  img { width: 100%; height: auto; display: block; object-fit: cover; border-radius: @radius; }
+}
+
+.blog-card__main { min-width: 0; }

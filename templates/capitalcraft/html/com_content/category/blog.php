@@ -22,15 +22,15 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
     <header class="blog-index__header">
       <?php if ($this->params->get('show_page_heading')) : ?>
-        <p class="blog-index__subtitle" id="blog-subtitle">
+        <h1 class="blog-index__subtitle" id="blog-subtitle">
           <?php echo $this->escape($this->params->get('page_heading')); ?>
-        </p>
+        </h1>
       <?php endif; ?>
 
       <?php if ($this->params->get('show_category_title', 1)) : ?>
-        <<?php echo $htag; ?> class="blog-index__title" id="blog-title">
+        <p class="blog-index__title" id="blog-title">
           <?php echo $this->escape($this->category->title); ?>
-        </<?php echo $htag; ?>>
+        </p>
       <?php endif; ?>
 
       <?php if ($this->params->get('show_cat_tags', 0) && !empty($this->category->tags->itemTags)) : ?>
@@ -45,18 +45,6 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
           <?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
         </div>
       <?php endif; ?>
-      <?php
-      // Build link to Finder page (alias: blog-search) if exists
-      $menu = JFactory::getApplication()->getMenu();
-      $finderItem = $menu->getItems('alias', 'blog-search', true);
-      $blogSearchUrl = $finderItem ? \Joomla\CMS\Router\Route::_('index.php?Itemid=' . (int) $finderItem->id)
-                                   : \Joomla\CMS\Router\Route::_('index.php?option=com_finder&view=search');
-      ?>
-
-      <div class="blog-index__actions">
-        <a class="btn-main" href="<?php echo $blogSearchUrl; ?>">Поиск и фильтры</a>
-      </div>
-
     </header>
 
     <?php if (empty($this->lead_items) && empty($this->intro_items) && empty($this->link_items)) : ?>
