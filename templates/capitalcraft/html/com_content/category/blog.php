@@ -21,17 +21,13 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
   <div class="container">
 
     <header class="blog__header">
-      <?php if ($this->params->get('show_page_heading')) : ?>
-        <h1 class="blog__subtitle" id="blog-subtitle">
-          <?php echo $this->escape($this->params->get('page_heading')); ?>
-        </h1>
-      <?php endif; ?>
+      <h1 class="blog__subtitle" id="blog-subtitle">
+        экспертные статьи и новости рынка финансов
+      </h1>
 
-      <?php if ($this->params->get('show_category_title', 1)) : ?>
-        <p class="blog__title" id="blog-title">
-          <?php echo $this->escape($this->category->title); ?>
-        </p>
-      <?php endif; ?>
+      <p class="blog__title" id="blog-title">
+        Практика привлечения капитала и ключевые события рынка
+      </p>
 
       <?php if ($this->params->get('show_cat_tags', 0) && !empty($this->category->tags->itemTags)) : ?>
         <?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
