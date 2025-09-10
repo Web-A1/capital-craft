@@ -1,0 +1,31 @@
+// out: false
+
+.blog-index {
+  padding: @section-padding 0;
+
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__subtitle {
+    .subtitle();
+    margin: 0 0 6px;
+    text-transform: lowercase;
+  }
+
+  &__title {
+    margin: 0;
+    font-family: @font-title;
+    font-size: @font-size-title;
+  }
+
+  .blog-list {
+    display: grid;
+    gap: 20px;
+  }
+
+  &__actions {
+    margin-top: 16px;
+  }
+}
+
