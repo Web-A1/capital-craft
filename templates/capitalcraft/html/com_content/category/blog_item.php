@@ -31,7 +31,7 @@ $introImgAlt =
 
 // Build excerpt (200 chars, plain text)
 $sourceText = trim(strip_tags($this->item->introtext ?: $this->item->fulltext ?? ""));
-$excerpt = HTMLHelper::_("string.truncate", $sourceText, 250);
+$excerpt = HTMLHelper::_("string.truncate", $sourceText, 300);
 ?>
 
 <div class="blog-card__grid">
@@ -48,10 +48,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 250);
       <?php echo $excerpt; ?>
       <?php if ($params->get("show_readmore") && $this->item->readmore): ?>
         <p class="blog-card__more"><a href="<?php echo $articleLink; ?>"><?php echo HTMLHelper::_(
-    "string.truncate",
-    $params->get("alternative_readmore", JText::_("COM_CONTENT_READ_MORE")) ?: JText::_("COM_CONTENT_READ_MORE"),
-    100,
-); ?></a></p>
+            "string.truncate",
+            $params->get("alternative_readmore", JText::_("COM_CONTENT_READ_MORE")) ?: JText::_("COM_CONTENT_READ_MORE"),
+            100,
+        ); ?></a></p>
       <?php endif; ?>
     </div>
 
@@ -78,10 +78,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 250);
     <figure class="blog-card__image">
       <a href="<?php echo $articleLink; ?>">
         <img src="<?php echo htmlspecialchars($introImg, ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars(
-    $introImgAlt,
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
+            $introImgAlt,
+            ENT_QUOTES,
+            "UTF-8",
+        ); ?>">
       </a>
     </figure>
   <?php endif; ?>
