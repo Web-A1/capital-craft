@@ -31,7 +31,7 @@ $introImgAlt =
 
 // Build excerpt (200 chars, plain text)
 $sourceText = trim(strip_tags($this->item->introtext ?: $this->item->fulltext ?? ""));
-$excerpt = HTMLHelper::_("string.truncate", $sourceText, 300);
+$excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
 ?>
 
 <div class="blog-card__grid">
