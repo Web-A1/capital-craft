@@ -112,15 +112,13 @@ if ($isFAQPage) {
     ?>
     <section class="frame section-with-divider article">
     <div class="container com-content-article item-page<?php echo $this->pageclass_sfx; ?>">
-        <?php if ($this->params->get('show_page_heading')) : ?>
-        <div class="page-header">
-            <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
-        </div>
-        <?php endif; ?>
-        
         <?php if ($this->params->get('show_title')) : ?>
         <div class="page-header">
-            <h2><?php echo $this->escape($this->item->title); ?></h2>
+            <h1><?php echo $this->escape($this->item->title); ?></h1>
+        </div>
+        <?php elseif ($this->params->get('show_page_heading')) : ?>
+        <div class="page-header">
+            <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
         </div>
         <?php endif; ?>
         
