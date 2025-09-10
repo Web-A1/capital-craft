@@ -1,0 +1,42 @@
+// out: false
+
+// Styles affecting single article page when blog.css is loaded
+.com-content-article.item-page {
+  padding: @section-padding 0;
+
+  .page-header {
+    margin-bottom: 16px;
+    h1, h2 {
+      margin: 0;
+      font-family: @font-title;
+      font-size: @font-size-title;
+    }
+  }
+
+  // Meta area (Joomla default list)
+  dl.article-info,
+  .article-info {
+    margin: 8px 0 16px;
+    color: @color-text;
+    dt { display: none; }
+    dd { margin-right: 16px; display: inline-flex; align-items: center; gap: 6px; }
+    time { .subtitle(); }
+  }
+
+  // Article body
+  .com-content-article__body {
+    color: @color-text;
+  }
+
+  // Tags layout
+  ul.tags,
+  .tag-list {
+    display: flex;
+    gap: 8px;
+    list-style: none;
+    margin: 16px 0 0;
+    padding: 0;
+    a { .subtitle(); color: @color-heading; text-decoration: none; &:hover { color: @color-accent; } }
+  }
+}
+
