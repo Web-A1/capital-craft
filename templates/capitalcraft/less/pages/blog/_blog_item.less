@@ -54,9 +54,11 @@
   }
 
   &__tag-link {
-    .subtitle();
-    color: @color-heading;
-    text-decoration: none;
+    color: lighten(@color-text, 20%);
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    font-weight: 400;
+    text-decoration: uppercase;
 
     &:hover {
       color: @color-accent;
