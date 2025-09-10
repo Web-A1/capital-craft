@@ -75,6 +75,9 @@ compile_less_file() {
     elif [[ "$file" == *"/faq.less" || "$file" == *"/pages/faq/"* ]]; then
         echo "    FAQ - компилирую faq.css"
         npm run less:faq
+    elif [[ "$file" == *"/blog.less" || "$file" == *"/pages/blog/"* ]]; then
+        echo "    Блог - компилирую blog.css"
+        npm run less:blog
     elif [[ "$file" == *"/critical.less" ]]; then
         echo "    Критические стили - компилирую critical.css"
         npm run less:critical
