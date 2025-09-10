@@ -279,7 +279,8 @@ execute_final_actions() {
                 git add templates/capitalcraft/css/home.css \
                         templates/capitalcraft/css/base.css \
                         templates/capitalcraft/css/critical.css \
-                        templates/capitalcraft/css/faq.css || true
+                        templates/capitalcraft/css/faq.css \
+                        templates/capitalcraft/css/blog.css || true
             fi
             if echo "$PROCESSED_FILES" | grep -q "pages/home"; then
                 echo "   └─ Добавляю CSS: home.css"
@@ -296,6 +297,10 @@ execute_final_actions() {
             if echo "$PROCESSED_FILES" | grep -q "faq.less"; then
                 echo "   └─ Добавляю CSS: faq.css"
                 git add templates/capitalcraft/css/faq.css
+            fi
+            if echo "$PROCESSED_FILES" | grep -Eq "pages/blog/|/blog.less"; then
+                echo "   └─ Добавляю CSS: blog.css"
+                git add templates/capitalcraft/css/blog.css
             fi
             echo ""
         fi
