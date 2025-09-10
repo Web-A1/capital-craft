@@ -110,7 +110,8 @@ if ($isFAQPage) {
 
     // Стандартная Joomla разметка
     ?>
-    <div class="com-content-article item-page<?php echo $this->pageclass_sfx; ?>">
+    <section class="frame section-with-divider article">
+    <div class="container com-content-article item-page<?php echo $this->pageclass_sfx; ?>">
         <?php if ($this->params->get('show_page_heading')) : ?>
         <div class="page-header">
             <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
@@ -145,10 +146,28 @@ if ($isFAQPage) {
           <?php endif; ?>
         </div>
         
-        <div class="com-content-article__body">
-            <?php echo $this->item->text; ?>
+        <?php
+          // Right-side illustration (from article images)
+          $imagesObj = !empty($this->item->images) ? json_decode($this->item->images) : null;
+          $mainImg    = ($imagesObj && !empty($imagesObj->image_fulltext)) ? $imagesObj->image_fulltext : (($imagesObj && !empty($imagesObj->image_intro)) ? $imagesObj->image_intro : '');
+          $mainAlt    = ($imagesObj && !empty($imagesObj->image_fulltext_alt)) ? $imagesObj->image_fulltext_alt : (($imagesObj && !empty($imagesObj->image_intro_alt)) ? $imagesObj->image_intro_alt : '');
+        ?>
+
+        <div class="article__grid">
+          <div class="article__main">
+            <div class="com-content-article__body">
+              <?php echo $this->item->text; ?>
+            </div>
+          </div>
+
+          <?php if (!empty($mainImg)) : ?>
+            <figure class="article__image">
+              <img src="<?php echo htmlspecialchars($mainImg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, 'UTF-8'); ?>">
+            </figure>
+          <?php endif; ?>
         </div>
     </div>
+    </section>
     <?php
 }
 ?>
