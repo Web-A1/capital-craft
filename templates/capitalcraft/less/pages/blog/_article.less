@@ -5,7 +5,7 @@
   padding: 0 0 @section-padding;
 
   .page-header {
-    max-width: 750px;
+    max-width: 700px;
     h1,
     h2 {
       margin: 0;
@@ -93,7 +93,7 @@
 .article__grid {
   display: grid;
   grid-template-columns: 60% 1fr;
-  gap: 30px;
+  gap: 40px;
   align-items: start;
 
   .media(mobile, {
@@ -115,7 +115,8 @@
 
 // Meta row: align left with 60px gap
 .com-content-article.item-page .blog-card__meta {
-  justify-content: flex-start;
+  max-width: 700px;
+  justify-content: space-between;
   gap: 30px;
   margin: 10px 0 20px;
 }
