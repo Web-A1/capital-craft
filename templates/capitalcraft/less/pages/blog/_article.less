@@ -41,6 +41,15 @@
   .com-content-article__body {
     color: @color-text;
 
+    // Stretch text across width (justify)
+    p {
+      text-align: justify;
+      text-justify: inter-word;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+      hyphens: auto;
+    }
+
     // Normalize lists coming from TinyMCE (Joomla)
     // so that numbers align and inner <p> tags don't add extra gaps
     ol,
@@ -52,6 +61,7 @@
 
     li {
       margin: 0 0 8px;
+      text-align: justify; // list items align to both edges too
     }
 
     // Editors often wrap list items with <p>; remove default p margins
