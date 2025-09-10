@@ -123,6 +123,28 @@ if ($isFAQPage) {
         </div>
         <?php endif; ?>
         
+        <?php
+          // Мета‑строка под заголовком: дата слева — теги справа
+          $dateValue = $this->item->publish_up ?: $this->item->created;
+        ?>
+        <div class="blog-card__meta">
+          <?php if (!empty($dateValue)) : ?>
+            <time class="blog-card__date" datetime="<?php echo JHtml::_('date', $dateValue, 'c'); ?>">
+              <?php echo JHtml::_('date', $dateValue, JText::_('DATE_FORMAT_LC3')); ?>
+            </time>
+          <?php endif; ?>
+
+          <?php if (!empty($this->item->tags->itemTags)) : ?>
+            <ul class="blog-card__tags">
+              <?php foreach ($this->item->tags->itemTags as $tag) : ?>
+                <li class="blog-card__tag">
+                  <a href="<?php echo JRoute::_('index.php?option=com_tags&view=tag&id=' . (int) $tag->tag_id); ?>" class="blog-card__tag-link">#<?php echo $this->escape($tag->title); ?></a>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+        </div>
+        
         <div class="com-content-article__body">
             <?php echo $this->item->text; ?>
         </div>
