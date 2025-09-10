@@ -9,7 +9,9 @@
     0 4px 16px rgba(0, 0, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   cursor: pointer;
-  transition: transform .2s ease, box-shadow .2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
@@ -41,7 +43,9 @@
   }
 
   // Title accent on card hover (clickable anywhere)
-  &:hover &__title-link { color: @color-accent; }
+  &:hover &__title-link {
+    color: @color-accent;
+  }
 
   &__excerpt {
     color: @color-text;
@@ -51,8 +55,8 @@
     margin-top: auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    justify-content: flex-start;
+    gap: 30px;
     flex-wrap: wrap;
   }
 
@@ -104,12 +108,14 @@
     object-fit: cover;
     border-radius: @radius;
     filter: grayscale(100%);
-    transition: filter .2s ease;
+    transition: filter 0.2s ease;
   }
 }
 
 // Remove grayscale on hover
-.blog-card:hover .blog-card__image img { filter: none; }
+.blog-card:hover .blog-card__image img {
+  filter: none;
+}
 
 .blog-card__main {
   min-width: 0;
