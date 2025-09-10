@@ -40,6 +40,24 @@
   // Article body
   .com-content-article__body {
     color: @color-text;
+
+    // Normalize lists coming from TinyMCE (Joomla)
+    // so that numbers align and inner <p> tags don't add extra gaps
+    ol,
+    ul {
+      margin: 0 0 16px;
+      padding-left: 1.5em; // visible indent for multi-line items
+      list-style-position: outside; // wrap lines under text, not under number
+    }
+
+    li {
+      margin: 0 0 8px;
+    }
+
+    // Editors often wrap list items with <p>; remove default p margins
+    li p {
+      margin: 0;
+    }
   }
 
   // Tags layout
