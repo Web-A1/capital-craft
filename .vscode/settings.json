@@ -3,6 +3,8 @@
   // Отключаем встроенный валидатор для .less в рамках воркспейса,
   // сборка остаётся через lessc и watch-all.sh
   "less.validate": false,
+  "css.validate": false,
+  "scss.validate": false,
 
   // Форматирование оставляем за Prettier
   "editor.defaultFormatter": "esbenp.prettier-vscode",
