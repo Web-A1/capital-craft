@@ -17,31 +17,31 @@ $this->category->description = $this->category->text;
 $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 ?>
 
-<section class="frame section-with-divider blog-index" aria-labelledby="blog-title">
+<section class="frame section-with-divider blog" aria-labelledby="blog-title">
   <div class="container">
 
-    <header class="blog-index__header">
+    <header class="blog__header">
       <?php if ($this->params->get('show_page_heading')) : ?>
-        <h1 class="blog-index__subtitle" id="blog-subtitle">
+        <h1 class="blog__subtitle" id="blog-subtitle">
           <?php echo $this->escape($this->params->get('page_heading')); ?>
         </h1>
       <?php endif; ?>
 
       <?php if ($this->params->get('show_category_title', 1)) : ?>
-        <p class="blog-index__title" id="blog-title">
+        <p class="blog__title" id="blog-title">
           <?php echo $this->escape($this->category->title); ?>
         </p>
       <?php endif; ?>
 
       <?php if ($this->params->get('show_cat_tags', 0) && !empty($this->category->tags->itemTags)) : ?>
         <?php $this->category->tagLayout = new FileLayout('joomla.content.tags'); ?>
-        <div class="blog-index__category-tags">
+        <div class="blog__category-tags">
           <?php echo $this->category->tagLayout->render($this->category->tags->itemTags); ?>
         </div>
       <?php endif; ?>
 
       <?php if ($this->params->get('show_description', 0) && $this->category->description) : ?>
-        <div class="blog-index__description">
+        <div class="blog__description">
           <?php echo HTMLHelper::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
         </div>
       <?php endif; ?>
