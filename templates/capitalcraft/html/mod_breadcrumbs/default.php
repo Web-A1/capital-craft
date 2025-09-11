@@ -46,7 +46,15 @@ if ($option === 'com_tags' && $view === 'tag') {
         $q->where($db->quoteName('alias') . ' = ' . $db->quote($alias));
     }
     $db->setQuery($q);
-    $tagTitle = (string) $db->loadResult();
+    $tagTitle = $db->loadResult();
+
+    // Database drivers or extensions may return arrays instead of scalar values.
+    // Normalize the title to string before using it in breadcrumbs.
+    if (is_array($tagTitle)) {
+        $tagTitle = reset($tagTitle) ?: '';
+    } else {
+        $tagTitle = (string) $tagTitle;
+    }
 
     // Fallback: if title not found, try to use the slug/alias from URL
     if ($tagTitle === '' && $idParam !== '') {
@@ -64,10 +72,6 @@ if ($option === 'com_tags' && $view === 'tag') {
     }
     if ($blogItem) {
         $custom[] = (object) ['name' => 'Блог', 'link' => Route::_('index.php?Itemid=' . $blogItem->id)];
-    }
-    if (is_array($tagTitle)) {
-        // Defensive: in case some drivers/extensions return array-like
-        $tagTitle = reset($tagTitle) ?: '';
     }
     if ($tagTitle !== '') {
         $custom[] = (object) ['name' => '#' . htmlspecialchars($tagTitle, ENT_QUOTES, 'UTF-8'), 'link' => ''];
