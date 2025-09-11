@@ -48,6 +48,16 @@ if ($option === 'com_tags' && $view === 'tag') {
     $db->setQuery($q);
     $tagTitle = (string) $db->loadResult();
 
+    // Fallback: if title not found, try to use the slug/alias from URL
+    if ($tagTitle === '' && $idParam !== '') {
+        $slug = $idParam;
+        if (strpos($slug, ':') !== false) {
+            $parts = explode(':', $slug);
+            $slug = end($parts);
+        }
+        $tagTitle = $slug; // will be shown as #slug
+    }
+
     $custom = [];
     if ($home) {
         $custom[] = (object) ['name' => Text::_('MOD_BREADCRUMBS_HOME'), 'link' => Route::_('index.php?Itemid=' . $home->id)];
