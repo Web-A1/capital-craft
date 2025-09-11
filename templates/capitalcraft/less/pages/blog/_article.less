@@ -93,7 +93,7 @@
 .article__grid {
   display: grid;
   grid-template-columns: 60% 1fr;
-  gap: 40px;
+  gap: 60px; // 60px gap between text and image
   align-items: start;
 
   .media(mobile, {
@@ -109,22 +109,7 @@
 .article__side {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  position: relative; // for vertical divider
-
-  // Vertical divider between text and previews (like team__right::before)
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -20px; // center of grid gap (gap = 40px)
-    width: 1px;
-    background-color: @section-divider-color;
-    pointer-events: none;
-
-    .media(mobile, { display: none; });
-  }
+  gap: 60px; // 60px vertical space between image and related block
 }
 
 .article__image img {
@@ -143,7 +128,25 @@
 }
 
 // Related posts block on the right under image
-.article__related { }
+.article__related {
+  position: relative;
+  padding-left: 60px; // 60px gap after the vertical divider
+
+  // Vertical divider only for the related area,
+  // aligned to the left edge of the image (column start)
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0; // exactly at the column edge (image left)
+    width: 1px;
+    background-color: @section-divider-color;
+    pointer-events: none;
+
+    .media(mobile, { display: none; });
+  }
+}
 
 .article__related-title { .subtitle(); margin: 0 0 12px; }
 
