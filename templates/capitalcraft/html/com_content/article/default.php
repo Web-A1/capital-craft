@@ -208,11 +208,41 @@ if ($isFAQPage) {
                     Другие статьи<?php echo $relatedTagTitle ? ' #'.htmlspecialchars($relatedTagTitle, ENT_QUOTES, 'UTF-8') : ''; ?>
                   </div>
                 </div>
+                <?php
+                  // Extend query to get intro/full text for previews
+                  // Re-run query only if items lack excerpt fields
+                  if (!empty($relatedItems)) {
+                    $ids = array_map(function($o){ return (int)$o->id; }, $relatedItems);
+                    $db2 = JFactory::getDbo();
+                    $q2 = $db2->getQuery(true)
+                      ->select('id, introtext, fulltext')
+                      ->from($db2->quoteName('#__content'))
+                      ->where('id IN (' . implode(',', $ids) . ')');
+                    $db2->setQuery($q2);
+                    $textsMap = [];
+                    foreach ((array)$db2->loadObjectList() as $row) {
+                      $textsMap[$row->id] = !empty($row->introtext) ? $row->introtext : $row->fulltext;
+                    }
+                  }
+                ?>
                 <ul class="article__related-list">
                   <?php foreach ($relatedItems as $rel) : ?>
+                    <?php
+                      $raw = isset($textsMap[$rel->id]) ? $textsMap[$rel->id] : '';
+                      $excerpt = '';
+                      if (!empty($raw)) {
+                        $clean = strip_tags($raw);
+                        $excerpt = JHtml::_('string.truncate', $clean, 100, true, false);
+                      }
+                    ?>
                     <li class="article__related-item">
                       <a class="article__related-link" href="<?php echo JRoute::_('index.php?option=com_content&view=article&id=' . (int) $rel->id); ?>">
-                        <?php echo htmlspecialchars($rel->title, ENT_QUOTES, 'UTF-8'); ?>
+                        <div class="article__related-link-title">
+                          <?php echo htmlspecialchars($rel->title, ENT_QUOTES, 'UTF-8'); ?>
+                        </div>
+                        <?php if (!empty($excerpt)) : ?>
+                          <div class="article__related-excerpt"><?php echo htmlspecialchars($excerpt, ENT_QUOTES, 'UTF-8'); ?></div>
+                        <?php endif; ?>
                       </a>
                       <?php if (!empty($rel->publish_up)) : ?>
                         <time class="article__related-date" datetime="<?php echo JHtml::_('date', $rel->publish_up, 'c'); ?>">
