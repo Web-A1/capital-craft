@@ -65,8 +65,12 @@ if ($option === 'com_tags' && $view === 'tag') {
     if ($blogItem) {
         $custom[] = (object) ['name' => 'Блог', 'link' => Route::_('index.php?Itemid=' . $blogItem->id)];
     }
+    if (is_array($tagTitle)) {
+        // Defensive: in case some drivers/extensions return array-like
+        $tagTitle = reset($tagTitle) ?: '';
+    }
     if ($tagTitle !== '') {
-        $custom[] = (object) ['name' => '#' . $tagTitle, 'link' => ''];
+        $custom[] = (object) ['name' => '#' . htmlspecialchars($tagTitle, ENT_QUOTES, 'UTF-8'), 'link' => ''];
     }
 }
 ?>
