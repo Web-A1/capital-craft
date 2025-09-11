@@ -13,11 +13,9 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
 
     <header class="blog__header">
       <div class="blog__subtitle" id="tag-subtitle">Поиск по тегам</div>
-      <?php if ($this->params->get('show_tag_title', 1)) : ?>
-        <<?php echo $htag; ?> class="blog__title" id="tag-title">
-          #<?php echo HTMLHelper::_('content.prepare', $this->tags_title, '', 'com_tags.tag'); ?>
-        </<?php echo $htag; ?>>
-      <?php endif; ?>
+      <<?php echo $htag; ?> class="blog__title" id="tag-title">
+        #<?php echo HTMLHelper::_('content.prepare', $this->tags_title, '', 'com_tags.tag'); ?>
+      </<?php echo $htag; ?>>
     </header>
 
     <?php echo $this->loadTemplate('items'); ?>

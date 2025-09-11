@@ -23,9 +23,18 @@
   }
 
   &__link {
-    .subtitle();
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #ededed;
     color: @color-heading;
     text-decoration: none;
-    &:hover { color: @color-accent; }
+    font-family: @font-body;
+    font-size: @font-size-sub; // 12.8px
+    line-height: 1;
+    transition: background 0.2s ease, color 0.2s ease;
+    &:hover { background: darken(#ededed, 6%); color: @color-accent; }
   }
 }

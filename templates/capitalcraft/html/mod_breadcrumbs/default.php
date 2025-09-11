@@ -23,19 +23,30 @@ if ($option === 'com_tags' && $view === 'tag') {
     $home = $menu->getDefault();
     $blogItem = $menu->getItems('alias', 'blog', true);
 
-    // Resolve current tag title from id param (may be like "12:alias")
-    $idParam = $input->get('id', '', 'STRING');
-    $tagId = (int) explode(':', (string) $idParam)[0];
+    // Resolve current tag title from id param (may be numeric id, "12:alias" or just alias like "tsfa")
+    $idParam = (string) $input->get('id', '', 'STRING');
     $tagTitle = '';
+    $db = Factory::getDbo();
+    $q  = $db->getQuery(true)
+        ->select($db->quoteName('title'))
+        ->from($db->quoteName('#__tags'));
+
+    // Try numeric id first
+    $tagId = (int) explode(':', $idParam)[0];
     if ($tagId > 0) {
-        $db = Factory::getDbo();
-        $q = $db->getQuery(true)
-            ->select($db->quoteName('title'))
-            ->from($db->quoteName('#__tags'))
-            ->where($db->quoteName('id') . ' = ' . (int) $tagId);
-        $db->setQuery($q);
-        $tagTitle = (string) $db->loadResult();
+        $q->where($db->quoteName('id') . ' = ' . (int) $tagId);
+    } else {
+        // Fallback to alias
+        $alias = $idParam;
+        // If it was like "12:alias" but 12 parsed as 0 (unlikely), still try last segment as alias
+        if (strpos($idParam, ':') !== false) {
+            $parts = explode(':', $idParam);
+            $alias = end($parts);
+        }
+        $q->where($db->quoteName('alias') . ' = ' . $db->quote($alias));
     }
+    $db->setQuery($q);
+    $tagTitle = (string) $db->loadResult();
 
     $custom = [];
     if ($home) {
