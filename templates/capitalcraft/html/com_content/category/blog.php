@@ -52,26 +52,25 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
     <?php
     // Build navigation of all available tags
     $db = Joomla\CMS\Factory::getDbo();
-    $q = $db
-        ->getQuery(true)
-        ->select("t.id, t.title")
-        ->from($db->quoteName("#__tags", "t"))
-        ->join(
-            "INNER",
-            $db->quoteName("#__contentitem_tag_map", "m") .
-                " ON m.tag_id = t.id AND m.type_alias = " .
-                $db->quote("com_content.article"),
-        )
-        ->where("t.published = 1")
-        ->group("t.id")
-        ->order("t.title ASC");
-    $db->setQuery($q);
-    $allTags = (array) $db->loadObjectList();
-    ?>
+$q = $db
+    ->getQuery(true)
+    ->select("t.id, t.title")
+    ->from($db->quoteName("#__tags", "t"))
+    ->join(
+        "INNER",
+        $db->quoteName("#__contentitem_tag_map", "m") .
+            " ON m.tag_id = t.id AND m.type_alias = " .
+            $db->quote("com_content.article"),
+    )
+    ->where("t.published = 1")
+    ->group("t.id")
+    ->order("t.title ASC");
+$db->setQuery($q);
+$allTags = (array) $db->loadObjectList();
+?>
 
     <?php if (!empty($allTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
-        <div class="blog__subtitle">Темы</div>
         <ul class="blog-tags__cloud blog-tags__cloud--nowrap">
           <?php foreach ($allTags as $tg): ?>
             <li class="blog-tags__tag">
