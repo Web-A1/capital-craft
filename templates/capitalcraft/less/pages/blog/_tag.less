@@ -2,5 +2,30 @@
 
 .blog-tags {
   padding: @section-padding 0;
-}
 
+  // Use the same spacing as general blog list
+  .blog-list {
+    display: grid;
+    gap: 20px;
+  }
+
+  &__others {
+    margin-top: @section-padding;
+  }
+
+  &__cloud {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  &__link {
+    .subtitle();
+    color: @color-heading;
+    text-decoration: none;
+    &:hover { color: @color-accent; }
+  }
+}

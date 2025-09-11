@@ -12,15 +12,10 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
   <div class="container">
 
     <header class="blog__header">
-      <?php if ($this->params->get('show_page_heading')) : ?>
-        <h1 class="blog__subtitle" id="tag-subtitle">
-          <?php echo $this->escape($this->params->get('page_heading')); ?>
-        </h1>
-      <?php endif; ?>
-
+      <div class="blog__subtitle" id="tag-subtitle">Поиск по тегам</div>
       <?php if ($this->params->get('show_tag_title', 1)) : ?>
         <<?php echo $htag; ?> class="blog__title" id="tag-title">
-          <?php echo HTMLHelper::_('content.prepare', $this->tags_title, '', 'com_tags.tag'); ?>
+          #<?php echo HTMLHelper::_('content.prepare', $this->tags_title, '', 'com_tags.tag'); ?>
         </<?php echo $htag; ?>>
       <?php endif; ?>
     </header>
@@ -34,6 +29,36 @@ $htag = $this->params->get('show_page_heading') ? 'h2' : 'h1';
         <?php endif; ?>
         <div class="blog-pagination__links"><?php echo $this->pagination->getPagesLinks(); ?></div>
       </nav>
+    <?php endif; ?>
+
+    <?php
+      // Other tags block: show all published tags used by articles, except current
+      $db = Joomla\CMS\Factory::getDbo();
+      $idParam = Joomla\CMS\Factory::getApplication()->input->get('id', '', 'STRING');
+      $currentTagId = (int) explode(':', (string) $idParam)[0];
+      $q = $db->getQuery(true)
+        ->select('t.id, t.title')
+        ->from($db->quoteName('#__tags','t'))
+        ->join('INNER', $db->quoteName('#__contentitem_tag_map','m') . ' ON m.tag_id = t.id AND m.type_alias = ' . $db->quote('com_content.article'))
+        ->where('t.published = 1')
+        ->where('t.id != ' . (int) $currentTagId)
+        ->group('t.id')
+        ->order('t.title ASC');
+      $db->setQuery($q);
+      $allTags = (array) $db->loadObjectList();
+    ?>
+
+    <?php if (!empty($allTags)) : ?>
+      <section class="blog-tags__others">
+        <div class="blog__subtitle">Другие теги</div>
+        <ul class="blog-tags__cloud">
+          <?php foreach ($allTags as $tg) : ?>
+            <li class="blog-tags__tag">
+              <a class="blog-tags__link" href="<?php echo JRoute::_('index.php?option=com_tags&view=tag&id=' . (int)$tg->id); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, 'UTF-8'); ?></a>
+            </li>
+          <?php endforeach; ?>
+        </ul>
+      </section>
     <?php endif; ?>
 
   </div>
