@@ -106,6 +106,12 @@
   max-width: none;
 }
 
+.article__side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .article__image img {
   width: 100%;
   height: auto;
@@ -119,4 +125,41 @@
   justify-content: flex-start;
   gap: 30px;
   margin: 10px 0 20px;
+}
+
+// Related posts block on the right under image
+.article__related {
+  padding-left: 16px;
+  border-left: 3px solid @color-heading;
+}
+
+.article__related-title {
+  font-family: @font-title;
+  font-size: 20px;
+  color: @color-heading;
+  margin: 0 0 10px;
+}
+
+.article__related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.article__related-item {
+  display: grid;
+  gap: 6px;
+}
+
+.article__related-link {
+  color: @color-heading;
+  text-decoration: none;
+  &:hover { color: @color-accent; }
+}
+
+.article__related-date {
+  .subtitle();
+  color: @color-text;
 }

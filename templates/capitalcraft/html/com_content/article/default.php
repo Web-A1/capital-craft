@@ -151,6 +151,42 @@ if ($isFAQPage) {
           $mainAlt    = ($imagesObj && !empty($imagesObj->image_fulltext_alt)) ? $imagesObj->image_fulltext_alt : (($imagesObj && !empty($imagesObj->image_intro_alt)) ? $imagesObj->image_intro_alt : '');
         ?>
 
+        <?php
+          // Build related articles by the same tag(s)
+          $relatedItems = [];
+          $relatedTagTitle = '';
+          if (!empty($this->item->tags->itemTags)) {
+            // Collect tag IDs and remember the first tag title for the heading
+            $tagIds = [];
+            foreach ($this->item->tags->itemTags as $tg) {
+              if (!empty($tg->tag_id)) {
+                $tagIds[] = (int) $tg->tag_id;
+              }
+              if ($relatedTagTitle === '' && !empty($tg->title)) {
+                $relatedTagTitle = $tg->title;
+              }
+            }
+
+            if (!empty($tagIds)) {
+              $db = JFactory::getDbo();
+              $query = $db->getQuery(true)
+                ->select('c.id, c.title, c.alias, c.catid, c.publish_up')
+                ->from($db->quoteName('#__content', 'c'))
+                ->join('INNER', $db->quoteName('#__contentitem_tag_map', 'm') .
+                  ' ON ' . $db->quoteName('m.content_item_id') . ' = ' . $db->quoteName('c.id') .
+                  ' AND ' . $db->quoteName('m.type_alias') . ' = ' . $db->quote('com_content.article'))
+                ->where('c.state = 1')
+                ->where('c.id != ' . (int) $this->item->id)
+                ->where('m.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')')
+                ->group($db->quoteName('c.id'))
+                ->order($db->escape('c.publish_up DESC'));
+
+              $db->setQuery($query, 0, 4); // fetch up to 4 small previews
+              $relatedItems = (array) $db->loadObjectList();
+            }
+          }
+        ?>
+
         <div class="article__grid">
           <div class="article__main">
             <div class="com-content-article__body">
@@ -158,11 +194,37 @@ if ($isFAQPage) {
             </div>
           </div>
 
-          <?php if (!empty($mainImg)) : ?>
-            <figure class="article__image">
-              <img src="<?php echo htmlspecialchars($mainImg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, 'UTF-8'); ?>">
-            </figure>
-          <?php endif; ?>
+          <div class="article__side">
+            <?php if (!empty($mainImg)) : ?>
+              <figure class="article__image">
+                <img src="<?php echo htmlspecialchars($mainImg, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, 'UTF-8'); ?>">
+              </figure>
+            <?php endif; ?>
+
+            <?php if (!empty($relatedItems)) : ?>
+              <aside class="article__related">
+                <div class="article__related-header">
+                  <div class="article__related-title">
+                    Другие статьи<?php echo $relatedTagTitle ? ' #'.htmlspecialchars($relatedTagTitle, ENT_QUOTES, 'UTF-8') : ''; ?>
+                  </div>
+                </div>
+                <ul class="article__related-list">
+                  <?php foreach ($relatedItems as $rel) : ?>
+                    <li class="article__related-item">
+                      <a class="article__related-link" href="<?php echo JRoute::_('index.php?option=com_content&view=article&id=' . (int) $rel->id); ?>">
+                        <?php echo htmlspecialchars($rel->title, ENT_QUOTES, 'UTF-8'); ?>
+                      </a>
+                      <?php if (!empty($rel->publish_up)) : ?>
+                        <time class="article__related-date" datetime="<?php echo JHtml::_('date', $rel->publish_up, 'c'); ?>">
+                          <?php echo JHtml::_('date', $rel->publish_up, JText::_('DATE_FORMAT_LC3')); ?>
+                        </time>
+                      <?php endif; ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </aside>
+            <?php endif; ?>
+          </div>
         </div>
     </div>
     </section>
