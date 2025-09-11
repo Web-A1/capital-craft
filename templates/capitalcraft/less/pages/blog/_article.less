@@ -132,6 +132,10 @@
   position: relative;
   padding-left: 60px; // 60px gap after the vertical divider
 
+  .media(mobile, {
+    padding-left: 0;
+  });
+
   // Vertical divider only for the related area,
   // aligned to the left edge of the image (column start)
   &::before {
