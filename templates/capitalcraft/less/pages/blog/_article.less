@@ -135,7 +135,7 @@
   // Vertical divider only for the related area,
   // aligned to the left edge of the image (column start)
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     bottom: 0;
@@ -148,14 +148,17 @@
   }
 }
 
-.article__related-title { .subtitle(); margin: 0 0 12px; }
+.article__related-title {
+  .subtitle();
+  margin: 0 0 12px;
+}
 
 .article__related-list {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  gap: 12px;
+  gap: 25px;
 }
 
 .article__related-item {
@@ -174,7 +177,9 @@
   font-family: @font-body;
 }
 
-.article__related-link:hover .article__related-link-title { color: @color-accent; }
+.article__related-link:hover .article__related-link-title {
+  color: @color-accent;
+}
 
 .article__related-excerpt {
   font-family: @font-body;
