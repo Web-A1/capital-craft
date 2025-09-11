@@ -215,9 +215,13 @@ if ($isFAQPage) {
                     $ids = array_map(function($o){ return (int)$o->id; }, $relatedItems);
                     $db2 = JFactory::getDbo();
                     $q2 = $db2->getQuery(true)
-                      ->select('id, introtext, fulltext')
+                      ->select(
+                        $db2->quoteName('id') . ', ' .
+                        $db2->quoteName('introtext') . ', ' .
+                        $db2->quoteName('fulltext')
+                      )
                       ->from($db2->quoteName('#__content'))
-                      ->where('id IN (' . implode(',', $ids) . ')');
+                      ->where($db2->quoteName('id') . ' IN (' . implode(',', $ids) . ')');
                     $db2->setQuery($q2);
                     $textsMap = [];
                     foreach ((array)$db2->loadObjectList() as $row) {
