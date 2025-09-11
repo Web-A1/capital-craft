@@ -23,6 +23,11 @@
     gap: 8px 12px;
   }
 
+  &__cloud--nowrap {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+
   &__link {
     display: inline-flex;
     align-items: center;
@@ -35,7 +40,12 @@
     font-family: @font-body;
     font-size: @font-size-sub; // 12.8px
     line-height: 1;
-    transition: background 0.2s ease, color 0.2s ease;
-    &:hover { background: darken(#ededed, 6%); color: @color-accent; }
+    transition:
+      background 0.2s ease,
+      color 0.2s ease;
+    &:hover {
+      background: darken(#ededed, 6%);
+      color: @color-accent;
+    }
   }
 }
