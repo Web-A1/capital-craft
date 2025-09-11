@@ -48,13 +48,17 @@ if ($option === 'com_tags' && $view === 'tag') {
     $db->setQuery($q);
     $tagTitle = $db->loadResult();
 
-    // Database drivers or extensions may return arrays instead of scalar values.
-    // Normalize the title to string before using it in breadcrumbs.
-    if (is_array($tagTitle)) {
-        $tagTitle = reset($tagTitle) ?: '';
-    } else {
-        $tagTitle = (string) $tagTitle;
+    // Драйверы базы или нестандартные расширения могут вернуть массивы или
+    // объекты вместо строки. Приводим результат к плоской строке.
+    while (is_array($tagTitle)) {
+        $tagTitle = reset($tagTitle);
     }
+
+    if (is_object($tagTitle)) {
+        $tagTitle = $tagTitle->title ?? $tagTitle->name ?? (string) $tagTitle;
+    }
+
+    $tagTitle = (string) $tagTitle;
 
     // Fallback: if title not found, try to use the slug/alias from URL
     if ($tagTitle === '' && $idParam !== '') {
