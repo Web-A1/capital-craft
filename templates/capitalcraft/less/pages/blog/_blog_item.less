@@ -49,6 +49,10 @@
 
   &__excerpt {
     color: @color-text;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    overflow: hidden;
   }
 
   &__meta {
@@ -101,6 +105,9 @@
 
 .blog-card__image {
   align-self: start;
+  .media(mobile, {
+    display: none;
+  });
   img {
     width: 100%;
     height: auto;
