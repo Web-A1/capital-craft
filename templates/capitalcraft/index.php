@@ -2,8 +2,8 @@
 defined("_JEXEC") or die();
 
 // Получаем объект меню и проверяем: активный пункт = главный?
-$app    = JFactory::getApplication();
-$menu   = $app->getMenu();
+$app = JFactory::getApplication();
+$menu = $app->getMenu();
 $active = $menu->getActive();
 
 // Более точное определение главной: активный пункт = дом, и нет параметра option в запросе.
@@ -13,17 +13,18 @@ $active = $menu->getActive();
 // Исключение: прямой просмотр статьи без Itemid (non‑SEF) — option=com_content&view=article,
 // в этом случае Joomla тоже активирует главную, но это не должна быть домашняя вёрстка.
 $default = $menu->getDefault();
-$isHome  = ($active && $default && ($active->id === $default->id));
-$isDirectArticle = $app->input->getCmd('option') === 'com_content'
-    && $app->input->getCmd('view') === 'article'
-    && $app->input->getInt('id', 0) > 0;
+$isHome = $active && $default && $active->id === $default->id;
+$isDirectArticle =
+    $app->input->getCmd("option") === "com_content" &&
+    $app->input->getCmd("view") === "article" &&
+    $app->input->getInt("id", 0) > 0;
 if ($isDirectArticle) {
     $isHome = false;
 }
 
 $isFaq = $active && $active->alias === "faq";
 // Блоговые страницы: сам блог, поиск по блогу, страницы тегов
-$isBlog = $active && in_array($active->alias ?? '', ['blog', 'blog-search', 'tags'], true);
+$isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tags"], true);
 
 $document = JFactory::getDocument();
 $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css");
@@ -200,7 +201,7 @@ if ($isBlog) {
   <link rel="mask-icon" href="<?php echo $this->baseurl; ?>/templates/capitalcraft/images/favicon/favicon_black.svg" color="#000">
 
   <!-- Цвет оболочки браузера -->
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#fdfbf5" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)">
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
