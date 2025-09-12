@@ -91,19 +91,31 @@
 
   // Right Block
   &-right-block {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     width: 743px;
     padding-left: 40px;
-    border-left: 1px solid @section-divider-color;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: -32px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background-color: @section-divider-color;
+    }
 
     .media(mobile, {
       flex-direction: column;
       gap: 30px;
       width: 100%;
       padding-left: 0;
-      border-left: none;
+      &::before {
+        display: none;
+      }
       // Reorder sections on mobile: Contacts, Messengers, Navigation
       .footer-contacts { order: 1; }
       .footer-messengers { order: 2; }
