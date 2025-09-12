@@ -32,15 +32,11 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    padding-right: 40px;
-    border-right: 1px solid @section-divider-color;
     flex: 1;
     min-height: 195px;
 
     .media(mobile, {
-      border-right: none;
       border-bottom: 1px solid @section-divider-color;
-      padding-right: 0;
       padding-bottom: 20px;
       min-height: auto;
       width: 100%;
@@ -99,16 +95,20 @@
     justify-content: space-between;
     align-items: flex-start;
     width: 743px;
+    padding-left: 40px;
+    border-left: 1px solid @section-divider-color;
 
     .media(mobile, {
-    flex-direction: column;
-    gap: 30px;
-    width: 100%;
-    // Reorder sections on mobile: Contacts, Messengers, Navigation
-    .footer-contacts { order: 1; }
-    .footer-messengers { order: 2; }
-    .footer-navigation { order: 3; }
-  });
+      flex-direction: column;
+      gap: 30px;
+      width: 100%;
+      padding-left: 0;
+      border-left: none;
+      // Reorder sections on mobile: Contacts, Messengers, Navigation
+      .footer-contacts { order: 1; }
+      .footer-messengers { order: 2; }
+      .footer-navigation { order: 3; }
+    });
   }
 
   // Section Title
