@@ -13,19 +13,46 @@
   &__list {
     display: flex;
     list-style: none;
+    
+    // Mobile: single line with ellipsis on the last item
+    .media(mobile, {
+      flex-wrap: nowrap;
+      overflow: hidden;
+    });
   }
 
   &__item {
     color: @color-text;
     font-size: @font-size-text;
+    white-space: nowrap;
+    flex: 0 0 auto;
 
     a {
       color: @color-text;
+      text-decoration: none;
     }
 
     & + &::before {
       content: '/';
       margin: 0 5px;
     }
+
+    // Mobile: let the last item consume remaining space and truncate
+    .media(mobile, {
+      &:last-child {
+        flex: 1 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        a, span { // link or plain text
+          display: inline-block;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          vertical-align: bottom;
+        }
+      }
+    });
   }
 }
