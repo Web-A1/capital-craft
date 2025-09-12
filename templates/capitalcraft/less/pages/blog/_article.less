@@ -100,34 +100,37 @@
   }
 }
 
-// Article layout grid: text left, image right
-.article__grid {
-  display: grid;
-  grid-template-columns: 60% 1fr;
-  gap: 60px; // 60px gap between text and image
-  align-items: start;
+// Article BEM elements
+.article {
+  // Article layout grid: text left, image right
+  &__grid {
+    display: grid;
+    grid-template-columns: 60% 1fr;
+    gap: 60px; // 60px gap between text and image
+    align-items: start;
 
-  .media(mobile, {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  });
-}
+    .media(mobile, {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    });
+  }
 
-.article__main {
-  max-width: none;
-}
+  &__main {
+    max-width: none;
+  }
 
-.article__side {
-  display: flex;
-  flex-direction: column;
-  gap: 60px; // 60px vertical space between image and related block
-}
+  &__side {
+    display: flex;
+    flex-direction: column;
+    gap: 60px; // 60px vertical space between image and related block
+  }
 
-.article__image img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: @radius;
+  &__image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: @radius;
+  }
 }
 
 // Meta row: align left with 30px gap
@@ -139,77 +142,64 @@
 }
 
 // Related posts block on the right under image
-.article__related {
-  position: relative;
-  padding-left: 60px; // 60px gap after the vertical divider
+// Related posts block on the right under image
+.article {
+  &__related {
+    position: relative;
+    padding-left: 60px; // 60px gap after the vertical divider
 
-  .media(mobile, {
-    padding-left: 0;
-  });
+    .media(mobile, { padding-left: 0; });
 
-  // Vertical divider only for the related area,
-  // aligned to the left edge of the image (column start)
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0; // exactly at the column edge (image left)
-    width: 1px;
-    background-color: @section-divider-color;
-    pointer-events: none;
-
-    .media(mobile, { display: none; });
+    // Vertical divider only for the related area,
+    // aligned to the left edge of the image (column start)
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0; // exactly at the column edge (image left)
+      width: 1px;
+      background-color: @section-divider-color;
+      pointer-events: none;
+      .media(mobile, { display: none; });
+    }
   }
-}
 
-.article__related-title {
-  .subtitle();
-  margin: 0 0 25px;
-}
+  &__related-title {
+    .subtitle();
+    margin: 0 0 25px;
+  }
 
-.article__related-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 25px;
-}
+  &__related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 25px;
+  }
 
-.article__related-item {
-  display: grid;
-  gap: 6px;
-}
+  &__related-item { display: grid; gap: 6px; }
 
-.article__related-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
+  &__related-link { display: block; text-decoration: none; color: inherit; }
 
-.article__related-link-title {
-  color: @color-heading;
-  font-family: @font-body;
-}
+  &__related-link-title { color: @color-heading; font-family: @font-body; }
+  &__related-link:hover &__related-link-title { color: @color-accent; }
 
-.article__related-link:hover .article__related-link-title {
-  color: @color-accent;
-}
+  &__related-excerpt {
+    font-family: @font-body;
+    font-size: @font-size-sub; // 12.8px
+    line-height: 140%;
+    color: @color-text;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
 
-.article__related-excerpt {
-  font-family: @font-body;
-  font-size: @font-size-sub; // 12.8px
-  line-height: 140%;
-  color: @color-text;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-.article__related-date {
-  color: lighten(@color-text, 20%);
-  font-family: @font-body;
-  font-size: @font-size-sub;
-  font-weight: 400;
+  &__related-date {
+    color: lighten(@color-text, 20%);
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    font-weight: 400;
+  }
 }
