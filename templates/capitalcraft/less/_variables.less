@@ -158,34 +158,26 @@
   }
 }
 
-// Универсальная кнопка-тег
-// Варианты: text (по умолчанию) или pill
-.tag-button(@variant: text; @fs: @font-size-sub; @fs-mobile: @font-size-base; @bg: #ededed; @color: @color-heading; @hover-color: @color-accent; @py: 6px; @px: 10px; @radius: 999px) {
-  .subtitle(); // единая типографика для тегов
-  font-size: @fs;
-  color: @color;
+// Универсальная кнопка‑тег (единый стиль)
+.tag-button() {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #ededed;
+  color: @color-heading;
   text-decoration: none;
+  font-family: @font-body;
+  font-weight: 400;
+  font-size: @font-size-sub; // десктоп ~12.8px
+  line-height: 1;
   transition: background 0.2s ease, color 0.2s ease;
 
-  // Вариант «пилюля»
-  .tag-button-when(@variant) when (@variant = pill) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: @py @px;
-    border-radius: @radius;
-    background: @bg;
-  }
-  .tag-button-when(@variant);
-
-  // Вариант «текст» — без паддингов/фона
-  .tag-button-when(@variant) when (@variant = text) {
-    // ничего лишнего — остаётся только типографика
+  &:hover {
+    background: darken(#ededed, 6%);
+    color: @color-accent;
   }
 
-  &:hover { color: @hover-color; }
-
-  .media(mobile, {
-    font-size: @fs-mobile; // на мобайле 16px по умолчанию
-  });
+  .media(mobile, { font-size: @font-size-base; }); // мобайл 16px
 }
