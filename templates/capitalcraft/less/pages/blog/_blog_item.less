@@ -81,22 +81,7 @@
     padding: 0;
   }
 
-  &__tag-link {
-    color: lighten(@color-text, 20%);
-    font-family: @font-body;
-    font-size: @font-size-sub;
-    font-weight: 400;
-    text-transform: uppercase;
-
-    &:hover {
-      color: @color-accent;
-    }
-
-    // Mobile: unify tag button size to 16px
-    .media(mobile, {
-      font-size: @font-size-base; // 16px
-    });
-  }
+  &__tag-link { .tag-button(text); }
 }
 
 // Grid inside the card: text left, image right

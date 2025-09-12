@@ -157,3 +157,35 @@
     }
   }
 }
+
+// Универсальная кнопка-тег
+// Варианты: text (по умолчанию) или pill
+.tag-button(@variant: text; @fs: @font-size-sub; @fs-mobile: @font-size-base; @bg: #ededed; @color: @color-heading; @hover-color: @color-accent; @py: 6px; @px: 10px; @radius: 999px) {
+  .subtitle(); // единая типографика для тегов
+  font-size: @fs;
+  color: @color;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+
+  // Вариант «пилюля»
+  .tag-button-when(@variant) when (@variant = pill) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: @py @px;
+    border-radius: @radius;
+    background: @bg;
+  }
+  .tag-button-when(@variant);
+
+  // Вариант «текст» — без паддингов/фона
+  .tag-button-when(@variant) when (@variant = text) {
+    // ничего лишнего — остаётся только типографика
+  }
+
+  &:hover { color: @hover-color; }
+
+  .media(mobile, {
+    font-size: @fs-mobile; // на мобайле 16px по умолчанию
+  });
+}

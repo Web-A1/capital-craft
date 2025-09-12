@@ -89,17 +89,7 @@
     list-style: none;
     margin: 16px 0 0;
     padding: 0;
-    a {
-      .subtitle();
-      color: @color-heading;
-      text-decoration: none;
-      &:hover {
-        color: @color-accent;
-      }
-
-      // Mobile: unify tag button size to 16px
-      .media(mobile, { font-size: @font-size-base; });
-    }
+    a { .tag-button(text); }
   }
 }
 

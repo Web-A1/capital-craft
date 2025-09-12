@@ -28,29 +28,5 @@
     overflow-x: auto;
   }
 
-  &__link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: #ededed;
-    color: @color-heading;
-    text-decoration: none;
-    font-family: @font-body;
-    font-size: @font-size-sub; // 12.8px (desktop default)
-    line-height: 1;
-    transition:
-      background 0.2s ease,
-      color 0.2s ease;
-    &:hover {
-      background: darken(#ededed, 6%);
-      color: @color-accent;
-    }
-
-    // Mobile: unify tag button size to 16px
-    .media(mobile, {
-      font-size: @font-size-base; // 16px
-    });
-  }
+  &__link { .tag-button(pill); }
 }
