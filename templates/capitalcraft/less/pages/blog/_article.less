@@ -184,7 +184,10 @@
     margin: 0 0 25px;
 
     // Mobile: ensure equal space below the divider and before the title
-    .media(mobile, { margin-top: @divider-space-mobile; });
+    .media(mobile, {
+      margin-top: @divider-space-mobile;      // от линии до заголовка
+      margin-bottom: @divider-space-mobile;   // от заголовка до списка
+    });
   }
 
   &__related-list {
