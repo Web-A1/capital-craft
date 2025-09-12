@@ -32,24 +32,7 @@
                         <span>Навигация</span>
                     </div>
                     <div class="footer-navigation-links">
-                        <div class="footer-nav-item">
-                            <a href="#philosophy">Философия</a>
-                        </div>
-                        <div class="footer-nav-item">
-                            <a href="#team">Команда</a>
-                        </div>
-                        <div class="footer-nav-item">
-                            <a href="/faq">FAQ</a>
-                        </div>
-                        <div class="footer-nav-item">
-                            <a href="#products">Продукты</a>
-                        </div>
-                        <div class="footer-nav-item">
-                            <a href="#cases">Кейсы</a>
-                        </div>
-                        <div class="footer-nav-item">
-                            <a href="#reviews">Отзывы</a>
-                        </div>
+                    <jdoc:include type="modules" name="footer-menu" style="none" />
                     </div>
                 </div>
 
