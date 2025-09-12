@@ -154,11 +154,15 @@
   });
 
   // States
-  &:active { transform: scale(0.98); }
+  &:active {
+    transform: scale(0.98);
+  }
 
   &:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 2px @color-bg-craft, 0 0 0 4px @color;
+    box-shadow:
+      0 0 0 2px @color-bg-craft,
+      0 0 0 4px @color;
   }
 
   &:disabled,
@@ -207,7 +211,7 @@
     color 0.2s ease;
 
   &:hover {
-    background: @color-white;
+    background: @color-bg-craft;
     color: @color-accent;
     border-color: @color-accent;
   }
