@@ -116,6 +116,9 @@
     display: flex;
     flex-direction: column;
     gap: 60px; // 60px vertical space between image and related block
+
+    // Mobile: align with grid gap for consistent divider spacing
+    .media(mobile, { gap: 20px; });
   }
 
   &__image img {
@@ -176,6 +179,9 @@
   &__related-title {
     .subtitle();
     margin: 0 0 25px;
+
+    // Mobile: ensure equal space below the divider and before the title
+    .media(mobile, { margin-top: @divider-space-mobile; });
   }
 
   &__related-list {
