@@ -156,6 +156,21 @@
       pointer-events: none;
       .media(mobile, { display: none; });
     }
+
+    // Mobile: horizontal divider between image and related block
+    &::after {
+      display: none;
+      .media(mobile, {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -30px; // sits inside the 60px vertical gap
+        height: 1px;
+        background-color: @section-divider-color;
+        display: block;
+      });
+    }
   }
 
   &__related-title {
