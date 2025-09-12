@@ -38,7 +38,7 @@
     color: @color-heading;
     text-decoration: none;
     font-family: @font-body;
-    font-size: @font-size-sub; // 12.8px
+    font-size: @font-size-sub; // 12.8px (desktop default)
     line-height: 1;
     transition:
       background 0.2s ease,
@@ -47,5 +47,10 @@
       background: darken(#ededed, 6%);
       color: @color-accent;
     }
+
+    // Mobile: unify tag button size to 16px
+    .media(mobile, {
+      font-size: @font-size-base; // 16px
+    });
   }
 }

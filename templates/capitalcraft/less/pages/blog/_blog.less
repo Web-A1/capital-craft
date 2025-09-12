@@ -44,12 +44,13 @@
   }
 }
 
+// Mobile helper: ensure tag pills keep 16px font across contexts
 .blog-tags__cloud--nowrap {
   .media(mobile, {
     .blog-tags__link {
       display: inline-block;
       padding: 8px 12px;
-      font-size: (@font-size-base * 1.125);
+      font-size: @font-size-base; // 16px
     }
   });
 }
