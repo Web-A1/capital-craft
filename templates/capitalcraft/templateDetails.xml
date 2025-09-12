@@ -9,6 +9,7 @@
     <position>header-menu</position>
     <position>mobile-menu</position>
     <position>breadcrumbs</position>
+    <position>footer-menu</position>
   </positions>
 
   <files>
