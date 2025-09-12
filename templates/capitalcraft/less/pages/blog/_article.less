@@ -115,10 +115,10 @@
   &__side {
     display: flex;
     flex-direction: column;
-    gap: 60px; // 60px vertical space between image and related block
+    gap: 60px; // desktop spacing between image and related block
 
-    // Mobile: align with grid gap for consistent divider spacing
-    .media(mobile, { gap: 20px; });
+    // Mobile: gap must be double of divider-space for symmetric spacing
+    .media(mobile, { gap: (@divider-space-mobile * 2); });
   }
 
   &__image img {
