@@ -5,6 +5,14 @@
   // Mobile: rely on global .section-with-divider spacing for footer gap
   .media(mobile, { padding-bottom: 0; });
 
+  // Mobile override for this section when used with frame + section-with-divider:
+  // remove the 30px top padding added globally, keeping bottom at 30px
+  &.frame.section-with-divider {
+    .media(mobile, {
+      padding-top: 0;
+    });
+  }
+
   &__container {
     max-width: 1170px;
     width: 100%;
