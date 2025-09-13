@@ -56,3 +56,13 @@
     }
   });
 }
+
+// Mobile: remove global top padding when blog section follows breadcrumbs
+.blog.frame.section-with-divider {
+  .media(mobile, { padding-top: 0; });
+}
+
+// Mobile: search page (blog-page) uses the same frame+divider — remove top padding
+.blog-page.frame.section-with-divider {
+  .media(mobile, { padding-top: 0; });
+}

@@ -32,3 +32,8 @@
 
   &__link { .tag-button(); }
 }
+
+// Mobile: remove global top padding on tag listing section
+.blog-tags.frame.section-with-divider {
+  .media(mobile, { padding-top: 0; });
+}

@@ -132,6 +132,11 @@
   }
 }
 
+// Mobile: remove global top padding on the outer section wrapper
+.article.frame.section-with-divider {
+  .media(mobile, { padding-top: 0; });
+}
+
 // Meta row: align left with 30px gap
 .com-content-article.item-page .blog-card__meta {
   max-width: 700px;
