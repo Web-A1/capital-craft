@@ -225,6 +225,7 @@
       p.truncated {
         overflow: hidden !important;
         display: -webkit-box !important;
+        line-clamp: 4 !important; // standard property for newer engines
         -webkit-line-clamp: 4 !important;
         -webkit-box-orient: vertical !important;
         max-height: calc(1.5em * 4) !important; // 4 строки с line-height 150%
@@ -242,6 +243,7 @@
         overflow: visible !important;
         display: block !important;
         max-height: none !important;
+        line-clamp: unset !important;
         -webkit-line-clamp: unset !important;
         -webkit-box-orient: unset !important;
         cursor: pointer !important;
