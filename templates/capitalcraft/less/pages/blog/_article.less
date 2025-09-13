@@ -92,7 +92,9 @@
     list-style: none;
     margin: 16px 0 0;
     padding: 0;
-    a { .tag-button(); }
+    a {
+      .tag-button();
+    }
   }
 }
 
@@ -195,7 +197,7 @@
     // Mobile: ensure equal space below the divider and before the title
     .media(mobile, {
       margin-top: 0;                        // handled by parent padding-top
-      margin-bottom: @divider-space-mobile; // от заголовка до списка
+      margin-bottom: 25px; // от заголовка до списка
     });
   }
 
@@ -207,12 +209,24 @@
     gap: 25px;
   }
 
-  &__related-item { display: grid; gap: 6px; }
+  &__related-item {
+    display: grid;
+    gap: 6px;
+  }
 
-  &__related-link { display: block; text-decoration: none; color: inherit; }
+  &__related-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
 
-  &__related-link-title { color: @color-heading; font-family: @font-body; }
-  &__related-link:hover &__related-link-title { color: @color-accent; }
+  &__related-link-title {
+    color: @color-heading;
+    font-family: @font-body;
+  }
+  &__related-link:hover &__related-link-title {
+    color: @color-accent;
+  }
 
   &__related-excerpt {
     font-family: @font-body;
