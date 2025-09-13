@@ -207,9 +207,25 @@ if ($isBlog) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <link rel="modulepreload" href="templates/capitalcraft/js/global/bundle.js">
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=104139634', 'ym');
+
+    ym(104139634, 'init', {ssr:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+  </script>
+  <!-- /Yandex.Metrika counter -->
 </head>
 
 <body>
+  <!-- Yandex.Metrika noscript -->
+  <noscript><div><img src="https://mc.yandex.ru/watch/104139634" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika noscript -->
   <div class="page-wrapper">
 
     <?php include __DIR__ . "/partials/_header.php"; ?>
