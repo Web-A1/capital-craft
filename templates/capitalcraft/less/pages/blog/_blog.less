@@ -3,6 +3,8 @@
 .blog {
   // Align vertical rhythm with FAQ: no extra top padding, only bottom
   padding: 0 0 @section-padding;
+  // Mobile: rely on global .section-with-divider spacing (30/line/30)
+  .media(mobile, { padding: 0; });
 
   &__header {
     margin-bottom: 25px;

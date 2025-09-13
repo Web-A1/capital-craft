@@ -112,6 +112,9 @@ section,
   }
 
   .media(mobile, {
+    // Ensure consistent 30px spacing to the divider on mobile
+    padding-top: @divider-space-mobile;
+    padding-bottom: @divider-space-mobile;
     &::after {
       width: calc(100% - (@mobile-side-padding * 2));
     }

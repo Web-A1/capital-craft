@@ -2,6 +2,8 @@
 
 .faq {
   padding-bottom: @section-padding;
+  // Mobile: rely on global .section-with-divider spacing for footer gap
+  .media(mobile, { padding-bottom: 0; });
 
   &__container {
     max-width: 1170px;

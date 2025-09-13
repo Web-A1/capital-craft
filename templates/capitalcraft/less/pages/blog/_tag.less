@@ -3,6 +3,8 @@
 .blog-tags {
   // Align vertical rhythm with main blog page: no top padding, only bottom
   padding: 0 0 @section-padding;
+  // Mobile: rely on global .section-with-divider spacing (30/line/30)
+  .media(mobile, { padding: 0; });
 
   // Use the same spacing as general blog list
   .blog-list {
