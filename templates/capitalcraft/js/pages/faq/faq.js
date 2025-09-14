@@ -119,11 +119,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  function openFromHash() {
+    const m = location.hash.match(/faq-q-(\d+)/);
+    if (!m) return;
+    const el = document.getElementById('faq-q-' + m[1]);
+    if (!el) return;
+    const q = el.querySelector('.faq__question');
+    if (q && q.getAttribute('aria-expanded') !== 'true') {
+      q.click();
+    }
+  }
+
   // Apply initial filter from URL
   (function initFromUrl() {
     const m = location.search.match(/\btag=([^&#]+)/);
     const alias = m ? decodeURIComponent(m[1]) : '';
     applyTagFilter(alias);
+    openFromHash();
   })();
 
   // Handle back/forward
@@ -131,5 +143,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const m = location.search.match(/\btag=([^&#]+)/);
     const alias = m ? decodeURIComponent(m[1]) : '';
     applyTagFilter(alias);
+    openFromHash();
   });
+
+  window.addEventListener('hashchange', openFromHash);
 });

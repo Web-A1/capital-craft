@@ -184,12 +184,16 @@ if ($isFAQPage) {
         if (!empty($this->item->tags->itemTags)) {
             // Collect tag IDs and remember the first tag title for the heading
             $tagIds = [];
+            $firstTagAlias = '';
             foreach ($this->item->tags->itemTags as $tg) {
                 if (!empty($tg->tag_id)) {
                     $tagIds[] = (int) $tg->tag_id;
                 }
                 if ($relatedTagTitle === "" && !empty($tg->title)) {
                     $relatedTagTitle = $tg->title;
+                }
+                if ($firstTagAlias === '' && !empty($tg->alias)) {
+                    $firstTagAlias = $tg->alias;
                 }
             }
 
@@ -309,6 +313,65 @@ if ($isFAQPage) {
                           <?php echo JHtml::_("date", $rel->publish_up, JText::_("DATE_FORMAT_LC3")); ?>
                         </time>
                       <?php endif; ?>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </aside>
+            <?php endif; ?>
+
+            <?php // Sidebar: FAQ with the same tag(s)
+            $faqRelated = [];
+            if (!empty($tagIds)) {
+                // find FAQ category id
+                $dbFaq = JFactory::getDbo();
+                $qCat = $dbFaq->getQuery(true)
+                    ->select($dbFaq->quoteName('id'))
+                    ->from($dbFaq->quoteName('#__categories'))
+                    ->where($dbFaq->quoteName('extension') . ' = ' . $dbFaq->quote('com_content'))
+                    ->where($dbFaq->quoteName('alias') . ' = ' . $dbFaq->quote('faq'))
+                    ->where($dbFaq->quoteName('published') . ' = 1');
+                $dbFaq->setQuery($qCat);
+                $faqCatId = (int) $dbFaq->loadResult();
+                if ($faqCatId) {
+                    $qf = $dbFaq->getQuery(true)
+                        ->select('c.id, c.title, c.introtext, c.fulltext, c.publish_up')
+                        ->from($dbFaq->quoteName('#__content', 'c'))
+                        ->join('INNER', $dbFaq->quoteName('#__contentitem_tag_map', 'm') .
+                            ' ON m.content_item_id = c.id AND m.type_alias = ' . $dbFaq->quote('com_content.article'))
+                        ->where('c.state = 1')
+                        ->where('c.catid = ' . (int) $faqCatId)
+                        ->where('m.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')')
+                        ->group('c.id')
+                        ->order('c.publish_up DESC');
+                    $dbFaq->setQuery($qf, 0, 5);
+                    $faqRelated = (array) $dbFaq->loadObjectList();
+                }
+            }
+            if (!empty($faqRelated)):
+            ?>
+              <aside class="article__related" style="margin-top:24px;">
+                <div class="article__related-header">
+                  <div class="article__related-title">
+                    Вопросы<?php echo $relatedTagTitle ? ' #' . htmlspecialchars($relatedTagTitle, ENT_QUOTES, 'UTF-8') : ''; ?>
+                  </div>
+                </div>
+                <ul class="article__related-list">
+                  <?php foreach ($faqRelated as $fq): ?>
+                    <?php
+                    $raw = !empty($fq->introtext) ? $fq->introtext : ($fq->fulltext ?? '');
+                    $clean = trim(strip_tags($raw));
+                    $excerpt = $clean ? JHtml::_('string.truncate', $clean, 200, true, false) : '';
+                    $faqLink = '/faq' . ($firstTagAlias ? ('?tag=' . rawurlencode($firstTagAlias)) : '') . '#faq-q-' . (int)$fq->id;
+                    ?>
+                    <li class="article__related-item">
+                      <a class="article__related-link" href="<?php echo $faqLink; ?>">
+                        <div class="article__related-link-title">
+                          <?php echo htmlspecialchars($fq->title, ENT_QUOTES, 'UTF-8'); ?>
+                        </div>
+                        <?php if (!empty($excerpt)): ?>
+                          <div class="article__related-excerpt"><?php echo htmlspecialchars($excerpt, ENT_QUOTES, 'UTF-8'); ?></div>
+                        <?php endif; ?>
+                      </a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
