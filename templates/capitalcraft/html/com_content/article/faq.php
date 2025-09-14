@@ -319,59 +319,42 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
 </section>
 
 <script>
-function toggleFaqRow(row) {
-  const q = row.querySelector('.faq__question');
-  const t = row.querySelector('.faq__toggle');
-  if (!q) return;
-  const answerId = q.getAttribute('aria-controls');
-  const answer = answerId ? document.getElementById(answerId) : null;
-  if (!answer) return;
-  const expanded = q.getAttribute('aria-expanded') === 'true';
-  const nextState = !expanded;
-  q.setAttribute('aria-expanded', String(nextState));
-  if (t) t.setAttribute('aria-expanded', String(nextState));
-  if (nextState) {
-    answer.classList.add('open');
-    answer.style.maxHeight = answer.scrollHeight + 'px';
-    answer.style.opacity = '1';
-  } else {
-    answer.classList.remove('open');
-    answer.style.maxHeight = '0px';
-    answer.style.opacity = '0.99';
+(function initFaqToggles(){
+  function toggle(row){
+    const q = row.querySelector('.faq__question');
+    const t = row.querySelector('.faq__toggle');
+    if (!q) return;
+    const answerId = q.getAttribute('aria-controls');
+    const answer = answerId ? document.getElementById(answerId) : null;
+    if (!answer) return;
+    const expanded = q.getAttribute('aria-expanded') === 'true';
+    const nextState = !expanded;
+    q.setAttribute('aria-expanded', String(nextState));
+    if (t) t.setAttribute('aria-expanded', String(nextState));
+    if (nextState) {
+      answer.classList.add('open');
+      // force reflow in case of immediate toggles
+      void answer.offsetHeight;
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+      answer.style.opacity = '1';
+    } else {
+      answer.classList.remove('open');
+      answer.style.maxHeight = '0px';
+      answer.style.opacity = '0.99';
+    }
   }
-}
 
-// Click: question area, plus button, or anywhere in the row (except tag link)
-document.addEventListener('click', function(e) {
-  if (e.target.closest('.faq__tag-chip')) return; // do not toggle when clicking tag
-  const questionBtn = e.target.closest('.faq__question');
-  const toggleBtn = e.target.closest('.faq__toggle');
-  const row = (questionBtn || toggleBtn) ? (e.target.closest('.faq__row')) : e.target.closest('.faq__row');
-  if (questionBtn || toggleBtn) e.preventDefault(); // prevent form submit if inside a form
-  if (!row) return;
-  toggleFaqRow(row);
-});
-
-// Keyboard: toggle with Enter/Space on question or plus
-document.addEventListener('keydown', function(e) {
-  if (e.key !== 'Enter' && e.key !== ' ') return;
-  const target = e.target;
-  if (!(target instanceof HTMLElement)) return;
-  if (!target.classList.contains('faq__question') && !target.classList.contains('faq__toggle')) return;
-  e.preventDefault();
-  const row = target.closest('.faq__row');
-  if (!row) return;
-  toggleFaqRow(row);
-});
-
-// Direct listeners on buttons to avoid side effects from other handlers
-(function attachFaqHandlers(){
-  var rows = document.querySelectorAll('.faq__row');
-  rows.forEach(function(row){
-    var q = row.querySelector('.faq__question');
-    var t = row.querySelector('.faq__toggle');
-    if (q) q.addEventListener('click', function(ev){ ev.preventDefault(); ev.stopPropagation(); toggleFaqRow(row); });
-    if (t) t.addEventListener('click', function(ev){ ev.preventDefault(); ev.stopPropagation(); toggleFaqRow(row); });
+  document.querySelectorAll('.faq__row').forEach(function(row){
+    const q = row.querySelector('.faq__question');
+    const t = row.querySelector('.faq__toggle');
+    if (q) {
+      q.addEventListener('click', function(e){ e.preventDefault(); toggle(row); });
+      q.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(row); } });
+    }
+    if (t) {
+      t.addEventListener('click', function(e){ e.preventDefault(); toggle(row); });
+      t.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(row); } });
+    }
   });
 })();
 </script>
