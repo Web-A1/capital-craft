@@ -55,8 +55,15 @@
     });
   }
 
-  .faq-tags__tag { flex: 0 0 auto; list-style: none; }
-  .faq-tags__link { .tag-button(); color: @color-heading; text-decoration: none; }
+  .faq-tags__tag {
+    flex: 0 0 auto;
+    list-style: none;
+  }
+  .faq-tags__link {
+    .tag-button();
+    color: @color-heading;
+    text-decoration: none;
+  }
   .faq-tags__link.is-active {
     background: @color-bg-craft;
     color: @color-accent;
@@ -119,7 +126,7 @@
         right: 6px;
         top: 50%;
         transform: translateY(-50%);
-        font-size: 22px; // чуть крупнее
+        font-size: 26px;
         line-height: 1;
         color: @color-text;
         transition: transform 0.3s ease, color 0.3s ease;
@@ -160,7 +167,7 @@
   // Плюс удалён по макету
 
   // Раскрытие управляется штатным faq.js — padding задаём соседним селектором
-  
+
   &__answer {
     max-height: 0;
     overflow: hidden;
