@@ -17,8 +17,16 @@
       margin: 0;
     }
   }
-  .blog-tags__link { .tag-button(); color: @color-heading; text-decoration: none; }
-  .blog-tags__link.is-active { background: @color-bg-craft; color: @color-accent; border-color: @color-accent; }
+  .blog-tags__link {
+    .tag-button();
+    color: @color-heading;
+    text-decoration: none;
+  }
+  .blog-tags__link.is-active {
+    background: @color-bg-craft;
+    color: @color-accent;
+    border-color: @color-accent;
+  }
 
   &__subtitle {
     .subtitle();
@@ -54,7 +62,6 @@
     .blog-tags__link {
       display: inline-block;
       padding: 8px 12px;
-      font-size: @font-size-base; // 16px
     }
   });
 }
