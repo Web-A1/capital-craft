@@ -275,28 +275,26 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
                 <?php foreach ($faqItems as $index => $item): ?>
                     <div class="faq__item">
-                        <div class="faq__row">
-                            <button type="button" class="faq__question" 
-                                    aria-expanded="false" 
-                                    aria-controls="faq-answer-<?php echo $index; ?>"
-                                    aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
-                                <span class="faq__text">
-                                    <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
-                                </span>
-                            </button>
-                            <?php if (!empty($item['tags'])): ?>
-                                <?php $tg = $item['tags'][0]; ?>
-                                <a class="faq__tag-chip" href="<?php echo JRoute::_(
-                                    '/faq?tag=' . rawurlencode($tg['alias'])
-                                ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
-                            <?php endif; ?>
-                        </div>
+                        <button class="faq__question" 
+                                aria-expanded="false" 
+                                aria-controls="faq-answer-<?php echo $index; ?>"
+                                aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <span class="faq__text">
+                                <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
+                            </span>
+                        </button>
                         <div class="faq__answer" 
                              id="faq-answer-<?php echo $index; ?>"
                              role="region" 
                              aria-label="Ответ на вопрос: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
                             <?php echo htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?>
                         </div>
+                        <?php if (!empty($item['tags'])): ?>
+                            <?php $tg = $item['tags'][0]; ?>
+                            <a class="faq__tag-chip" href="<?php echo JRoute::_(
+                                '/faq?tag=' . rawurlencode($tg['alias'])
+                            ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>

@@ -65,25 +65,22 @@
   &__item {
     border-bottom: 1px solid #e0e0e0;
     padding: 16px 0;
-  }
-
-  &__row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    position: relative;
   }
 
   &__question {
     background: none;
     border: none;
-    width: auto;
+    width: 100%;
     text-align: left;
     font-family: @font-body;
     font-weight: 400;
     font-size: @font-size-text;
     color: @color-text;
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 140px; // место под тег справа
     cursor: pointer;
     transition: color 0.3s ease;
 
@@ -101,6 +98,10 @@
   &__tag-chip {
     .tag-button();
     white-space: nowrap;
+    position: absolute;
+    right: 20px;
+    top: 16px;
+    z-index: 2;
   }
 
   // Плюс удалён по макету

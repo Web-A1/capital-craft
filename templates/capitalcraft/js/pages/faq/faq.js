@@ -2,10 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
   const questions = document.querySelectorAll('.faq__question');
 
   function getAnswerForQuestion(question) {
-    // В новой разметке ответ находится внутри .faq__item, после .faq__row
-    const item = question.closest('.faq__item');
-    if (!item) return null;
-    return item.querySelector('.faq__answer');
+    // Ответ — следующий элемент после кнопки (как на прод)
+    return question.nextElementSibling;
   }
 
   function collapseQuestion(q) {
