@@ -47,8 +47,16 @@
     margin: 0;
     flex-wrap: wrap;
   }
-  .faq-tags__tag { flex: 0 0 auto; }
-  .faq-tags__link { .tag-button(); }
+  .faq-tags__cloud--nowrap .faq-tags__link {
+    .media(mobile, {
+      display: inline-block;
+      padding: 8px 12px;
+      font-size: @font-size-base; // 16px на мобилке, как в блоге
+    });
+  }
+
+  .faq-tags__tag { flex: 0 0 auto; list-style: none; }
+  .faq-tags__link { .tag-button(); color: @color-heading; text-decoration: none; }
   .faq-tags__link.is-active {
     background: @color-bg-craft;
     color: @color-accent;

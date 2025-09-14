@@ -312,7 +312,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
             <?php if (!empty($faqAllTags)): ?>
               <?php $activeTagAlias = ($tagParam && !ctype_digit($tagParam)) ? strtolower($tagParam) : ''; ?>
               <nav class="faq__tags-nav" aria-label="Навигация по тегам FAQ">
-                <ul class="faq-tags__cloud">
+                <ul class="faq-tags__cloud faq-tags__cloud--nowrap">
                   <?php foreach ($faqAllTags as $tg): ?>
                     <?php $alias = strtolower($tg->alias); ?>
                     <li class="faq-tags__tag">
