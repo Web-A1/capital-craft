@@ -109,7 +109,26 @@
     justify-content: space-between;
     align-items: center;
     padding-right: 140px; // место под тег справа
-    .media(mobile, { padding-right: 0; }); // на мобилке вопрос занимает всю ширину
+    // На мобильных добавляем плюс как псевдоэлемент и даём место справа
+    .media(mobile, {
+      padding-right: 28px; // место под плюс справа
+      position: relative;
+      &::after {
+        content: '+';
+        position: absolute;
+        right: 6px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 20px;
+        line-height: 1;
+        color: @color-text;
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+      &[aria-expanded="true"]::after {
+        transform: translateY(-50%) rotate(45deg);
+        color: @color-accent;
+      }
+    });
     cursor: pointer;
     transition: color 0.3s ease;
 
