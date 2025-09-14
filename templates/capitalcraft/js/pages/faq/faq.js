@@ -136,18 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Центрируем открытый вопрос и показываем хедер после перехода по якорю
     setTimeout(function () {
-<<<<<<< ours
-      el.scrollIntoView({ block: "center", behavior: "instant" });
-      if (window.matchMedia("(max-width: 767px)").matches) {
-        const header = document.querySelector(".site-header");
-=======
       if (window.headerControl) {
         window.headerControl.freeze();
       }
-      el.scrollIntoView({ block: 'center', behavior: 'instant' });
-      if (window.matchMedia('(max-width: 767px)').matches) {
-        const header = document.querySelector('.site-header');
->>>>>>> theirs
+      el.scrollIntoView({ block: "center", behavior: "instant" });
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        const header = document.querySelector(".site-header");
         if (header) {
           window.scrollBy(0, -header.offsetHeight);
         }
