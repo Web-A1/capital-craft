@@ -82,11 +82,7 @@ if ($faqCatId) {
     }
 }
 
-// Фолбэк: если из БД ничего не получили, берём статический массив
-if (empty($faqItems)) {
-    require __DIR__ . '/../../../data/faq_data.php';
-    $faqItems = isset($faq_data) && is_array($faq_data) ? $faq_data : [];
-}
+// Фолбэк отключён: если в БД нет данных, не выводим вопросы
 
 // Улучшенные структурированные данные JSON-LD для FAQ
 $faqSchema = [
