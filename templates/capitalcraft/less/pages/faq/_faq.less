@@ -52,7 +52,7 @@
   }
 
   &__accordion {
-    flex: 0 0 70%;
+    flex: 0 0 75%;
     padding: 0 30px;
     border-radius: @radius;
     box-shadow: 0 2px 8px fade(@color-heading, 10%);
@@ -92,6 +92,17 @@
     }
   }
 
+  // Внутренние элементы строки вопроса
+  &__text {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  &__tag-chip {
+    .tag-button();
+    white-space: nowrap;
+  }
+
   &__icon {
     font-size: 24px;
     line-height: 1;
@@ -118,7 +129,7 @@
   }
 
   &__image {
-    flex: 0 0 30%;
+    flex: 0 0 25%;
     max-width: 100%;
     border-radius: @radius;
     clip-path: border-box;
