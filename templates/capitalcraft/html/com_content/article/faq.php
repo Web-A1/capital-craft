@@ -275,32 +275,34 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
                 <?php foreach ($faqItems as $index => $item): ?>
                     <div class="faq__item">
-                        <button class="faq__question" 
-                                aria-expanded="false" 
-                                aria-controls="faq-answer-<?php echo $index; ?>"
-                                aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
-                            <span class="faq__text">
-                                <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
-                            </span>
-                            <span class="faq__icon" aria-hidden="true">+</span>
-                        </button>
+                        <div class="faq__row">
+                            <button class="faq__question" 
+                                    aria-expanded="false" 
+                                    aria-controls="faq-answer-<?php echo $index; ?>"
+                                    aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
+                                <span class="faq__text">
+                                    <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
+                                </span>
+                            </button>
+                            <?php if (!empty($item['tags'])): ?>
+                                <?php $tg = $item['tags'][0]; ?>
+                                <a class="faq__tag-chip" href="<?php echo JRoute::_(
+                                    '/faq?tag=' . rawurlencode($tg['alias'])
+                                ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
+                            <?php endif; ?>
+                            <button class="faq__toggle" 
+                                    aria-expanded="false"
+                                    aria-controls="faq-answer-<?php echo $index; ?>"
+                                    aria-label="Развернуть ответ на вопрос <?php echo $index + 1; ?>">
+                                <span class="faq__icon" aria-hidden="true">+</span>
+                            </button>
+                        </div>
                         <div class="faq__answer" 
                              id="faq-answer-<?php echo $index; ?>"
                              role="region" 
                              aria-label="Ответ на вопрос: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
                             <?php echo htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?>
                         </div>
-                        <?php if (!empty($item['tags'])): ?>
-                            <ul class="faq__tags">
-                                <?php foreach ($item['tags'] as $tg): ?>
-                                    <li class="faq__tag">
-                                        <a class="faq__tag-link" href="<?php echo JRoute::_(
-                                            '/faq?tag=' . rawurlencode($tg['alias'])
-                                        ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
-                                    </li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -315,3 +317,39 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
         </figure>
     </div>
 </section>
+
+<script>
+// Lightweight toggle for FAQ items to support the new layout row
+document.addEventListener('click', function(e) {
+  const qBtn = e.target.closest('.faq__question');
+  const tBtn = e.target.closest('.faq__toggle');
+  if (!qBtn && !tBtn) return;
+  const btn = qBtn || tBtn;
+  const answerId = btn.getAttribute('aria-controls');
+  if (!answerId) return;
+  const answer = document.getElementById(answerId);
+  if (!answer) return;
+  const expanded = (qBtn ? qBtn.getAttribute('aria-expanded') : tBtn.getAttribute('aria-expanded')) === 'true';
+  const nextState = !expanded;
+  // sync both buttons in the same row
+  const row = btn.closest('.faq__row');
+  if (row) {
+    const q = row.querySelector('.faq__question');
+    const t = row.querySelector('.faq__toggle');
+    if (q) q.setAttribute('aria-expanded', String(nextState));
+    if (t) t.setAttribute('aria-expanded', String(nextState));
+  } else {
+    btn.setAttribute('aria-expanded', String(nextState));
+  }
+  // toggle answer
+  if (nextState) {
+    answer.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+    answer.style.opacity = '1';
+  } else {
+    answer.classList.remove('open');
+    answer.style.maxHeight = '0px';
+    answer.style.opacity = '0.99';
+  }
+});
+</script>
