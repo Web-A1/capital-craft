@@ -363,4 +363,15 @@ document.addEventListener('keydown', function(e) {
   if (!row) return;
   toggleFaqRow(row);
 });
+
+// Direct listeners on buttons to avoid side effects from other handlers
+(function attachFaqHandlers(){
+  var rows = document.querySelectorAll('.faq__row');
+  rows.forEach(function(row){
+    var q = row.querySelector('.faq__question');
+    var t = row.querySelector('.faq__toggle');
+    if (q) q.addEventListener('click', function(ev){ ev.preventDefault(); ev.stopPropagation(); toggleFaqRow(row); });
+    if (t) t.addEventListener('click', function(ev){ ev.preventDefault(); ev.stopPropagation(); toggleFaqRow(row); });
+  });
+})();
 </script>
