@@ -160,13 +160,18 @@
 // Related posts block on the right under image
 // Related posts block on the right under image
 .article {
-  &__related {
+  &__related-wrap {
     position: relative;
     padding-left: 60px;
     flex: 1;
     min-height: 0; // allow inner scroll area to shrink
     display: flex;
     flex-direction: column;
+    gap: 24px;
+    overflow-y: auto;
+    background-color: @color-bg-craft;
+    scrollbar-width: thin;
+    scrollbar-color: @section-divider-color darken(@color-bg-craft, 4%);
 
     // Desktop vertical divider
     &::before {
@@ -181,11 +186,28 @@
       .media(mobile, { display: none; });
     }
 
+    // Scrollbar styling
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: darken(@color-bg-craft, 4%);
+      border-radius: 3px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: @section-divider-color;
+      border-radius: 3px;
+    }
+
     // Mobile: spacing and horizontal divider
     .media(mobile, {
       padding-left: 0;
       padding-top: @divider-space-mobile; // space from divider above
       flex: none;
+      overflow: visible;
+      background: none;
 
       &::after {
         content: "";
@@ -217,30 +239,6 @@
     padding: 0;
     display: grid;
     gap: 25px;
-    flex: 1;
-    overflow-y: auto;
-    min-height: 0;
-    background-color: @color-bg-craft;
-    scrollbar-width: thin;
-    scrollbar-color: @section-divider-color @color-bg-craft;
-
-    &::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: @color-bg-craft;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: @section-divider-color;
-      border-radius: 3px;
-    }
-
-    .media(mobile, {
-      overflow: visible;
-      background: none;
-    });
   }
 
   &__related-item {
