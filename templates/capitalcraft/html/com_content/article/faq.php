@@ -71,7 +71,17 @@ if ($faqCatId) {
         ->where('c.catid = ' . (int) $faqCatId)
         ->order('c.publish_up DESC');
 
-    // Важно: не фильтруем по тегу — используем параметр только для сортировки/группировки
+    // Если выбран тег — фильтруем по нему уже на уровне SQL
+    if (!empty($tagIds)) {
+        $q->join(
+            'INNER',
+            $db->quoteName('#__contentitem_tag_map', 'm') .
+            ' ON ' . $db->quoteName('m.content_item_id') . ' = ' . $db->quoteName('c.id') .
+            ' AND ' . $db->quoteName('m.type_alias') . ' = ' . $db->quote('com_content.article')
+        );
+        $q->where('m.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')');
+        $q->group($db->quoteName('c.id'));
+    }
 
     $db->setQuery($q);
     $rows = (array) $db->loadObjectList();
@@ -139,7 +149,7 @@ if ($faqCatId) {
     $faqAllTags = (array) $db->loadObjectList();
 
     // Группировка вопросов по тегам: идём по алфавиту тегов и собираем элементы с этим тегом
-    if (!empty($faqItems) && !empty($faqAllTags)) {
+    if (!empty($faqItems) && !empty($faqAllTags) && empty($selectedAlias)) {
         $placed = [];
         $grouped = [];
         // Если выбран тег — ставим его первым в порядке обхода
