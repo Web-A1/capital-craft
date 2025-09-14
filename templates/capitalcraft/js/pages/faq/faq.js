@@ -137,6 +137,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Центрируем открытый вопрос на экране после перехода по якорю
     setTimeout(function () {
       el.scrollIntoView({ block: "center", behavior: "instant" });
+      if (window.matchMedia("(max-width: 767px)").matches) {
+        const header = document.querySelector(".site-header");
+        if (header) {
+          window.scrollBy(0, -header.offsetHeight);
+        }
+      }
     }, 0);
   }
 
