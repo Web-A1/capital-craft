@@ -154,9 +154,9 @@ if ($isFAQPage) {
           <?php if (!empty($this->item->tags->itemTags)): ?>
             <?php
             $menu = JFactory::getApplication()->getMenu();
-            $blogItem = $menu->getItems('alias', 'blog', true);
-            $blogItemId = $blogItem ? $blogItem->id : 0;
-            ?>
+              $blogItem = $menu->getItems('alias', 'blog', true);
+              $blogItemId = $blogItem ? $blogItem->id : 0;
+              ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
