@@ -1,6 +1,7 @@
 <?php
 defined("_JEXEC") or die();
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
@@ -32,6 +33,10 @@ $introImgAlt =
 // Build excerpt (200 chars, plain text)
 $sourceText = trim(strip_tags($this->item->introtext ?: $this->item->fulltext ?? ""));
 $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
+
+$menu = Factory::getApplication()->getMenu();
+$blogItem = $menu->getItems("alias", "blog", true);
+$blogItemId = $blogItem ? $blogItem->id : 0;
 ?>
 
 <div class="blog-card__grid">
@@ -48,10 +53,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
       <?php echo $excerpt; ?>
       <?php if ($params->get("show_readmore") && $this->item->readmore): ?>
         <p class="blog-card__more"><a href="<?php echo $articleLink; ?>"><?php echo HTMLHelper::_(
-            "string.truncate",
-            $params->get("alternative_readmore", JText::_("COM_CONTENT_READ_MORE")) ?: JText::_("COM_CONTENT_READ_MORE"),
-            100,
-        ); ?></a></p>
+    "string.truncate",
+    $params->get("alternative_readmore", JText::_("COM_CONTENT_READ_MORE")) ?: JText::_("COM_CONTENT_READ_MORE"),
+    100,
+); ?></a></p>
       <?php endif; ?>
     </div>
 
@@ -65,8 +70,12 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
           <?php foreach ($this->item->tags->itemTags as $tag): ?>
             <li class="blog-card__tag">
               <a href="<?php echo Route::_(
-                  "index.php?option=com_tags&view=tag&id=" . (int) $tag->tag_id,
-              ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars($tag->alias ?? '', ENT_QUOTES, 'UTF-8'); ?>">#<?php echo $this->escape($tag->title); ?></a>
+                  "index.php?Itemid=" . $blogItemId . "&tag=" . urlencode($tag->alias),
+              ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
+    $tag->alias ?? "",
+    ENT_QUOTES,
+    "UTF-8",
+); ?>">#<?php echo $this->escape($tag->title); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
@@ -78,10 +87,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
     <figure class="blog-card__image">
       <a href="<?php echo $articleLink; ?>">
         <img src="<?php echo htmlspecialchars($introImg, ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars(
-            $introImgAlt,
-            ENT_QUOTES,
-            "UTF-8",
-        ); ?>">
+    $introImgAlt,
+    ENT_QUOTES,
+    "UTF-8",
+); ?>">
       </a>
     </figure>
   <?php endif; ?>
