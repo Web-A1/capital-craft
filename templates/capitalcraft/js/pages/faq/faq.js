@@ -1,58 +1,58 @@
 document.addEventListener('DOMContentLoaded', function () {
   const questions = document.querySelectorAll('.faq__question');
 
-  questions.forEach(function (question) {
-    question.addEventListener('click', function () {
-      const isExpanded = question.getAttribute('aria-expanded') === 'true';
-      const answer = question.nextElementSibling;
+  function getAnswerForQuestion(question) {
+    // В новой разметке ответ находится внутри .faq__item, после .faq__row
+    const item = question.closest('.faq__item');
+    if (!item) return null;
+    return item.querySelector('.faq__answer');
+  }
 
+  function collapseQuestion(q) {
+    const ans = getAnswerForQuestion(q);
+    q.setAttribute('aria-expanded', 'false');
+    if (!ans) return;
+    ans.style.maxHeight = '0px';
+    ans.addEventListener('transitionend', function handler(e) {
+      if (e.propertyName === 'max-height' && q.getAttribute('aria-expanded') === 'false') {
+        ans.style.removeProperty('max-height');
+        ans.removeEventListener('transitionend', handler);
+      }
+    });
+  }
+
+  function expandQuestion(q) {
+    const ans = getAnswerForQuestion(q);
+    q.setAttribute('aria-expanded', 'true');
+    if (!ans) return;
+    // force reflow then set height
+    void ans.offsetHeight;
+    ans.style.maxHeight = ans.scrollHeight + 20 + 'px';
+  }
+
+  questions.forEach(function (question) {
+    question.addEventListener('click', function (e) {
+      const isExpanded = question.getAttribute('aria-expanded') === 'true';
+
+      // Закрываем другие
       questions.forEach(function (q) {
         if (q !== question && q.getAttribute('aria-expanded') === 'true') {
-          const otherAnswer = q.nextElementSibling;
-          q.setAttribute('aria-expanded', 'false');
-          if (otherAnswer) {
-            otherAnswer.style.maxHeight = '0px';
-            otherAnswer.addEventListener('transitionend', function handler(e) {
-              if (
-                e.propertyName === 'max-height' &&
-                q.getAttribute('aria-expanded') === 'false'
-              ) {
-                otherAnswer.style.removeProperty('max-height');
-                otherAnswer.removeEventListener('transitionend', handler);
-              }
-            });
-          }
+          collapseQuestion(q);
         }
       });
 
-      if (!isExpanded) {
-        question.setAttribute('aria-expanded', 'true');
-        if (answer) {
-          answer.style.maxHeight = answer.scrollHeight + 20 + 'px';
-        }
+      if (isExpanded) {
+        collapseQuestion(question);
       } else {
-        question.setAttribute('aria-expanded', 'false');
-        if (answer) {
-          answer.style.maxHeight = '0px';
-          answer.addEventListener('transitionend', function handler(e) {
-            if (
-              e.propertyName === 'max-height' &&
-              question.getAttribute('aria-expanded') === 'false'
-            ) {
-              answer.style.removeProperty('max-height');
-              answer.removeEventListener('transitionend', handler);
-            }
-          });
-        }
+        expandQuestion(question);
       }
+    });
 
-      // Добавляем поддержку клавиатуры
-      question.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          this.click();
-        }
-      });
+    question.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        question.click();
+      }
     });
   });
 });

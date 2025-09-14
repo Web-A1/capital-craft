@@ -67,27 +67,28 @@
     padding: 16px 0;
   }
 
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
   &__question {
     background: none;
     border: none;
-    width: 100%;
+    width: auto;
     text-align: left;
     font-family: @font-body;
     font-weight: 400;
     font-size: @font-size-text;
     color: @color-text;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: block;
     cursor: pointer;
     transition: color 0.3s ease;
 
     &:hover {
       color: @color-accent;
-    }
-
-    &[aria-expanded="true"] .faq__icon {
-      transform: rotate(45deg);
     }
   }
 
@@ -102,14 +103,10 @@
     white-space: nowrap;
   }
 
-  &__icon {
-    font-size: 24px;
-    line-height: 1;
-    transition: transform 0.3s ease;
-  }
+  // Плюс удалён по макету
 
-  // Toggle и строка больше не используются — поведение возвращено к исходному (кнопка + ответ)
-
+  // Раскрытие управляется штатным faq.js — padding задаём соседним селектором
+  
   &__answer {
     max-height: 0;
     overflow: hidden;
@@ -125,7 +122,8 @@
     color: @color-text;
   }
 
-  // padding при раскрытии управляется через соседний селектор в JS
+  // В новой разметке ответ не является прямым соседом кнопки,
+  // за padding отвечает JS (оставляем правило для совместимости, если структура без row)
   &__question[aria-expanded="true"] + .faq__answer {
     padding: 15px 20px 20px 30px;
   }
