@@ -134,14 +134,27 @@ document.addEventListener("DOMContentLoaded", function () {
     if (q && q.getAttribute("aria-expanded") !== "true") {
       q.click();
     }
-    // Центрируем открытый вопрос на экране после перехода по якорю
+    // Центрируем открытый вопрос и показываем хедер после перехода по якорю
     setTimeout(function () {
+<<<<<<< ours
       el.scrollIntoView({ block: "center", behavior: "instant" });
       if (window.matchMedia("(max-width: 767px)").matches) {
         const header = document.querySelector(".site-header");
+=======
+      if (window.headerControl) {
+        window.headerControl.freeze();
+      }
+      el.scrollIntoView({ block: 'center', behavior: 'instant' });
+      if (window.matchMedia('(max-width: 767px)').matches) {
+        const header = document.querySelector('.site-header');
+>>>>>>> theirs
         if (header) {
           window.scrollBy(0, -header.offsetHeight);
         }
+      }
+      if (window.headerControl) {
+        window.headerControl.pin();
+        window.headerControl.unfreeze();
       }
     }, 0);
   }
