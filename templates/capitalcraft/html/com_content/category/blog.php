@@ -52,21 +52,22 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
     <?php
     // Build navigation of all available tags
     $db = Joomla\CMS\Factory::getDbo();
-$q = $db
-    ->getQuery(true)
-    ->select("t.id, t.title, t.alias")
-    ->from($db->quoteName("#__tags", "t"))
-    ->join(
-        "INNER",
-        $db->quoteName("#__contentitem_tag_map", "m") .
-            " ON m.tag_id = t.id AND m.type_alias = " .
-            $db->quote("com_content.article"),
-    )
-    ->where("t.published = 1")
-    ->group("t.id")
-    ->order("t.title ASC");
-$db->setQuery($q);
-$allTags = (array) $db->loadObjectList();
+// Собираем теги только из статей текущего списка (lead + intro)
+$allTags = [];
+$seenTags = [];
+foreach (array_merge($this->lead_items ?? [], $this->intro_items ?? []) as $it) {
+    if (!empty($it->tags->itemTags)) {
+        foreach ($it->tags->itemTags as $tg) {
+            $alias = strtolower($tg->alias ?? '');
+            if ($alias && empty($seenTags[$alias])) {
+                $obj = (object) ['id' => $tg->tag_id, 'title' => $tg->title, 'alias' => $tg->alias];
+                $allTags[] = $obj;
+                $seenTags[$alias] = true;
+            }
+        }
+    }
+}
+usort($allTags, function($a, $b){ return strcmp($a->title, $b->title); });
 ?>
 
     <?php if (!empty($allTags)): ?>
@@ -192,7 +193,7 @@ $allTags = (array) $db->loadObjectList();
     }
 
     pills.forEach(p => p.addEventListener('click', function(ev){ ev.preventDefault(); apply(p.getAttribute('data-alias')||''); }));
-    inCardTags.forEach(a => a.addEventListener('click', function(ev){ ev.preventDefault(); const href = a.getAttribute('href')||''; const m = href.match(/id=(\d+)/); const alias = (a.textContent||'').replace('#','').trim().toLowerCase(); apply(alias); }));
+    inCardTags.forEach(a => a.addEventListener('click', function(ev){ ev.preventDefault(); const alias = (a.getAttribute('data-alias')||'').toLowerCase(); apply(alias); }));
 
     // init from URL
     const m = location.search.match(/\btag=([^&#]+)/);

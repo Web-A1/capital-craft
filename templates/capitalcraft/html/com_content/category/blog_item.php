@@ -66,7 +66,7 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
             <li class="blog-card__tag">
               <a href="<?php echo Route::_(
                   "index.php?option=com_tags&view=tag&id=" . (int) $tag->tag_id,
-              ); ?>" class="blog-card__tag-link">#<?php echo $this->escape($tag->title); ?></a>
+              ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars($tag->alias ?? '', ENT_QUOTES, 'UTF-8'); ?>">#<?php echo $this->escape($tag->title); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
