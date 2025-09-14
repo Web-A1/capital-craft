@@ -115,15 +115,37 @@
 
   &__main {
     max-width: none;
+    min-height: 900px;
   }
 
   &__side {
     display: flex;
     flex-direction: column;
     gap: 60px; // desktop spacing between image and related block
+    position: relative;
+    padding-left: 60px;
+    max-height: 900px;
+    overflow-y: auto;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+      background-color: @section-divider-color;
+      pointer-events: none;
+      .media(mobile, { display: none; });
+    }
 
     // Mobile: 30px gap between image and the divider above related block
-    .media(mobile, { gap: @divider-space-mobile; });
+    .media(mobile, {
+      gap: @divider-space-mobile;
+      padding-left: 0;
+      max-height: none;
+      overflow: visible;
+    });
   }
 
   &__image img {
@@ -152,26 +174,16 @@
 .article {
   &__related {
     position: relative;
-    padding-left: 60px; // 60px gap after the vertical divider
+    padding-left: 0;
 
     .media(mobile, {
-      padding-left: 0;
       // Provide 30px spacing from divider to content without margin-collapsing
       padding-top: @divider-space-mobile;
     });
 
-    // Vertical divider only for the related area,
-    // aligned to the left edge of the image (column start)
+    // Remove individual vertical divider; handled by .article__side
     &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0; // exactly at the column edge (image left)
-      width: 1px;
-      background-color: @section-divider-color;
-      pointer-events: none;
-      .media(mobile, { display: none; });
+      display: none;
     }
 
     // Mobile: horizontal divider between image and related block
