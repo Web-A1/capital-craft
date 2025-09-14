@@ -10,10 +10,19 @@ $canonicalUrl = 'https://capital-craft.ru/faq';
 $input   = $app->input;
 $tagParam = trim($input->getString('tag', ''));
 $tagIds   = [];
+$selectedAlias = '';
 
 if ($tagParam !== '') {
     if (ctype_digit($tagParam)) {
         $tagIds = [(int) $tagParam];
+        // Получаем alias для группировки/подсветки
+        $qSel = $db->getQuery(true)
+            ->select($db->quoteName('alias'))
+            ->from($db->quoteName('#__tags'))
+            ->where($db->quoteName('id') . ' = ' . (int) $tagParam)
+            ->where($db->quoteName('published') . ' = 1');
+        $db->setQuery($qSel);
+        $selectedAlias = strtolower((string) $db->loadResult());
     } else {
         $qTag = $db->getQuery(true)
             ->select($db->quoteName('id'))
@@ -24,6 +33,7 @@ if ($tagParam !== '') {
         $found = (int) $db->loadResult();
         if ($found) {
             $tagIds = [$found];
+            $selectedAlias = strtolower($tagParam);
         }
     }
 }
@@ -61,16 +71,7 @@ if ($faqCatId) {
         ->where('c.catid = ' . (int) $faqCatId)
         ->order('c.publish_up DESC');
 
-    if (!empty($tagIds)) {
-        $q->join(
-            'INNER',
-            $db->quoteName('#__contentitem_tag_map', 'm') .
-            ' ON ' . $db->quoteName('m.content_item_id') . ' = ' . $db->quoteName('c.id') .
-            ' AND ' . $db->quoteName('m.type_alias') . ' = ' . $db->quote('com_content.article')
-        );
-        $q->where('m.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')');
-        $q->group($db->quoteName('c.id'));
-    }
+    // Важно: не фильтруем по тегу — используем параметр только для сортировки/группировки
 
     $db->setQuery($q);
     $rows = (array) $db->loadObjectList();
@@ -141,7 +142,17 @@ if ($faqCatId) {
     if (!empty($faqItems) && !empty($faqAllTags)) {
         $placed = [];
         $grouped = [];
-        foreach ($faqAllTags as $tg) {
+        // Если выбран тег — ставим его первым в порядке обхода
+        $orderedTags = $faqAllTags;
+        if ($selectedAlias) {
+            usort($orderedTags, function($a, $b) use ($selectedAlias) {
+                $aa = strtolower($a->alias); $bb = strtolower($b->alias);
+                if ($aa === $selectedAlias && $bb !== $selectedAlias) return -1;
+                if ($bb === $selectedAlias && $aa !== $selectedAlias) return 1;
+                return strcmp($a->title, $b->title);
+            });
+        }
+        foreach ($orderedTags as $tg) {
             $alias = strtolower($tg->alias);
             foreach ($faqItems as $it) {
                 if (!empty($placed[$it['id']]) || empty($it['tags'])) continue;
@@ -310,9 +321,12 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
                 <p class="faq__title">Сильные решения начинаются с вопросов</p>
             </div>
             <?php if (!empty($faqAllTags)): ?>
-              <?php $activeTagAlias = ($tagParam && !ctype_digit($tagParam)) ? strtolower($tagParam) : ''; ?>
+              <?php $activeTagAlias = $selectedAlias; ?>
               <nav class="faq__tags-nav" aria-label="Навигация по тегам FAQ">
                 <ul class="faq-tags__cloud faq-tags__cloud--nowrap">
+                  <li class="faq-tags__tag">
+                    <a class="faq-tags__link<?php echo $activeTagAlias === '' ? ' is-active' : ''; ?>" href="/faq">Все вопросы</a>
+                  </li>
                   <?php foreach ($faqAllTags as $tg): ?>
                     <?php $alias = strtolower($tg->alias); ?>
                     <li class="faq-tags__tag">
