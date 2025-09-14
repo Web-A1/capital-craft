@@ -319,29 +319,22 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
 </section>
 
 <script>
-// Lightweight toggle for FAQ items to support the new layout row
+// Toggle FAQ by clicking anywhere on the row except the tag link
 document.addEventListener('click', function(e) {
-  const qBtn = e.target.closest('.faq__question');
-  const tBtn = e.target.closest('.faq__toggle');
-  if (!qBtn && !tBtn) return;
-  const btn = qBtn || tBtn;
-  const answerId = btn.getAttribute('aria-controls');
-  if (!answerId) return;
-  const answer = document.getElementById(answerId);
+  // Ignore clicks on tag link
+  if (e.target.closest('.faq__tag-chip')) return;
+  const row = e.target.closest('.faq__row');
+  if (!row) return;
+  const q = row.querySelector('.faq__question');
+  const t = row.querySelector('.faq__toggle');
+  if (!q) return;
+  const answerId = q.getAttribute('aria-controls');
+  const answer = answerId ? document.getElementById(answerId) : null;
   if (!answer) return;
-  const expanded = (qBtn ? qBtn.getAttribute('aria-expanded') : tBtn.getAttribute('aria-expanded')) === 'true';
+  const expanded = q.getAttribute('aria-expanded') === 'true';
   const nextState = !expanded;
-  // sync both buttons in the same row
-  const row = btn.closest('.faq__row');
-  if (row) {
-    const q = row.querySelector('.faq__question');
-    const t = row.querySelector('.faq__toggle');
-    if (q) q.setAttribute('aria-expanded', String(nextState));
-    if (t) t.setAttribute('aria-expanded', String(nextState));
-  } else {
-    btn.setAttribute('aria-expanded', String(nextState));
-  }
-  // toggle answer
+  q.setAttribute('aria-expanded', String(nextState));
+  if (t) t.setAttribute('aria-expanded', String(nextState));
   if (nextState) {
     answer.classList.add('open');
     answer.style.maxHeight = answer.scrollHeight + 'px';
