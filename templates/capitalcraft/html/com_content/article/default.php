@@ -222,9 +222,18 @@ if ($isFAQPage) {
                         " = " .
                         $db->quote("com_content.article"),
                 )
+                ->join(
+                    "INNER",
+                    $db->quoteName("#__categories", "cat") .
+                        " ON " .
+                        $db->quoteName("cat.id") .
+                        " = " .
+                        $db->quoteName("c.catid"),
+                )
                 ->where("c.state = 1")
                 ->where("c.id != " . (int) $this->item->id)
                 ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
+                ->where($db->quoteName("cat.alias") . " != " . $db->quote("faq"))
                 ->group($db->quoteName("c.id"))
                 ->order($db->escape("c.publish_up DESC"));
 
