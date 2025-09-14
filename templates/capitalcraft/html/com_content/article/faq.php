@@ -125,6 +125,43 @@ if ($faqCatId) {
         }
         unset($it);
     }
+
+    // Список всех тегов, используемых в FAQ (для навигации), игнорируя текущий фильтр
+    $qAllTags = $db->getQuery(true)
+        ->select('DISTINCT t.id, t.title, t.alias')
+        ->from($db->quoteName('#__tags', 't'))
+        ->join('INNER', $db->quoteName('#__contentitem_tag_map', 'm') . ' ON m.tag_id = t.id AND m.type_alias = ' . $db->quote('com_content.article'))
+        ->join('INNER', $db->quoteName('#__content', 'c') . ' ON c.id = m.content_item_id AND c.state = 1 AND c.catid = ' . (int) $faqCatId)
+        ->where('t.published = 1')
+        ->order('t.title ASC');
+    $db->setQuery($qAllTags);
+    $faqAllTags = (array) $db->loadObjectList();
+
+    // Группировка вопросов по тегам: идём по алфавиту тегов и собираем элементы с этим тегом
+    if (!empty($faqItems) && !empty($faqAllTags)) {
+        $placed = [];
+        $grouped = [];
+        foreach ($faqAllTags as $tg) {
+            $alias = strtolower($tg->alias);
+            foreach ($faqItems as $it) {
+                if (!empty($placed[$it['id']]) || empty($it['tags'])) continue;
+                // Проверяем, есть ли у вопроса этот тег
+                $has = false;
+                foreach ($it['tags'] as $t) {
+                    if (strtolower($t['alias']) === $alias) { $has = true; break; }
+                }
+                if ($has) {
+                    $grouped[] = $it;
+                    $placed[$it['id']] = true;
+                }
+            }
+        }
+        // Добавляем оставшиеся (без тегов или не попавшие в группы) в конце, сохраняя исходный порядок
+        foreach ($faqItems as $it) {
+            if (empty($placed[$it['id']])) { $grouped[] = $it; }
+        }
+        $faqItems = $grouped;
+    }
 }
 
 // Фолбэк отключён: если в БД нет данных, не выводим вопросы
@@ -272,6 +309,21 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
                 <h1 class="faq__subtitle">часто задаваемые вопросы</h1>
                 <p class="faq__title">Сильные решения начинаются с вопросов</p>
             </div>
+            <?php if (!empty($faqAllTags)): ?>
+              <?php $activeTagAlias = ($tagParam && !ctype_digit($tagParam)) ? strtolower($tagParam) : ''; ?>
+              <nav class="faq__tags-nav" aria-label="Навигация по тегам FAQ">
+                <ul class="faq-tags__cloud">
+                  <?php foreach ($faqAllTags as $tg): ?>
+                    <?php $alias = strtolower($tg->alias); ?>
+                    <li class="faq-tags__tag">
+                      <a class="faq-tags__link<?php echo $activeTagAlias === $alias ? ' is-active' : ''; ?>" href="<?php echo JRoute::_(
+                          '/faq?tag=' . rawurlencode($tg->alias)
+                      ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, 'UTF-8'); ?></a>
+                    </li>
+                  <?php endforeach; ?>
+                </ul>
+              </nav>
+            <?php endif; ?>
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
                 <?php foreach ($faqItems as $index => $item): ?>
                     <div class="faq__item">

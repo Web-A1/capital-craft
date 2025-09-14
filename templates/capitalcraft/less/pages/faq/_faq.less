@@ -35,6 +35,26 @@
     margin-bottom: 40px;
   }
 
+  // Навигация по тегам на странице FAQ
+  &__tags-nav {
+    margin: 0 0 24px;
+  }
+  .faq-tags__cloud {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    padding: 0;
+    margin: 0;
+    flex-wrap: wrap;
+  }
+  .faq-tags__tag { flex: 0 0 auto; }
+  .faq-tags__link { .tag-button(); }
+  .faq-tags__link.is-active {
+    background: @color-bg-craft;
+    color: @color-accent;
+    border-color: @color-accent;
+  }
+
   &__subtitle {
     .subtitle();
   }
