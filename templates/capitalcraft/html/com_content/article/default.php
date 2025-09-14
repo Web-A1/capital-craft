@@ -149,12 +149,15 @@ if ($isFAQPage) {
           <?php endif; ?>
 
           <?php if (!empty($this->item->tags->itemTags)): ?>
+            <?php
+            $menu = JFactory::getApplication()->getMenu();
+            $blogItem = $menu->getItems('alias', 'blog', true);
+            $blogItemId = $blogItem ? $blogItem->id : 0;
+            ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
-                  <a href="<?php echo JRoute::_(
-                      "index.php?option=com_tags&view=tag&id=" . (int) $tag->tag_id,
-                  ); ?>" class="blog-card__tag-link">#<?php echo $this->escape($tag->title); ?></a>
+                  <a href="<?php echo JRoute::_('index.php?Itemid=' . $blogItemId . '&tag=' . urlencode($tag->alias)); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars($tag->alias ?? '', ENT_QUOTES, 'UTF-8'); ?>">#<?php echo $this->escape($tag->title); ?></a>
                 </li>
               <?php endforeach; ?>
             </ul>
