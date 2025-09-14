@@ -1,10 +1,92 @@
 <?php defined('_JEXEC') or die;
 $doc = JFactory::getDocument();
+$app = JFactory::getApplication();
+$db  = JFactory::getDbo();
 
 // Канонический URL для JSON-LD схем (используется только в структурированных данных)
 $canonicalUrl = 'https://capital-craft.ru/faq';
 
-require __DIR__ . '/../../../data/faq_data.php';
+// Параметр фильтра по тегу (?tag=alias|id)
+$input   = $app->input;
+$tagParam = trim($input->getString('tag', ''));
+$tagIds   = [];
+
+if ($tagParam !== '') {
+    if (ctype_digit($tagParam)) {
+        $tagIds = [(int) $tagParam];
+    } else {
+        $qTag = $db->getQuery(true)
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__tags'))
+            ->where($db->quoteName('alias') . ' = ' . $db->quote($tagParam))
+            ->where($db->quoteName('published') . ' = 1');
+        $db->setQuery($qTag);
+        $found = (int) $db->loadResult();
+        if ($found) {
+            $tagIds = [$found];
+        }
+    }
+}
+
+// Определяем категорию FAQ по alias 'faq' (fallback: по title 'FAQ')
+$faqCatId = 0;
+$qCat = $db->getQuery(true)
+    ->select($db->quoteName('id'))
+    ->from($db->quoteName('#__categories'))
+    ->where($db->quoteName('extension') . ' = ' . $db->quote('com_content'))
+    ->where($db->quoteName('alias') . ' = ' . $db->quote('faq'))
+    ->where($db->quoteName('published') . ' = 1');
+$db->setQuery($qCat);
+$faqCatId = (int) $db->loadResult();
+
+if (!$faqCatId) {
+    $qCat2 = $db->getQuery(true)
+        ->select($db->quoteName('id'))
+        ->from($db->quoteName('#__categories'))
+        ->where($db->quoteName('extension') . ' = ' . $db->quote('com_content'))
+        ->where($db->quoteName('title') . ' = ' . $db->quote('FAQ'))
+        ->where($db->quoteName('published') . ' = 1');
+    $db->setQuery($qCat2);
+    $faqCatId = (int) $db->loadResult();
+}
+
+// Загружаем FAQ из БД, при отсутствии категории — используем локальный массив как фолбэк
+$faqItems = [];
+if ($faqCatId) {
+    $q = $db->getQuery(true)
+        ->select('c.id, c.title, c.introtext, c.fulltext, c.publish_up')
+        ->from($db->quoteName('#__content', 'c'))
+        ->where('c.state = 1')
+        ->where('c.catid = ' . (int) $faqCatId)
+        ->order('c.publish_up DESC');
+
+    if (!empty($tagIds)) {
+        $q->join(
+            'INNER',
+            $db->quoteName('#__contentitem_tag_map', 'm') .
+            ' ON ' . $db->quoteName('m.content_item_id') . ' = ' . $db->quoteName('c.id') .
+            ' AND ' . $db->quoteName('m.type_alias') . ' = ' . $db->quote('com_content.article')
+        );
+        $q->where('m.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')');
+        $q->group($db->quoteName('c.id'));
+    }
+
+    $db->setQuery($q);
+    foreach ((array) $db->loadObjectList() as $row) {
+        $answer = !empty($row->fulltext) ? $row->fulltext : ($row->introtext ?? '');
+        $faqItems[] = [
+            'q' => (string) $row->title,
+            // Храним как плейн‑текст для безопасного вывода (как было в массиве)
+            'a' => trim(strip_tags((string) $answer)),
+        ];
+    }
+}
+
+// Фолбэк: если из БД ничего не получили, берём статический массив
+if (empty($faqItems)) {
+    require __DIR__ . '/../../../data/faq_data.php';
+    $faqItems = isset($faq_data) && is_array($faq_data) ? $faq_data : [];
+}
 
 // Улучшенные структурированные данные JSON-LD для FAQ
 $faqSchema = [
@@ -21,14 +103,14 @@ $faqSchema = [
     ],
 ];
 
-foreach ($faq_data as $index => $item) {
+foreach ($faqItems as $index => $item) {
     $faqSchema['mainEntity'][] = [
         '@type' => 'Question',
         'position' => $index + 1,
-        'name' => $item['q'],
+        'name' => (string) ($item['q'] ?? ''),
         'acceptedAnswer' => [
             '@type' => 'Answer',
-            'text' => $item['a'],
+            'text' => (string) ($item['a'] ?? ''),
             'dateCreated' => date('c'),
             'upvoteCount' => 1,
         ],
@@ -150,7 +232,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
                 <p class="faq__title">Сильные решения начинаются с вопросов</p>
             </div>
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
-                <?php foreach ($faq_data as $index => $item): ?>
+                <?php foreach ($faqItems as $index => $item): ?>
                     <div class="faq__item">
                         <button class="faq__question" 
                                 aria-expanded="false" 
