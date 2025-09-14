@@ -276,7 +276,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
                 <?php foreach ($faqItems as $index => $item): ?>
                     <div class="faq__item">
                         <div class="faq__row">
-                            <button class="faq__question" 
+                            <button type="button" class="faq__question" 
                                     aria-expanded="false" 
                                     aria-controls="faq-answer-<?php echo $index; ?>"
                                     aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
@@ -290,7 +290,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
                                     '/faq?tag=' . rawurlencode($tg['alias'])
                                 ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
                             <?php endif; ?>
-                            <button class="faq__toggle" 
+                            <button type="button" class="faq__toggle" 
                                     aria-expanded="false"
                                     aria-controls="faq-answer-<?php echo $index; ?>"
                                     aria-label="Развернуть ответ на вопрос <?php echo $index + 1; ?>">
@@ -347,6 +347,7 @@ document.addEventListener('click', function(e) {
   const questionBtn = e.target.closest('.faq__question');
   const toggleBtn = e.target.closest('.faq__toggle');
   const row = (questionBtn || toggleBtn) ? (e.target.closest('.faq__row')) : e.target.closest('.faq__row');
+  if (questionBtn || toggleBtn) e.preventDefault(); // prevent form submit if inside a form
   if (!row) return;
   toggleFaqRow(row);
 });
