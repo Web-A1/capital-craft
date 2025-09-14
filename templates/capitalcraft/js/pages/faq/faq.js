@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const ans = getAnswerForQuestion(q);
     q.setAttribute('aria-expanded', 'false');
     if (!ans) return;
-    ans.classList.remove('open');
     ans.style.maxHeight = '0px';
     ans.addEventListener('transitionend', function handler(e) {
       if (e.propertyName === 'max-height' && q.getAttribute('aria-expanded') === 'false') {
@@ -28,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!ans) return;
     // force reflow then set height
     void ans.offsetHeight;
-    ans.classList.add('open');
     ans.style.maxHeight = ans.scrollHeight + 20 + 'px';
   }
 
