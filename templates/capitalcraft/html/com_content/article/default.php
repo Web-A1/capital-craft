@@ -1,5 +1,8 @@
 <?php defined("_JEXEC") or die();
 
+use Joomla\CMS\Router\Route;
+use Joomla\Component\Content\Site\Helper\RouteHelper;
+
 // Определяем, является ли это FAQ страницей
 $isFAQPage = false;
 
@@ -205,7 +208,7 @@ if ($isFAQPage) {
             $db = JFactory::getDbo();
             $query = $db
                 ->getQuery(true)
-                ->select("c.id, c.title, c.alias, c.catid, c.publish_up")
+                ->select("c.id, c.title, c.alias, c.catid, c.publish_up, c.language")
                 ->from($db->quoteName("#__content", "c"))
                 ->join(
                     "INNER",
@@ -334,8 +337,12 @@ if ($isFAQPage) {
                           }
                           ?>
                         <li class="article__related-item">
-                          <a class="article__related-link" href="<?php echo JRoute::_(
-                              "index.php?option=com_content&view=article&id=" . (int) $rel->id,
+                          <a class="article__related-link" href="<?php echo Route::_(
+                              RouteHelper::getArticleRoute(
+                                  $rel->id . ":" . $rel->alias,
+                                  $rel->catid,
+                                  $rel->language ?? 0
+                              ),
                           ); ?>">
                             <div class="article__related-link-title">
                               <?php echo htmlspecialchars($rel->title, ENT_QUOTES, "UTF-8"); ?>
