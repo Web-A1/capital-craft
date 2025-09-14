@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   const questions = document.querySelectorAll('.faq__question');
+  const items = Array.from(document.querySelectorAll('.faq__item'));
+  const tagLinks = Array.from(document.querySelectorAll('.faq-tags__link'));
 
   function getAnswerForQuestion(question) {
     // Ответ — следующий элемент после кнопки (как на прод)
@@ -54,5 +56,60 @@ document.addEventListener('DOMContentLoaded', function () {
         question.click();
       }
     });
+  });
+
+  // Tag filtering without reload
+  function applyTagFilter(alias) {
+    const norm = (alias || '').toLowerCase();
+    items.forEach(function (it) {
+      const tags = (it.getAttribute('data-tags') || '').toLowerCase().split(/\s+/).filter(Boolean);
+      const show = !norm || tags.includes(norm);
+      it.style.display = show ? '' : 'none';
+    });
+    tagLinks.forEach(function (lnk) {
+      lnk.classList.remove('is-active');
+      const href = lnk.getAttribute('href') || '';
+      const m = href.match(/\btag=([^&#]+)/);
+      const lnkAlias = m ? decodeURIComponent(m[1]).toLowerCase() : '';
+      if ((!norm && !lnkAlias) || (norm && lnkAlias === norm)) {
+        lnk.classList.add('is-active');
+      }
+    });
+  }
+
+  // Intercept tag clicks
+  tagLinks.forEach(function (lnk) {
+    lnk.addEventListener('click', function (e) {
+      e.preventDefault();
+      const href = lnk.getAttribute('href') || '';
+      const m = href.match(/\btag=([^&#]+)/);
+      const alias = m ? decodeURIComponent(m[1]) : '';
+      applyTagFilter(alias);
+      // Update URL without reload
+      const newUrl = alias ? ('/faq?tag=' + encodeURIComponent(alias)) : '/faq';
+      if (history && history.pushState) {
+        history.pushState({ tag: alias }, '', newUrl);
+      }
+      // Collapse any open answers to avoid odd focus states
+      questions.forEach(function (q) {
+        if (q.getAttribute('aria-expanded') === 'true') {
+          q.click();
+        }
+      });
+    });
+  });
+
+  // Apply initial filter from URL
+  (function initFromUrl() {
+    const m = location.search.match(/\btag=([^&#]+)/);
+    const alias = m ? decodeURIComponent(m[1]) : '';
+    applyTagFilter(alias);
+  })();
+
+  // Handle back/forward
+  window.addEventListener('popstate', function () {
+    const m = location.search.match(/\btag=([^&#]+)/);
+    const alias = m ? decodeURIComponent(m[1]) : '';
+    applyTagFilter(alias);
   });
 });

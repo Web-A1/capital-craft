@@ -350,7 +350,13 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
             <?php endif; ?>
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
                 <?php foreach ($faqItems as $index => $item): ?>
-                    <div class="faq__item">
+                    <?php
+                    $aliases = [];
+                    if (!empty($item['tags'])) {
+                        foreach ($item['tags'] as $t) { $aliases[] = strtolower($t['alias']); }
+                    }
+                    ?>
+                    <div class="faq__item" data-tags="<?php echo htmlspecialchars(implode(' ', $aliases), ENT_QUOTES, 'UTF-8'); ?>">
                         <button class="faq__question" 
                                 aria-expanded="false" 
                                 aria-controls="faq-answer-<?php echo $index; ?>"
