@@ -275,28 +275,21 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
             <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
                 <?php foreach ($faqItems as $index => $item): ?>
                     <div class="faq__item">
-                        <div class="faq__row">
-                            <button type="button" class="faq__question" 
-                                    aria-expanded="false" 
-                                    aria-controls="faq-answer-<?php echo $index; ?>"
-                                    aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
-                                <span class="faq__text">
-                                    <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
-                                </span>
-                            </button>
+                        <button class="faq__question" 
+                                aria-expanded="false" 
+                                aria-controls="faq-answer-<?php echo $index; ?>"
+                                aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
+                            <span class="faq__text">
+                                <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
+                            </span>
                             <?php if (!empty($item['tags'])): ?>
                                 <?php $tg = $item['tags'][0]; ?>
                                 <a class="faq__tag-chip" href="<?php echo JRoute::_(
                                     '/faq?tag=' . rawurlencode($tg['alias'])
                                 ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
                             <?php endif; ?>
-                            <button type="button" class="faq__toggle" 
-                                    aria-expanded="false"
-                                    aria-controls="faq-answer-<?php echo $index; ?>"
-                                    aria-label="Развернуть ответ на вопрос <?php echo $index + 1; ?>">
-                                <span class="faq__icon" aria-hidden="true">+</span>
-                            </button>
-                        </div>
+                            <span class="faq__icon" aria-hidden="true">+</span>
+                        </button>
                         <div class="faq__answer" 
                              id="faq-answer-<?php echo $index; ?>"
                              role="region" 
@@ -317,44 +310,3 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
         </figure>
     </div>
 </section>
-
-<script>
-(function initFaqToggles(){
-  function toggle(row){
-    const q = row.querySelector('.faq__question');
-    const t = row.querySelector('.faq__toggle');
-    if (!q) return;
-    const answerId = q.getAttribute('aria-controls');
-    const answer = answerId ? document.getElementById(answerId) : null;
-    if (!answer) return;
-    const expanded = q.getAttribute('aria-expanded') === 'true';
-    const nextState = !expanded;
-    q.setAttribute('aria-expanded', String(nextState));
-    if (t) t.setAttribute('aria-expanded', String(nextState));
-    if (nextState) {
-      answer.classList.add('open');
-      // force reflow in case of immediate toggles
-      void answer.offsetHeight;
-      answer.style.maxHeight = answer.scrollHeight + 'px';
-      answer.style.opacity = '1';
-    } else {
-      answer.classList.remove('open');
-      answer.style.maxHeight = '0px';
-      answer.style.opacity = '0.99';
-    }
-  }
-
-  document.querySelectorAll('.faq__row').forEach(function(row){
-    const q = row.querySelector('.faq__question');
-    const t = row.querySelector('.faq__toggle');
-    if (q) {
-      q.addEventListener('click', function(e){ e.preventDefault(); toggle(row); });
-      q.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(row); } });
-    }
-    if (t) {
-      t.addEventListener('click', function(e){ e.preventDefault(); toggle(row); });
-      t.addEventListener('keydown', function(e){ if (e.key==='Enter' || e.key===' ') { e.preventDefault(); toggle(row); } });
-    }
-  });
-})();
-</script>

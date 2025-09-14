@@ -67,27 +67,27 @@
     padding: 16px 0;
   }
 
-  &__row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-
   &__question {
     background: none;
     border: none;
-    flex: 1 1 auto;
+    width: 100%;
     text-align: left;
     font-family: @font-body;
     font-weight: 400;
     font-size: @font-size-text;
     color: @color-text;
-    display: block;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     cursor: pointer;
     transition: color 0.3s ease;
 
     &:hover {
       color: @color-accent;
+    }
+
+    &[aria-expanded="true"] .faq__icon {
+      transform: rotate(45deg);
     }
   }
 
@@ -108,20 +108,7 @@
     transition: transform 0.3s ease;
   }
 
-  &__toggle {
-    background: none;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: @color-text;
-    transition: color 0.3s ease;
-    margin-left: 8px; // чуть больше отступа от тега до плюса
-
-    &:hover { color: @color-accent; }
-    &[aria-expanded="true"] .faq__icon { transform: rotate(45deg); }
-  }
+  // Toggle и строка больше не используются — поведение возвращено к исходному (кнопка + ответ)
 
   &__answer {
     max-height: 0;
@@ -138,7 +125,8 @@
     color: @color-text;
   }
 
-  &__answer.open {
+  // padding при раскрытии управляется через соседний селектор в JS
+  &__question[aria-expanded="true"] + .faq__answer {
     padding: 15px 20px 20px 30px;
   }
 
