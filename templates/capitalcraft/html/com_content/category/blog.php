@@ -54,7 +54,7 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
     $db = Joomla\CMS\Factory::getDbo();
 $q = $db
     ->getQuery(true)
-    ->select("t.id, t.title")
+    ->select("t.id, t.title, t.alias")
     ->from($db->quoteName("#__tags", "t"))
     ->join(
         "INNER",
@@ -72,11 +72,12 @@ $allTags = (array) $db->loadObjectList();
     <?php if (!empty($allTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
         <ul class="blog-tags__cloud blog-tags__cloud--nowrap">
+          <li class="blog-tags__tag">
+            <a class="blog-tags__link is-active" href="#" data-alias="">Все статьи</a>
+          </li>
           <?php foreach ($allTags as $tg): ?>
             <li class="blog-tags__tag">
-              <a class="blog-tags__link" href="<?php echo JRoute::_(
-                  "index.php?option=com_tags&view=tag&id=" . (int) $tg->id,
-              ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+              <a class="blog-tags__link" href="#" data-alias="<?php echo htmlspecialchars($tg->alias, ENT_QUOTES, 'UTF-8'); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
@@ -95,7 +96,13 @@ $allTags = (array) $db->loadObjectList();
           <?php $cardLink = Route::_(
               ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language),
           ); ?>
-          <article class="blog-card blog-card--lead" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          <?php
+            $aliases = [];
+            if (!empty($item->tags->itemTags)) {
+              foreach ($item->tags->itemTags as $tg) { if (!empty($tg->alias)) $aliases[] = strtolower($tg->alias); }
+            }
+          ?>
+          <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(implode(' ', $aliases), ENT_QUOTES, 'UTF-8'); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
             $this->item = &$item;
             echo $this->loadTemplate("item");
@@ -109,7 +116,13 @@ $allTags = (array) $db->loadObjectList();
           <?php $cardLink = Route::_(
               ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language),
           ); ?>
-          <article class="blog-card" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          <?php
+            $aliases = [];
+            if (!empty($item->tags->itemTags)) {
+              foreach ($item->tags->itemTags as $tg) { if (!empty($tg->alias)) $aliases[] = strtolower($tg->alias); }
+            }
+          ?>
+          <article class="blog-card" data-tags="<?php echo htmlspecialchars(implode(' ', $aliases), ENT_QUOTES, 'UTF-8'); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
             $this->item = &$item;
             echo $this->loadTemplate("item");
@@ -155,4 +168,35 @@ $allTags = (array) $db->loadObjectList();
       if (href) { e.preventDefault(); window.location.href = href; }
     }
   });
+
+  // Client-side tag filtering: header pills + in-card tag links
+  (function(){
+    const cards = Array.from(document.querySelectorAll('.blog-card'));
+    const pills = Array.from(document.querySelectorAll('.blog-tags__link'));
+    const inCardTags = Array.from(document.querySelectorAll('.blog-card__tag-link'));
+
+    function apply(alias){
+      const norm = (alias||'').toLowerCase();
+      cards.forEach(c => {
+        const tags = (c.getAttribute('data-tags')||'').toLowerCase().split(/\s+/).filter(Boolean);
+        const show = !norm || tags.includes(norm);
+        c.style.display = show ? '' : 'none';
+      });
+      pills.forEach(p => {
+        const a = (p.getAttribute('data-alias')||'').toLowerCase();
+        p.classList.toggle('is-active', (norm ? a===norm : a===''));
+      });
+      const url = new URL(window.location.href);
+      if (norm) url.searchParams.set('tag', norm); else url.searchParams.delete('tag');
+      if (history && history.pushState) history.pushState({ tag: norm }, '', url.toString());
+    }
+
+    pills.forEach(p => p.addEventListener('click', function(ev){ ev.preventDefault(); apply(p.getAttribute('data-alias')||''); }));
+    inCardTags.forEach(a => a.addEventListener('click', function(ev){ ev.preventDefault(); const href = a.getAttribute('href')||''; const m = href.match(/id=(\d+)/); const alias = (a.textContent||'').replace('#','').trim().toLowerCase(); apply(alias); }));
+
+    // init from URL
+    const m = location.search.match(/\btag=([^&#]+)/);
+    if (m) apply(decodeURIComponent(m[1]));
+    window.addEventListener('popstate', function(){ const m = location.search.match(/\btag=([^&#]+)/); apply(m?decodeURIComponent(m[1]):''); });
+  })();
 </script>
