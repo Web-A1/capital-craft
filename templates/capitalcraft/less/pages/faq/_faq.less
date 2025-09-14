@@ -115,6 +115,10 @@
     &:hover {
       color: @color-accent;
     }
+
+    &[aria-expanded="true"] {
+      color: @color-accent; // акцентный цвет для открытого вопроса
+    }
   }
 
   // Внутренние элементы строки вопроса
