@@ -52,6 +52,7 @@ if (!$faqCatId) {
 
 // Загружаем FAQ из БД, при отсутствии категории — используем локальный массив как фолбэк
 $faqItems = [];
+$faqIds   = [];
 if ($faqCatId) {
     $q = $db->getQuery(true)
         ->select('c.id, c.title, c.introtext, c.fulltext, c.publish_up')
@@ -72,13 +73,57 @@ if ($faqCatId) {
     }
 
     $db->setQuery($q);
-    foreach ((array) $db->loadObjectList() as $row) {
+    $rows = (array) $db->loadObjectList();
+    foreach ($rows as $row) {
         $answer = !empty($row->fulltext) ? $row->fulltext : ($row->introtext ?? '');
         $faqItems[] = [
-            'q' => (string) $row->title,
+            'id' => (int) $row->id,
+            'q'  => (string) $row->title,
             // Храним как плейн‑текст для безопасного вывода (как было в массиве)
-            'a' => trim(strip_tags((string) $answer)),
+            'a'  => trim(strip_tags((string) $answer)),
+            'tags' => [],
         ];
+        $faqIds[] = (int) $row->id;
+    }
+
+    // Подтягиваем теги для найденных FAQ
+    if (!empty($faqIds)) {
+        $qTags = $db->getQuery(true)
+            ->select(
+                $db->quoteName('m.content_item_id', 'cid') . ', ' .
+                $db->quoteName('t.id') . ', ' .
+                $db->quoteName('t.title') . ', ' .
+                $db->quoteName('t.alias')
+            )
+            ->from($db->quoteName('#__contentitem_tag_map', 'm'))
+            ->join('INNER', $db->quoteName('#__tags', 't') . ' ON t.id = m.tag_id')
+            ->where('m.type_alias = ' . $db->quote('com_content.article'))
+            ->where('t.published = 1')
+            ->where('m.content_item_id IN (' . implode(',', array_map('intval', $faqIds)) . ')');
+        $db->setQuery($qTags);
+        $tagRows = (array) $db->loadObjectList();
+
+        // Индексируем теги по ID материала
+        $tagsById = [];
+        foreach ($tagRows as $tr) {
+            $cid = (int) $tr->cid;
+            if (!isset($tagsById[$cid])) {
+                $tagsById[$cid] = [];
+            }
+            $tagsById[$cid][] = [
+                'id' => (int) $tr->id,
+                'title' => (string) $tr->title,
+                'alias' => (string) $tr->alias,
+            ];
+        }
+
+        // Прикрепляем к элементам
+        foreach ($faqItems as &$it) {
+            if (isset($tagsById[$it['id']])) {
+                $it['tags'] = $tagsById[$it['id']];
+            }
+        }
+        unset($it);
     }
 }
 
@@ -245,6 +290,17 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
                              aria-label="Ответ на вопрос: <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>">
                             <?php echo htmlspecialchars($item['a'], ENT_QUOTES, 'UTF-8'); ?>
                         </div>
+                        <?php if (!empty($item['tags'])): ?>
+                            <ul class="faq__tags">
+                                <?php foreach ($item['tags'] as $tg): ?>
+                                    <li class="faq__tag">
+                                        <a class="faq__tag-link" href="<?php echo JRoute::_(
+                                            '/faq?tag=' . rawurlencode($tg['alias'])
+                                        ); ?>">#<?php echo htmlspecialchars($tg['title'], ENT_QUOTES, 'UTF-8'); ?></a>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
