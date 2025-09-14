@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const questions = document.querySelectorAll('.faq__question');
   const items = Array.from(document.querySelectorAll('.faq__item'));
   const tagLinks = Array.from(document.querySelectorAll('.faq-tags__link'));
+  const chipLinks = Array.from(document.querySelectorAll('.faq__tag-chip'));
 
   function getAnswerForQuestion(question) {
     // Ответ — следующий элемент после кнопки (как на прод)
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // Intercept tag clicks
+  // Intercept tag clicks (header pills)
   tagLinks.forEach(function (lnk) {
     lnk.addEventListener('click', function (e) {
       e.preventDefault();
@@ -96,6 +97,27 @@ document.addEventListener('DOMContentLoaded', function () {
           q.click();
         }
       });
+    });
+  });
+
+  // Intercept per-question tag chips (desktop)
+  chipLinks.forEach(function (lnk) {
+    lnk.addEventListener('click', function (e) {
+      e.preventDefault();
+      const href = lnk.getAttribute('href') || '';
+      const m = href.match(/\btag=([^&#]+)/);
+      const alias = m ? decodeURIComponent(m[1]) : '';
+      applyTagFilter(alias);
+      const newUrl = alias ? ('/faq?tag=' + encodeURIComponent(alias)) : '/faq';
+      if (history && history.pushState) {
+        history.pushState({ tag: alias }, '', newUrl);
+      }
+      questions.forEach(function (q) {
+        if (q.getAttribute('aria-expanded') === 'true') q.click();
+      });
+      // Опционально: прокручиваем к началу FAQ для целостного восприятия
+      const section = document.querySelector('.faq');
+      if (section && section.scrollIntoView) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 

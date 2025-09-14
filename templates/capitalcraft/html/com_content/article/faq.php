@@ -71,17 +71,7 @@ if ($faqCatId) {
         ->where('c.catid = ' . (int) $faqCatId)
         ->order('c.publish_up DESC');
 
-    // Если выбран тег — фильтруем по нему уже на уровне SQL
-    if (!empty($tagIds)) {
-        $q->join(
-            'INNER',
-            $db->quoteName('#__contentitem_tag_map', 'm') .
-            ' ON ' . $db->quoteName('m.content_item_id') . ' = ' . $db->quoteName('c.id') .
-            ' AND ' . $db->quoteName('m.type_alias') . ' = ' . $db->quote('com_content.article')
-        );
-        $q->where('m.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')');
-        $q->group($db->quoteName('c.id'));
-    }
+    // Не фильтруем по тегу на сервере: грузим всё, фильтруем на клиенте — это исключает рывки макета
 
     $db->setQuery($q);
     $rows = (array) $db->loadObjectList();
