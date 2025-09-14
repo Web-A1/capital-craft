@@ -319,12 +319,7 @@ $doc->addCustomTag('<script type="application/ld+json">' . json_encode($webPageS
 </section>
 
 <script>
-// Toggle FAQ by clicking anywhere on the row except the tag link
-document.addEventListener('click', function(e) {
-  // Ignore clicks on tag link
-  if (e.target.closest('.faq__tag-chip')) return;
-  const row = e.target.closest('.faq__row');
-  if (!row) return;
+function toggleFaqRow(row) {
   const q = row.querySelector('.faq__question');
   const t = row.querySelector('.faq__toggle');
   if (!q) return;
@@ -344,5 +339,27 @@ document.addEventListener('click', function(e) {
     answer.style.maxHeight = '0px';
     answer.style.opacity = '0.99';
   }
+}
+
+// Click: question area, plus button, or anywhere in the row (except tag link)
+document.addEventListener('click', function(e) {
+  if (e.target.closest('.faq__tag-chip')) return; // do not toggle when clicking tag
+  const questionBtn = e.target.closest('.faq__question');
+  const toggleBtn = e.target.closest('.faq__toggle');
+  const row = (questionBtn || toggleBtn) ? (e.target.closest('.faq__row')) : e.target.closest('.faq__row');
+  if (!row) return;
+  toggleFaqRow(row);
+});
+
+// Keyboard: toggle with Enter/Space on question or plus
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const target = e.target;
+  if (!(target instanceof HTMLElement)) return;
+  if (!target.classList.contains('faq__question') && !target.classList.contains('faq__toggle')) return;
+  e.preventDefault();
+  const row = target.closest('.faq__row');
+  if (!row) return;
+  toggleFaqRow(row);
 });
 </script>
