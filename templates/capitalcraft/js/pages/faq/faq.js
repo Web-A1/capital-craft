@@ -115,9 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
       questions.forEach(function (q) {
         if (q.getAttribute('aria-expanded') === 'true') q.click();
       });
-      // Опционально: прокручиваем к началу FAQ для целостного восприятия
-      const section = document.querySelector('.faq');
-      if (section && section.scrollIntoView) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Убираем автоскролл: оставляем позицию страницы неизменной при сортировке
     });
   });
 
