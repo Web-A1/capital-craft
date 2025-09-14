@@ -163,6 +163,7 @@
   &__related-wrap {
     position: relative;
     padding-left: 60px;
+    padding-right: 16px;
     flex: 1;
     min-height: 0; // allow inner scroll area to shrink
     display: flex;
@@ -171,7 +172,7 @@
     overflow-y: auto;
     background-color: @color-bg-craft;
     scrollbar-width: thin;
-    scrollbar-color: @section-divider-color darken(@color-bg-craft, 4%);
+    scrollbar-color: rgba(80, 80, 80, 0.15) @color-bg-craft;
 
     // Desktop vertical divider
     &::before {
@@ -188,17 +189,20 @@
 
     // Scrollbar styling
     &::-webkit-scrollbar {
-      width: 4px;
+      width: 6px;
     }
 
     &::-webkit-scrollbar-track {
-      background: darken(@color-bg-craft, 4%);
-      border-radius: 3px;
+      background: @color-bg-craft;
     }
 
     &::-webkit-scrollbar-thumb {
-      background: @section-divider-color;
-      border-radius: 3px;
+      background: rgba(80, 80, 80, 0.15);
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: rgba(80, 80, 80, 0.3);
     }
 
     // Mobile: spacing and horizontal divider
