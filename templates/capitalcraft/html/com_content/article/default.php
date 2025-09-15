@@ -394,7 +394,10 @@ if ($isFAQPage) {
                     if (!empty($matchedTagIds) && !empty($this->item->tags->itemTags)) {
                         foreach ($this->item->tags->itemTags as $tg) {
                             if (!empty($tg->tag_id) && in_array((int) $tg->tag_id, $matchedTagIds, true)) {
-                                $headingTagsHtml .= " #" . htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8");
+                                $safeTitle = htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8");
+                                // Заменяем пробелы на неразрывные, чтобы тег не рвался на две строки
+                                $safeTitle = preg_replace("/\s+/", "&nbsp;", $safeTitle);
+                                $headingTagsHtml .= ' <span class="article__related-tag">#' . $safeTitle . "</span>";
                             }
                         }
                     }
