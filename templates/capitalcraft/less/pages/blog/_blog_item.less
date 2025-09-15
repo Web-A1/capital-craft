@@ -82,11 +82,10 @@
     padding: 0;
   }
 
-  &__tag-link { .tag-button(); }
-}
-
-// Grid inside the card: text left, image right
-.blog-card {
+  &__tag-link {
+    .tag-button();
+  }
+  // Grid inside the card: text left, image right
   &__grid {
     display: grid;
     grid-template-columns: 1fr 320px;
@@ -114,7 +113,9 @@
   }
 
   // Remove grayscale on hover
-  &:hover &__image img { filter: none; }
+  &:hover &__image img {
+    filter: none;
+  }
 
   &__main {
     min-width: 0;
