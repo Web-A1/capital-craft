@@ -300,9 +300,6 @@ if ($isFAQPage) {
               <div class="article__related-wrap">
                 <div class="article__related-scroll">
                   <aside class="article__related-block">
-                    <div class="article__related-header">
-                      <div class="article__related-title">Читайте также<?php echo $headingTagsHtml; ?></div>
-                    </div>
                     <?php
                     if (!empty($relatedItems)) {
                         $ids = array_map(function ($o) {
@@ -383,6 +380,9 @@ if ($isFAQPage) {
                         }
                     }
                     ?>
+                    <div class="article__related-header">
+                      <div class="article__related-title">Читайте также<?php echo $headingTagsHtml; ?></div>
+                    </div>
                     <ul class="article__related-list">
                       <?php if (!empty($relatedItems)): ?>
                         <?php foreach ($relatedItems as $rel): ?>
