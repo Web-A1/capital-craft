@@ -154,13 +154,19 @@ if ($isFAQPage) {
           <?php if (!empty($this->item->tags->itemTags)): ?>
             <?php
             $menu = JFactory::getApplication()->getMenu();
-              $blogItem = $menu->getItems('alias', 'blog', true);
-              $blogItemId = $blogItem ? $blogItem->id : 0;
-              ?>
+            $blogItem = $menu->getItems("alias", "blog", true);
+            $blogItemId = $blogItem ? $blogItem->id : 0;
+            ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
-                  <a href="<?php echo JRoute::_('index.php?Itemid=' . $blogItemId . '&tag=' . urlencode($tag->alias)); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars($tag->alias ?? '', ENT_QUOTES, 'UTF-8'); ?>">#<?php echo $this->escape($tag->title); ?></a>
+                  <a href="<?php echo JRoute::_(
+                      "index.php?Itemid=" . $blogItemId . "&tag=" . urlencode($tag->alias),
+                  ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
+    $tag->alias ?? "",
+    ENT_QUOTES,
+    "UTF-8",
+); ?>">#<?php echo $this->escape($tag->title); ?></a>
                 </li>
               <?php endforeach; ?>
             </ul>
@@ -170,78 +176,78 @@ if ($isFAQPage) {
         <?php
         // Right-side illustration (from article images)
         $imagesObj = !empty($this->item->images) ? json_decode($this->item->images) : null;
-    $mainImg =
-        $imagesObj && !empty($imagesObj->image_fulltext)
-            ? $imagesObj->image_fulltext
-            : ($imagesObj && !empty($imagesObj->image_intro)
-                ? $imagesObj->image_intro
-                : "");
-    $mainAlt =
-        $imagesObj && !empty($imagesObj->image_fulltext_alt)
-            ? $imagesObj->image_fulltext_alt
-            : ($imagesObj && !empty($imagesObj->image_intro_alt)
-                ? $imagesObj->image_intro_alt
-                : "");
-    ?>
+        $mainImg =
+            $imagesObj && !empty($imagesObj->image_fulltext)
+                ? $imagesObj->image_fulltext
+                : ($imagesObj && !empty($imagesObj->image_intro)
+                    ? $imagesObj->image_intro
+                    : "");
+        $mainAlt =
+            $imagesObj && !empty($imagesObj->image_fulltext_alt)
+                ? $imagesObj->image_fulltext_alt
+                : ($imagesObj && !empty($imagesObj->image_intro_alt)
+                    ? $imagesObj->image_intro_alt
+                    : "");
+        ?>
 
         <?php
-    // Build related articles by the same tag(s)
-    $relatedItems = [];
-    $relatedTagTitle = "";
-    if (!empty($this->item->tags->itemTags)) {
-        // Collect tag IDs and remember the first tag title for the heading
-        $tagIds = [];
-        $firstTagAlias = "";
-        foreach ($this->item->tags->itemTags as $tg) {
-            if (!empty($tg->tag_id)) {
-                $tagIds[] = (int) $tg->tag_id;
+        // Build related articles by the same tag(s)
+        $relatedItems = [];
+        $relatedTagTitle = "";
+        if (!empty($this->item->tags->itemTags)) {
+            // Collect tag IDs and remember the first tag title for the heading
+            $tagIds = [];
+            $firstTagAlias = "";
+            foreach ($this->item->tags->itemTags as $tg) {
+                if (!empty($tg->tag_id)) {
+                    $tagIds[] = (int) $tg->tag_id;
+                }
+                if ($relatedTagTitle === "" && !empty($tg->title)) {
+                    $relatedTagTitle = $tg->title;
+                }
+                if ($firstTagAlias === "" && !empty($tg->alias)) {
+                    $firstTagAlias = $tg->alias;
+                }
             }
-            if ($relatedTagTitle === "" && !empty($tg->title)) {
-                $relatedTagTitle = $tg->title;
-            }
-            if ($firstTagAlias === "" && !empty($tg->alias)) {
-                $firstTagAlias = $tg->alias;
+
+            if (!empty($tagIds)) {
+                $db = JFactory::getDbo();
+                $query = $db
+                    ->getQuery(true)
+                    ->select("c.id, c.title, c.alias, c.catid, c.publish_up, c.language")
+                    ->from($db->quoteName("#__content", "c"))
+                    ->join(
+                        "INNER",
+                        $db->quoteName("#__contentitem_tag_map", "m") .
+                            " ON " .
+                            $db->quoteName("m.content_item_id") .
+                            " = " .
+                            $db->quoteName("c.id") .
+                            " AND " .
+                            $db->quoteName("m.type_alias") .
+                            " = " .
+                            $db->quote("com_content.article"),
+                    )
+                    ->join(
+                        "INNER",
+                        $db->quoteName("#__categories", "cat") .
+                            " ON " .
+                            $db->quoteName("cat.id") .
+                            " = " .
+                            $db->quoteName("c.catid"),
+                    )
+                    ->where("c.state = 1")
+                    ->where("c.id != " . (int) $this->item->id)
+                    ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
+                    ->where($db->quoteName("cat.alias") . " != " . $db->quote("faq"))
+                    ->group($db->quoteName("c.id"))
+                    ->order($db->escape("c.publish_up DESC"));
+
+                $db->setQuery($query);
+                $relatedItems = (array) $db->loadObjectList();
             }
         }
-
-        if (!empty($tagIds)) {
-            $db = JFactory::getDbo();
-            $query = $db
-                ->getQuery(true)
-                ->select("c.id, c.title, c.alias, c.catid, c.publish_up, c.language")
-                ->from($db->quoteName("#__content", "c"))
-                ->join(
-                    "INNER",
-                    $db->quoteName("#__contentitem_tag_map", "m") .
-                        " ON " .
-                        $db->quoteName("m.content_item_id") .
-                        " = " .
-                        $db->quoteName("c.id") .
-                        " AND " .
-                        $db->quoteName("m.type_alias") .
-                        " = " .
-                        $db->quote("com_content.article"),
-                )
-                ->join(
-                    "INNER",
-                    $db->quoteName("#__categories", "cat") .
-                        " ON " .
-                        $db->quoteName("cat.id") .
-                        " = " .
-                        $db->quoteName("c.catid"),
-                )
-                ->where("c.state = 1")
-                ->where("c.id != " . (int) $this->item->id)
-                ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
-                ->where($db->quoteName("cat.alias") . " != " . $db->quote("faq"))
-                ->group($db->quoteName("c.id"))
-                ->order($db->escape("c.publish_up DESC"));
-
-            $db->setQuery($query, 0, 4); // fetch up to 4 small previews
-            $relatedItems = (array) $db->loadObjectList();
-        }
-    }
-    ?>
+        ?>
 
         <div class="article__grid">
           <div class="article__main">
@@ -264,98 +270,162 @@ if ($isFAQPage) {
             <?php
             // Sidebar: FAQ with the same tag(s)
             $faqRelated = [];
-    if (!empty($tagIds)) {
-        // find FAQ category id
-        $dbFaq = JFactory::getDbo();
-        $qCat = $dbFaq
-            ->getQuery(true)
-            ->select($dbFaq->quoteName("id"))
-            ->from($dbFaq->quoteName("#__categories"))
-            ->where($dbFaq->quoteName("extension") . " = " . $dbFaq->quote("com_content"))
-            ->where($dbFaq->quoteName("alias") . " = " . $dbFaq->quote("faq"))
-            ->where($dbFaq->quoteName("published") . " = 1");
-        $dbFaq->setQuery($qCat);
-        $faqCatId = (int) $dbFaq->loadResult();
-        if ($faqCatId) {
-            $qf = $dbFaq
-                ->getQuery(true)
-                ->select("c.id, c.title, c.introtext, c.fulltext, c.publish_up")
-                ->from($dbFaq->quoteName("#__content", "c"))
-                ->join(
-                    "INNER",
-                    $dbFaq->quoteName("#__contentitem_tag_map", "m") .
-                        " ON m.content_item_id = c.id AND m.type_alias = " .
-                        $dbFaq->quote("com_content.article"),
-                )
-                ->where("c.state = 1")
-                ->where("c.catid = " . (int) $faqCatId)
-                ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
-                ->group("c.id")
-                ->order("c.publish_up DESC");
-            $dbFaq->setQuery($qf, 0, 5);
-            $faqRelated = (array) $dbFaq->loadObjectList();
-        }
-    }
+            if (!empty($tagIds)) {
+                // find FAQ category id
+                $dbFaq = JFactory::getDbo();
+                $qCat = $dbFaq
+                    ->getQuery(true)
+                    ->select($dbFaq->quoteName("id"))
+                    ->from($dbFaq->quoteName("#__categories"))
+                    ->where($dbFaq->quoteName("extension") . " = " . $dbFaq->quote("com_content"))
+                    ->where($dbFaq->quoteName("alias") . " = " . $dbFaq->quote("faq"))
+                    ->where($dbFaq->quoteName("published") . " = 1");
+                $dbFaq->setQuery($qCat);
+                $faqCatId = (int) $dbFaq->loadResult();
+                if ($faqCatId) {
+                    $qf = $dbFaq
+                        ->getQuery(true)
+                        ->select("c.id, c.title, c.introtext, c.fulltext, c.publish_up")
+                        ->from($dbFaq->quoteName("#__content", "c"))
+                        ->join(
+                            "INNER",
+                            $dbFaq->quoteName("#__contentitem_tag_map", "m") .
+                                " ON m.content_item_id = c.id AND m.type_alias = " .
+                                $dbFaq->quote("com_content.article"),
+                        )
+                        ->where("c.state = 1")
+                        ->where("c.catid = " . (int) $faqCatId)
+                        ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
+                        ->group("c.id")
+                        ->order("c.publish_up DESC");
+                    $dbFaq->setQuery($qf);
+                    $faqRelated = (array) $dbFaq->loadObjectList();
+                }
+            }
 
-    if (!empty($relatedItems) || !empty($faqRelated)): ?>
+            if (!empty($relatedItems) || !empty($faqRelated)): ?>
               <div class="article__related-wrap">
                 <div class="article__related-scroll">
                   <aside class="article__related-block">
                     <div class="article__related-header">
-                      <div class="article__related-title">Читайте также</div>
+                      <div class="article__related-title">Читайте также<?php echo $headingTagsHtml; ?></div>
                     </div>
                     <?php
-            if (!empty($relatedItems)) {
-                $ids = array_map(function ($o) {
-                    return (int) $o->id;
-                }, $relatedItems);
-                $db2 = JFactory::getDbo();
-                $q2 = $db2
-                    ->getQuery(true)
-                    ->select(
-                        $db2->quoteName("id") .
-                            ", " .
-                            $db2->quoteName("introtext") .
-                            ", " .
-                            $db2->quoteName("fulltext")
-                    )
-                    ->from($db2->quoteName("#__content"))
-                    ->where($db2->quoteName("id") . " IN (" . implode(",", $ids) . ")");
-                $db2->setQuery($q2);
-                $textsMap = [];
-                foreach ((array) $db2->loadObjectList() as $row) {
-                    $textsMap[$row->id] = !empty($row->introtext) ? $row->introtext : $row->fulltext;
-                }
-            }
-        ?>
+                    if (!empty($relatedItems)) {
+                        $ids = array_map(function ($o) {
+                            return (int) $o->id;
+                        }, $relatedItems);
+                        $db2 = JFactory::getDbo();
+                        $q2 = $db2
+                            ->getQuery(true)
+                            ->select(
+                                $db2->quoteName("id") .
+                                    ", " .
+                                    $db2->quoteName("introtext") .
+                                    ", " .
+                                    $db2->quoteName("fulltext"),
+                            )
+                            ->from($db2->quoteName("#__content"))
+                            ->where($db2->quoteName("id") . " IN (" . implode(",", $ids) . ")");
+                        $db2->setQuery($q2);
+                        $textsMap = [];
+                        foreach ((array) $db2->loadObjectList() as $row) {
+                            $textsMap[$row->id] = !empty($row->introtext) ? $row->introtext : $row->fulltext;
+                        }
+                    }
+
+                    // Определим теги, по которым есть совпадения (статьи или FAQ)
+                    $matchedTagIds = [];
+                    if (!empty($tagIds)) {
+                        $dbm = JFactory::getDbo();
+                        // Совпадения среди статей (кроме FAQ категории)
+                        $qmA = $dbm
+                            ->getQuery(true)
+                            ->select("DISTINCT m.tag_id")
+                            ->from($dbm->quoteName("#__content", "c"))
+                            ->join(
+                                "INNER",
+                                $dbm->quoteName("#__contentitem_tag_map", "m") .
+                                    " ON m.content_item_id = c.id AND m.type_alias = " .
+                                    $dbm->quote("com_content.article"),
+                            )
+                            ->join("INNER", $dbm->quoteName("#__categories", "cat") . " ON cat.id = c.catid")
+                            ->where("c.state = 1")
+                            ->where("c.id != " . (int) $this->item->id)
+                            ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
+                            ->where($dbm->quoteName("cat.alias") . " != " . $dbm->quote("faq"));
+                        $dbm->setQuery($qmA);
+                        $matchA = (array) $dbm->loadColumn();
+
+                        // Совпадения среди FAQ
+                        $matchF = [];
+                        if (!empty($faqCatId)) {
+                            $qmF = $dbm
+                                ->getQuery(true)
+                                ->select("DISTINCT m.tag_id")
+                                ->from($dbm->quoteName("#__content", "c"))
+                                ->join(
+                                    "INNER",
+                                    $dbm->quoteName("#__contentitem_tag_map", "m") .
+                                        " ON m.content_item_id = c.id AND m.type_alias = " .
+                                        $dbm->quote("com_content.article"),
+                                )
+                                ->where("c.state = 1")
+                                ->where("c.catid = " . (int) $faqCatId)
+                                ->where("m.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")");
+                            $dbm->setQuery($qmF);
+                            $matchF = (array) $dbm->loadColumn();
+                        }
+
+                        $matchedTagIds = array_values(array_unique(array_map("intval", array_merge($matchA, $matchF))));
+                    }
+
+                    // Сформируем строку тегов для заголовка в порядке тегов статьи
+                    $headingTagsHtml = "";
+                    if (!empty($matchedTagIds) && !empty($this->item->tags->itemTags)) {
+                        foreach ($this->item->tags->itemTags as $tg) {
+                            if (!empty($tg->tag_id) && in_array((int) $tg->tag_id, $matchedTagIds, true)) {
+                                $headingTagsHtml .= " #" . htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8");
+                            }
+                        }
+                    }
+                    ?>
                     <ul class="article__related-list">
                       <?php if (!empty($relatedItems)): ?>
                         <?php foreach ($relatedItems as $rel): ?>
                           <?php
-                $raw = isset($textsMap[$rel->id]) ? $textsMap[$rel->id] : "";
-                            $excerpt = "";
-                            if (!empty($raw)) {
-                                $clean = strip_tags($raw);
-                                $excerpt = JHtml::_("string.truncate", $clean, 240, true, false);
-                            }
-                            ?>
+                          $raw = isset($textsMap[$rel->id]) ? $textsMap[$rel->id] : "";
+                          $excerpt = "";
+                          if (!empty($raw)) {
+                              $clean = strip_tags($raw);
+                              $excerpt = JHtml::_("string.truncate", $clean, 240, true, false);
+                          }
+                          ?>
                           <li class="article__related-item">
                             <a class="article__related-link" href="<?php echo Route::_(
                                 RouteHelper::getArticleRoute(
                                     $rel->id . ":" . $rel->alias,
                                     $rel->catid,
-                                    $rel->language ?? 0
-                                )
+                                    $rel->language ?? 0,
+                                ),
                             ); ?>">
                               <div class="article__related-link-title">
                                 <?php echo htmlspecialchars($rel->title, ENT_QUOTES, "UTF-8"); ?>
                               </div>
                               <?php if (!empty($excerpt)): ?>
-                                <div class="article__related-excerpt"><?php echo htmlspecialchars($excerpt, ENT_QUOTES, "UTF-8"); ?></div>
+                                <div class="article__related-excerpt"><?php echo htmlspecialchars(
+                                    $excerpt,
+                                    ENT_QUOTES,
+                                    "UTF-8",
+                                ); ?></div>
                               <?php endif; ?>
                             </a>
                             <?php if (!empty($rel->publish_up)): ?>
-                              <time class="article__related-date" datetime="<?php echo JHtml::_("date", $rel->publish_up, "c"); ?>">
+                              <time class="article__related-date" datetime="<?php echo JHtml::_(
+                                  "date",
+                                  $rel->publish_up,
+                                  "c",
+                              ); ?>">
                                 <?php echo JHtml::_("date", $rel->publish_up, JText::_("DATE_FORMAT_LC3")); ?>
                               </time>
                             <?php endif; ?>
@@ -367,21 +437,25 @@ if ($isFAQPage) {
                         <?php foreach ($faqRelated as $fq): ?>
                           <?php
                           $raw = !empty($fq->introtext) ? $fq->introtext : $fq->fulltext ?? "";
-                            $clean = trim(strip_tags($raw));
-                            $excerpt = $clean ? JHtml::_("string.truncate", $clean, 200, true, false) : "";
-                            $faqLink =
-                                "/faq" .
-                                ($firstTagAlias ? "?tag=" . rawurlencode($firstTagAlias) : "") .
-                                "#faq-q-" .
-                                (int) $fq->id;
-                            ?>
+                          $clean = trim(strip_tags($raw));
+                          $excerpt = $clean ? JHtml::_("string.truncate", $clean, 200, true, false) : "";
+                          $faqLink =
+                              "/faq" .
+                              ($firstTagAlias ? "?tag=" . rawurlencode($firstTagAlias) : "") .
+                              "#faq-q-" .
+                              (int) $fq->id;
+                          ?>
                           <li class="article__related-item">
                             <a class="article__related-link" href="<?php echo $faqLink; ?>">
                               <div class="article__related-link-title">
                                 <?php echo htmlspecialchars($fq->title, ENT_QUOTES, "UTF-8"); ?>
                               </div>
                               <?php if (!empty($excerpt)): ?>
-                                <div class="article__related-excerpt"><?php echo htmlspecialchars($excerpt, ENT_QUOTES, "UTF-8"); ?></div>
+                                <div class="article__related-excerpt"><?php echo htmlspecialchars(
+                                    $excerpt,
+                                    ENT_QUOTES,
+                                    "UTF-8",
+                                ); ?></div>
                               <?php endif; ?>
                             </a>
                           </li>
@@ -392,7 +466,7 @@ if ($isFAQPage) {
                 </div>
               </div>
             <?php endif;
-    ?>
+            ?>
           </div>
         </div>
     </div>
