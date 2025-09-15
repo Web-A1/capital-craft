@@ -413,7 +413,10 @@ if ($isFAQPage) {
                     }
                     ?>
                     <div class="article__related-header">
-                      <div class="article__related-title">Читайте также<?php echo $headingTagsHtml; ?></div>
+                      <div class="article__related-title">Читайте дальше</div>
+                      <?php if (!empty($headingTagsHtml)): ?>
+                        <div class="article__related-tags"><?php echo $headingTagsHtml; ?></div>
+                      <?php endif; ?>
                     </div>
                     <ul class="article__related-list">
                       <?php if (!empty($relatedItems)): ?>
