@@ -159,16 +159,27 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
 /* link_items преднамеренно не рендерим, чтобы не дублировать записи на след. страницах */
 ?>
 
-    <?php if (
-        ($this->params->def("show_pagination", 1) == 1 || $this->params->get("show_pagination") == 2) &&
-        $this->pagination->pagesTotal > 1
-    ): ?>
-      <nav class="blog-pagination" aria-label="Пагинация блога">
-        <?php if ($this->params->def("show_pagination_results", 1)): ?>
-          <p class="blog-pagination__counter"><?php echo $this->pagination->getPagesCounter(); ?></p>
-        <?php endif; ?>
-        <div class="blog-pagination__links"><?php echo $this->pagination->getPagesLinks(); ?></div>
-      </nav>
+    <?php if ((
+        $this->params->def("show_pagination", 1) == 1 || $this->params->get("show_pagination") == 2
+      ) && $this->pagination->pagesTotal > 1): ?>
+      <?php $pData = $this->pagination->getPaginationPages(); ?>
+      <?php if (!empty($pData->pages)): ?>
+        <nav class="blog-pagination" aria-label="Пагинация блога">
+          <div class="blog-pagination__links">
+            <ul>
+              <?php foreach ($pData->pages as $num => $pg): ?>
+                <li>
+                  <?php if (!empty($pg->active)): ?>
+                    <span class="is-active"><?php echo (int) $num; ?></span>
+                  <?php else: ?>
+                    <a href="<?php echo htmlspecialchars($pg->link, ENT_QUOTES, 'UTF-8'); ?>"><?php echo (int) $num; ?></a>
+                  <?php endif; ?>
+                </li>
+              <?php endforeach; ?>
+            </ul>
+          </div>
+        </nav>
+      <?php endif; ?>
     <?php endif; ?>
 
   </div>
