@@ -79,8 +79,20 @@
         margin: 0;
         padding: 0;
       }
-      a,
-      span {
+      a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        color: @color-heading;
+        font-family: @font-body;
+        padding: 0 2px;
+        min-width: 16px;
+      }
+      a:hover {
+        color: @color-accent;
+      }
+      span.is-active {
         width: 36px;
         height: 36px;
         display: inline-flex;
@@ -89,14 +101,6 @@
         border-radius: 999px;
         background: #f0f0f0;
         color: @color-heading;
-        text-decoration: none;
-        font-family: @font-body;
-      }
-      .active,
-      .current {
-        background: @color-bg-craft;
-        color: @color-accent;
-        border: 1px solid @color-accent;
       }
       .pagenav {
         display: none;
