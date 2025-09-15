@@ -398,6 +398,16 @@ if ($isFAQPage) {
                             }
                         }
                     }
+
+                    // Карта соответствия tag_id -> alias по тегам текущей статьи (для формирования красивого ?tag=alias)
+                    $tagIdToAlias = [];
+                    if (!empty($this->item->tags->itemTags)) {
+                        foreach ($this->item->tags->itemTags as $tg) {
+                            if (!empty($tg->tag_id) && !empty($tg->alias)) {
+                                $tagIdToAlias[(int) $tg->tag_id] = (string) $tg->alias;
+                            }
+                        }
+                    }
                     ?>
                     <div class="article__related-header">
                       <div class="article__related-title">Читайте также<?php echo $headingTagsHtml; ?></div>
@@ -455,7 +465,15 @@ if ($isFAQPage) {
                           $faqTags = isset($faqTagMap[$fq->id]) ? (array) $faqTagMap[$fq->id] : [];
                           $preferIds = !empty($matchedTagIds) ? $matchedTagIds : (array) $tagIds;
                           $common = array_values(array_intersect($faqTags, $preferIds));
-                          $tagQuery = !empty($common) ? "?tag=" . (int) $common[0] : "";
+                          $tagParam = "";
+                          if (!empty($common)) {
+                              $firstId = (int) $common[0];
+                              $tagParam =
+                                  isset($tagIdToAlias[$firstId]) && $tagIdToAlias[$firstId] !== ""
+                                      ? $tagIdToAlias[$firstId]
+                                      : $firstId;
+                          }
+                          $tagQuery = $tagParam !== "" ? "?tag=" . rawurlencode((string) $tagParam) : "";
                           $faqLink = "/faq" . $tagQuery . "#faq-q-" . (int) $fq->id;
                           ?>
                           <li class="article__related-item">
