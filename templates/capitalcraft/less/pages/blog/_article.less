@@ -245,6 +245,23 @@
 
   &__related-header {
     margin-bottom: 25px;
+    position: sticky; // фиксируем заголовок внутри прокручиваемого контейнера
+    top: 0;
+    z-index: 1;
+    background: @color-bg-craft; // чтобы текст не просвечивал над списком при прокрутке
+    padding-top: 8px;
+    padding-bottom: 8px;
+    box-shadow: 0 1px 0 @section-divider-color inset; // тонкая разделительная линия снизу
+
+    // На мобильных прокрутки нет — возвращаем обычный поток
+    .media(mobile, {
+      position: static;
+      z-index: auto;
+      background: none;
+      padding-top: 0;
+      padding-bottom: 0;
+      box-shadow: none;
+    });
   }
 
   &__related-tags {
