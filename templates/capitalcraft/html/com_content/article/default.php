@@ -300,18 +300,11 @@ if ($isFAQPage) {
     if (!empty($relatedItems) || !empty($faqRelated)): ?>
               <div class="article__related-wrap">
                 <div class="article__related-scroll">
-                <?php if (!empty($relatedItems)): ?>
                   <aside class="article__related-block">
                     <div class="article__related-header">
-                      <div class="article__related-title">
-                        Другие статьи<?php echo $relatedTagTitle
-                    ? " #" . htmlspecialchars($relatedTagTitle, ENT_QUOTES, "UTF-8")
-                    : ""; ?>
-                      </div>
+                      <div class="article__related-title">Читайте также</div>
                     </div>
-                    <?php // Extend query to get intro/full text for previews
-            // Extend query to get intro/full text for previews
-            // Re-run query only if items lack excerpt fields
+                    <?php
             if (!empty($relatedItems)) {
                 $ids = array_map(function ($o) {
                     return (int) $o->id;
@@ -324,7 +317,7 @@ if ($isFAQPage) {
                             ", " .
                             $db2->quoteName("introtext") .
                             ", " .
-                            $db2->quoteName("fulltext"),
+                            $db2->quoteName("fulltext")
                     )
                     ->from($db2->quoteName("#__content"))
                     ->where($db2->quoteName("id") . " IN (" . implode(",", $ids) . ")");
@@ -333,91 +326,69 @@ if ($isFAQPage) {
                 foreach ((array) $db2->loadObjectList() as $row) {
                     $textsMap[$row->id] = !empty($row->introtext) ? $row->introtext : $row->fulltext;
                 }
-            } ?>
+            }
+        ?>
                     <ul class="article__related-list">
-                      <?php foreach ($relatedItems as $rel): ?>
-                        <?php
+                      <?php if (!empty($relatedItems)): ?>
+                        <?php foreach ($relatedItems as $rel): ?>
+                          <?php
                 $raw = isset($textsMap[$rel->id]) ? $textsMap[$rel->id] : "";
-                          $excerpt = "";
-                          if (!empty($raw)) {
-                              $clean = strip_tags($raw);
-                              // Увеличиваем лимит символов, чтобы отобразить до трёх строк
-                              $excerpt = JHtml::_("string.truncate", $clean, 240, true, false);
-                          }
-                          ?>
-                        <li class="article__related-item">
-                          <a class="article__related-link" href="<?php echo Route::_(
-                              RouteHelper::getArticleRoute(
-                                  $rel->id . ":" . $rel->alias,
-                                  $rel->catid,
-                                  $rel->language ?? 0
-                              ),
-                          ); ?>">
-                            <div class="article__related-link-title">
-                              <?php echo htmlspecialchars($rel->title, ENT_QUOTES, "UTF-8"); ?>
-                            </div>
-                            <?php if (!empty($excerpt)): ?>
-                              <div class="article__related-excerpt"><?php echo htmlspecialchars(
-                                  $excerpt,
-                                  ENT_QUOTES,
-                                  "UTF-8",
-                              ); ?></div>
-                            <?php endif; ?>
-                          </a>
-                          <?php if (!empty($rel->publish_up)): ?>
-                            <time class="article__related-date" datetime="<?php echo JHtml::_(
-                                "date",
-                                $rel->publish_up,
-                                "c",
+                            $excerpt = "";
+                            if (!empty($raw)) {
+                                $clean = strip_tags($raw);
+                                $excerpt = JHtml::_("string.truncate", $clean, 240, true, false);
+                            }
+                            ?>
+                          <li class="article__related-item">
+                            <a class="article__related-link" href="<?php echo Route::_(
+                                RouteHelper::getArticleRoute(
+                                    $rel->id . ":" . $rel->alias,
+                                    $rel->catid,
+                                    $rel->language ?? 0
+                                )
                             ); ?>">
-                              <?php echo JHtml::_("date", $rel->publish_up, JText::_("DATE_FORMAT_LC3")); ?>
-                            </time>
-                          <?php endif; ?>
-                        </li>
-                      <?php endforeach; ?>
-                    </ul>
-                  </aside>
-                <?php endif; ?>
-
-                <?php if (!empty($faqRelated)): ?>
-                  <aside class="article__related-block">
-                    <div class="article__related-header">
-                      <div class="article__related-title">
-                        Вопросы<?php echo $relatedTagTitle
-                            ? " #" . htmlspecialchars($relatedTagTitle, ENT_QUOTES, "UTF-8")
-                            : ""; ?>
-                      </div>
-                    </div>
-                    <ul class="article__related-list">
-                      <?php foreach ($faqRelated as $fq): ?>
-                        <?php
-                        $raw = !empty($fq->introtext) ? $fq->introtext : $fq->fulltext ?? "";
-                          $clean = trim(strip_tags($raw));
-                          $excerpt = $clean ? JHtml::_("string.truncate", $clean, 200, true, false) : "";
-                          $faqLink =
-                              "/faq" .
-                              ($firstTagAlias ? "?tag=" . rawurlencode($firstTagAlias) : "") .
-                              "#faq-q-" .
-                              (int) $fq->id;
-                          ?>
-                        <li class="article__related-item">
-                          <a class="article__related-link" href="<?php echo $faqLink; ?>">
-                            <div class="article__related-link-title">
-                              <?php echo htmlspecialchars($fq->title, ENT_QUOTES, "UTF-8"); ?>
-                            </div>
-                            <?php if (!empty($excerpt)): ?>
-                              <div class="article__related-excerpt"><?php echo htmlspecialchars(
-                                  $excerpt,
-                                  ENT_QUOTES,
-                                  "UTF-8",
-                              ); ?></div>
+                              <div class="article__related-link-title">
+                                <?php echo htmlspecialchars($rel->title, ENT_QUOTES, "UTF-8"); ?>
+                              </div>
+                              <?php if (!empty($excerpt)): ?>
+                                <div class="article__related-excerpt"><?php echo htmlspecialchars($excerpt, ENT_QUOTES, "UTF-8"); ?></div>
+                              <?php endif; ?>
+                            </a>
+                            <?php if (!empty($rel->publish_up)): ?>
+                              <time class="article__related-date" datetime="<?php echo JHtml::_("date", $rel->publish_up, "c"); ?>">
+                                <?php echo JHtml::_("date", $rel->publish_up, JText::_("DATE_FORMAT_LC3")); ?>
+                              </time>
                             <?php endif; ?>
-                          </a>
-                        </li>
-                      <?php endforeach; ?>
+                          </li>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+
+                      <?php if (!empty($faqRelated)): ?>
+                        <?php foreach ($faqRelated as $fq): ?>
+                          <?php
+                          $raw = !empty($fq->introtext) ? $fq->introtext : $fq->fulltext ?? "";
+                            $clean = trim(strip_tags($raw));
+                            $excerpt = $clean ? JHtml::_("string.truncate", $clean, 200, true, false) : "";
+                            $faqLink =
+                                "/faq" .
+                                ($firstTagAlias ? "?tag=" . rawurlencode($firstTagAlias) : "") .
+                                "#faq-q-" .
+                                (int) $fq->id;
+                            ?>
+                          <li class="article__related-item">
+                            <a class="article__related-link" href="<?php echo $faqLink; ?>">
+                              <div class="article__related-link-title">
+                                <?php echo htmlspecialchars($fq->title, ENT_QUOTES, "UTF-8"); ?>
+                              </div>
+                              <?php if (!empty($excerpt)): ?>
+                                <div class="article__related-excerpt"><?php echo htmlspecialchars($excerpt, ENT_QUOTES, "UTF-8"); ?></div>
+                              <?php endif; ?>
+                            </a>
+                          </li>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
                     </ul>
                   </aside>
-                <?php endif; ?>
                 </div>
               </div>
             <?php endif;
