@@ -293,6 +293,25 @@ if ($isFAQPage) {
                         ->order("c.publish_up DESC");
                     $dbFaq->setQuery($qf);
                     $faqRelated = (array) $dbFaq->loadObjectList();
+
+                    // Получаем карту тегов для всех выбранных FAQ (id вопроса => [tag_id,...])
+                    if (!empty($faqRelated)) {
+                        $faqIds = array_map(function ($o) {
+                            return (int) $o->id;
+                        }, $faqRelated);
+                        $dbTag = JFactory::getDbo();
+                        $qTags = $dbTag
+                            ->getQuery(true)
+                            ->select("m.content_item_id, m.tag_id")
+                            ->from($dbTag->quoteName("#__contentitem_tag_map", "m"))
+                            ->where("m.type_alias = " . $dbTag->quote("com_content.article"))
+                            ->where("m.content_item_id IN (" . implode(",", $faqIds) . ")");
+                        $dbTag->setQuery($qTags);
+                        $faqTagMap = [];
+                        foreach ((array) $dbTag->loadObjectList() as $row) {
+                            $faqTagMap[(int) $row->content_item_id][] = (int) $row->tag_id;
+                        }
+                    }
                 }
             }
 
@@ -432,11 +451,12 @@ if ($isFAQPage) {
                           $raw = !empty($fq->introtext) ? $fq->introtext : $fq->fulltext ?? "";
                           $clean = trim(strip_tags($raw));
                           $excerpt = $clean ? JHtml::_("string.truncate", $clean, 200, true, false) : "";
-                          $faqLink =
-                              "/faq" .
-                              ($firstTagAlias ? "?tag=" . rawurlencode($firstTagAlias) : "") .
-                              "#faq-q-" .
-                              (int) $fq->id;
+                          // Выбираем тег для ссылки как пересечение тегов FAQ и тегов статьи
+                          $faqTags = isset($faqTagMap[$fq->id]) ? (array) $faqTagMap[$fq->id] : [];
+                          $preferIds = !empty($matchedTagIds) ? $matchedTagIds : (array) $tagIds;
+                          $common = array_values(array_intersect($faqTags, $preferIds));
+                          $tagQuery = !empty($common) ? "?tag=" . (int) $common[0] : "";
+                          $faqLink = "/faq" . $tagQuery . "#faq-q-" . (int) $fq->id;
                           ?>
                           <li class="article__related-item">
                             <a class="article__related-link" href="<?php echo $faqLink; ?>">
