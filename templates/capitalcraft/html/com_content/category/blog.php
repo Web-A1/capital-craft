@@ -52,23 +52,25 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
     <?php
     // Build navigation of all available tags
     $db = Joomla\CMS\Factory::getDbo();
-// Собираем теги только из статей текущего списка (lead + intro)
-$allTags = [];
-$seenTags = [];
-foreach (array_merge($this->lead_items ?? [], $this->intro_items ?? []) as $it) {
-    if (!empty($it->tags->itemTags)) {
-        foreach ($it->tags->itemTags as $tg) {
-            $alias = strtolower($tg->alias ?? '');
-            if ($alias && empty($seenTags[$alias])) {
-                $obj = (object) ['id' => $tg->tag_id, 'title' => $tg->title, 'alias' => $tg->alias];
-                $allTags[] = $obj;
-                $seenTags[$alias] = true;
+    // Собираем теги только из статей текущего списка (lead + intro)
+    $allTags = [];
+    $seenTags = [];
+    foreach (array_merge($this->lead_items ?? [], $this->intro_items ?? []) as $it) {
+        if (!empty($it->tags->itemTags)) {
+            foreach ($it->tags->itemTags as $tg) {
+                $alias = strtolower($tg->alias ?? "");
+                if ($alias && empty($seenTags[$alias])) {
+                    $obj = (object) ["id" => $tg->tag_id, "title" => $tg->title, "alias" => $tg->alias];
+                    $allTags[] = $obj;
+                    $seenTags[$alias] = true;
+                }
             }
         }
     }
-}
-usort($allTags, function($a, $b){ return strcmp($a->title, $b->title); });
-?>
+    usort($allTags, function ($a, $b) {
+        return strcmp($a->title, $b->title);
+    });
+    ?>
 
     <?php if (!empty($allTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
@@ -78,7 +80,11 @@ usort($allTags, function($a, $b){ return strcmp($a->title, $b->title); });
           </li>
           <?php foreach ($allTags as $tg): ?>
             <li class="blog-tags__tag">
-              <a class="blog-tags__link" href="#" data-alias="<?php echo htmlspecialchars($tg->alias, ENT_QUOTES, 'UTF-8'); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+              <a class="blog-tags__link" href="#" data-alias="<?php echo htmlspecialchars(
+                  $tg->alias,
+                  ENT_QUOTES,
+                  "UTF-8",
+              ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
@@ -98,12 +104,20 @@ usort($allTags, function($a, $b){ return strcmp($a->title, $b->title); });
               ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language),
           ); ?>
           <?php
-            $aliases = [];
-            if (!empty($item->tags->itemTags)) {
-              foreach ($item->tags->itemTags as $tg) { if (!empty($tg->alias)) $aliases[] = strtolower($tg->alias); }
-            }
+          $aliases = [];
+          if (!empty($item->tags->itemTags)) {
+              foreach ($item->tags->itemTags as $tg) {
+                  if (!empty($tg->alias)) {
+                      $aliases[] = strtolower($tg->alias);
+                  }
+              }
+          }
           ?>
-          <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(implode(' ', $aliases), ENT_QUOTES, 'UTF-8'); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(
+              implode(" ", $aliases),
+              ENT_QUOTES,
+              "UTF-8",
+          ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
             $this->item = &$item;
             echo $this->loadTemplate("item");
@@ -118,12 +132,20 @@ usort($allTags, function($a, $b){ return strcmp($a->title, $b->title); });
               ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language),
           ); ?>
           <?php
-            $aliases = [];
-            if (!empty($item->tags->itemTags)) {
-              foreach ($item->tags->itemTags as $tg) { if (!empty($tg->alias)) $aliases[] = strtolower($tg->alias); }
-            }
+          $aliases = [];
+          if (!empty($item->tags->itemTags)) {
+              foreach ($item->tags->itemTags as $tg) {
+                  if (!empty($tg->alias)) {
+                      $aliases[] = strtolower($tg->alias);
+                  }
+              }
+          }
           ?>
-          <article class="blog-card" data-tags="<?php echo htmlspecialchars(implode(' ', $aliases), ENT_QUOTES, 'UTF-8'); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          <article class="blog-card" data-tags="<?php echo htmlspecialchars(
+              implode(" ", $aliases),
+              ENT_QUOTES,
+              "UTF-8",
+          ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
             $this->item = &$item;
             echo $this->loadTemplate("item");
@@ -134,9 +156,29 @@ usort($allTags, function($a, $b){ return strcmp($a->title, $b->title); });
     </div>
 
     <?php if (!empty($this->link_items)): ?>
-      <div class="blog-links">
-        <?php echo $this->loadTemplate("links"); ?>
-      </div>
+      <?php foreach ($this->link_items as &$item): ?>
+        <?php $cardLink = Route::_(ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language)); ?>
+        <?php
+        $aliases = [];
+        if (!empty($item->tags->itemTags)) {
+            foreach ($item->tags->itemTags as $tg) {
+                if (!empty($tg->alias)) {
+                    $aliases[] = strtolower($tg->alias);
+                }
+            }
+        }
+        ?>
+        <article class="blog-card" data-tags="<?php echo htmlspecialchars(
+            implode(" ", $aliases),
+            ENT_QUOTES,
+            "UTF-8",
+        ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          <?php
+          $this->item = &$item;
+          echo $this->loadTemplate("item");
+          ?>
+        </article>
+      <?php endforeach; ?>
     <?php endif; ?>
 
     <?php if (
