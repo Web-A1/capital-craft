@@ -13,7 +13,9 @@
   &__list {
     display: flex;
     list-style: none;
-    
+    flex-wrap: nowrap; // keep on one line on desktop too
+    overflow: hidden; // prevent overflow beyond container
+
     // Mobile: single line with ellipsis on the last item
     .media(mobile, {
       flex-wrap: nowrap;
@@ -27,13 +29,31 @@
     white-space: nowrap;
     flex: 0 0 auto;
 
+    // Desktop: let the last item consume remaining space and truncate
+    &:last-child {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      a,
+      span {
+        // link or plain text
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: bottom;
+      }
+    }
+
     a {
       color: @color-text;
       text-decoration: none;
     }
 
     & + &::before {
-      content: '/';
+      content: "/";
       margin: 0 5px;
     }
 
