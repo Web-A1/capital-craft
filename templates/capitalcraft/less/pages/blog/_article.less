@@ -96,6 +96,14 @@
       .tag-button();
     }
   }
+
+  // Meta row: align left with 30px gap
+  & .blog-card__meta {
+    max-width: 700px;
+    justify-content: flex-start;
+    gap: 30px;
+    margin: 20px 0;
+  }
 }
 
 // Article BEM elements
@@ -146,14 +154,6 @@
   &.frame.section-with-divider {
     .media(mobile, { padding-top: 0; });
   }
-}
-
-// Meta row: align left with 30px gap
-.com-content-article.item-page .blog-card__meta {
-  max-width: 700px;
-  justify-content: flex-start;
-  gap: 30px;
-  margin: 20px 0;
 }
 
 // Related posts block on the right under image
