@@ -6,33 +6,26 @@ use Joomla\Component\Content\Site\Helper\RouteHelper;
 // Определяем, является ли это FAQ страницей
 $isFAQPage = false;
 
-// Проверяем по нескольким критериям
-if (isset($this->item)) {
-    // По заголовку
-    if (
-        stripos($this->item->title, "FAQ") !== false ||
-        stripos($this->item->title, "часто задаваемые вопросы") !== false ||
-        stripos($this->item->title, "вопросы") !== false
-    ) {
-        $isFAQPage = true;
-    }
-
-    // По alias
-    if (isset($this->item->alias) && stripos($this->item->alias, "faq") !== false) {
-        $isFAQPage = true;
-    }
-
-    // По категории
-    if (isset($this->item->catid) && $this->item->catid == 1) {
-        // Предполагаем, что FAQ имеет catid = 1
+// Проверяем по категории: alias категории должен быть 'faq'
+if (isset($this->item) && isset($this->item->catid)) {
+    $db = JFactory::getDbo();
+    $qCatAlias = $db
+        ->getQuery(true)
+        ->select($db->quoteName("alias"))
+        ->from($db->quoteName("#__categories"))
+        ->where($db->quoteName("id") . " = " . (int) $this->item->catid)
+        ->where($db->quoteName("published") . " = 1");
+    $db->setQuery($qCatAlias);
+    $currentCatAlias = strtolower((string) $db->loadResult());
+    if ($currentCatAlias === "faq") {
         $isFAQPage = true;
     }
 }
 
 // Если это FAQ страница, используем наш кастомный шаблон
 if ($isFAQPage) {
-    // Загружаем наш FAQ шаблон
-    $this->loadTemplate("faq");
+    // Подключаем локальный шаблон FAQ прямо из override-директории
+    require __DIR__ . "/faq.php";
 } else {
 
     // Для остальных страниц используем стандартную Joomla логику
