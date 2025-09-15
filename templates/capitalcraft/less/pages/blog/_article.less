@@ -271,15 +271,14 @@
     display: block;
     text-decoration: none;
     color: inherit;
-
-    &:hover &__related-link-title {
-      color: @color-accent;
-    }
   }
 
   &__related-link-title {
     color: @color-heading;
     font-family: @font-body;
+  }
+  &__related-link:hover &__related-link-title {
+    color: @color-accent;
   }
 
   &__related-excerpt {
