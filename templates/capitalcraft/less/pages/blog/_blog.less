@@ -68,18 +68,21 @@
     }
 
     &__links {
-      ul {
+      ul,
+      .pagination {
         list-style: none;
         padding: 0;
         margin: 0;
         display: flex;
         gap: 12px;
       }
-      li {
+      li,
+      .page-item {
         margin: 0;
         padding: 0;
       }
-      a {
+      a,
+      .page-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -88,11 +91,16 @@
         font-family: @font-body;
         padding: 0 2px;
         min-width: 16px;
+        background: transparent;
+        border: 0;
       }
-      a:hover {
+      a:hover,
+      .page-link:hover {
         color: @color-accent;
       }
-      span.is-active {
+      .active > a,
+      .active > span,
+      .page-item.active .page-link {
         width: 36px;
         height: 36px;
         display: inline-flex;
@@ -101,10 +109,15 @@
         border-radius: 999px;
         background: #f0f0f0;
         color: @color-heading;
+        border: 0;
       }
-      .pagenav {
+      .pagenav,
+      .previous,
+      .next,
+      .start,
+      .end {
         display: none;
-      } // скрываем стрелки/нецифровые элементы
+      }
     }
   }
 }
