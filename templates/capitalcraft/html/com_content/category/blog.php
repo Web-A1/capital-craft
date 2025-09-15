@@ -155,31 +155,9 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
       <?php endif; ?>
     </div>
 
-    <?php if (!empty($this->link_items)): ?>
-      <?php foreach ($this->link_items as &$item): ?>
-        <?php $cardLink = Route::_(ContentRouteHelper::getArticleRoute($item->slug, $item->catid, $item->language)); ?>
-        <?php
-        $aliases = [];
-        if (!empty($item->tags->itemTags)) {
-            foreach ($item->tags->itemTags as $tg) {
-                if (!empty($tg->alias)) {
-                    $aliases[] = strtolower($tg->alias);
-                }
-            }
-        }
-        ?>
-        <article class="blog-card" data-tags="<?php echo htmlspecialchars(
-            implode(" ", $aliases),
-            ENT_QUOTES,
-            "UTF-8",
-        ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
-          <?php
-          $this->item = &$item;
-          echo $this->loadTemplate("item");
-          ?>
-        </article>
-      <?php endforeach; ?>
-    <?php endif; ?>
+    <?php
+/* link_items преднамеренно не рендерим, чтобы не дублировать записи на след. страницах */
+?>
 
     <?php if (
         ($this->params->def("show_pagination", 1) == 1 || $this->params->get("show_pagination") == 2) &&
