@@ -54,6 +54,48 @@
   &__actions {
     margin-top: 16px;
   }
+
+  // pagination
+  .blog-pagination {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    &__counter {
+      margin: 0;
+      color: lighten(@color-text, 20%);
+      font-size: 14px;
+    }
+
+    &__links {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        gap: 8px;
+      }
+      li {
+        margin: 0;
+        padding: 0;
+      }
+      a,
+      span {
+        .tag-button();
+        line-height: 1;
+      }
+      .pagenav {
+        .tag-button();
+      }
+      .active,
+      .current {
+        background: @color-bg-craft;
+        color: @color-accent;
+        border-color: @color-accent;
+      }
+    }
+  }
 }
 
 // Mobile helper: ensure tag pills keep 16px font across contexts
