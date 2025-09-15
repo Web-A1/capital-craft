@@ -62,9 +62,10 @@
     color: @color-text;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    line-clamp: 4; // standard property for newer engines
     -webkit-line-clamp: 4;
+    line-clamp: 4; // progressive enhancement
     overflow: hidden;
+    overflow-wrap: anywhere;
   }
 
   &__meta {
