@@ -137,6 +137,13 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
+    // вертикальный ритм на десктопе между header, excerpt и meta
+    gap: 12px;
+
+    // на мобильных оставляем текущую логику отступов
+    .media(mobile, {
+      gap: 8px;
+    });
   }
 
   // Respect user preference to reduce motion
