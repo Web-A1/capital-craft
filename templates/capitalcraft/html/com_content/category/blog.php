@@ -119,7 +119,7 @@ usort($allTags, function ($a, $b) {
               "UTF-8",
           ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
-            $this->item = &$item;
+          $this->item = &$item;
             echo $this->loadTemplate("item");
             ?>
           </article>
@@ -147,7 +147,7 @@ usort($allTags, function ($a, $b) {
               "UTF-8",
           ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
-            $this->item = &$item;
+          $this->item = &$item;
             echo $this->loadTemplate("item");
             ?>
           </article>
