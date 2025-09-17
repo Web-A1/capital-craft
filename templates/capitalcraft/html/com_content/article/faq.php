@@ -162,7 +162,7 @@ if ($faqCatId) {
     $faqAllTags = (array) $db->loadObjectList();
 
     // Группировка вопросов по тегам: идём по алфавиту тегов и собираем элементы с этим тегом
-    if (!empty($faqItems) && !empty($faqAllTags) && empty($selectedAlias)) {
+    if (!empty($faqItems) && !empty($faqAllTags)) {
         $placed = [];
         $grouped = [];
         // Если выбран тег — ставим его первым в порядке обхода
