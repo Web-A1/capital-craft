@@ -4,7 +4,6 @@ defined("_JEXEC") or die();
 $maxItems = 9;
 $faqItems = [];
 $faqCatId = 0;
-$faqHomeTagAlias = "faq-home";
 
 try {
     if (class_exists("Joomla\\CMS\\Factory")) {
@@ -40,7 +39,6 @@ try {
         }
 
         if ($faqCatId) {
-            // Сначала пробуем отобрать избранные вопросы
             $featuredQuery = $db
                 ->getQuery(true)
                 ->select("c.id, c.title, c.introtext, c.fulltext")
@@ -69,55 +67,9 @@ try {
                 ];
             }
         }
-
-        if (empty($faqItems)) {
-            // Обратная совместимость: выборка по тегу `faq-home`
-            $tagQuery = $db
-                ->getQuery(true)
-                ->select($db->quoteName("id"))
-                ->from($db->quoteName("#__tags"))
-                ->where($db->quoteName("alias") . " = " . $db->quote($faqHomeTagAlias))
-                ->where($db->quoteName("published") . " = 1");
-            $db->setQuery($tagQuery);
-            $tagId = (int) $db->loadResult();
-
-            if ($tagId) {
-                $tagItemsQuery = $db
-                    ->getQuery(true)
-                    ->select("c.id, c.title, c.introtext, c.fulltext")
-                    ->from($db->quoteName("#__content", "c"))
-                    ->join("INNER", $db->quoteName("#__contentitem_tag_map", "m") . " ON m.content_item_id = c.id")
-                    ->where("c.state = 1")
-                    ->where("m.tag_id = " . (int) $tagId)
-                    ->where("m.type_alias = " . $db->quote("com_content.article"))
-                    ->order($db->quoteName("m.tag_date") . " DESC");
-
-                $db->setQuery($tagItemsQuery, 0, $maxItems);
-                $rows = (array) $db->loadObjectList();
-
-                foreach ($rows as $row) {
-                    $question = trim((string) $row->title);
-                    if ($question === "") {
-                        continue;
-                    }
-
-                    $answerRaw = $row->fulltext !== "" ? $row->fulltext : $row->introtext;
-                    $faqItems[] = [
-                        "id" => isset($row->id) ? (int) $row->id : null,
-                        "q" => $question,
-                        "a" => trim(strip_tags((string) $answerRaw)),
-                    ];
-                }
-            }
-        }
     }
 } catch (Throwable $e) {
-    // Игнорируем ошибки и используем фолбэк ниже
-}
-
-if (empty($faqItems)) {
-    require __DIR__ . "/../../data/faq_data.php";
-    $faqItems = array_slice($faq_data, 0, $maxItems);
+    // Игнорируем ошибки и просто не выводим блок
 }
 
 if (empty($faqItems)) {
