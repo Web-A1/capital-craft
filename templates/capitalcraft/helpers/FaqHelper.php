@@ -3,6 +3,8 @@
 defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\HTML\HTMLHelper;
 
 class CapitalcraftFaqHelper
 {
@@ -12,6 +14,8 @@ class CapitalcraftFaqHelper
         "page" => [],
         "featured" => [],
     ];
+
+    protected static $htmlFilter = null;
 
     public static function getFaqPageData(string $tagParam = ""): array
     {
@@ -95,12 +99,15 @@ class CapitalcraftFaqHelper
         $faqIds = [];
 
         foreach ($rows as $row) {
-            $answerSource = $row->fulltext !== "" ? $row->fulltext : $row->introtext ?? "";
+            $answerSource = $row->fulltext !== '' ? $row->fulltext : ($row->introtext ?? '');
+            [$answerHtml, $answerText] = self::prepareAnswer($answerSource);
+
             $faqItems[] = [
-                "id" => (int) $row->id,
-                "q" => (string) $row->title,
-                "a" => trim(strip_tags((string) $answerSource)),
-                "tags" => [],
+                'id' => (int) $row->id,
+                'q' => (string) $row->title,
+                'answer_html' => $answerHtml,
+                'answer_text' => $answerText,
+                'tags' => [],
             ];
             $faqIds[] = (int) $row->id;
         }
@@ -283,22 +290,74 @@ class CapitalcraftFaqHelper
         foreach ($rows as $row) {
             $question = trim((string) $row->title);
 
-            if ($question === "") {
+            if ($question === '') {
                 continue;
             }
 
-            $answerSource = $row->fulltext !== "" ? $row->fulltext : $row->introtext;
+            $answerSource = $row->fulltext !== '' ? $row->fulltext : $row->introtext;
+            [$answerHtml, $answerText] = self::prepareAnswer($answerSource ?? '');
 
             $items[] = [
-                "id" => (int) $row->id,
-                "q" => $question,
-                "a" => trim(strip_tags((string) $answerSource)),
+                'id' => (int) $row->id,
+                'q' => $question,
+                'answer_text' => $answerText,
+                'answer_html' => $answerHtml,
             ];
         }
 
-        self::$cache["featured"][$cacheKey] = $items;
+        self::$cache['featured'][$cacheKey] = $items;
 
         return $items;
+    }
+
+    protected static function getHtmlFilter(): InputFilter
+    {
+        if (self::$htmlFilter instanceof InputFilter) {
+            return self::$htmlFilter;
+        }
+
+        $allowedTags = ['p', 'a', 'ul', 'ol', 'li', 'strong', 'em', 'b', 'i', 'u', 'blockquote', 'code', 'pre', 'span', 'br'];
+        $allowedAttrs = ['href', 'title', 'target', 'rel', 'class'];
+
+        self::$htmlFilter = InputFilter::getInstance($allowedTags, $allowedAttrs);
+
+        return self::$htmlFilter;
+    }
+
+    protected static function prepareAnswer(string $raw): array
+    {
+        if ($raw === '') {
+            return ['', ''];
+        }
+
+        $prepared = HTMLHelper::_('content.prepare', $raw, '', 'com_content.article');
+        $filter = self::getHtmlFilter();
+        $cleanHtml = trim($filter->clean($prepared, 'html'));
+
+        if ($cleanHtml === '') {
+            return ['', ''];
+        }
+
+        $plain = self::htmlToPlainText($cleanHtml);
+
+        return [$cleanHtml, $plain];
+    }
+
+    protected static function htmlToPlainText(string $html): string
+    {
+        $withBreaks = preg_replace('/<\/(p|div|li|blockquote|h[1-6])>/i', "</$1>\n", $html);
+        $withBreaks = preg_replace('/<li[^>]*>/i', "- ", $withBreaks);
+        $withBreaks = preg_replace('/<br\s*\/?/i', "\n", $withBreaks);
+
+        $text = strip_tags($withBreaks);
+        $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace('/\r\n|\r/', "\n", $text);
+        $text = preg_replace('/
+{3,}/', "\n\n", $text);
+        $text = preg_replace('/[	 ]+/', ' ', $text);
+        $text = preg_replace('/ *\n */', "\n", $text);
+
+        return trim($text);
     }
 
     protected static function getCategoryId(): int

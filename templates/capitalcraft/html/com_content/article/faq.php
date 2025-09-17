@@ -48,7 +48,7 @@ foreach ($faqItems as $index => $item) {
         "name" => (string) ($item["q"] ?? ""),
         "acceptedAnswer" => [
             "@type" => "Answer",
-            "text" => (string) ($item["a"] ?? ""),
+            "text" => (string) ($item['answer_text'] ?? ''),
             "dateCreated" => date("c"),
             "upvoteCount" => 1,
         ],
@@ -241,7 +241,7 @@ $doc->addCustomTag(
                                  ENT_QUOTES,
                                  "UTF-8",
                              ); ?>">
-                            <?php echo htmlspecialchars($item["a"], ENT_QUOTES, "UTF-8"); ?>
+                            <?php echo $item['answer_html'] ?? ''; ?>
                         </div>
                         <?php
                         $primaryTag = $item["primary_tag"] ?? null;
