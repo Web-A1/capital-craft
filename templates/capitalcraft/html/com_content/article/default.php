@@ -1,6 +1,10 @@
 <?php defined("_JEXEC") or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 // Определяем, является ли это FAQ страницей
@@ -8,7 +12,7 @@ $isFAQPage = false;
 
 // Проверяем по категории: alias категории должен быть 'faq'
 if (isset($this->item) && isset($this->item->catid)) {
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     $qCatAlias = $db
         ->getQuery(true)
         ->select($db->quoteName("alias"))
@@ -32,7 +36,7 @@ if ($isFAQPage) {
     // Но с улучшенной SEO оптимизацией
 
     // SEO мета-теги
-    $doc = JFactory::getDocument();
+    $doc = Factory::getDocument();
 
     // Улучшенный title
     if (!empty($this->item->title)) {
@@ -45,7 +49,7 @@ if ($isFAQPage) {
     }
 
     // Canonical URL
-    $canonical = JURI::current();
+    $canonical = Uri::getInstance()->toString();
     $doc->addHeadLink($canonical, "canonical", "rel");
 
     // Open Graph теги
@@ -77,10 +81,10 @@ if ($isFAQPage) {
     }
     if (!empty($ogImage)) {
         if (strpos($ogImage, "http") !== 0) {
-            $ogImage = JURI::root() . ltrim($ogImage, "/");
+            $ogImage = Uri::root() . ltrim($ogImage, "/");
         }
     } else {
-        $ogImage = JURI::root() . "templates/capitalcraft/images/og/OG-image.webp";
+        $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
     }
     $doc->addCustomTag(
         '<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
@@ -111,7 +115,7 @@ if ($isFAQPage) {
             "name" => "Capital Craft",
             "logo" => [
                 "@type" => "ImageObject",
-                "url" => JURI::root() . "templates/capitalcraft/images/logo_black.svg",
+                "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
             ],
         ],
     ];
@@ -139,21 +143,21 @@ if ($isFAQPage) {
     $dateValue = $this->item->publish_up ?: $this->item->created; ?>
         <div class="blog-card__meta">
           <?php if (!empty($dateValue)): ?>
-            <time class="blog-card__date" datetime="<?php echo JHtml::_("date", $dateValue, "c"); ?>">
-              <?php echo JHtml::_("date", $dateValue, JText::_("DATE_FORMAT_LC3")); ?>
+            <time class="blog-card__date" datetime="<?php echo HTMLHelper::_("date", $dateValue, "c"); ?>">
+              <?php echo HTMLHelper::_("date", $dateValue, Text::_("DATE_FORMAT_LC3")); ?>
             </time>
           <?php endif; ?>
 
           <?php if (!empty($this->item->tags->itemTags)): ?>
             <?php
-            $menu = JFactory::getApplication()->getMenu();
+            $menu = Factory::getApplication()->getMenu();
             $blogItem = $menu->getItems("alias", "blog", true);
             $blogItemId = $blogItem ? $blogItem->id : 0;
             ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
-                  <a href="<?php echo JRoute::_(
+                  <a href="<?php echo Route::_(
                       "index.php?Itemid=" . $blogItemId . "&tag=" . urlencode($tag->alias),
                   ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
     $tag->alias ?? "",
@@ -204,7 +208,7 @@ if ($isFAQPage) {
             }
 
             if (!empty($tagIds)) {
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $query = $db
                     ->getQuery(true)
                     ->select("c.id, c.title, c.alias, c.catid, c.publish_up, c.language")
@@ -265,7 +269,7 @@ if ($isFAQPage) {
             $faqRelated = [];
             if (!empty($tagIds)) {
                 // find FAQ category id
-                $dbFaq = JFactory::getDbo();
+                $dbFaq = Factory::getDbo();
                 $qCat = $dbFaq
                     ->getQuery(true)
                     ->select($dbFaq->quoteName("id"))
@@ -299,7 +303,7 @@ if ($isFAQPage) {
                         $faqIds = array_map(function ($o) {
                             return (int) $o->id;
                         }, $faqRelated);
-                        $dbTag = JFactory::getDbo();
+                        $dbTag = Factory::getDbo();
                         $qTags = $dbTag
                             ->getQuery(true)
                             ->select("m.content_item_id, m.tag_id")
@@ -329,7 +333,7 @@ if ($isFAQPage) {
             }
 
             if (!empty($tagIds)) {
-                $dbm = JFactory::getDbo();
+                $dbm = Factory::getDbo();
                 // Совпадения среди статей (кроме FAQ категории)
                 $qmA = $dbm
                     ->getQuery(true)
@@ -397,7 +401,7 @@ if ($isFAQPage) {
                         $ids = array_map(function ($o) {
                             return (int) $o->id;
                         }, $relatedItems);
-                        $db2 = JFactory::getDbo();
+                        $db2 = Factory::getDbo();
                         $q2 = $db2
                             ->getQuery(true)
                             ->select(
@@ -423,7 +427,7 @@ if ($isFAQPage) {
                           $excerpt = "";
                           if (!empty($raw)) {
                               $clean = strip_tags($raw);
-                              $excerpt = JHtml::_("string.truncate", $clean, 240, true, false);
+                              $excerpt = HTMLHelper::_("string.truncate", $clean, 240, true, false);
                           }
                           ?>
                           <li class="article__related-item">
@@ -446,12 +450,12 @@ if ($isFAQPage) {
                               <?php endif; ?>
                             </a>
                             <?php if (!empty($rel->publish_up)): ?>
-                              <time class="article__related-date" datetime="<?php echo JHtml::_(
+                              <time class="article__related-date" datetime="<?php echo HTMLHelper::_(
                                   "date",
                                   $rel->publish_up,
                                   "c",
                               ); ?>">
-                                <?php echo JHtml::_("date", $rel->publish_up, JText::_("DATE_FORMAT_LC3")); ?>
+                                <?php echo HTMLHelper::_("date", $rel->publish_up, Text::_("DATE_FORMAT_LC3")); ?>
                               </time>
                             <?php endif; ?>
                           </li>
@@ -463,7 +467,7 @@ if ($isFAQPage) {
                           <?php
                           $raw = !empty($fq->introtext) ? $fq->introtext : $fq->fulltext ?? "";
                           $clean = trim(strip_tags($raw));
-                          $excerpt = $clean ? JHtml::_("string.truncate", $clean, 200, true, false) : "";
+                          $excerpt = $clean ? HTMLHelper::_("string.truncate", $clean, 200, true, false) : "";
                           // Выбираем тег для ссылки как пересечение тегов FAQ и тегов статьи
                           $faqTags = isset($faqTagMap[$fq->id]) ? (array) $faqTagMap[$fq->id] : [];
                           $preferIds = !empty($matchedTagIds) ? $matchedTagIds : (array) $tagIds;
