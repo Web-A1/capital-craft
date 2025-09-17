@@ -76,6 +76,18 @@ class CapitalcraftFaqHelper
             ->where("c.catid = " . (int) $faqCatId)
             ->order("c.publish_up DESC");
 
+        if (!empty($tagIds)) {
+            $query
+                ->join(
+                    "INNER",
+                    $db->quoteName("#__contentitem_tag_map", "mt") .
+                        " ON mt.content_item_id = c.id AND mt.type_alias = " .
+                        $db->quote("com_content.article"),
+                )
+                ->where("mt.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
+                ->group($db->quoteName("c.id"));
+        }
+
         $db->setQuery($query);
         $rows = (array) $db->loadObjectList();
 

@@ -22,6 +22,61 @@ $app->triggerEvent("onContentPrepare", [
 $this->category->description = $this->category->text;
 
 $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
+
+$app = Factory::getApplication();
+$db = Factory::getDbo();
+$input = $app->input;
+$tagParamRaw = trim($input->getString("tag", ""));
+$normalizedTagAlias = "";
+
+if ($tagParamRaw !== "") {
+    if (ctype_digit($tagParamRaw)) {
+        $query = $db
+            ->getQuery(true)
+            ->select($db->quoteName("alias"))
+            ->from($db->quoteName("#__tags"))
+            ->where($db->quoteName("id") . " = " . (int) $tagParamRaw)
+            ->where($db->quoteName("published") . " = 1");
+        $db->setQuery($query);
+        $normalizedTagAlias = strtolower((string) $db->loadResult());
+    } else {
+        $normalizedTagAlias = strtolower($tagParamRaw);
+    }
+}
+
+$rawLeadItems = $this->lead_items ?? [];
+$rawIntroItems = $this->intro_items ?? [];
+
+$matchesTag = function ($item) use ($normalizedTagAlias) {
+    if ($normalizedTagAlias === "") {
+        return true;
+    }
+
+    if (empty($item->tags->itemTags)) {
+        return false;
+    }
+
+    foreach ($item->tags->itemTags as $tag) {
+        $alias = strtolower($tag->alias ?? "");
+        if ($alias === $normalizedTagAlias) {
+            return true;
+        }
+    }
+
+    return false;
+};
+
+if ($normalizedTagAlias !== "") {
+    $filteredLead = array_values(array_filter($rawLeadItems, $matchesTag));
+    $filteredIntro = array_values(array_filter($rawIntroItems, $matchesTag));
+
+    $this->lead_items = $filteredLead;
+    $this->intro_items = $filteredIntro;
+    $this->link_items = [];
+} else {
+    $this->lead_items = $rawLeadItems;
+    $this->intro_items = $rawIntroItems;
+}
 ?>
 
 <section class="frame section-with-divider blog" aria-labelledby="blog-title">
@@ -52,14 +107,13 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
 
     <?php
     // Build navigation of all available tags
-    $db = Factory::getDbo();
-// Собираем теги только из статей текущего списка (lead + intro)
-$allTags = [];
-$seenTags = [];
-foreach (array_merge($this->lead_items ?? [], $this->intro_items ?? []) as $it) {
-    if (!empty($it->tags->itemTags)) {
-        foreach ($it->tags->itemTags as $tg) {
-            $alias = strtolower($tg->alias ?? "");
+    // Собираем теги только из статей текущего списка (lead + intro)
+    $allTags = [];
+    $seenTags = [];
+    foreach (array_merge($rawLeadItems, $rawIntroItems) as $it) {
+        if (!empty($it->tags->itemTags)) {
+            foreach ($it->tags->itemTags as $tg) {
+                $alias = strtolower($tg->alias ?? "");
             if ($alias && empty($seenTags[$alias])) {
                 $obj = (object) ["id" => $tg->tag_id, "title" => $tg->title, "alias" => $tg->alias];
                 $allTags[] = $obj;
@@ -77,11 +131,12 @@ usort($allTags, function ($a, $b) {
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
         <ul class="blog-tags__cloud blog-tags__cloud--nowrap">
           <li class="blog-tags__tag">
-            <a class="blog-tags__link is-active" href="#" data-alias="">Все статьи</a>
+            <a class="blog-tags__link<?php echo $normalizedTagAlias === "" ? " is-active" : ""; ?>" href="#" data-alias="">Все статьи</a>
           </li>
           <?php foreach ($allTags as $tg): ?>
             <li class="blog-tags__tag">
-              <a class="blog-tags__link" href="#" data-alias="<?php echo htmlspecialchars(
+              <?php $tagAliasLower = strtolower($tg->alias ?? ""); ?>
+              <a class="blog-tags__link<?php echo $normalizedTagAlias === $tagAliasLower ? " is-active" : ""; ?>" href="#" data-alias="<?php echo htmlspecialchars(
                   $tg->alias,
                   ENT_QUOTES,
                   "UTF-8",
@@ -173,49 +228,162 @@ usort($allTags, function ($a, $b) {
 </section>
 
 <script>
-  document.addEventListener('click', function(e) {
-    const tagLink = e.target.closest('.blog-card__tag-link');
-    if (tagLink) return;
-    const card = e.target.closest('.blog-card');
-    if (!card) return;
-    const href = card.dataset.href;
-    if (href) window.location.href = href;
-  });
-  document.addEventListener('keydown', function(e) {
-    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('blog-card')) {
-      const href = e.target.dataset.href;
-      if (href) { e.preventDefault(); window.location.href = href; }
-    }
-  });
-
-  // Client-side tag filtering: header pills + in-card tag links
-  (function(){
-    const cards = Array.from(document.querySelectorAll('.blog-card'));
-    const pills = Array.from(document.querySelectorAll('.blog-tags__link'));
-    const inCardTags = Array.from(document.querySelectorAll('.blog-card__tag-link'));
-
-    function apply(alias){
-      const norm = (alias||'').toLowerCase();
-      cards.forEach(c => {
-        const tags = (c.getAttribute('data-tags')||'').toLowerCase().split(/\s+/).filter(Boolean);
-        const show = !norm || tags.includes(norm);
-        c.style.display = show ? '' : 'none';
-      });
-      pills.forEach(p => {
-        const a = (p.getAttribute('data-alias')||'').toLowerCase();
-        p.classList.toggle('is-active', (norm ? a===norm : a===''));
-      });
-      const url = new URL(window.location.href);
-      if (norm) url.searchParams.set('tag', norm); else url.searchParams.delete('tag');
-      if (history && history.pushState) history.pushState({ tag: norm }, '', url.toString());
+  (function () {
+    const blogSection = document.querySelector('.blog');
+    if (!blogSection) {
+      return;
     }
 
-    pills.forEach(p => p.addEventListener('click', function(ev){ ev.preventDefault(); apply(p.getAttribute('data-alias')||''); }));
-    inCardTags.forEach(a => a.addEventListener('click', function(ev){ ev.preventDefault(); const alias = (a.getAttribute('data-alias')||'').toLowerCase(); apply(alias); }));
+    const parser = new DOMParser();
+    let isLoading = false;
+    let currentTag = (new URL(window.location.href)).searchParams.get('tag') || '';
+    currentTag = currentTag.toLowerCase();
 
-    // init from URL
-    const m = location.search.match(/\btag=([^&#]+)/);
-    if (m) apply(decodeURIComponent(m[1]));
-    window.addEventListener('popstate', function(){ const m = location.search.match(/\btag=([^&#]+)/); apply(m?decodeURIComponent(m[1]):''); });
+    function syncHead(doc) {
+      const titleEl = doc.querySelector('title');
+      if (titleEl) {
+        document.title = titleEl.textContent;
+      }
+
+      const selectors = [
+        'meta[name="description"]',
+        'meta[property="og:url"]',
+        'meta[property="og:title"]',
+        'meta[property="og:description"]',
+        'meta[name="twitter:title"]',
+        'meta[name="twitter:description"]',
+      ];
+
+      selectors.forEach((selector) => {
+        const fresh = doc.querySelector(selector);
+        const current = document.querySelector(selector);
+        if (fresh && current) {
+          current.setAttribute('content', fresh.getAttribute('content') || '');
+        }
+      });
+
+      const freshCanonical = doc.querySelector('link[rel="canonical"]');
+      const canonical = document.querySelector('link[rel="canonical"]');
+      if (freshCanonical && canonical) {
+        canonical.href = freshCanonical.href;
+      }
+    }
+
+    function replaceContent(doc) {
+      const newNav = doc.querySelector('.blog__tags-nav');
+      const nav = blogSection.querySelector('.blog__tags-nav');
+      if (newNav && nav) {
+        nav.innerHTML = newNav.innerHTML;
+      }
+
+      const newList = doc.querySelector('.blog-list');
+      const list = blogSection.querySelector('.blog-list');
+      if (newList && list) {
+        list.innerHTML = newList.innerHTML;
+      }
+
+      const newPagination = doc.querySelector('.blog-pagination');
+      const pagination = blogSection.querySelector('.blog-pagination');
+      if (pagination) {
+        if (newPagination) {
+          pagination.innerHTML = newPagination.innerHTML;
+        } else {
+          pagination.remove();
+        }
+      } else if (newPagination) {
+        const container = blogSection.querySelector('.container');
+        if (container) {
+          container.appendChild(newPagination);
+        }
+      }
+    }
+
+    function loadBlog(alias, options) {
+      const opts = options || {};
+      const normalized = (alias || '').toLowerCase();
+      if (!opts.force && normalized === currentTag) {
+        return;
+      }
+      if (isLoading) {
+        return;
+      }
+
+      const url = normalized ? `/blog?tag=${encodeURIComponent(normalized)}` : '/blog';
+      isLoading = true;
+      blogSection.classList.add('is-loading');
+
+      fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network error');
+          }
+          return response.text();
+        })
+        .then((html) => {
+          const doc = parser.parseFromString(html, 'text/html');
+          replaceContent(doc);
+          currentTag = normalized;
+          if (!opts.skipPush && history && history.pushState) {
+            history.pushState({ tag: normalized }, '', url);
+          }
+          syncHead(doc);
+        })
+        .catch(() => {
+          window.location.href = url;
+        })
+        .finally(() => {
+          isLoading = false;
+          blogSection.classList.remove('is-loading');
+        });
+    }
+
+    document.addEventListener('click', function (event) {
+      const pill = event.target.closest('.blog-tags__link');
+      if (pill) {
+        event.preventDefault();
+        const alias = (pill.getAttribute('data-alias') || '').toLowerCase();
+        loadBlog(alias);
+        return;
+      }
+
+      const inCardTag = event.target.closest('.blog-card__tag-link');
+      if (inCardTag) {
+        event.preventDefault();
+        const alias = (inCardTag.getAttribute('data-alias') || '').toLowerCase();
+        loadBlog(alias);
+        return;
+      }
+
+      const card = event.target.closest('.blog-card');
+      if (!card) {
+        return;
+      }
+      if (event.target.closest('.blog-card__tag-link')) {
+        return;
+      }
+      const href = card.dataset.href;
+      if (href) {
+        window.location.href = href;
+      }
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if ((event.key === 'Enter' || event.key === ' ') && event.target.classList && event.target.classList.contains('blog-card')) {
+        const href = event.target.dataset.href;
+        if (href) {
+          event.preventDefault();
+          window.location.href = href;
+        }
+      }
+    });
+
+    if (history && history.replaceState) {
+      history.replaceState({ tag: currentTag }, '', window.location.href);
+    }
+
+    window.addEventListener('popstate', function () {
+      const alias = (new URL(window.location.href)).searchParams.get('tag') || '';
+      loadBlog(alias, { skipPush: true, force: true });
+    });
   })();
 </script>
