@@ -57,7 +57,7 @@
     }
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       bottom: 0;
@@ -131,6 +131,17 @@
     color: @color-text;
     font-style: italic;
 
+    a {
+      color: @color-text;
+      text-decoration: none;
+      transition: color 0.2s ease;
+
+      &:hover,
+      &:focus-visible {
+        color: @color-accent;
+      }
+    }
+
     .media(mobile, {
       font-size: (@font-size-base * 1.125); // 18px
     });
@@ -185,7 +196,9 @@
 
     &--mobile {
       // Десктоп: скрыть, перебивая глобальный .btn-main
-      .faq-home__btn& { display: none; }
+      .faq-home__btn& {
+        display: none;
+      }
       // Мобильные: показать тем же уровнем специфичности
       .media(mobile, {
         .faq-home__btn& { display: inline-flex; }
