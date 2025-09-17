@@ -1,13 +1,18 @@
 <?php defined("_JEXEC") or die();
-$doc = JFactory::getDocument();
-$app = JFactory::getApplication();
-$db = JFactory::getDbo();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
+
+$doc = Factory::getDocument();
+$app = Factory::getApplication();
+$db = Factory::getDbo();
 
 // Канонический URL для JSON-LD схем (используется только в структурированных данных)
 $canonicalUrl = "https://capital-craft.ru/faq";
 
 // Параметр фильтра по тегу (?tag=alias|id)
-$input = $app->input;
+$input = $app->getInput();
 $tagParam = trim($input->getString("tag", ""));
 $tagIds = [];
 $selectedAlias = "";
@@ -258,13 +263,13 @@ $breadcrumbSchema = [
             "@type" => "ListItem",
             "position" => 1,
             "name" => "Главная",
-            "item" => JURI::root(),
+            "item" => Uri::root(),
         ],
         [
             "@type" => "ListItem",
             "position" => 2,
             "name" => "FAQ",
-            "item" => JURI::current(),
+            "item" => Uri::getInstance()->toString(),
         ],
     ],
 ];
@@ -283,14 +288,14 @@ $orgSchema = [
     "alternateName" => "Capital-craft",
     "description" =>
         "Бутиковое агентство инвестиционных решений, специализирующееся на привлечении финансирования для бизнеса",
-    "url" => JURI::root(),
+    "url" => Uri::root(),
     "logo" => [
         "@type" => "ImageObject",
-        "url" => JURI::root() . "templates/capitalcraft/images/logo_black.svg",
+        "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
         "width" => 200,
         "height" => 60,
     ],
-    "image" => JURI::root() . "templates/capitalcraft/images/faq/faq_hand.webp",
+    "image" => Uri::root() . "templates/capitalcraft/images/faq/faq_hand.webp",
     "address" => [
         "@type" => "PostalAddress",
         "streetAddress" => "Варшавское шоссе 33, стр 1",
@@ -327,7 +332,7 @@ $webPageSchema = [
     "@type" => "WebPage",
     "name" => "Часто задаваемые вопросы - Capital Craft",
     "description" => "Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса",
-    "url" => JURI::current(),
+    "url" => Uri::getInstance()->toString(),
     "isPartOf" => [
         "@type" => "WebSite",
         "name" => "Capital Craft",
@@ -345,13 +350,13 @@ $webPageSchema = [
                 "@type" => "ListItem",
                 "position" => 1,
                 "name" => "Главная",
-                "item" => JURI::root(),
+            "item" => Uri::root(),
             ],
             [
                 "@type" => "ListItem",
                 "position" => 2,
                 "name" => "FAQ",
-                "item" => JURI::current(),
+            "item" => Uri::getInstance()->toString(),
             ],
         ],
     ],
@@ -385,9 +390,9 @@ $doc->addCustomTag(
                     <li class="faq-tags__tag">
                       <a class="faq-tags__link<?php echo $activeTagAlias === $alias
                           ? " is-active"
-                          : ""; ?>" href="<?php echo JRoute::_(
-    "/faq?tag=" . rawurlencode($tg->alias),
-); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+                          : ""; ?>" href="<?php echo Route::_(
+                              "/faq?tag=" . rawurlencode($tg->alias),
+                          ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -405,18 +410,18 @@ $doc->addCustomTag(
                     ?>
                     <div class="faq__item" id="faq-q-<?php echo (int) ($item["id"] ??
                         0); ?>" data-tags="<?php echo htmlspecialchars(
-    implode(" ", $aliases),
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
+                            implode(" ", $aliases),
+                            ENT_QUOTES,
+                            "UTF-8",
+                        ); ?>">
                         <button class="faq__question" 
                                 aria-expanded="false" 
                                 aria-controls="faq-answer-<?php echo $index; ?>"
                                 aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars(
-    $item["q"],
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
+                                    $item["q"],
+                                    ENT_QUOTES,
+                                    "UTF-8",
+                                ); ?>">
                             <span class="faq__text">
                                 <?php echo htmlspecialchars($item["q"], ENT_QUOTES, "UTF-8"); ?>
                             </span>
@@ -433,12 +438,12 @@ $doc->addCustomTag(
                         </div>
                         <?php
                         $primaryTag = $item["primary_tag"] ?? null;
-                        if (empty($primaryTag) && !empty($item["tags"])) {
-                            $primaryTag = $item["tags"][0];
-                        }
-                        ?>
+                    if (empty($primaryTag) && !empty($item["tags"])) {
+                        $primaryTag = $item["tags"][0];
+                    }
+                    ?>
                         <?php if (!empty($primaryTag)): ?>
-                            <a class="faq__tag-chip" href="<?php echo JRoute::_(
+                            <a class="faq__tag-chip" href="<?php echo Route::_(
                                 "/faq?tag=" . rawurlencode($primaryTag["alias"]),
                             ); ?>">#<?php echo htmlspecialchars($primaryTag["title"], ENT_QUOTES, "UTF-8"); ?></a>
                         <?php endif; ?>

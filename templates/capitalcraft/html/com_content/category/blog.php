@@ -1,6 +1,7 @@
 <?php
 defined("_JEXEC") or die();
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
@@ -11,7 +12,7 @@ use Joomla\Component\Content\Site\Helper\RouteHelper as ContentRouteHelper;
 
 // Prepare category description plugins like core does
 $this->category->text = $this->category->description;
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $app->triggerEvent("onContentPrepare", [
     $this->category->extension . ".categories",
     &$this->category,
@@ -51,26 +52,26 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
 
     <?php
     // Build navigation of all available tags
-    $db = Joomla\CMS\Factory::getDbo();
-    // Собираем теги только из статей текущего списка (lead + intro)
-    $allTags = [];
-    $seenTags = [];
-    foreach (array_merge($this->lead_items ?? [], $this->intro_items ?? []) as $it) {
-        if (!empty($it->tags->itemTags)) {
-            foreach ($it->tags->itemTags as $tg) {
-                $alias = strtolower($tg->alias ?? "");
-                if ($alias && empty($seenTags[$alias])) {
-                    $obj = (object) ["id" => $tg->tag_id, "title" => $tg->title, "alias" => $tg->alias];
-                    $allTags[] = $obj;
-                    $seenTags[$alias] = true;
-                }
+    $db = Factory::getDbo();
+// Собираем теги только из статей текущего списка (lead + intro)
+$allTags = [];
+$seenTags = [];
+foreach (array_merge($this->lead_items ?? [], $this->intro_items ?? []) as $it) {
+    if (!empty($it->tags->itemTags)) {
+        foreach ($it->tags->itemTags as $tg) {
+            $alias = strtolower($tg->alias ?? "");
+            if ($alias && empty($seenTags[$alias])) {
+                $obj = (object) ["id" => $tg->tag_id, "title" => $tg->title, "alias" => $tg->alias];
+                $allTags[] = $obj;
+                $seenTags[$alias] = true;
             }
         }
     }
-    usort($allTags, function ($a, $b) {
-        return strcmp($a->title, $b->title);
-    });
-    ?>
+}
+usort($allTags, function ($a, $b) {
+    return strcmp($a->title, $b->title);
+});
+?>
 
     <?php if (!empty($allTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
@@ -105,14 +106,14 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
           ); ?>
           <?php
           $aliases = [];
-          if (!empty($item->tags->itemTags)) {
-              foreach ($item->tags->itemTags as $tg) {
-                  if (!empty($tg->alias)) {
-                      $aliases[] = strtolower($tg->alias);
-                  }
-              }
-          }
-          ?>
+            if (!empty($item->tags->itemTags)) {
+                foreach ($item->tags->itemTags as $tg) {
+                    if (!empty($tg->alias)) {
+                        $aliases[] = strtolower($tg->alias);
+                    }
+                }
+            }
+            ?>
           <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(
               implode(" ", $aliases),
               ENT_QUOTES,
@@ -133,14 +134,14 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
           ); ?>
           <?php
           $aliases = [];
-          if (!empty($item->tags->itemTags)) {
-              foreach ($item->tags->itemTags as $tg) {
-                  if (!empty($tg->alias)) {
-                      $aliases[] = strtolower($tg->alias);
-                  }
-              }
-          }
-          ?>
+            if (!empty($item->tags->itemTags)) {
+                foreach ($item->tags->itemTags as $tg) {
+                    if (!empty($tg->alias)) {
+                        $aliases[] = strtolower($tg->alias);
+                    }
+                }
+            }
+            ?>
           <article class="blog-card" data-tags="<?php echo htmlspecialchars(
               implode(" ", $aliases),
               ENT_QUOTES,

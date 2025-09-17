@@ -3,6 +3,7 @@ defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
@@ -54,7 +55,7 @@ $blogItemId = $blogItem ? $blogItem->id : 0;
       <?php if ($params->get("show_readmore") && $this->item->readmore): ?>
         <p class="blog-card__more"><a href="<?php echo $articleLink; ?>"><?php echo HTMLHelper::_(
     "string.truncate",
-    $params->get("alternative_readmore", JText::_("COM_CONTENT_READ_MORE")) ?: JText::_("COM_CONTENT_READ_MORE"),
+    $params->get("alternative_readmore", Text::_("COM_CONTENT_READ_MORE")) ?: Text::_("COM_CONTENT_READ_MORE"),
     100,
 ); ?></a></p>
       <?php endif; ?>
@@ -62,7 +63,7 @@ $blogItemId = $blogItem ? $blogItem->id : 0;
 
     <div class="blog-card__meta">
       <time class="blog-card__date" datetime="<?php echo HTMLHelper::_("date", $dateValue, "c"); ?>">
-        <?php echo HTMLHelper::_("date", $dateValue, JText::_("DATE_FORMAT_LC3")); ?>
+        <?php echo HTMLHelper::_("date", $dateValue, Text::_("DATE_FORMAT_LC3")); ?>
       </time>
 
       <?php if (!empty($this->item->tags->itemTags)): ?>
