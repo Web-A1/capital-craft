@@ -13,14 +13,14 @@
             <p class="modal__description">Оставьте свои контакты и кратко опишите задачу — мы свяжемся с вами, чтобы обсудить детали</p>
         </div>
         <form id="contactForm" class="modal__form" novalidate>
-            <input type="text" name="name" placeholder="Имя">
+            <input type="text" id="contact-name" name="name" placeholder="Имя" autocomplete="name">
             <div class="phone-field">
-                <input type="tel" name="phone" placeholder="Контактный телефон">
+                <input type="tel" id="contact-phone" name="phone" placeholder="Контактный телефон" autocomplete="tel">
                 <span class="form-error">Введите корректный номер телефона</span>
             </div>
-            <textarea name="message" placeholder="Опишите Вашу задачу"></textarea>
-            <label class="personal-data">
-                <input type="checkbox">
+            <textarea id="contact-message" name="message" placeholder="Опишите Вашу задачу" autocomplete="off"></textarea>
+            <label class="personal-data" for="contact-consent">
+                <input type="checkbox" id="contact-consent" name="consent" autocomplete="off">
                 <span>Соглашаюсь на обработку и передачу персональных данных</span>
             </label>
             <span class="consent-error">Необходимо дать согласие на обработку данных</span>
