@@ -163,9 +163,7 @@ if ($faqCatId) {
 
     // Группировка вопросов по тегам: идём по алфавиту тегов и собираем элементы с этим тегом
     if (!empty($faqItems) && !empty($faqAllTags)) {
-        $placed = [];
-        $grouped = [];
-        // Если выбран тег — ставим его первым в порядке обхода
+        // Формируем порядок тегов: выбранный в фильтре — первым, остальные по алфавиту
         $orderedTags = $faqAllTags;
         if ($selectedAlias) {
             usort($orderedTags, function ($a, $b) use ($selectedAlias) {
@@ -180,32 +178,35 @@ if ($faqCatId) {
                 return strcmp($a->title, $b->title);
             });
         }
+
+        $grouped = [];
+        $placed = [];
+
         foreach ($orderedTags as $tg) {
             $alias = strtolower($tg->alias);
             foreach ($faqItems as $it) {
-                if (!empty($placed[$it["id"]]) || empty($it["tags"])) {
+                if (!empty($placed[$it["id"]])) {
                     continue;
                 }
-                // Проверяем, есть ли у вопроса этот тег
-                $has = false;
-                foreach ($it["tags"] as $t) {
-                    if (strtolower($t["alias"]) === $alias) {
-                        $has = true;
-                        break;
-                    }
+                $primary = $it["primary_tag"] ?? null;
+                if (!$primary && !empty($it["tags"])) {
+                    $primary = $it["tags"][0];
                 }
-                if ($has) {
+                $primaryAlias = $primary ? strtolower((string) ($primary["alias"] ?? "")) : "";
+                if ($primaryAlias === $alias) {
                     $grouped[] = $it;
                     $placed[$it["id"]] = true;
                 }
             }
         }
-        // Добавляем оставшиеся (без тегов или не попавшие в группы) в конце, сохраняя исходный порядок
+
+        // Добавляем элементы без тегов или с неожиданными alias
         foreach ($faqItems as $it) {
             if (empty($placed[$it["id"]])) {
                 $grouped[] = $it;
             }
         }
+
         $faqItems = $grouped;
     }
 }
