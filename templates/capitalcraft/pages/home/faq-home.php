@@ -1,70 +1,10 @@
 <?php
 defined("_JEXEC") or die();
 
-use Joomla\CMS\Factory;
+require_once JPATH_SITE . '/templates/capitalcraft/helpers/FaqHelper.php';
 
 $maxItems = 9;
-$faqItems = [];
-$faqCatId = 0;
-
-try {
-    $db = Factory::getDbo();
-
-    // Определяем категорию FAQ (alias `faq`, иначе по названию `FAQ`)
-    $catQuery = $db
-        ->getQuery(true)
-        ->select($db->quoteName("id"))
-        ->from($db->quoteName("#__categories"))
-        ->where($db->quoteName("extension") . " = " . $db->quote("com_content"))
-        ->where($db->quoteName("alias") . " = " . $db->quote("faq"))
-        ->where($db->quoteName("published") . " = 1");
-    $db->setQuery($catQuery);
-    $faqCatId = (int) $db->loadResult();
-
-    if (!$faqCatId) {
-        $catQueryByTitle = $db
-            ->getQuery(true)
-            ->select($db->quoteName("id"))
-            ->from($db->quoteName("#__categories"))
-            ->where($db->quoteName("extension") . " = " . $db->quote("com_content"))
-            ->where($db->quoteName("title") . " = " . $db->quote("FAQ"))
-            ->where($db->quoteName("published") . " = 1");
-        $db->setQuery($catQueryByTitle);
-        $faqCatId = (int) $db->loadResult();
-    }
-
-    if ($faqCatId) {
-        $featuredQuery = $db
-            ->getQuery(true)
-            ->select("c.id, c.title, c.introtext, c.fulltext")
-            ->from($db->quoteName("#__content", "c"))
-            ->join("LEFT", $db->quoteName("#__content_frontpage", "fp") . " ON fp.content_id = c.id")
-            ->where("c.state = 1")
-            ->where("c.catid = " . (int) $faqCatId)
-            ->where("c.featured = 1")
-            ->order("COALESCE(fp.ordering, 9999) ASC")
-            ->order("c.publish_up DESC");
-
-        $db->setQuery($featuredQuery, 0, $maxItems);
-        $rows = (array) $db->loadObjectList();
-
-        foreach ($rows as $row) {
-            $question = trim((string) $row->title);
-            if ($question === "") {
-                continue;
-            }
-
-            $answerRaw = $row->fulltext !== "" ? $row->fulltext : $row->introtext;
-            $faqItems[] = [
-                "id" => (int) $row->id,
-                "q" => $question,
-                "a" => trim(strip_tags((string) $answerRaw)),
-            ];
-        }
-    }
-} catch (Throwable $e) {
-    // Игнорируем ошибки и просто не выводим блок
-}
+$faqItems = CapitalcraftFaqHelper::getFeaturedFaq($maxItems);
 
 if (empty($faqItems)) {
     return;

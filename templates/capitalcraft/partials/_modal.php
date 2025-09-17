@@ -1,3 +1,10 @@
+<?php
+
+use Joomla\CMS\Uri\Uri;
+
+$formEndpoint = rtrim(Uri::root(), '/') . '/templates/capitalcraft/partials/_send_to_telegram.php';
+
+?>
 <div class="modal micromodal-slide" id="contact-modal" aria-hidden="true">
     <div class="modal__overlay" tabindex="-1" data-micromodal-close></div>
     <div class="modal__body" role="dialog" aria-modal="true" aria-labelledby="contact-title">
@@ -12,7 +19,7 @@
             <p class="modal__title" id="contact-title">Давайте разбираться</p>
             <p class="modal__description">Оставьте свои контакты и кратко опишите задачу — мы свяжемся с вами, чтобы обсудить детали</p>
         </div>
-        <form id="contactForm" class="modal__form" novalidate>
+        <form id="contactForm" class="modal__form" novalidate data-endpoint="<?= $formEndpoint; ?>">
             <input type="text" id="contact-name" name="name" placeholder="Имя" autocomplete="name">
             <div class="phone-field">
                 <input type="tel" id="contact-phone" name="phone" placeholder="Контактный телефон" autocomplete="tel">
