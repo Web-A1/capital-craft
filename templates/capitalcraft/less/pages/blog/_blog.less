@@ -28,8 +28,12 @@
   }
   .blog-tags__link {
     .tag-button();
-    color: @color-heading;
-    text-decoration: none;
+
+    &:focus-visible {
+      background: @color-bg-craft;
+      color: @color-accent;
+      border-color: @color-accent;
+    }
   }
   .blog-tags__link.is-active {
     background: @color-bg-craft;
