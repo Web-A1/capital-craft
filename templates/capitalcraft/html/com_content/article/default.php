@@ -7,6 +7,8 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 
+require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
+
 // Определяем, является ли это FAQ страницей
 $isFAQPage = false;
 
@@ -49,8 +51,8 @@ if ($isFAQPage) {
     }
 
     // Canonical URL
-    $canonical = Uri::getInstance()->toString();
-    $doc->addHeadLink($canonical, "canonical", "rel");
+    $canonical = CapitalcraftSeoHelper::buildCanonical();
+    CapitalcraftSeoHelper::addCanonicalLink($canonical);
 
     // Open Graph теги
     $doc->addCustomTag(

@@ -5,21 +5,23 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 require_once JPATH_SITE . '/templates/capitalcraft/helpers/FaqHelper.php';
+require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
 
 $doc = Factory::getDocument();
 $app = Factory::getApplication();
 
-// Канонический URL для JSON-LD схем (используется только в структурированных данных)
-$canonicalUrl = "https://capital-craft.ru/faq";
-
 // Параметр фильтра по тегу (?tag=alias|id)
 $input = $app->getInput();
-$tagParam = $input->getString("tag", "");
+$tagParamRaw = $input->getString("tag", "");
+$tagParam = trim($tagParamRaw);
 
 $faqData = CapitalcraftFaqHelper::getFaqPageData($tagParam);
 $faqItems = $faqData['items'];
 $faqAllTags = $faqData['allTags'];
 $selectedAlias = $faqData['selectedAlias'];
+
+$canonicalUrl = CapitalcraftSeoHelper::buildCanonical(['tag']);
+CapitalcraftSeoHelper::addCanonicalLink($canonicalUrl);
 
 // Фолбэк отключён: если в БД нет данных, не выводим вопросы
 
@@ -74,7 +76,7 @@ $breadcrumbSchema = [
             "@type" => "ListItem",
             "position" => 2,
             "name" => "FAQ",
-            "item" => Uri::getInstance()->toString(),
+            "item" => $canonicalUrl,
         ],
     ],
 ];
@@ -137,11 +139,11 @@ $webPageSchema = [
     "@type" => "WebPage",
     "name" => "Часто задаваемые вопросы - Capital Craft",
     "description" => "Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса",
-    "url" => Uri::getInstance()->toString(),
+    "url" => $canonicalUrl,
     "isPartOf" => [
         "@type" => "WebSite",
         "name" => "Capital Craft",
-        "url" => JURI::root(),
+        "url" => Uri::root(),
     ],
     "about" => [
         "@type" => "Organization",
@@ -161,7 +163,7 @@ $webPageSchema = [
                 "@type" => "ListItem",
                 "position" => 2,
                 "name" => "FAQ",
-            "item" => Uri::getInstance()->toString(),
+                "item" => $canonicalUrl,
             ],
         ],
     ],

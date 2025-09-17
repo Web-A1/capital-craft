@@ -1,6 +1,8 @@
 <?php
 defined("_JEXEC") or die();
 
+require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
+
 // Получаем объект меню и проверяем: активный пункт = главный?
 $app = JFactory::getApplication();
 $menu = $app->getMenu();
@@ -40,6 +42,22 @@ if ($isFaq) {
 if ($isBlog) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/blog.css");
 }
+
+$canonicalParams = [];
+$addCanonical = true;
+
+if ($isBlog) {
+    $canonicalParams = ["tag", "start", "limitstart", "page"]; // пагинация списков
+}
+
+if ($isFaq) {
+    $addCanonical = false; // каноникал обрабатывается во вьюхе FAQ
+}
+
+if ($addCanonical) {
+    $canonicalUrl = CapitalcraftSeoHelper::buildCanonical($canonicalParams);
+    CapitalcraftSeoHelper::addCanonicalLink($canonicalUrl);
+}
 ?>
 
 <!DOCTYPE html>
@@ -75,9 +93,6 @@ if ($isBlog) {
     <?php endif; ?>
     <meta name="twitter:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
     <meta name="twitter:image:alt" content="Capital Craft — превью">
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href="<?= JURI::root() ?>">
     
     <!-- Hreflang для языковой версии (только для главной) -->
     <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/">
@@ -145,9 +160,6 @@ if ($isBlog) {
       <meta name="author" content="Capital Craft">
       <meta name="publisher" content="Capital Craft">
       <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
-      
-      <!-- Canonical URL для FAQ (динамически) -->
-      <link rel="canonical" href="<?= JURI::current() ?>">
       
       <!-- Open Graph теги для FAQ -->
       <?php $faqTitle = htmlspecialchars($document->getTitle(), ENT_QUOTES, "UTF-8"); ?>
