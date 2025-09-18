@@ -69,7 +69,12 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
             if (empty($tag->tag_id)) {
                 continue;
             }
-            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tag->tag_id . ':' . ($tag->alias ?? '')));
+            // Link to blog with tag parameter for unified behavior
+            $menu = JFactory::getApplication()->getMenu();
+            $blogItem = $menu->getItems('alias', 'blog', true);
+            $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+            $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
+            $tagRoute = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
             $tagAliasAttr = strtolower($tag->alias ?? '');
             ?>
             <li class="blog-card__tag">
