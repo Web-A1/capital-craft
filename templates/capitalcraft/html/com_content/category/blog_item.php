@@ -66,8 +66,11 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
         <ul class="blog-card__tags">
           <?php foreach ($this->item->tags->itemTags as $tag): ?>
             <?php
-            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) ($tag->tag_id ?? 0) . ":" . ($tag->alias ?? "")));
-            $tagAliasAttr = strtolower($tag->alias ?? "");
+            if (empty($tag->tag_id)) {
+                continue;
+            }
+            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tag->tag_id . ':' . ($tag->alias ?? '')));
+            $tagAliasAttr = strtolower($tag->alias ?? '');
             ?>
             <li class="blog-card__tag">
               <a
