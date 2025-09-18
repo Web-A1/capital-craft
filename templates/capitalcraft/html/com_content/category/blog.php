@@ -355,12 +355,13 @@ if ($normalizedTagAlias !== "") {
 
     function ensurePagination(entry) {
       let pagination = scope.querySelector('.blog-pagination');
+      const label = entry.paginationLabel || 'Пагинация блога';
 
       if (entry.hasPagination) {
         if (!pagination) {
           pagination = document.createElement('nav');
           pagination.className = 'blog-pagination';
-          pagination.setAttribute('aria-label', 'Пагинация блога');
+          pagination.setAttribute('aria-label', label);
           const container = scope.querySelector('.container') || scope;
           const anchor = scope.querySelector('.blog-list');
           if (container && anchor) {
@@ -370,6 +371,7 @@ if ($normalizedTagAlias !== "") {
           }
         }
 
+        pagination.setAttribute('aria-label', label);
         pagination.innerHTML = entry.paginationInner || '';
       } else if (pagination) {
         pagination.remove();
@@ -423,7 +425,8 @@ if ($normalizedTagAlias !== "") {
         paginationInner: null,
         hasPagination: false,
         statusLabel: '',
-        cardCount: 0
+        cardCount: 0,
+        paginationLabel: 'Пагинация блога'
       };
 
       const titleNode = doc.querySelector('title');
@@ -439,6 +442,9 @@ if ($normalizedTagAlias !== "") {
       const paginationNode = doc.querySelector('.blog-pagination');
       entry.hasPagination = Boolean(paginationNode);
       entry.paginationInner = paginationNode ? paginationNode.innerHTML : null;
+      if (paginationNode) {
+        entry.paginationLabel = paginationNode.getAttribute('aria-label') || entry.paginationLabel;
+      }
 
       const statusSource =
         doc.querySelector('.blog__tags-nav .blog-tags__link.is-active') ||
