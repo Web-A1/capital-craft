@@ -127,7 +127,32 @@ class CapitalcraftTagFilterHelper
             return self::$cache[$cacheKey];
         }
 
-        $db = Factory::getDbo();
+        $db       = Factory::getDbo();
+        $nullDate = $db->getNullDate();
+        $publishUpCondition =
+            "(" .
+            $db->quoteName("c.publish_up") .
+            " IS NULL OR " .
+            $db->quoteName("c.publish_up") .
+            " = " .
+            $db->quote($nullDate) .
+            " OR " .
+            $db->quoteName("c.publish_up") .
+            " <= " .
+            $db->quote($context["now"]) .
+            ")";
+        $publishDownCondition =
+            "(" .
+            $db->quoteName("c.publish_down") .
+            " IS NULL OR " .
+            $db->quoteName("c.publish_down") .
+            " = " .
+            $db->quote($nullDate) .
+            " OR " .
+            $db->quoteName("c.publish_down") .
+            " >= " .
+            $db->quote($context["now"]) .
+            ")";
 
         $query = $db
             ->getQuery(true)
@@ -157,7 +182,9 @@ class CapitalcraftTagFilterHelper
             ->where(self::buildLevelsCondition($db, "cat.access", $context["levels"]))
             ->where(self::buildLanguageCondition($db, "t.language", $language))
             ->where(self::buildLanguageCondition($db, "c.language", $language))
-            ->where(self::buildLanguageCondition($db, "cat.language", $language));
+            ->where(self::buildLanguageCondition($db, "cat.language", $language))
+            ->where($publishUpCondition)
+            ->where($publishDownCondition);
 
         if ($excludeTagId > 0) {
             $query->where($db->quoteName("t.id") . " != " . (int) $excludeTagId);

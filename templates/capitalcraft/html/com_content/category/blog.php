@@ -7,6 +7,9 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\FileLayout;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Site\Helper\RouteHelper as ContentRouteHelper;
+use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
+
+require_once __DIR__ . "/../../../helpers/TagFilterHelper.php";
 
 /** @var \Joomla\Component\Content\Site\View\Category\HtmlView $this */
 
@@ -28,20 +31,46 @@ $db = Factory::getDbo();
 $input = $app->input;
 $tagParamRaw = trim($input->getString("tag", ""));
 $normalizedTagAlias = "";
+$selectedTagId = 0;
 
 if ($tagParamRaw !== "") {
-    if (ctype_digit($tagParamRaw)) {
-        $query = $db
-            ->getQuery(true)
-            ->select($db->quoteName("alias"))
-            ->from($db->quoteName("#__tags"))
-            ->where($db->quoteName("id") . " = " . (int) $tagParamRaw)
-            ->where($db->quoteName("published") . " = 1");
-        $db->setQuery($query);
-        $normalizedTagAlias = strtolower((string) $db->loadResult());
-    } else {
-        $normalizedTagAlias = strtolower($tagParamRaw);
+    $db = Factory::getDbo();
+    $user = Factory::getUser();
+    $viewLevels = array_map("intval", $user->getAuthorisedViewLevels());
+    if (empty($viewLevels)) {
+        $viewLevels = [0];
     }
+    $levelsCondition = "t.access IN (" . implode(",", $viewLevels) . ")";
+    $languageTag = Factory::getApplication()->getLanguage()->getTag() ?: "*";
+    $languageCondition =
+        $languageTag === "*"
+            ? "1=1"
+            : $db->quoteName("t.language") . " IN (" . $db->quote("*") . "," . $db->quote($languageTag) . ")";
+
+    $tagQuery = $db
+        ->getQuery(true)
+        ->select($db->quoteName(["id", "alias"]))
+        ->from($db->quoteName("#__tags", "t"))
+        ->where($db->quoteName("t.published") . " = 1")
+        ->where($levelsCondition)
+        ->where($languageCondition)
+        ->setLimit(1);
+
+    if (ctype_digit($tagParamRaw)) {
+        $tagQuery->where($db->quoteName("t.id") . " = " . (int) $tagParamRaw);
+    } else {
+        $tagQuery->where($db->quoteName("t.alias") . " = " . $db->quote($tagParamRaw));
+    }
+
+    $db->setQuery($tagQuery);
+    $tagRow = $db->loadObject();
+
+    if ($tagRow && !empty($tagRow->alias)) {
+        $selectedTagId = (int) $tagRow->id;
+        $normalizedTagAlias = strtolower((string) $tagRow->alias);
+    }
+} else {
+    $normalizedTagAlias = "";
 }
 
 $rawLeadItems = $this->lead_items ?? [];
@@ -107,40 +136,39 @@ if ($normalizedTagAlias !== "") {
 
     <?php
     // Build navigation of all available tags
-    // Собираем теги только из статей текущего списка (lead + intro)
-    $allTags = [];
-    $seenTags = [];
-    foreach (array_merge($rawLeadItems, $rawIntroItems) as $it) {
-        if (!empty($it->tags->itemTags)) {
-            foreach ($it->tags->itemTags as $tg) {
-                $alias = strtolower($tg->alias ?? "");
-            if ($alias && empty($seenTags[$alias])) {
-                $obj = (object) ["id" => $tg->tag_id, "title" => $tg->title, "alias" => $tg->alias];
-                $allTags[] = $obj;
-                $seenTags[$alias] = true;
-            }
-        }
-    }
-}
-usort($allTags, function ($a, $b) {
-    return strcmp($a->title, $b->title);
-});
-?>
+    $includeSub = (bool) $this->params->get("show_subcategory_content", "0");
+    $maxLevels = $includeSub ? (int) $this->params->get("show_subcategory_content", "1") : 0;
+    $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
+        "includeSubcategories" => $includeSub,
+        "maxSubLevels" => $maxLevels,
+    ]);
+    ?>
 
     <?php if (!empty($allTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
         <ul class="blog-tags__cloud blog-tags__cloud--nowrap">
+          <?php $blogRoute = Route::_(ContentRouteHelper::getCategoryRoute($this->category->id)); ?>
           <li class="blog-tags__tag">
-            <a class="blog-tags__link<?php echo $normalizedTagAlias === "" ? " is-active" : ""; ?>" href="#" data-alias="">Все статьи</a>
+            <a
+              class="blog-tags__link<?php echo $normalizedTagAlias === "" ? " is-active" : ""; ?>"
+              href="<?php echo $blogRoute; ?>"
+              data-tag-alias=""
+              <?php echo $normalizedTagAlias === "" ? 'aria-current="page"' : ""; ?>
+            >Все статьи</a>
           </li>
           <?php foreach ($allTags as $tg): ?>
+            <?php
+            $tagAliasLower = strtolower($tg->alias ?? "");
+            $isActiveTag = $normalizedTagAlias === $tagAliasLower;
+            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tg->id . ":" . ($tg->alias ?? "")));
+            ?>
             <li class="blog-tags__tag">
-              <?php $tagAliasLower = strtolower($tg->alias ?? ""); ?>
-              <a class="blog-tags__link<?php echo $normalizedTagAlias === $tagAliasLower ? " is-active" : ""; ?>" href="#" data-alias="<?php echo htmlspecialchars(
-                  $tg->alias,
-                  ENT_QUOTES,
-                  "UTF-8",
-              ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+              <a
+                class="blog-tags__link<?php echo $isActiveTag ? " is-active" : ""; ?>"
+                href="<?php echo $tagRoute; ?>"
+                data-tag-alias="<?php echo htmlspecialchars($tagAliasLower, ENT_QUOTES, "UTF-8"); ?>"
+                <?php echo $isActiveTag ? 'aria-current="page"' : ""; ?>
+              >#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
@@ -161,21 +189,21 @@ usort($allTags, function ($a, $b) {
           ); ?>
           <?php
           $aliases = [];
-            if (!empty($item->tags->itemTags)) {
-                foreach ($item->tags->itemTags as $tg) {
-                    if (!empty($tg->alias)) {
-                        $aliases[] = strtolower($tg->alias);
-                    }
-                }
-            }
-            ?>
+          if (!empty($item->tags->itemTags)) {
+              foreach ($item->tags->itemTags as $tg) {
+                  if (!empty($tg->alias)) {
+                      $aliases[] = strtolower($tg->alias);
+                  }
+              }
+          }
+          ?>
           <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(
               implode(" ", $aliases),
               ENT_QUOTES,
               "UTF-8",
           ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
-          $this->item = &$item;
+            $this->item = &$item;
             echo $this->loadTemplate("item");
             ?>
           </article>
@@ -189,21 +217,21 @@ usort($allTags, function ($a, $b) {
           ); ?>
           <?php
           $aliases = [];
-            if (!empty($item->tags->itemTags)) {
-                foreach ($item->tags->itemTags as $tg) {
-                    if (!empty($tg->alias)) {
-                        $aliases[] = strtolower($tg->alias);
-                    }
-                }
-            }
-            ?>
+          if (!empty($item->tags->itemTags)) {
+              foreach ($item->tags->itemTags as $tg) {
+                  if (!empty($tg->alias)) {
+                      $aliases[] = strtolower($tg->alias);
+                  }
+              }
+          }
+          ?>
           <article class="blog-card" data-tags="<?php echo htmlspecialchars(
               implode(" ", $aliases),
               ENT_QUOTES,
               "UTF-8",
           ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
             <?php
-          $this->item = &$item;
+            $this->item = &$item;
             echo $this->loadTemplate("item");
             ?>
           </article>
