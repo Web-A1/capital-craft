@@ -18,7 +18,29 @@ class CapitalcraftRelatedHelper
         $tagIds = array_values(array_unique(array_map('intval', $tagIds)));
         sort($tagIds);
 
-        $cacheKey = $articleId . ':' . implode('-', $tagIds);
+        $user = Factory::getUser();
+        $viewLevels = array_map('intval', $user->getAuthorisedViewLevels());
+        sort($viewLevels);
+        $viewLevelsKey = !empty($viewLevels) ? implode('-', $viewLevels) : '0';
+
+        $app = Factory::getApplication();
+        $appLanguage = $app->getLanguage()->getTag() ?: '*';
+        $articleLanguage = (string) ($article->language ?? '');
+
+        $languagePool = ['*'];
+
+        if ($articleLanguage !== '' && !in_array($articleLanguage, $languagePool, true)) {
+            $languagePool[] = $articleLanguage;
+        }
+
+        if ($appLanguage !== '' && !in_array($appLanguage, $languagePool, true)) {
+            $languagePool[] = $appLanguage;
+        }
+
+        sort($languagePool);
+        $languageKey = implode('-', $languagePool);
+
+        $cacheKey = $articleId . ':' . implode('-', $tagIds) . ':' . $viewLevelsKey . ':' . $languageKey;
 
         if (isset(self::$cache[$cacheKey])) {
             return self::$cache[$cacheKey];
@@ -65,6 +87,24 @@ class CapitalcraftRelatedHelper
 
         $db = Factory::getDbo();
         $tagList = implode(',', $tagIds);
+        $languageList = implode(',', array_map(function ($lang) use ($db) {
+            return $db->quote($lang);
+        }, $languagePool));
+        $viewLevelsList = !empty($viewLevels) ? implode(',', $viewLevels) : '0';
+        $contentAccessCondition = 'c.access IN (' . $viewLevelsList . ')';
+        $categoryAccessCondition = 'cat.access IN (' . $viewLevelsList . ')';
+        $tagAccessCondition = '(t.id IS NULL OR t.access IN (' . $viewLevelsList . '))';
+        $contentLanguageCondition = 'c.language IN (' . $languageList . ')';
+        $categoryLanguageCondition = 'cat.language IN (' . $languageList . ')';
+        $tagLanguageCondition = '(t.id IS NULL OR t.language IN (' . $languageList . '))';
+        $tagPublishedCondition = '(t.id IS NULL OR t.published = 1)';
+        $now = Factory::getDate()->toSql();
+        $nullDateValue = $db->getNullDate();
+        $nullDate = $db->quote($nullDateValue);
+        $publishUpCondition = '(c.publish_up IS NULL OR c.publish_up = ' . $nullDate . ' OR c.publish_up <= ' .
+            $db->quote($now) . ')';
+        $publishDownCondition = '(c.publish_down IS NULL OR c.publish_down = ' . $nullDate . ' OR c.publish_down >= ' .
+            $db->quote($now) . ')';
 
         $articleQuery = $db
             ->getQuery(true)
@@ -85,6 +125,16 @@ class CapitalcraftRelatedHelper
             ->where('c.id != ' . $articleId)
             ->where('m.tag_id IN (' . $tagList . ')')
             ->where($db->quoteName('cat.alias') . ' != ' . $db->quote('faq'))
+            ->where('cat.published = 1')
+            ->where($contentAccessCondition)
+            ->where($contentLanguageCondition)
+            ->where($categoryAccessCondition)
+            ->where($categoryLanguageCondition)
+            ->where($tagAccessCondition)
+            ->where($tagLanguageCondition)
+            ->where($tagPublishedCondition)
+            ->where($publishUpCondition)
+            ->where($publishDownCondition)
             ->group(
                 'c.id, c.title, c.alias, c.catid, c.language, c.publish_up, c.introtext, c.fulltext'
             )
@@ -109,6 +159,16 @@ class CapitalcraftRelatedHelper
             ->where('c.state = 1')
             ->where($db->quoteName('cat.alias') . ' = ' . $db->quote('faq'))
             ->where('m.tag_id IN (' . $tagList . ')')
+            ->where('cat.published = 1')
+            ->where($contentAccessCondition)
+            ->where($contentLanguageCondition)
+            ->where($categoryAccessCondition)
+            ->where($categoryLanguageCondition)
+            ->where($tagAccessCondition)
+            ->where($tagLanguageCondition)
+            ->where($tagPublishedCondition)
+            ->where($publishUpCondition)
+            ->where($publishDownCondition)
             ->group(
                 'c.id, c.title, c.alias, c.catid, c.language, c.publish_up, c.introtext, c.fulltext'
             )
@@ -243,17 +303,24 @@ class CapitalcraftRelatedHelper
 
     protected static function buildFaqLink(int $id, string $tagAlias): string
     {
-        $tagPart = $tagAlias !== '' ? '?tag=' . rawurlencode($tagAlias) : '';
+        self::ensureFaqHelper();
 
-        return '/faq' . $tagPart . '#faq-q-' . $id;
+        $normalized = trim($tagAlias);
+
+        return CapitalcraftFaqHelper::buildFaqLink($id, $normalized === '' ? null : $normalized);
     }
 
     protected static function prepareFaqAnswer(string $raw): array
     {
+        self::ensureFaqHelper();
+
+        return CapitalcraftFaqHelper::parseAnswer($raw);
+    }
+
+    protected static function ensureFaqHelper(): void
+    {
         if (!class_exists('CapitalcraftFaqHelper')) {
             require_once JPATH_SITE . '/templates/capitalcraft/helpers/FaqHelper.php';
         }
-
-        return CapitalcraftFaqHelper::parseAnswer($raw);
     }
 }

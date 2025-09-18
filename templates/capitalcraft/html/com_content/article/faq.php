@@ -1,7 +1,6 @@
 <?php defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
 require_once JPATH_SITE . '/templates/capitalcraft/helpers/FaqHelper.php';
@@ -19,6 +18,7 @@ $faqData = CapitalcraftFaqHelper::getFaqPageData($tagParam);
 $faqItems = $faqData['items'];
 $faqAllTags = $faqData['allTags'];
 $selectedAlias = $faqData['selectedAlias'];
+$faqBaseRoute = CapitalcraftFaqHelper::getFaqRoute();
 
 $canonicalUrl = CapitalcraftSeoHelper::buildCanonical(['tag']);
 CapitalcraftSeoHelper::addCanonicalLink($canonicalUrl);
@@ -42,17 +42,35 @@ $faqSchema = [
 ];
 
 foreach ($faqItems as $index => $item) {
-    $faqSchema["mainEntity"][] = [
+    $question = [
         "@type" => "Question",
         "position" => $index + 1,
         "name" => (string) ($item["q"] ?? ""),
-        "acceptedAnswer" => [
-            "@type" => "Answer",
-            "text" => (string) ($item['answer_text'] ?? ''),
-            "dateCreated" => date("c"),
-            "upvoteCount" => 1,
-        ],
     ];
+
+    $answer = [
+        "@type" => "Answer",
+        "text" => (string) ($item['answer_text'] ?? ''),
+        "upvoteCount" => 0,
+    ];
+
+    $publishUp = (string) ($item['publish_up'] ?? '');
+
+    if ($publishUp !== '') {
+        try {
+            $answer['dateCreated'] = Factory::getDate($publishUp)->format(DATE_ATOM);
+        } catch (\Exception $e) {
+            // Игнорируем некорректную дату, чтобы не ломать схему
+        }
+    }
+
+    if (!empty($item['id'])) {
+        $answer['url'] = CapitalcraftFaqHelper::buildFaqLink((int) $item['id']);
+    }
+
+    $question['acceptedAnswer'] = $answer;
+
+    $faqSchema["mainEntity"][] = $question;
 }
 
 $doc->addCustomTag(
@@ -86,94 +104,6 @@ $doc->addCustomTag(
         json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) .
         "</script>",
 );
-
-// Organization schema для Capital Craft
-$orgSchema = [
-    "@context" => "https://schema.org",
-    "@type" => "Organization",
-    "name" => "Capital Craft",
-    "alternateName" => "Capital-craft",
-    "description" =>
-        "Бутиковое агентство инвестиционных решений, специализирующееся на привлечении финансирования для бизнеса",
-    "url" => Uri::root(),
-    "logo" => [
-        "@type" => "ImageObject",
-        "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
-        "width" => 200,
-        "height" => 60,
-    ],
-    "image" => Uri::root() . "templates/capitalcraft/images/faq/faq_hand.webp",
-    "address" => [
-        "@type" => "PostalAddress",
-        "streetAddress" => "Варшавское шоссе 33, стр 1",
-        "addressLocality" => "Москва",
-        "postalCode" => "117105",
-        "addressCountry" => "RU",
-    ],
-    "contactPoint" => [
-        "@type" => "ContactPoint",
-        "telephone" => "+7 (499) 325-68-26",
-        "contactType" => "customer service",
-        "email" => "info@capital-craft.ru",
-        "availableLanguage" => ["Russian", "English"],
-    ],
-    "sameAs" => ["https://t.me/capital_craft1", "https://dzen.ru/capital_craft1"],
-    "foundingDate" => "2020",
-    "areaServed" => "RU",
-    "hasOfferCatalog" => [
-        "@type" => "OfferCatalog",
-        "name" => "Инвестиционные решения и привлечение капитала",
-        "description" => "Услуги по привлечению капитала и инвестиционным решениям",
-    ],
-];
-
-$doc->addCustomTag(
-    '<script type="application/ld+json">' .
-        json_encode($orgSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) .
-        "</script>",
-);
-
-// WebPage schema
-$webPageSchema = [
-    "@context" => "https://schema.org",
-    "@type" => "WebPage",
-    "name" => "Часто задаваемые вопросы - Capital Craft",
-    "description" => "Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса",
-    "url" => $canonicalUrl,
-    "isPartOf" => [
-        "@type" => "WebSite",
-        "name" => "Capital Craft",
-        "url" => Uri::root(),
-    ],
-    "about" => [
-        "@type" => "Organization",
-        "name" => "Capital Craft",
-    ],
-    "inLanguage" => "ru-RU",
-    "breadcrumb" => [
-        "@type" => "BreadcrumbList",
-        "itemListElement" => [
-            [
-                "@type" => "ListItem",
-                "position" => 1,
-                "name" => "Главная",
-            "item" => Uri::root(),
-            ],
-            [
-                "@type" => "ListItem",
-                "position" => 2,
-                "name" => "FAQ",
-                "item" => $canonicalUrl,
-            ],
-        ],
-    ],
-];
-
-$doc->addCustomTag(
-    '<script type="application/ld+json">' .
-        json_encode($webPageSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) .
-        "</script>",
-);
 ?>
 
 <section class="faq frame section-with-divider">
@@ -190,15 +120,22 @@ $doc->addCustomTag(
                   <li class="faq-tags__tag">
                     <a class="faq-tags__link<?php echo $activeTagAlias === ""
                         ? " is-active"
-                        : ""; ?>" href="/faq">Все вопросы</a>
+                        : ""; ?>" href="<?= htmlspecialchars(
+                            $faqBaseRoute,
+                            ENT_QUOTES,
+                            "UTF-8",
+                        ); ?>">Все вопросы</a>
                   </li>
                   <?php foreach ($faqAllTags as $tg): ?>
                     <?php $alias = strtolower($tg->alias); ?>
                     <li class="faq-tags__tag">
+                      <?php $tagHref = CapitalcraftFaqHelper::getFaqRoute(['tag' => $tg->alias]); ?>
                       <a class="faq-tags__link<?php echo $activeTagAlias === $alias
                           ? " is-active"
-                          : ""; ?>" href="<?php echo Route::_(
-                              "/faq?tag=" . rawurlencode($tg->alias),
+                          : ""; ?>" href="<?= htmlspecialchars(
+                              $tagHref,
+                              ENT_QUOTES,
+                              "UTF-8",
                           ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
                     </li>
                   <?php endforeach; ?>
@@ -250,8 +187,11 @@ $doc->addCustomTag(
                     }
                     ?>
                         <?php if (!empty($primaryTag)): ?>
-                            <a class="faq__tag-chip" href="<?php echo Route::_(
-                                "/faq?tag=" . rawurlencode($primaryTag["alias"]),
+                            <?php $primaryTagLink = CapitalcraftFaqHelper::getFaqRoute(['tag' => $primaryTag["alias"]]); ?>
+                            <a class="faq__tag-chip" href="<?= htmlspecialchars(
+                                $primaryTagLink,
+                                ENT_QUOTES,
+                                "UTF-8",
                             ); ?>">#<?php echo htmlspecialchars($primaryTag["title"], ENT_QUOTES, "UTF-8"); ?></a>
                         <?php endif; ?>
                     </div>
