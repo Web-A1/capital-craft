@@ -173,6 +173,7 @@ if ($normalizedTagAlias !== "") {
           <?php endforeach; ?>
         </ul>
       </nav>
+      <div class="visually-hidden" aria-live="polite" aria-atomic="true" id="blog-filter-status"></div>
     <?php endif; ?>
 
     <?php if (empty($this->lead_items) && empty($this->intro_items) && empty($this->link_items)): ?>
