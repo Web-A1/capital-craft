@@ -17,6 +17,11 @@ class CapitalcraftFaqHelper
 
     protected static $htmlFilter = null;
 
+    public static function parseAnswer(string $raw): array
+    {
+        return self::prepareAnswer($raw);
+    }
+
     public static function getFaqPageData(string $tagParam = ""): array
     {
         $normalizedTag = strtolower(trim($tagParam));
