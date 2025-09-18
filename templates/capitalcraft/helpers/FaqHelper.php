@@ -1,6 +1,6 @@
 <?php
 
-defined("_JEXEC") or die();
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
@@ -11,8 +11,8 @@ class CapitalcraftFaqHelper
     protected static $categoryId = null;
 
     protected static $cache = [
-        "page" => [],
-        "featured" => [],
+        'page' => [],
+        'featured' => [],
     ];
 
     protected static $htmlFilter = null;
@@ -22,51 +22,51 @@ class CapitalcraftFaqHelper
         return self::prepareAnswer($raw);
     }
 
-    public static function getFaqPageData(string $tagParam = ""): array
+    public static function getFaqPageData(string $tagParam = ''): array
     {
         $normalizedTag = strtolower(trim($tagParam));
 
-        if (isset(self::$cache["page"][$normalizedTag])) {
-            return self::$cache["page"][$normalizedTag];
+        if (isset(self::$cache['page'][$normalizedTag])) {
+            return self::$cache['page'][$normalizedTag];
         }
 
         $faqCatId = self::getCategoryId();
 
         if (!$faqCatId) {
             $empty = [
-                "items" => [],
-                "allTags" => [],
-                "selectedAlias" => "",
+                'items' => [],
+                'allTags' => [],
+                'selectedAlias' => '',
             ];
-            self::$cache["page"][$normalizedTag] = $empty;
+            self::$cache['page'][$normalizedTag] = $empty;
 
             return $empty;
         }
 
         $db = Factory::getDbo();
 
-        $selectedAlias = "";
+        $selectedAlias = '';
         $tagIds = [];
         $rawTag = trim($tagParam);
 
-        if ($rawTag !== "") {
+        if ($rawTag !== '') {
             if (ctype_digit($rawTag)) {
                 $tagIds = [(int) $rawTag];
                 $query = $db
                     ->getQuery(true)
-                    ->select($db->quoteName("alias"))
-                    ->from($db->quoteName("#__tags"))
-                    ->where($db->quoteName("id") . " = " . (int) $rawTag)
-                    ->where($db->quoteName("published") . " = 1");
+                    ->select($db->quoteName('alias'))
+                    ->from($db->quoteName('#__tags'))
+                    ->where($db->quoteName('id') . ' = ' . (int) $rawTag)
+                    ->where($db->quoteName('published') . ' = 1');
                 $db->setQuery($query);
                 $selectedAlias = strtolower((string) $db->loadResult());
             } else {
                 $query = $db
                     ->getQuery(true)
-                    ->select($db->quoteName("id"))
-                    ->from($db->quoteName("#__tags"))
-                    ->where($db->quoteName("alias") . " = " . $db->quote($rawTag))
-                    ->where($db->quoteName("published") . " = 1");
+                    ->select($db->quoteName('id'))
+                    ->from($db->quoteName('#__tags'))
+                    ->where($db->quoteName('alias') . ' = ' . $db->quote($rawTag))
+                    ->where($db->quoteName('published') . ' = 1');
                 $db->setQuery($query);
                 $foundId = (int) $db->loadResult();
 
@@ -79,22 +79,22 @@ class CapitalcraftFaqHelper
 
         $query = $db
             ->getQuery(true)
-            ->select("c.id, c.title, c.introtext, c.fulltext, c.publish_up")
-            ->from($db->quoteName("#__content", "c"))
-            ->where("c.state = 1")
-            ->where("c.catid = " . (int) $faqCatId)
-            ->order("c.publish_up DESC");
+            ->select('c.id, c.title, c.introtext, c.fulltext, c.publish_up')
+            ->from($db->quoteName('#__content', 'c'))
+            ->where('c.state = 1')
+            ->where('c.catid = ' . (int) $faqCatId)
+            ->order('c.publish_up DESC');
 
         if (!empty($tagIds)) {
             $query
                 ->join(
-                    "INNER",
-                    $db->quoteName("#__contentitem_tag_map", "mt") .
-                        " ON mt.content_item_id = c.id AND mt.type_alias = " .
-                        $db->quote("com_content.article"),
+                    'INNER',
+                    $db->quoteName('#__contentitem_tag_map', 'mt') .
+                        ' ON mt.content_item_id = c.id AND mt.type_alias = ' .
+                        $db->quote('com_content.article'),
                 )
-                ->where("mt.tag_id IN (" . implode(",", array_map("intval", $tagIds)) . ")")
-                ->group($db->quoteName("c.id"));
+                ->where('mt.tag_id IN (' . implode(',', array_map('intval', $tagIds)) . ')')
+                ->group($db->quoteName('c.id'));
         }
 
         $db->setQuery($query);
@@ -121,20 +121,20 @@ class CapitalcraftFaqHelper
             $query = $db
                 ->getQuery(true)
                 ->select(
-                    $db->quoteName("m.content_item_id", "cid") .
-                        ", " .
-                        $db->quoteName("t.id") .
-                        ", " .
-                        $db->quoteName("t.title") .
-                        ", " .
-                        $db->quoteName("t.alias"),
+                    $db->quoteName('m.content_item_id', 'cid') .
+                        ', ' .
+                        $db->quoteName('t.id') .
+                        ', ' .
+                        $db->quoteName('t.title') .
+                        ', ' .
+                        $db->quoteName('t.alias'),
                 )
-                ->from($db->quoteName("#__contentitem_tag_map", "m"))
-                ->join("INNER", $db->quoteName("#__tags", "t") . " ON t.id = m.tag_id")
-                ->where("m.type_alias = " . $db->quote("com_content.article"))
-                ->where("t.published = 1")
-                ->where("m.content_item_id IN (" . implode(",", array_map("intval", $faqIds)) . ")")
-                ->order($db->quoteName("m.tag_date") . " ASC");
+                ->from($db->quoteName('#__contentitem_tag_map', 'm'))
+                ->join('INNER', $db->quoteName('#__tags', 't') . ' ON t.id = m.tag_id')
+                ->where('m.type_alias = ' . $db->quote('com_content.article'))
+                ->where('t.published = 1')
+                ->where('m.content_item_id IN (' . implode(',', array_map('intval', $faqIds)) . ')')
+                ->order($db->quoteName('m.tag_date') . ' ASC');
 
             $db->setQuery($query);
             $tagRows = (array) $db->loadObjectList();
@@ -149,40 +149,40 @@ class CapitalcraftFaqHelper
                 }
 
                 $tagsById[$contentId][] = [
-                    "id" => (int) $tagRow->id,
-                    "title" => (string) $tagRow->title,
-                    "alias" => (string) $tagRow->alias,
+                    'id' => (int) $tagRow->id,
+                    'title' => (string) $tagRow->title,
+                    'alias' => (string) $tagRow->alias,
                 ];
             }
 
             foreach ($faqItems as $index => $item) {
-                $id = (int) $item["id"];
+                $id = (int) $item['id'];
 
                 if (isset($tagsById[$id])) {
-                    $faqItems[$index]["tags"] = array_values($tagsById[$id]);
-                    $faqItems[$index]["primary_tag"] = $faqItems[$index]["tags"][0] ?? null;
+                    $faqItems[$index]['tags'] = array_values($tagsById[$id]);
+                    $faqItems[$index]['primary_tag'] = $faqItems[$index]['tags'][0] ?? null;
                 }
             }
         }
 
         $query = $db
             ->getQuery(true)
-            ->select("DISTINCT t.id, t.title, t.alias")
-            ->from($db->quoteName("#__tags", "t"))
+            ->select('DISTINCT t.id, t.title, t.alias')
+            ->from($db->quoteName('#__tags', 't'))
             ->join(
-                "INNER",
-                $db->quoteName("#__contentitem_tag_map", "m") .
-                    " ON m.tag_id = t.id AND m.type_alias = " .
-                    $db->quote("com_content.article"),
+                'INNER',
+                $db->quoteName('#__contentitem_tag_map', 'm') .
+                    ' ON m.tag_id = t.id AND m.type_alias = ' .
+                    $db->quote('com_content.article'),
             )
             ->join(
-                "INNER",
-                $db->quoteName("#__content", "c") .
-                    " ON c.id = m.content_item_id AND c.state = 1 AND c.catid = " .
+                'INNER',
+                $db->quoteName('#__content', 'c') .
+                    ' ON c.id = m.content_item_id AND c.state = 1 AND c.catid = ' .
                     (int) $faqCatId,
             )
-            ->where("t.published = 1")
-            ->order("t.title ASC");
+            ->where('t.published = 1')
+            ->order('t.title ASC');
 
         $db->setQuery($query);
         $faqAllTags = (array) $db->loadObjectList();
@@ -190,7 +190,7 @@ class CapitalcraftFaqHelper
         if (!empty($faqItems) && !empty($faqAllTags)) {
             $orderedTags = $faqAllTags;
 
-            if ($selectedAlias !== "") {
+            if ($selectedAlias !== '') {
                 usort($orderedTags, function ($a, $b) use ($selectedAlias) {
                     $aliasA = strtolower($a->alias);
                     $aliasB = strtolower($b->alias);
@@ -214,19 +214,19 @@ class CapitalcraftFaqHelper
                 $tagAlias = strtolower($tag->alias);
 
                 foreach ($faqItems as $item) {
-                    $itemId = (int) $item["id"];
+                    $itemId = (int) $item['id'];
 
                     if (!empty($placed[$itemId])) {
                         continue;
                     }
 
-                    $primary = $item["primary_tag"] ?? null;
+                    $primary = $item['primary_tag'] ?? null;
 
-                    if (!$primary && !empty($item["tags"])) {
-                        $primary = $item["tags"][0];
+                    if (!$primary && !empty($item['tags'])) {
+                        $primary = $item['tags'][0];
                     }
 
-                    $primaryAlias = $primary ? strtolower((string) ($primary["alias"] ?? "")) : "";
+                    $primaryAlias = $primary ? strtolower((string) ($primary['alias'] ?? '')) : '';
 
                     if ($primaryAlias === $tagAlias) {
                         $grouped[] = $item;
@@ -236,7 +236,7 @@ class CapitalcraftFaqHelper
             }
 
             foreach ($faqItems as $item) {
-                $itemId = (int) $item["id"];
+                $itemId = (int) $item['id'];
 
                 if (empty($placed[$itemId])) {
                     $grouped[] = $item;
@@ -247,12 +247,12 @@ class CapitalcraftFaqHelper
         }
 
         $result = [
-            "items" => $faqItems,
-            "allTags" => $faqAllTags,
-            "selectedAlias" => $selectedAlias,
+            'items' => $faqItems,
+            'allTags' => $faqAllTags,
+            'selectedAlias' => $selectedAlias,
         ];
 
-        self::$cache["page"][$normalizedTag] = $result;
+        self::$cache['page'][$normalizedTag] = $result;
 
         return $result;
     }
@@ -262,14 +262,14 @@ class CapitalcraftFaqHelper
         $limit = max(1, (int) $limit);
         $cacheKey = $limit;
 
-        if (isset(self::$cache["featured"][$cacheKey])) {
-            return self::$cache["featured"][$cacheKey];
+        if (isset(self::$cache['featured'][$cacheKey])) {
+            return self::$cache['featured'][$cacheKey];
         }
 
         $faqCatId = self::getCategoryId();
 
         if (!$faqCatId) {
-            self::$cache["featured"][$cacheKey] = [];
+            self::$cache['featured'][$cacheKey] = [];
 
             return [];
         }
@@ -278,14 +278,14 @@ class CapitalcraftFaqHelper
 
         $query = $db
             ->getQuery(true)
-            ->select("c.id, c.title, c.introtext, c.fulltext")
-            ->from($db->quoteName("#__content", "c"))
-            ->join("LEFT", $db->quoteName("#__content_frontpage", "fp") . " ON fp.content_id = c.id")
-            ->where("c.state = 1")
-            ->where("c.catid = " . (int) $faqCatId)
-            ->where("c.featured = 1")
-            ->order("COALESCE(fp.ordering, 9999) ASC")
-            ->order("c.publish_up DESC");
+            ->select('c.id, c.title, c.introtext, c.fulltext')
+            ->from($db->quoteName('#__content', 'c'))
+            ->join('LEFT', $db->quoteName('#__content_frontpage', 'fp') . ' ON fp.content_id = c.id')
+            ->where('c.state = 1')
+            ->where('c.catid = ' . (int) $faqCatId)
+            ->where('c.featured = 1')
+            ->order('COALESCE(fp.ordering, 9999) ASC')
+            ->order('c.publish_up DESC');
 
         $db->setQuery($query, 0, $limit);
         $rows = (array) $db->loadObjectList();
@@ -374,11 +374,11 @@ class CapitalcraftFaqHelper
 
         $query = $db
             ->getQuery(true)
-            ->select($db->quoteName("id"))
-            ->from($db->quoteName("#__categories"))
-            ->where($db->quoteName("extension") . " = " . $db->quote("com_content"))
-            ->where($db->quoteName("alias") . " = " . $db->quote("faq"))
-            ->where($db->quoteName("published") . " = 1");
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__categories'))
+            ->where($db->quoteName('extension') . ' = ' . $db->quote('com_content'))
+            ->where($db->quoteName('alias') . ' = ' . $db->quote('faq'))
+            ->where($db->quoteName('published') . ' = 1');
 
         $db->setQuery($query);
         $categoryId = (int) $db->loadResult();
@@ -386,11 +386,11 @@ class CapitalcraftFaqHelper
         if (!$categoryId) {
             $query = $db
                 ->getQuery(true)
-                ->select($db->quoteName("id"))
-                ->from($db->quoteName("#__categories"))
-                ->where($db->quoteName("extension") . " = " . $db->quote("com_content"))
-                ->where($db->quoteName("title") . " = " . $db->quote("FAQ"))
-                ->where($db->quoteName("published") . " = 1");
+                ->select($db->quoteName('id'))
+                ->from($db->quoteName('#__categories'))
+                ->where($db->quoteName('extension') . ' = ' . $db->quote('com_content'))
+                ->where($db->quoteName('title') . ' = ' . $db->quote('FAQ'))
+                ->where($db->quoteName('published') . ' = 1');
 
             $db->setQuery($query);
             $categoryId = (int) $db->loadResult();

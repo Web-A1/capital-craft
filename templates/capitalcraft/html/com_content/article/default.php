@@ -1,11 +1,10 @@
-<?php defined("_JEXEC") or die();
+<?php defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Component\Content\Site\Helper\RouteHelper;
 
 require_once JPATH_SITE . '/templates/capitalcraft/helpers/RelatedHelper.php';
 
@@ -19,13 +18,13 @@ if (isset($this->item) && isset($this->item->catid)) {
     $db = Factory::getDbo();
     $qCatAlias = $db
         ->getQuery(true)
-        ->select($db->quoteName("alias"))
-        ->from($db->quoteName("#__categories"))
-        ->where($db->quoteName("id") . " = " . (int) $this->item->catid)
-        ->where($db->quoteName("published") . " = 1");
+        ->select($db->quoteName('alias'))
+        ->from($db->quoteName('#__categories'))
+        ->where($db->quoteName('id') . ' = ' . (int) $this->item->catid)
+        ->where($db->quoteName('published') . ' = 1');
     $db->setQuery($qCatAlias);
     $currentCatAlias = strtolower((string) $db->loadResult());
-    if ($currentCatAlias === "faq") {
+    if ($currentCatAlias === 'faq') {
         $isFAQPage = true;
     }
 }
@@ -33,7 +32,7 @@ if (isset($this->item) && isset($this->item->catid)) {
 // Если это FAQ страница, используем наш кастомный шаблон
 if ($isFAQPage) {
     // Подключаем локальный шаблон FAQ прямо из override-директории
-    require __DIR__ . "/faq.php";
+    require __DIR__ . '/faq.php';
 } else {
 
     // Для остальных страниц используем стандартную Joomla логику
@@ -44,7 +43,7 @@ if ($isFAQPage) {
 
     // Улучшенный title
     if (!empty($this->item->title)) {
-        $doc->setTitle($this->item->title . " - Capital Craft | Инвестиционные решения");
+        $doc->setTitle($this->item->title . ' - Capital Craft | Инвестиционные решения');
     }
 
     // Description берём только из админки (без автогенерации)
@@ -58,13 +57,13 @@ if ($isFAQPage) {
 
     // Open Graph теги
     $doc->addCustomTag(
-        '<meta property="og:title" content="' . htmlspecialchars($this->item->title, ENT_QUOTES, "UTF-8") . '" />',
+        '<meta property="og:title" content="' . htmlspecialchars($this->item->title, ENT_QUOTES, 'UTF-8') . '" />',
     );
-    $ogDescription = $doc->getMetaData("description");
+    $ogDescription = $doc->getMetaData('description');
     if (!empty($ogDescription)) {
         $doc->addCustomTag(
             '<meta property="og:description" content="' .
-                htmlspecialchars($ogDescription, ENT_QUOTES, "UTF-8") .
+                htmlspecialchars($ogDescription, ENT_QUOTES, 'UTF-8') .
                 '" />',
         );
     }
@@ -74,7 +73,7 @@ if ($isFAQPage) {
     $doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
 
     // OG image: берём изображение материала, иначе дефолт
-    $ogImage = "";
+    $ogImage = '';
     if (!empty($this->item->images)) {
         $imagesObj = json_decode($this->item->images);
         if (!empty($imagesObj->image_fulltext)) {
@@ -84,61 +83,61 @@ if ($isFAQPage) {
         }
     }
     if (!empty($ogImage)) {
-        if (strpos($ogImage, "http") !== 0) {
-            $ogImage = Uri::root() . ltrim($ogImage, "/");
+        if (strpos($ogImage, 'http') !== 0) {
+            $ogImage = Uri::root() . ltrim($ogImage, '/');
         }
     } else {
-        $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
+        $ogImage = Uri::root() . 'templates/capitalcraft/images/og/OG-image.webp';
     }
     $doc->addCustomTag(
-        '<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
+        '<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') . '" />',
     );
     $doc->addCustomTag(
-        '<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
+        '<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') . '" />',
     );
 
     // Robots meta
-    $doc->setMetaData("robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
+    $doc->setMetaData('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
 
     // Структурированные данные для статьи
-    $schemaDescription = $doc->getMetaData("description");
+    $schemaDescription = $doc->getMetaData('description');
     $articleSchema = [
-        "@context" => "https://schema.org",
-        "@type" => "Article",
-        "headline" => $this->item->title,
-        "description" => $schemaDescription,
-        "url" => $canonical,
-        "datePublished" => $this->item->publish_up,
-        "dateModified" => $this->item->modified,
-        "author" => [
-            "@type" => "Organization",
-            "name" => "Capital Craft",
+        '@context' => 'https://schema.org',
+        '@type' => 'Article',
+        'headline' => $this->item->title,
+        'description' => $schemaDescription,
+        'url' => $canonical,
+        'datePublished' => $this->item->publish_up,
+        'dateModified' => $this->item->modified,
+        'author' => [
+            '@type' => 'Organization',
+            'name' => 'Capital Craft',
         ],
-        "publisher" => [
-            "@type" => "Organization",
-            "name" => "Capital Craft",
-            "logo" => [
-                "@type" => "ImageObject",
-                "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'Capital Craft',
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => Uri::root() . 'templates/capitalcraft/images/logo_black.svg',
             ],
         ],
     ];
 
     $doc->addCustomTag(
-        '<script type="application/ld+json">' . json_encode($articleSchema, JSON_UNESCAPED_UNICODE) . "</script>",
+        '<script type="application/ld+json">' . json_encode($articleSchema, JSON_UNESCAPED_UNICODE) . '</script>',
     );
 
     // Стандартная Joomla разметка
     ?>
     <section class="frame section-with-divider article">
     <div class="container com-content-article item-page<?php echo $this->pageclass_sfx; ?>">
-        <?php if ($this->params->get("show_title")): ?>
+        <?php if ($this->params->get('show_title')): ?>
         <div class="page-header">
             <h1><?php echo $this->escape($this->item->title); ?></h1>
         </div>
-        <?php elseif ($this->params->get("show_page_heading")): ?>
+        <?php elseif ($this->params->get('show_page_heading')): ?>
         <div class="page-header">
-            <h1><?php echo $this->escape($this->params->get("page_heading")); ?></h1>
+            <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
         </div>
         <?php endif; ?>
         
@@ -147,26 +146,26 @@ if ($isFAQPage) {
     $dateValue = $this->item->publish_up ?: $this->item->created; ?>
         <div class="blog-card__meta">
           <?php if (!empty($dateValue)): ?>
-            <time class="blog-card__date" datetime="<?php echo HTMLHelper::_("date", $dateValue, "c"); ?>">
-              <?php echo HTMLHelper::_("date", $dateValue, Text::_("DATE_FORMAT_LC3")); ?>
+            <time class="blog-card__date" datetime="<?php echo HTMLHelper::_('date', $dateValue, 'c'); ?>">
+              <?php echo HTMLHelper::_('date', $dateValue, Text::_('DATE_FORMAT_LC3')); ?>
             </time>
           <?php endif; ?>
 
           <?php if (!empty($this->item->tags->itemTags)): ?>
             <?php
             $menu = Factory::getApplication()->getMenu();
-              $blogItem = $menu->getItems("alias", "blog", true);
+              $blogItem = $menu->getItems('alias', 'blog', true);
               $blogItemId = $blogItem ? $blogItem->id : 0;
               ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
                   <a href="<?php echo Route::_(
-                      "index.php?Itemid=" . $blogItemId . "&tag=" . urlencode($tag->alias),
+                      'index.php?Itemid=' . $blogItemId . '&tag=' . urlencode($tag->alias),
                   ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
-                      $tag->alias ?? "",
+                      $tag->alias ?? '',
                       ENT_QUOTES,
-                      "UTF-8",
+                      'UTF-8',
                   ); ?>">#<?php echo $this->escape($tag->title); ?></a>
                 </li>
               <?php endforeach; ?>
@@ -182,13 +181,13 @@ if ($isFAQPage) {
             ? $imagesObj->image_fulltext
             : ($imagesObj && !empty($imagesObj->image_intro)
                 ? $imagesObj->image_intro
-                : "");
+                : '');
     $mainAlt =
         $imagesObj && !empty($imagesObj->image_fulltext_alt)
             ? $imagesObj->image_fulltext_alt
             : ($imagesObj && !empty($imagesObj->image_intro_alt)
                 ? $imagesObj->image_intro_alt
-                : "");
+                : '');
     ?>
 
         <?php
@@ -218,8 +217,8 @@ if ($isFAQPage) {
                 <img src="<?php echo htmlspecialchars(
                     $mainImg,
                     ENT_QUOTES,
-                    "UTF-8",
-                ); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, "UTF-8"); ?>">
+                    'UTF-8',
+                ); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, 'UTF-8'); ?>">
               </figure>
             <?php endif; ?>
 
@@ -234,8 +233,8 @@ if ($isFAQPage) {
                       <?php foreach ($relatedData['heading_tags'] as $tagInfo): ?>
                         <?php
                         $safeTitle = htmlspecialchars((string) $tagInfo['title'], ENT_QUOTES, 'UTF-8');
-                        $safeTitle = preg_replace('/\s+/', '&nbsp;', $safeTitle);
-                        ?>
+                          $safeTitle = preg_replace('/\s+/', '&nbsp;', $safeTitle);
+                          ?>
                         <span class="article__related-tag">#<?php echo $safeTitle; ?></span>
                       <?php endforeach; ?>
                     </div>
@@ -320,7 +319,6 @@ if ($isFAQPage) {
                 </div>
               </div>
             <?php endif; ?>
-    ?>
           </div>
         </div>
     </div>
