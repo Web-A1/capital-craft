@@ -216,6 +216,7 @@ if ($currentTagId) {
 
     let currentController = null;
     let isLoading = false;
+    let prefetchQueue = new Set();
 
     function setStatus(message) {
       if (statusEl) {
@@ -428,6 +429,27 @@ if ($currentTagId) {
       return true;
     }
 
+    function prefetch(url) {
+      try {
+        const finalUrl = prepareUrl(url, { preserveLimitstart: false });
+        if (cache.has(finalUrl) || prefetchQueue.has(finalUrl)) {
+          return;
+        }
+        prefetchQueue.add(finalUrl);
+        fetch(finalUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+          .then(r => (r.ok ? r.text() : Promise.reject()))
+          .then(html => {
+            const doc = parser.parseFromString(html, 'text/html');
+            const entry = extractContent(doc, finalUrl);
+            cache.set(finalUrl, entry);
+          })
+          .catch(() => {})
+          .finally(() => prefetchQueue.delete(finalUrl));
+      } catch (e) {
+        // noop
+      }
+    }
+
     function loadPage(url, options) {
       if (currentController) {
         currentController.abort();
@@ -525,6 +547,13 @@ if ($currentTagId) {
       }
     }
 
+    function handleHover(event) {
+      const navLink = event.target.closest('.blog__tags-nav .blog-tags__link, .blog-tags__others .blog-tags__link, .blog-card__tag-link');
+      if (navLink && navLink.href) {
+        prefetch(navLink.href);
+      }
+    }
+
     function handlePopstate(event) {
       const targetUrl = (event.state && event.state.url) || window.location.href;
       loadPage(targetUrl, { skipPush: true, preserveLimitstart: true });
@@ -536,10 +565,24 @@ if ($currentTagId) {
       cache.set(initialUrl, entry);
       updateStatus(entry);
       updateHistory(initialUrl, 'replace');
+
+      // Prefetch next 3 tag links for instant switching
+      const tagLinks = Array.from(document.querySelectorAll('.blog__tags-nav .blog-tags__link'))
+        .filter(a => a && a.href);
+      const activeIndex = tagLinks.findIndex(a => a.classList.contains('is-active'));
+      const candidates = [];
+      if (activeIndex >= 0) {
+        for (let i = 1; i <= 3; i++) {
+          const next = tagLinks[activeIndex + i];
+          if (next) candidates.push(next);
+        }
+      }
+      candidates.forEach(a => prefetch(a.href));
     }
 
     primeCache();
     document.addEventListener('click', handleClick);
+    document.addEventListener('mouseover', handleHover, { passive: true });
     window.addEventListener('popstate', handlePopstate);
   })();
 </script>
