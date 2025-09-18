@@ -258,161 +258,343 @@ if ($normalizedTagAlias !== "") {
 
 <script>
   (function () {
-    const blogSection = document.querySelector('.blog');
-    if (!blogSection) {
+    if (window.__capitalcraftBlogFilterInit) {
+      return;
+    }
+
+    window.__capitalcraftBlogFilterInit = true;
+
+    const scope = document.querySelector('.blog') || document.querySelector('.blog-tags');
+    if (!scope) {
       return;
     }
 
     const parser = new DOMParser();
-    let isLoading = false;
-    let currentTag = (new URL(window.location.href)).searchParams.get('tag') || '';
-    currentTag = currentTag.toLowerCase();
+    const cache = new Map();
+    const origin = window.location.origin;
+    const statusEl = scope.querySelector('#blog-filter-status');
+    const metaSelectors = [
+      'meta[name="description"]',
+      'meta[property="og:url"]',
+      'meta[property="og:title"]',
+      'meta[property="og:description"]',
+      'meta[name="twitter:title"]',
+      'meta[name="twitter:description"]'
+    ];
 
-    function syncHead(doc) {
-      const titleEl = doc.querySelector('title');
-      if (titleEl) {
-        document.title = titleEl.textContent;
+    let currentController = null;
+    let isLoading = false;
+
+    function setStatus(message) {
+      if (statusEl) {
+        statusEl.textContent = message || '';
+      }
+    }
+
+    function prepareUrl(url, options) {
+      const prepared = new URL(url, origin);
+      if (!options || !options.preserveLimitstart) {
+        prepared.searchParams.delete('limitstart');
+      }
+      prepared.hash = '';
+
+      return prepared.toString();
+    }
+
+    function startLoading() {
+      isLoading = true;
+      scope.classList.add('is-loading');
+      scope.setAttribute('aria-busy', 'true');
+      setStatus('Загружаем материалы…');
+    }
+
+    function finishLoading() {
+      scope.classList.remove('is-loading');
+      scope.removeAttribute('aria-busy');
+      isLoading = false;
+    }
+
+    function pluralize(count) {
+      const abs = Math.abs(count) % 100;
+      const mod = abs % 10;
+
+      if (abs > 10 && abs < 20) {
+        return 'материалов';
       }
 
-      const selectors = [
-        'meta[name="description"]',
-        'meta[property="og:url"]',
-        'meta[property="og:title"]',
-        'meta[property="og:description"]',
-        'meta[name="twitter:title"]',
-        'meta[name="twitter:description"]',
-      ];
+      if (mod > 1 && mod < 5) {
+        return 'материала';
+      }
 
-      selectors.forEach((selector) => {
-        const fresh = doc.querySelector(selector);
-        const current = document.querySelector(selector);
-        if (fresh && current) {
-          current.setAttribute('content', fresh.getAttribute('content') || '');
+      if (mod === 1) {
+        return 'материал';
+      }
+
+      return 'материалов';
+    }
+
+    function syncHead(entry) {
+      if (entry.title) {
+        document.title = entry.title;
+      }
+
+      entry.metas.forEach(function (metaItem) {
+        const node = document.querySelector(metaItem.selector);
+        if (node) {
+          node.setAttribute('content', metaItem.content || '');
         }
       });
 
-      const freshCanonical = doc.querySelector('link[rel="canonical"]');
-      const canonical = document.querySelector('link[rel="canonical"]');
-      if (freshCanonical && canonical) {
-        canonical.href = freshCanonical.href;
-      }
-    }
-
-    function replaceContent(doc) {
-      const newNav = doc.querySelector('.blog__tags-nav');
-      const nav = blogSection.querySelector('.blog__tags-nav');
-      if (newNav && nav) {
-        nav.innerHTML = newNav.innerHTML;
-      }
-
-      const newList = doc.querySelector('.blog-list');
-      const list = blogSection.querySelector('.blog-list');
-      if (newList && list) {
-        list.innerHTML = newList.innerHTML;
-      }
-
-      const newPagination = doc.querySelector('.blog-pagination');
-      const pagination = blogSection.querySelector('.blog-pagination');
-      if (pagination) {
-        if (newPagination) {
-          pagination.innerHTML = newPagination.innerHTML;
-        } else {
-          pagination.remove();
-        }
-      } else if (newPagination) {
-        const container = blogSection.querySelector('.container');
-        if (container) {
-          container.appendChild(newPagination);
+      if (entry.canonical) {
+        const canon = document.querySelector('link[rel="canonical"]');
+        if (canon) {
+          canon.setAttribute('href', entry.canonical);
         }
       }
     }
 
-    function loadBlog(alias, options) {
-      const opts = options || {};
-      const normalized = (alias || '').toLowerCase();
-      if (!opts.force && normalized === currentTag) {
-        return;
+    function ensurePagination(entry) {
+      let pagination = scope.querySelector('.blog-pagination');
+
+      if (entry.hasPagination) {
+        if (!pagination) {
+          pagination = document.createElement('nav');
+          pagination.className = 'blog-pagination';
+          pagination.setAttribute('aria-label', 'Пагинация блога');
+          const container = scope.querySelector('.container') || scope;
+          const anchor = scope.querySelector('.blog-list');
+          if (container && anchor) {
+            container.appendChild(pagination);
+          } else {
+            scope.appendChild(pagination);
+          }
+        }
+
+        pagination.innerHTML = entry.paginationInner || '';
+      } else if (pagination) {
+        pagination.remove();
       }
-      if (isLoading) {
+    }
+
+    function updateStatus(entry) {
+      if (!statusEl) {
         return;
       }
 
-      const url = normalized ? `/blog?tag=${encodeURIComponent(normalized)}` : '/blog';
-      isLoading = true;
-      blogSection.classList.add('is-loading');
+      const activeLink = scope.querySelector('.blog__tags-nav .blog-tags__link.is-active');
+      const filterLabel = activeLink ? activeLink.textContent.trim() : (entry.statusLabel || 'Все статьи');
 
-      fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-        .then((response) => {
+      if (entry.cardCount > 0) {
+        setStatus('Показано ' + entry.cardCount + ' ' + pluralize(entry.cardCount) + ': ' + filterLabel);
+      } else {
+        setStatus('Нет материалов для фильтра ' + filterLabel);
+      }
+    }
+
+    function applyContent(entry) {
+      if (entry.listInner === null) {
+        window.location.href = entry.url;
+        return;
+      }
+
+      const nav = scope.querySelector('.blog__tags-nav');
+      if (nav && entry.navInner !== null) {
+        nav.innerHTML = entry.navInner;
+      }
+
+      const list = scope.querySelector('.blog-list');
+      if (list && entry.listInner !== null) {
+        list.innerHTML = entry.listInner;
+      }
+
+      ensurePagination(entry);
+      syncHead(entry);
+      updateStatus(entry);
+    }
+
+    function extractContent(doc, url) {
+      const entry = {
+        url: url,
+        title: '',
+        metas: [],
+        canonical: null,
+        navInner: null,
+        listInner: null,
+        paginationInner: null,
+        hasPagination: false,
+        statusLabel: '',
+        cardCount: 0
+      };
+
+      const titleNode = doc.querySelector('title');
+      entry.title = titleNode ? titleNode.textContent : '';
+
+      const navNode = doc.querySelector('.blog__tags-nav');
+      entry.navInner = navNode ? navNode.innerHTML : null;
+
+      const listNode = doc.querySelector('.blog-list');
+      entry.listInner = listNode ? listNode.innerHTML : null;
+      entry.cardCount = listNode ? listNode.querySelectorAll('.blog-card').length : 0;
+
+      const paginationNode = doc.querySelector('.blog-pagination');
+      entry.hasPagination = Boolean(paginationNode);
+      entry.paginationInner = paginationNode ? paginationNode.innerHTML : null;
+
+      const statusSource =
+        doc.querySelector('.blog__tags-nav .blog-tags__link.is-active') ||
+        doc.querySelector('#tag-title') ||
+        doc.querySelector('#blog-title');
+      entry.statusLabel = statusSource ? statusSource.textContent.trim() : '';
+
+      entry.metas = metaSelectors
+        .map(function (selector) {
+          const node = doc.querySelector(selector);
+          return node ? { selector: selector, content: node.getAttribute('content') || '' } : null;
+        })
+        .filter(function (item) {
+          return item !== null;
+        });
+
+      const canonicalNode = doc.querySelector('link[rel="canonical"]');
+      entry.canonical = canonicalNode ? canonicalNode.getAttribute('href') : null;
+
+      return entry;
+    }
+
+    function updateHistory(url, mode) {
+      if (!history || !history.pushState) {
+        return;
+      }
+
+      const state = { url: url };
+
+      if (mode === 'replace') {
+        history.replaceState(state, '', url);
+      } else if (mode !== 'skip') {
+        history.pushState(state, '', url);
+      }
+    }
+
+    function loadFromCache(url, options) {
+      const entry = cache.get(url);
+      if (!entry) {
+        return false;
+      }
+
+      applyContent(entry);
+
+      if (!options || !options.skipPush) {
+        updateHistory(url, options && options.replace ? 'replace' : 'push');
+      }
+
+      return true;
+    }
+
+    function loadPage(url, options) {
+      if (currentController) {
+        currentController.abort();
+        currentController = null;
+        if (isLoading) {
+          finishLoading();
+        }
+      }
+
+      const finalUrl = prepareUrl(url, { preserveLimitstart: !!(options && options.preserveLimitstart) });
+
+      if (!options || !options.force) {
+        const served = loadFromCache(finalUrl, options);
+        if (served) {
+          return;
+        }
+      }
+
+      startLoading();
+
+      const controller = new AbortController();
+      currentController = controller;
+
+      fetch(finalUrl, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        signal: controller.signal
+      })
+        .then(function (response) {
           if (!response.ok) {
             throw new Error('Network error');
           }
+
           return response.text();
         })
-        .then((html) => {
+        .then(function (html) {
           const doc = parser.parseFromString(html, 'text/html');
-          replaceContent(doc);
-          currentTag = normalized;
-          if (!opts.skipPush && history && history.pushState) {
-            history.pushState({ tag: normalized }, '', url);
+          const entry = extractContent(doc, finalUrl);
+          cache.set(finalUrl, entry);
+          applyContent(entry);
+
+          if (!options || !options.skipPush) {
+            updateHistory(finalUrl, options && options.replace ? 'replace' : 'push');
           }
-          syncHead(doc);
         })
-        .catch(() => {
-          window.location.href = url;
+        .catch(function (error) {
+          if (error.name === 'AbortError') {
+            return;
+          }
+
+          window.location.href = finalUrl;
         })
-        .finally(() => {
-          isLoading = false;
-          blogSection.classList.remove('is-loading');
+        .finally(function () {
+          if (currentController === controller) {
+            currentController = null;
+            finishLoading();
+          }
         });
     }
 
-    document.addEventListener('click', function (event) {
-      const pill = event.target.closest('.blog-tags__link');
-      if (pill) {
+    function handleClick(event) {
+      const navLink = event.target.closest('.blog__tags-nav .blog-tags__link');
+      if (navLink && navLink.href) {
         event.preventDefault();
-        const alias = (pill.getAttribute('data-alias') || '').toLowerCase();
-        loadBlog(alias);
+        loadPage(navLink.href, { preserveLimitstart: false });
         return;
       }
 
-      const inCardTag = event.target.closest('.blog-card__tag-link');
-      if (inCardTag) {
+      const tagLink = event.target.closest('.blog-card__tag-link');
+      if (tagLink && tagLink.href) {
         event.preventDefault();
-        const alias = (inCardTag.getAttribute('data-alias') || '').toLowerCase();
-        loadBlog(alias);
+        loadPage(tagLink.href, { preserveLimitstart: false });
+        return;
+      }
+
+      const paginationLink = event.target.closest('.blog-pagination a');
+      if (paginationLink && paginationLink.href) {
+        event.preventDefault();
+        loadPage(paginationLink.href, { preserveLimitstart: true });
         return;
       }
 
       const card = event.target.closest('.blog-card');
-      if (!card) {
-        return;
-      }
-      if (event.target.closest('.blog-card__tag-link')) {
-        return;
-      }
-      const href = card.dataset.href;
-      if (href) {
-        window.location.href = href;
-      }
-    });
-
-    document.addEventListener('keydown', function (event) {
-      if ((event.key === 'Enter' || event.key === ' ') && event.target.classList && event.target.classList.contains('blog-card')) {
-        const href = event.target.dataset.href;
+      if (card && !event.target.closest('a')) {
+        const href = card.getAttribute('data-href');
         if (href) {
-          event.preventDefault();
           window.location.href = href;
         }
       }
-    });
-
-    if (history && history.replaceState) {
-      history.replaceState({ tag: currentTag }, '', window.location.href);
     }
 
-    window.addEventListener('popstate', function () {
-      const alias = (new URL(window.location.href)).searchParams.get('tag') || '';
-      loadBlog(alias, { skipPush: true, force: true });
-    });
+    function handlePopstate(event) {
+      const targetUrl = (event.state && event.state.url) || window.location.href;
+      loadPage(targetUrl, { skipPush: true, preserveLimitstart: true });
+    }
+
+    function primeCache() {
+      const initialUrl = prepareUrl(window.location.href, { preserveLimitstart: true });
+      const entry = extractContent(document, initialUrl);
+      cache.set(initialUrl, entry);
+      updateStatus(entry);
+      updateHistory(initialUrl, 'replace');
+    }
+
+    primeCache();
+    document.addEventListener('click', handleClick);
+    window.addEventListener('popstate', handlePopstate);
   })();
 </script>
