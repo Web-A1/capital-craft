@@ -64,22 +64,20 @@ if ($blogCategoryId > 0) {
 $currentTagId = 0;
 $currentTagAlias = "";
 
-if (!empty($this->item) && \is_array($this->item)) {
-    $firstTag = $this->item[0] ?? null;
-    if ($firstTag) {
-        $currentTagId = (int) ($firstTag->id ?? 0);
-        $currentTagAlias = strtolower($firstTag->alias ?? "");
-    }
+// Read current tag from request robustly: 'id' may be a string or an array
+$rawIdParam = $app->input->get('id', null);
+$rawId = '';
+if (\is_array($rawIdParam)) {
+    $rawId = (string) ($rawIdParam[0] ?? '');
+} else {
+    $rawId = (string) ($rawIdParam ?? '');
 }
 
-if (!$currentTagId) {
-    $rawId = $app->input->getString("id", "");
-    if ($rawId !== "") {
-        $parts = explode(":", $rawId, 2);
-        $currentTagId = (int) ($parts[0] ?? 0);
-        if (!empty($parts[1])) {
-            $currentTagAlias = strtolower($parts[1]);
-        }
+if ($rawId !== '') {
+    $parts = explode(':', $rawId, 2);
+    $currentTagId = (int) ($parts[0] ?? 0);
+    if (!empty($parts[1])) {
+        $currentTagAlias = strtolower($parts[1]);
     }
 }
 
