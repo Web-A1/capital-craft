@@ -50,10 +50,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
       <?php echo $excerpt; ?>
       <?php if ($params->get("show_readmore") && $this->item->readmore): ?>
         <p class="blog-card__more"><a href="<?php echo $articleLink; ?>"><?php echo HTMLHelper::_(
-    "string.truncate",
-    $params->get("alternative_readmore", Text::_("COM_CONTENT_READ_MORE")) ?: Text::_("COM_CONTENT_READ_MORE"),
-    100,
-); ?></a></p>
+            "string.truncate",
+            $params->get("alternative_readmore", Text::_("COM_CONTENT_READ_MORE")) ?: Text::_("COM_CONTENT_READ_MORE"),
+            100,
+        ); ?></a></p>
       <?php endif; ?>
     </div>
 
@@ -66,17 +66,17 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
         <ul class="blog-card__tags">
           <?php foreach ($this->item->tags->itemTags as $tag): ?>
             <?php
-            if (empty($tag->tag_id)) {
-                continue;
-            }
-            // Link to blog with tag parameter for unified behavior
-            $menu = JFactory::getApplication()->getMenu();
-            $blogItem = $menu->getItems('alias', 'blog', true);
-            $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-            $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
-            $tagRoute = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
-            $tagAliasAttr = strtolower($tag->alias ?? '');
-            ?>
+                    if (empty($tag->tag_id)) {
+                        continue;
+                    }
+              // Link to blog with tag parameter for unified behavior
+              $menu = JFactory::getApplication()->getMenu();
+              $blogItem = $menu->getItems('alias', 'blog', true);
+              $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+              $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
+              $tagRoute = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
+              $tagAliasAttr = strtolower($tag->alias ?? '');
+              ?>
             <li class="blog-card__tag">
               <a
                 href="<?php echo $tagRoute; ?>"
@@ -94,10 +94,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
     <figure class="blog-card__image">
       <a href="<?php echo $articleLink; ?>">
         <img src="<?php echo htmlspecialchars($introImg, ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars(
-    $introImgAlt,
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
+            $introImgAlt,
+            ENT_QUOTES,
+            "UTF-8",
+        ); ?>">
       </a>
     </figure>
   <?php endif; ?>

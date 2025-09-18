@@ -160,10 +160,10 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
             <?php
         $tagAliasLower = strtolower($tg->alias ?? "");
               $isActiveTag = $normalizedTagAlias === $tagAliasLower;
-            // Build link to blog with tag parameter
-            $tagRouteBase = $blogRoute;
-            $sep = (strpos($tagRouteBase, '?') === false) ? '?' : '&';
-            $tagRoute = $tagRouteBase . $sep . 'tag=' . rawurlencode($tg->alias ?? '');
+              // Build link to blog with tag parameter
+              $tagRouteBase = $blogRoute;
+              $sep = (strpos($tagRouteBase, '?') === false) ? '?' : '&';
+              $tagRoute = $tagRouteBase . $sep . 'tag=' . rawurlencode($tg->alias ?? '');
               ?>
             <li class="blog-tags__tag">
               <a

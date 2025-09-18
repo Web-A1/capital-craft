@@ -210,7 +210,7 @@ if ($currentTagId) {
               $tagRouteBase = $blogRoute ?: Route::_('index.php');
               $sep = (strpos($tagRouteBase, '?') === false) ? '?' : '&';
               $tagRoute = $tagRouteBase . $sep . 'tag=' . rawurlencode($tg->alias ?? '');
-            ?>
+              ?>
             <li class="blog-tags__tag">
               <a class="blog-tags__link" href="<?php echo $tagRoute; ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, 'UTF-8'); ?></a>
             </li>

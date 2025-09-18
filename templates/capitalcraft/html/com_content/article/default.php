@@ -163,10 +163,10 @@ if ($isFAQPage) {
                 <li class="blog-card__tag">
                   <?php
                     $menu = Factory::getApplication()->getMenu();
-                    $blogItem = $menu->getItems('alias', 'blog', true);
-                    $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-                    $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
-                    $tagHref = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
+                  $blogItem = $menu->getItems('alias', 'blog', true);
+                  $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+                  $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
+                  $tagHref = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
                   ?>
                   <a href="<?php echo $tagHref; ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
                       $tag->alias ?? '',
