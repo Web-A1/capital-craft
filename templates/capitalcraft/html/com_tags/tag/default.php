@@ -176,13 +176,9 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
         <div class="blog__subtitle">Другие теги</div>
         <ul class="blog-tags__cloud">
           <?php foreach ($otherTags as $tg): ?>
-            <?php $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tg->id . ":" . ($tg->alias ?? ""))); ?>
+            <?php $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tg->id . ':' . ($tg->alias ?? ''))); ?>
             <li class="blog-tags__tag">
-              <a class="blog-tags__link" href="<?php echo $tagRoute; ?>">#<?php echo htmlspecialchars(
-    $tg->title,
-    ENT_QUOTES,
-    "UTF-8",
-); ?></a>
+              <a class="blog-tags__link" href="<?php echo $tagRoute; ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, 'UTF-8'); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
@@ -200,11 +196,5 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
     if (!card) return;
     const href = card.dataset.href;
     if (href) window.location.href = href;
-  });
-  document.addEventListener('keydown', function(e) {
-    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('blog-card')) {
-      const href = e.target.dataset.href;
-      if (href) { e.preventDefault(); window.location.href = href; }
-    }
   });
 </script>
