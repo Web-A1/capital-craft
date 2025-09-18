@@ -345,16 +345,15 @@ class CapitalcraftFaqHelper
 
     protected static function htmlToPlainText(string $html): string
     {
-        $withBreaks = preg_replace('/<\/(p|div|li|blockquote|h[1-6])>/i', "</$1>\n", $html);
-        $withBreaks = preg_replace('/<li[^>]*>/i', "- ", $withBreaks);
-        $withBreaks = preg_replace('/<br\s*\/?/i', "\n", $withBreaks);
+        $withBreaks = preg_replace('/<\/(p|div|li|blockquote|h[1-6])>/i', '</$1>' . PHP_EOL, $html);
+        $withBreaks = preg_replace('/<li[^>]*>/i', '- ', $withBreaks);
+        $withBreaks = preg_replace('/<br\s*\/?/i', PHP_EOL, $withBreaks);
 
         $text = strip_tags($withBreaks);
         $text = html_entity_decode($text, ENT_QUOTES | ENT_HTML5, 'UTF-8');
         $text = preg_replace('/\r\n|\r/', "\n", $text);
-        $text = preg_replace('/
-{3,}/', "\n\n", $text);
-        $text = preg_replace('/[	 ]+/', ' ', $text);
+        $text = preg_replace('/\n{3,}/', "\n\n", $text);
+        $text = preg_replace('/[ \t]+/', ' ', $text);
         $text = preg_replace('/ *\n */', "\n", $text);
 
         return trim($text);
