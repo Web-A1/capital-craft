@@ -64,20 +64,34 @@ if ($blogCategoryId > 0) {
 $currentTagId = 0;
 $currentTagAlias = "";
 
-// Read current tag from request robustly: 'id' may be a string or an array
-$rawIdParam = $app->input->get('id', null);
-$rawId = '';
-if (\is_array($rawIdParam)) {
-    $rawId = (string) ($rawIdParam[0] ?? '');
-} else {
-    $rawId = (string) ($rawIdParam ?? '');
+// Read from model state first (handles direct loads reliably)
+$stateIdRaw = (string) ($this->state->get('tag.id', ''));
+if ($stateIdRaw !== '') {
+    $stateIdParts = explode(',', $stateIdRaw, 2);
+    $stateFirstId = (int) ($stateIdParts[0] ?? 0);
+    if ($stateFirstId > 0) {
+        $currentTagId = $stateFirstId;
+    }
 }
 
-if ($rawId !== '') {
-    $parts = explode(':', $rawId, 2);
-    $currentTagId = (int) ($parts[0] ?? 0);
-    if (!empty($parts[1])) {
-        $currentTagAlias = strtolower($parts[1]);
+// Fallback: read current tag from request; 'id' may be string or array
+$rawIdParam = $app->input->get('id', null);
+$rawId = '';
+if ($rawIdParam !== null) {
+    if (\is_array($rawIdParam)) {
+        $rawId = (string) ($rawIdParam[0] ?? '');
+    } else {
+        $rawId = (string) $rawIdParam;
+    }
+
+    if ($rawId !== '') {
+        $parts = explode(':', $rawId, 2);
+        if ($currentTagId <= 0) {
+            $currentTagId = (int) ($parts[0] ?? 0);
+        }
+        if (!empty($parts[1])) {
+            $currentTagAlias = strtolower($parts[1]);
+        }
     }
 }
 
