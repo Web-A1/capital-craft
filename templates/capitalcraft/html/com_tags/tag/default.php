@@ -17,10 +17,10 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
   <div class="container">
 
     <header class="blog__header">
-      <div class="blog__subtitle" id="tag-subtitle">Статьи по тегу</div>
-      <<?php echo $htag; ?> class="blog__title" id="tag-title">
+      <h1 class="blog__subtitle" id="tag-subtitle">Статьи по тегу</h1>
+      <p class="blog__title" id="tag-title">
         #<?php echo HTMLHelper::_("content.prepare", $this->tags_title, "", "com_tags.tag"); ?>
-      </<?php echo $htag; ?>>
+      </p>
     </header>
 
     <?php
