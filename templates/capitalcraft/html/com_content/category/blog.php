@@ -202,7 +202,7 @@ if ($normalizedTagAlias !== "") {
               implode(" ", $aliases),
               ENT_QUOTES,
               "UTF-8",
-          ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          ); ?>" data-href="<?php echo $cardLink; ?>">
             <?php
             $this->item = &$item;
             echo $this->loadTemplate("item");
@@ -230,7 +230,7 @@ if ($normalizedTagAlias !== "") {
               implode(" ", $aliases),
               ENT_QUOTES,
               "UTF-8",
-          ); ?>" data-href="<?php echo $cardLink; ?>" role="link" tabindex="0">
+          ); ?>" data-href="<?php echo $cardLink; ?>">
             <?php
             $this->item = &$item;
             echo $this->loadTemplate("item");
