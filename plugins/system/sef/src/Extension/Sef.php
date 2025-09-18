@@ -159,7 +159,7 @@ final class Sef extends CMSPlugin implements SubscriberInterface
             // Case 2: menu на теги удалён — ловим сырой путь /blog/tags/<alias>
             $origPath = Uri::getInstance()->getPath();
             if ($app->isClient('site') && $input->getMethod() === 'GET') {
-                if (preg_match('#/blog/\s*tags/([^/]+)/?$#i', $origPath, $m)) {
+                if (preg_match('#^/blog/tags/([^/]+)/?$#i', $origPath, $m)) {
                     $alias = strtolower($m[1] ?? '');
                     if ($alias !== '') {
                         $menu     = $app->getMenu();
