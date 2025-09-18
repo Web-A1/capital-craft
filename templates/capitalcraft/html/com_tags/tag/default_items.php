@@ -19,22 +19,22 @@ if (empty($this->items)): ?>
     <?php foreach ($this->items as $i => $item): ?>
       <?php
       $images = json_decode($item->core_images ?: "{}");
-        $intro = !empty($images->image_intro) ? $images->image_intro : null;
-        $alt = !empty($images->image_intro_alt) ? $images->image_intro_alt : "";
-        $link = Route::_(
-            RouteHelper::getItemRoute(
-                $item->content_item_id,
-                $item->core_alias,
-                $item->core_catid,
-                $item->core_language,
-                $item->type_alias,
-                $item->router,
-            ),
-        );
-        $date = $item->core_created_time ?? ($item->core_publish_up ?? "");
-        $excerpt = HTMLHelper::_("string.truncate", strip_tags($item->core_body ?? ""), 350);
-        ?>
-      <article class="blog-card" data-href="<?php echo $link; ?>" role="link" tabindex="0">
+      $intro = !empty($images->image_intro) ? $images->image_intro : null;
+      $alt = !empty($images->image_intro_alt) ? $images->image_intro_alt : "";
+      $link = Route::_(
+          RouteHelper::getItemRoute(
+              $item->content_item_id,
+              $item->core_alias,
+              $item->core_catid,
+              $item->core_language,
+              $item->type_alias,
+              $item->router,
+          ),
+      );
+      $date = $item->core_created_time ?? ($item->core_publish_up ?? "");
+      $excerpt = HTMLHelper::_("string.truncate", strip_tags($item->core_body ?? ""), 350);
+      ?>
+      <article class="blog-card" data-href="<?php echo $link; ?>">
         <div class="blog-card__grid">
           <div class="blog-card__main">
             <header class="blog-card__header">
