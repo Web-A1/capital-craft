@@ -25,102 +25,102 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
 
     <?php
     $app = Factory::getApplication();
-    $menu = $app->getMenu();
-    $blogMenu = $menu->getItems("alias", "blog", true);
-    $blogCategoryId = 0;
+$menu = $app->getMenu();
+$blogMenu = $menu->getItems("alias", "blog", true);
+$blogCategoryId = 0;
 
-    if ($blogMenu && isset($blogMenu->query["id"])) {
-        $blogCategoryId = (int) $blogMenu->query["id"];
+if ($blogMenu && isset($blogMenu->query["id"])) {
+    $blogCategoryId = (int) $blogMenu->query["id"];
+}
+
+$includeSub = false;
+$maxLevels = 0;
+
+if ($blogMenu && method_exists($blogMenu, "getParams")) {
+    $menuParams = $blogMenu->getParams();
+    if ($menuParams) {
+        $includeSub = (bool) $menuParams->get("show_subcategory_content", "0");
+        $maxLevels = $includeSub ? (int) $menuParams->get("show_subcategory_content", "1") : 0;
     }
+}
 
-    $includeSub = false;
-    $maxLevels = 0;
+if ($blogCategoryId <= 0 && $blogMenu) {
+    $blogCategoryId = isset($blogMenu->query["catid"]) ? (int) $blogMenu->query["catid"] : 0;
+}
 
-    if ($blogMenu && method_exists($blogMenu, "getParams")) {
-        $menuParams = $blogMenu->getParams();
-        if ($menuParams) {
-            $includeSub = (bool) $menuParams->get("show_subcategory_content", "0");
-            $maxLevels = $includeSub ? (int) $menuParams->get("show_subcategory_content", "1") : 0;
+$availableTags = [];
+
+if ($blogCategoryId > 0) {
+    $availableTags = CapitalcraftTagFilterHelper::getBlogTags($blogCategoryId, [
+        "includeSubcategories" => $includeSub,
+        "maxSubLevels" => $maxLevels,
+    ]);
+} else {
+    $availableTags = CapitalcraftTagFilterHelper::getAllTags();
+}
+
+$currentTagId = 0;
+$currentTagAlias = "";
+
+if (!empty($this->item) && \is_array($this->item)) {
+    $firstTag = $this->item[0] ?? null;
+    if ($firstTag) {
+        $currentTagId = (int) ($firstTag->id ?? 0);
+        $currentTagAlias = strtolower($firstTag->alias ?? "");
+    }
+}
+
+if (!$currentTagId) {
+    $rawId = $app->input->getString("id", "");
+    if ($rawId !== "") {
+        $parts = explode(":", $rawId, 2);
+        $currentTagId = (int) ($parts[0] ?? 0);
+        if (!empty($parts[1])) {
+            $currentTagAlias = strtolower($parts[1]);
         }
     }
+}
 
-    if ($blogCategoryId <= 0 && $blogMenu) {
-        $blogCategoryId = isset($blogMenu->query["catid"]) ? (int) $blogMenu->query["catid"] : 0;
+if ($currentTagId && $currentTagAlias === "") {
+    $db = Factory::getDbo();
+    $user = Factory::getUser();
+    $levels = array_map("intval", $user->getAuthorisedViewLevels());
+    if (empty($levels)) {
+        $levels = [0];
     }
-
-    $availableTags = [];
-
-    if ($blogCategoryId > 0) {
-        $availableTags = CapitalcraftTagFilterHelper::getBlogTags($blogCategoryId, [
-            "includeSubcategories" => $includeSub,
-            "maxSubLevels" => $maxLevels,
-        ]);
-    } else {
-        $availableTags = CapitalcraftTagFilterHelper::getAllTags();
+    $languageTag = $app->getLanguage()->getTag() ?: "*";
+    $languageCondition =
+        $languageTag === "*"
+            ? "1=1"
+            : $db->quoteName("t.language") . " IN (" . $db->quote("*") . "," . $db->quote($languageTag) . ")";
+    $tagQuery = $db
+        ->getQuery(true)
+        ->select($db->quoteName("alias"))
+        ->from($db->quoteName("#__tags", "t"))
+        ->where($db->quoteName("t.id") . " = " . (int) $currentTagId)
+        ->where($db->quoteName("t.published") . " = 1")
+        ->where("t.access IN (" . implode(",", $levels) . ")")
+        ->where($languageCondition)
+        ->setLimit(1);
+    $db->setQuery($tagQuery);
+    $aliasFromDb = (string) $db->loadResult();
+    if ($aliasFromDb !== "") {
+        $currentTagAlias = strtolower($aliasFromDb);
     }
-
-    $currentTagId = 0;
-    $currentTagAlias = "";
-
-    if (!empty($this->item) && \is_array($this->item)) {
-        $firstTag = $this->item[0] ?? null;
-        if ($firstTag) {
-            $currentTagId = (int) ($firstTag->id ?? 0);
-            $currentTagAlias = strtolower($firstTag->alias ?? "");
-        }
-    }
-
-    if (!$currentTagId) {
-        $rawId = $app->input->getString("id", "");
-        if ($rawId !== "") {
-            $parts = explode(":", $rawId, 2);
-            $currentTagId = (int) ($parts[0] ?? 0);
-            if (!empty($parts[1])) {
-                $currentTagAlias = strtolower($parts[1]);
-            }
-        }
-    }
-
-    if ($currentTagId && $currentTagAlias === "") {
-        $db = Factory::getDbo();
-        $user = Factory::getUser();
-        $levels = array_map("intval", $user->getAuthorisedViewLevels());
-        if (empty($levels)) {
-            $levels = [0];
-        }
-        $languageTag = $app->getLanguage()->getTag() ?: "*";
-        $languageCondition =
-            $languageTag === "*"
-                ? "1=1"
-                : $db->quoteName("t.language") . " IN (" . $db->quote("*") . "," . $db->quote($languageTag) . ")";
-        $tagQuery = $db
-            ->getQuery(true)
-            ->select($db->quoteName("alias"))
-            ->from($db->quoteName("#__tags", "t"))
-            ->where($db->quoteName("t.id") . " = " . (int) $currentTagId)
-            ->where($db->quoteName("t.published") . " = 1")
-            ->where("t.access IN (" . implode(",", $levels) . ")")
-            ->where($languageCondition)
-            ->setLimit(1);
-        $db->setQuery($tagQuery);
-        $aliasFromDb = (string) $db->loadResult();
-        if ($aliasFromDb !== "") {
-            $currentTagAlias = strtolower($aliasFromDb);
-        }
-    }
-    ?>
+}
+?>
 
     <?php if (!empty($availableTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
         <ul class="blog-tags__cloud blog-tags__cloud--nowrap">
           <?php
-          $blogRoute = null;
-          if ($blogCategoryId > 0) {
-              $blogRoute = Route::_(ContentRouteHelper::getCategoryRoute($blogCategoryId));
-          } elseif ($blogMenu) {
-              $blogRoute = Route::_("index.php?Itemid=" . (int) $blogMenu->id);
-          }
-          if ($blogRoute): ?>
+      $blogRoute = null;
+        if ($blogCategoryId > 0) {
+            $blogRoute = Route::_(ContentRouteHelper::getCategoryRoute($blogCategoryId));
+        } elseif ($blogMenu) {
+            $blogRoute = Route::_("index.php?Itemid=" . (int) $blogMenu->id);
+        }
+if ($blogRoute): ?>
             <li class="blog-tags__tag">
               <a
                 class="blog-tags__link<?php echo $currentTagAlias === "" ? " is-active" : ""; ?>"
@@ -130,13 +130,13 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
               >Все статьи</a>
             </li>
           <?php endif;
-          ?>
+?>
           <?php foreach ($availableTags as $tagOption): ?>
             <?php
-            $tagAliasLower = strtolower($tagOption->alias ?? "");
-            $isActive = $currentTagAlias === $tagAliasLower;
-            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tagOption->id . ":" . ($tagOption->alias ?? "")));
-            ?>
+  $tagAliasLower = strtolower($tagOption->alias ?? "");
+              $isActive = $currentTagAlias === $tagAliasLower;
+              $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tagOption->id . ":" . ($tagOption->alias ?? "")));
+              ?>
             <li class="blog-tags__tag">
               <a
                 class="blog-tags__link<?php echo $isActive ? " is-active" : ""; ?>"
@@ -164,12 +164,12 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
 
     <?php
     $otherTags = [];
-    if ($currentTagId) {
-        $otherTags = CapitalcraftTagFilterHelper::getAllTags(["excludeTagId" => $currentTagId]);
-    } else {
-        $otherTags = CapitalcraftTagFilterHelper::getAllTags();
-    }
-    ?>
+if ($currentTagId) {
+    $otherTags = CapitalcraftTagFilterHelper::getAllTags(["excludeTagId" => $currentTagId]);
+} else {
+    $otherTags = CapitalcraftTagFilterHelper::getAllTags();
+}
+?>
 
     <?php if (!empty($otherTags)): ?>
       <section class="blog-tags__others">
@@ -492,6 +492,13 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
       if (navLink && navLink.href) {
         event.preventDefault();
         loadPage(navLink.href, { preserveLimitstart: false });
+        return;
+      }
+
+      const otherTagLink = event.target.closest('.blog-tags__others .blog-tags__link');
+      if (otherTagLink && otherTagLink.href) {
+        event.preventDefault();
+        loadPage(otherTagLink.href, { preserveLimitstart: false });
         return;
       }
 

@@ -137,12 +137,12 @@ if ($normalizedTagAlias !== "") {
     <?php
     // Build navigation of all available tags
     $includeSub = (bool) $this->params->get("show_subcategory_content", "0");
-    $maxLevels = $includeSub ? (int) $this->params->get("show_subcategory_content", "1") : 0;
-    $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
-        "includeSubcategories" => $includeSub,
-        "maxSubLevels" => $maxLevels,
-    ]);
-    ?>
+$maxLevels = $includeSub ? (int) $this->params->get("show_subcategory_content", "1") : 0;
+$allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
+    "includeSubcategories" => $includeSub,
+    "maxSubLevels" => $maxLevels,
+]);
+?>
 
     <?php if (!empty($allTags)): ?>
       <nav class="blog__tags-nav" aria-label="Навигация по тегам">
@@ -158,10 +158,10 @@ if ($normalizedTagAlias !== "") {
           </li>
           <?php foreach ($allTags as $tg): ?>
             <?php
-            $tagAliasLower = strtolower($tg->alias ?? "");
-            $isActiveTag = $normalizedTagAlias === $tagAliasLower;
-            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tg->id . ":" . ($tg->alias ?? "")));
-            ?>
+        $tagAliasLower = strtolower($tg->alias ?? "");
+              $isActiveTag = $normalizedTagAlias === $tagAliasLower;
+              $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tg->id . ":" . ($tg->alias ?? "")));
+              ?>
             <li class="blog-tags__tag">
               <a
                 class="blog-tags__link<?php echo $isActiveTag ? " is-active" : ""; ?>"
@@ -190,14 +190,14 @@ if ($normalizedTagAlias !== "") {
           ); ?>
           <?php
           $aliases = [];
-          if (!empty($item->tags->itemTags)) {
-              foreach ($item->tags->itemTags as $tg) {
-                  if (!empty($tg->alias)) {
-                      $aliases[] = strtolower($tg->alias);
-                  }
-              }
-          }
-          ?>
+            if (!empty($item->tags->itemTags)) {
+                foreach ($item->tags->itemTags as $tg) {
+                    if (!empty($tg->alias)) {
+                        $aliases[] = strtolower($tg->alias);
+                    }
+                }
+            }
+            ?>
           <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(
               implode(" ", $aliases),
               ENT_QUOTES,
@@ -218,14 +218,14 @@ if ($normalizedTagAlias !== "") {
           ); ?>
           <?php
           $aliases = [];
-          if (!empty($item->tags->itemTags)) {
-              foreach ($item->tags->itemTags as $tg) {
-                  if (!empty($tg->alias)) {
-                      $aliases[] = strtolower($tg->alias);
-                  }
-              }
-          }
-          ?>
+            if (!empty($item->tags->itemTags)) {
+                foreach ($item->tags->itemTags as $tg) {
+                    if (!empty($tg->alias)) {
+                        $aliases[] = strtolower($tg->alias);
+                    }
+                }
+            }
+            ?>
           <article class="blog-card" data-tags="<?php echo htmlspecialchars(
               implode(" ", $aliases),
               ENT_QUOTES,
