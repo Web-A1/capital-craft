@@ -162,7 +162,10 @@ if ($blogRoute): ?>
             <?php
   $tagAliasLower = strtolower($tagOption->alias ?? "");
               $isActive = $currentTagAlias === $tagAliasLower;
-              $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tagOption->id . ":" . ($tagOption->alias ?? "")));
+              // Redirect intent: link to blog with tag param to unify behavior
+              $tagRouteBase = $blogRoute ?: Route::_('index.php');
+              $sep = (strpos($tagRouteBase, '?') === false) ? '?' : '&';
+              $tagRoute = $tagRouteBase . $sep . 'tag=' . rawurlencode($tagOption->alias ?? '');
               ?>
             <li class="blog-tags__tag">
               <a
@@ -203,7 +206,11 @@ if ($currentTagId) {
         <div class="blog__subtitle">Другие теги</div>
         <ul class="blog-tags__cloud">
           <?php foreach ($otherTags as $tg): ?>
-            <?php $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) $tg->id . ':' . ($tg->alias ?? ''))); ?>
+            <?php
+              $tagRouteBase = $blogRoute ?: Route::_('index.php');
+              $sep = (strpos($tagRouteBase, '?') === false) ? '?' : '&';
+              $tagRoute = $tagRouteBase . $sep . 'tag=' . rawurlencode($tg->alias ?? '');
+            ?>
             <li class="blog-tags__tag">
               <a class="blog-tags__link" href="<?php echo $tagRoute; ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, 'UTF-8'); ?></a>
             </li>
