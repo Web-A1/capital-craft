@@ -134,6 +134,19 @@ if ($currentTagId && $currentTagAlias === "") {
         } elseif ($blogMenu) {
             $blogRoute = Route::_("index.php?Itemid=" . (int) $blogMenu->id);
         }
+        // Force breadcrumbs to point to Blog only (match /blog view)
+        if ($blogRoute) {
+            $pathway = $app->getPathway();
+            try {
+                if (method_exists($pathway, 'setPathway')) {
+                    $pathway->setPathway([(object) ['name' => 'Блог', 'link' => $blogRoute]]);
+                } else {
+                    $pathway->addItem('Блог', $blogRoute);
+                }
+            } catch (\Throwable $e) {
+                // no-op
+            }
+        }
 if ($blogRoute): ?>
             <li class="blog-tags__tag">
               <a
