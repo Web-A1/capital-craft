@@ -5,6 +5,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
 
 require_once JPATH_SITE . '/templates/capitalcraft/helpers/RelatedHelper.php';
 
@@ -161,7 +162,7 @@ if ($isFAQPage) {
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
                   <a href="<?php echo Route::_(
-                      'index.php?Itemid=' . $blogItemId . '&tag=' . urlencode($tag->alias),
+                      TagsRouteHelper::getTagRoute((int) ($tag->id ?? $tag->tag_id) . ':' . ($tag->alias ?? ''))
                   ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
                       $tag->alias ?? '',
                       ENT_QUOTES,
