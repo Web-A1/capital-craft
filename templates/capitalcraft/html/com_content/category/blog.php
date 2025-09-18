@@ -204,7 +204,7 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
               "UTF-8",
           ); ?>" data-href="<?php echo $cardLink; ?>">
             <?php
-            $this->item = &$item;
+          $this->item = &$item;
             echo $this->loadTemplate("item");
             ?>
           </article>
@@ -232,7 +232,7 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
               "UTF-8",
           ); ?>" data-href="<?php echo $cardLink; ?>">
             <?php
-            $this->item = &$item;
+          $this->item = &$item;
             echo $this->loadTemplate("item");
             ?>
           </article>
