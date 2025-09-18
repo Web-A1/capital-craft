@@ -563,6 +563,13 @@ if ($normalizedTagAlias !== "") {
         return;
       }
 
+      const otherTagLink = event.target.closest('.blog-tags__others .blog-tags__link');
+      if (otherTagLink && otherTagLink.href) {
+        event.preventDefault();
+        loadPage(otherTagLink.href, { preserveLimitstart: false });
+        return;
+      }
+
       const tagLink = event.target.closest('.blog-card__tag-link');
       if (tagLink && tagLink.href) {
         event.preventDefault();
