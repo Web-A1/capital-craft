@@ -161,9 +161,14 @@ if ($isFAQPage) {
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
-                  <a href="<?php echo Route::_(
-                      TagsRouteHelper::getTagRoute((int) ($tag->id ?? $tag->tag_id) . ':' . ($tag->alias ?? ''))
-                  ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
+                  <?php
+                    $menu = Factory::getApplication()->getMenu();
+                    $blogItem = $menu->getItems('alias', 'blog', true);
+                    $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+                    $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
+                    $tagHref = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
+                  ?>
+                  <a href="<?php echo $tagHref; ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
                       $tag->alias ?? '',
                       ENT_QUOTES,
                       'UTF-8',
