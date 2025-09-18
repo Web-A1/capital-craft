@@ -1,11 +1,11 @@
 <?php
 defined("_JEXEC") or die();
 
-use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
+use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
 
 /** @var \Joomla\Component\Content\Site\View\Category\HtmlView $this */
 $params = $this->item->params;
@@ -34,10 +34,6 @@ $introImgAlt =
 // Build excerpt (200 chars, plain text)
 $sourceText = trim(strip_tags($this->item->introtext ?: $this->item->fulltext ?? ""));
 $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
-
-$menu = Factory::getApplication()->getMenu();
-$blogItem = $menu->getItems("alias", "blog", true);
-$blogItemId = $blogItem ? $blogItem->id : 0;
 ?>
 
 <div class="blog-card__grid">
@@ -69,14 +65,16 @@ $blogItemId = $blogItem ? $blogItem->id : 0;
       <?php if (!empty($this->item->tags->itemTags)): ?>
         <ul class="blog-card__tags">
           <?php foreach ($this->item->tags->itemTags as $tag): ?>
+            <?php
+            $tagRoute = Route::_(TagsRouteHelper::getTagRoute((int) ($tag->tag_id ?? 0) . ":" . ($tag->alias ?? "")));
+            $tagAliasAttr = strtolower($tag->alias ?? "");
+            ?>
             <li class="blog-card__tag">
-              <a href="<?php echo Route::_(
-                  "index.php?Itemid=" . $blogItemId . "&tag=" . urlencode($tag->alias),
-              ); ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
-    $tag->alias ?? "",
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">#<?php echo $this->escape($tag->title); ?></a>
+              <a
+                href="<?php echo $tagRoute; ?>"
+                class="blog-card__tag-link"
+                data-tag-alias="<?php echo htmlspecialchars($tagAliasAttr, ENT_QUOTES, "UTF-8"); ?>"
+              >#<?php echo $this->escape($tag->title); ?></a>
             </li>
           <?php endforeach; ?>
         </ul>
