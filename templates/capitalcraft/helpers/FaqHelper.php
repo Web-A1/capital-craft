@@ -116,8 +116,8 @@ class CapitalcraftFaqHelper
                 $tagIds = [(int) $rawTag];
                 $query = $db
                     ->getQuery(true)
-                    ->select($db->quoteName("alias"))
-                    ->from($db->quoteName("#__tags"))
+                    ->select($db->quoteName("t.alias"))
+                    ->from($db->quoteName("#__tags", "t"))
                     ->where($db->quoteName("id") . " = " . (int) $rawTag)
                     ->where($db->quoteName("published") . " = 1")
                     ->where($viewLevelsCondition)
@@ -127,10 +127,10 @@ class CapitalcraftFaqHelper
             } else {
                 $query = $db
                     ->getQuery(true)
-                    ->select($db->quoteName("id"))
-                    ->from($db->quoteName("#__tags"))
-                    ->where($db->quoteName("alias") . " = " . $db->quote($rawTag))
-                    ->where($db->quoteName("published") . " = 1")
+                    ->select($db->quoteName("t.id"))
+                    ->from($db->quoteName("#__tags", "t"))
+                    ->where($db->quoteName("t.alias") . " = " . $db->quote($rawTag))
+                    ->where($db->quoteName("t.published") . " = 1")
                     ->where($viewLevelsCondition)
                     ->where($tagLanguageCondition);
                 $db->setQuery($query);
