@@ -6,7 +6,7 @@ import { initFormSubmit } from "./form-submit.js";
 import { initScrollTop } from "./scroll-top.js";
 import { initTextTruncate } from "./text-truncate.js";
 
-// Делаем IMask доступным глобально
+// Делаем IMaskдоступным глобально
 window.IMask = IMask;
 
 initBurger();
