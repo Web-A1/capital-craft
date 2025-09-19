@@ -50,7 +50,6 @@
     min-height: 195px;
 
     .media(mobile, {
-      border-bottom: 1px solid @section-divider-color;
       padding-bottom: @divider-space-mobile; // 30px from content to line
       min-height: auto;
       width: 100%;
@@ -128,7 +127,8 @@
       gap: 30px;
       width: 100%;
       padding-left: 0;
-      padding-bottom: 40px;
+      padding-bottom: @divider-space-mobile; // 30px from content to line
+      border-bottom: 1px solid @section-divider-color;
       order: 1; // Place first in mobile layout
       &::before {
         display: none;
