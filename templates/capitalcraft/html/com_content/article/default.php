@@ -147,6 +147,10 @@ if ($isFAQPage) {
         $bodyText = trim($tmp);
     }
     $wordCount = $bodyText !== '' ? str_word_count($bodyText, 0, 'А-Яа-яЁё') : 0;
+    // Лимитируем articleBody, чтобы не раздувать JSON-LD (до ~10k символов)
+    $articleBodyLimited = $bodyText !== '' ? mb_substr($bodyText, 0, 10000, 'UTF-8') : '';
+
+    $published = $this->item->publish_up ?: $this->item->created;
 
     $articleSchema = [
         '@context' => 'https://schema.org',
@@ -161,8 +165,9 @@ if ($isFAQPage) {
         'articleSection' => $articleSection ?: null,
         'wordCount' => $wordCount ?: null,
         'isAccessibleForFree' => true,
-        'datePublished' => $this->item->publish_up,
+        'datePublished' => $published,
         'dateModified' => $this->item->modified,
+        'articleBody' => $articleBodyLimited !== '' ? $articleBodyLimited : null,
         'author' => [
             '@type' => 'Organization',
             'name' => 'Capital Craft',
