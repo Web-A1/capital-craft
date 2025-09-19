@@ -193,10 +193,15 @@ if ($addCanonical) {
     <?php endif; ?>
   <?php endif; ?>
 
-  <!-- Шрифты -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;700&family=Onest:wght@400;700&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Шрифты: локальные + предзагрузка ключевых, Syne только на главной -->
+  <link rel="preload" href="templates/capitalcraft/fonts/golos-text-400.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="templates/capitalcraft/fonts/onest-700.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="templates/capitalcraft/css/fonts.css">
+  <?php if ($isHome): ?>
+    <link rel="preload" href="templates/capitalcraft/fonts/syne-500.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="templates/capitalcraft/fonts/syne-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="templates/capitalcraft/css/fonts-home.css">
+  <?php endif; ?>
 
   <!-- Критические стили -->
   <link rel="stylesheet" href="templates/capitalcraft/css/critical.css">
