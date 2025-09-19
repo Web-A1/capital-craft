@@ -28,6 +28,30 @@ if (header) {
   const tolerance =
     window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
 
+  const rootElement = document.documentElement;
+  let lastHeaderHeight = null;
+  let rafId = null;
+
+  const updateHeaderHeight = () => {
+    const newHeight = header.offsetHeight;
+
+    if (newHeight !== lastHeaderHeight) {
+      lastHeaderHeight = newHeight;
+      rootElement.style.setProperty("--header-height", `${newHeight}px`);
+    }
+  };
+
+  const scheduleHeaderHeightUpdate = () => {
+    if (rafId !== null) return;
+
+    rafId = window.requestAnimationFrame(() => {
+      rafId = null;
+      updateHeaderHeight();
+    });
+  };
+
+  updateHeaderHeight();
+
   const enableAutoHide = () => {
     allowAutoHide = true;
     header.classList.remove("is-initial");
@@ -43,6 +67,13 @@ if (header) {
   interactionEvents.forEach(([eventName, options]) => {
     window.addEventListener(eventName, enableAutoHide, options);
   });
+
+  const handleResize = () => {
+    scheduleHeaderHeightUpdate();
+  };
+
+  window.addEventListener("resize", handleResize, { passive: true });
+  window.addEventListener("orientationchange", handleResize);
 
   const onScroll = () => {
     if (frozen) return;
@@ -65,12 +96,14 @@ if (header) {
     ) {
       header.classList.remove("pinned");
       header.classList.add("unpinned");
+      scheduleHeaderHeightUpdate();
     } else if (
       currentScrollY < lastScrollY &&
       lastScrollY - currentScrollY > tolerance.up
     ) {
       header.classList.remove("unpinned");
       header.classList.add("pinned");
+      scheduleHeaderHeightUpdate();
     }
 
     lastScrollY = currentScrollY;
@@ -81,20 +114,30 @@ if (header) {
   window.addEventListener("load", () => {
     lastScrollY = window.pageYOffset;
     ignoreInitialScroll = false;
+    scheduleHeaderHeightUpdate();
   });
 
   window.headerControl = {
     freeze() {
       frozen = true;
+      scheduleHeaderHeightUpdate();
     },
     unfreeze() {
       frozen = false;
       lastScrollY = window.pageYOffset;
+      scheduleHeaderHeightUpdate();
     },
     pin() {
       header.classList.remove("unpinned");
       header.classList.add("pinned");
       lastScrollY = window.pageYOffset;
+      scheduleHeaderHeightUpdate();
+    },
+    unpin() {
+      header.classList.remove("pinned");
+      header.classList.add("unpinned");
+      lastScrollY = window.pageYOffset;
+      scheduleHeaderHeightUpdate();
     }
   };
 }
