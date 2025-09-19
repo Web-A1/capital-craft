@@ -138,6 +138,13 @@
       text-decoration: none;
       cursor: pointer;
       transition: color 0.2s ease;
+      position: relative; // позволит псевдо-элементу перекрывать всю высоту
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0; // перекрываем полностью область элемента
+      }
 
       &:hover,
       &:focus-visible {
