@@ -74,7 +74,7 @@
       } catch (e) {
         return tag && tag !== ""
           ? window.location.pathname + "?tag=" + encodeURIComponent(tag)
-          : (faqBase || window.location.pathname);
+          : faqBase || window.location.pathname;
       }
     }
     let currentTag =
