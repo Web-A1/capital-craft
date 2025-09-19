@@ -49,6 +49,7 @@
     }
 
     const parser = new DOMParser();
+    const statusEl = faqSection.querySelector("#faq-filter-status");
     const faqBase = (function () {
       const fromAttr = faqSection.getAttribute("data-faq-base");
       if (fromAttr && fromAttr.trim() !== "") {
@@ -60,6 +61,65 @@
       }
       return window.location.pathname + window.location.search;
     })();
+
+    function setStatus(message) {
+      if (!statusEl) {
+        return;
+      }
+      statusEl.textContent = message || "";
+    }
+
+    function pluralize(count) {
+      const abs = Math.abs(count) % 100;
+      const mod = abs % 10;
+
+      if (abs > 10 && abs < 20) {
+        return "вопросов";
+      }
+
+      if (mod > 1 && mod < 5) {
+        return "вопроса";
+      }
+
+      if (mod === 1) {
+        return "вопрос";
+      }
+
+      return "вопросов";
+    }
+
+    function getFilterLabel() {
+      const activeLink = faqSection.querySelector(".faq-tags__link.is-active");
+      if (activeLink) {
+        return activeLink.textContent.trim();
+      }
+      const activeChip = faqSection.querySelector(".faq__tag-chip");
+      if (activeChip) {
+        return activeChip.textContent.trim();
+      }
+      return "Все вопросы";
+    }
+
+    function announceUpdate() {
+      if (!statusEl) {
+        return;
+      }
+      const itemsCount = faqSection.querySelectorAll(".faq__item").length;
+      const filterLabel = getFilterLabel();
+
+      if (itemsCount > 0) {
+        setStatus(
+          "Показано " +
+            itemsCount +
+            " " +
+            pluralize(itemsCount) +
+            ": " +
+            filterLabel
+        );
+      } else {
+        setStatus("Нет вопросов для фильтра " + filterLabel);
+      }
+    }
 
     function buildFaqUrl(tag) {
       try {
@@ -185,6 +245,7 @@
     }
 
     attachInteractions();
+    announceUpdate();
     if (history && history.replaceState) {
       history.replaceState({ tag: currentTag }, "", window.location.href);
     }
@@ -212,6 +273,8 @@
       const url = buildFaqUrl(normalized);
       isLoading = true;
       faqSection.classList.add("is-loading");
+      faqSection.setAttribute("aria-busy", "true");
+      setStatus("Загружаем вопросы…");
 
       fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
         .then(response => {
@@ -231,6 +294,7 @@
           }
           syncHead(doc);
           attachInteractions();
+          announceUpdate();
         })
         .catch(() => {
           window.location.href = url;
@@ -238,6 +302,7 @@
         .finally(() => {
           isLoading = false;
           faqSection.classList.remove("is-loading");
+          faqSection.removeAttribute("aria-busy");
           openFromHash();
         });
     }
