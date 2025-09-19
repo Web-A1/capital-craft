@@ -158,8 +158,8 @@
     flex-shrink: 0;
 
     .media(mobile, {
-    width: 100%;
-  });
+      width: 100%;
+    });
 
     &-links {
       display: flex;
@@ -214,12 +214,16 @@
 
   // Contacts
   &-contacts {
+    --contacts-scroll-offset: 30px;
+    scroll-margin-top: calc(
+      var(--header-height, 0px) + var(--contacts-scroll-offset, 30px)
+    );
     width: 221px;
     flex-shrink: 0;
 
     .media(mobile, {
-    width: 100%;
-  });
+      width: 100%;
+    });
 
     & .footer-contact-address {
       margin-bottom: 10px;
