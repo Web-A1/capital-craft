@@ -132,6 +132,9 @@
     font-style: italic;
 
     a {
+      display: block; // делаем всю строку кликабельной, включая межстрочные пробелы
+      width: 100%;
+      line-height: inherit; // сохраняем визуальную высоту
       color: @color-text;
       text-decoration: none;
       transition: color 0.2s ease;
