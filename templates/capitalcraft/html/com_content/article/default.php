@@ -167,19 +167,17 @@ if ($isFAQPage) {
 
           <?php if (!empty($this->item->tags->itemTags)): ?>
             <?php
+            // Получаем blogRoute один раз вне цикла тегов
             $menu = Factory::getApplication()->getMenu();
-              $blogItem = $menu->getItems('alias', 'blog', true);
-              $blogItemId = $blogItem ? $blogItem->id : 0;
+            $blogItem = $menu->getItems('alias', 'blog', true);
+            $blogRouteBase = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+            $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
               ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
                   <?php
-                    $menu = Factory::getApplication()->getMenu();
-                  $blogItem = $menu->getItems('alias', 'blog', true);
-                  $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-                  $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
-                  $tagHref = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
+                  $tagHref = $blogRouteBase . $blogRouteSep . 'tag=' . rawurlencode($tag->alias ?? '');
                   ?>
                   <a href="<?php echo $tagHref; ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
                       $tag->alias ?? '',

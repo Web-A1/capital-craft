@@ -70,12 +70,15 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
                     if (empty($tag->tag_id)) {
                         continue;
                     }
-              // Link to blog with tag parameter for unified behavior
-              $menu = Factory::getApplication()->getMenu();
-              $blogItem = $menu->getItems('alias', 'blog', true);
-              $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-              $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
-              $tagRoute = $blogRoute . $sep . 'tag=' . rawurlencode($tag->alias ?? '');
+              // Link to blog with tag parameter; вычисляем базовый маршрут один раз (вне цикла)
+              static $blogRouteBase = null, $blogRouteSep = null;
+              if ($blogRouteBase === null) {
+                  $menu = Factory::getApplication()->getMenu();
+                  $blogItem = $menu->getItems('alias', 'blog', true);
+                  $blogRouteBase = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+                  $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
+              }
+              $tagRoute = $blogRouteBase . $blogRouteSep . 'tag=' . rawurlencode($tag->alias ?? '');
               $tagAliasAttr = strtolower($tag->alias ?? '');
               ?>
             <li class="blog-card__tag">
