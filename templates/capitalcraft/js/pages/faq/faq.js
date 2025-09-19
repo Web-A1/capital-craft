@@ -49,6 +49,34 @@
     }
 
     const parser = new DOMParser();
+    const faqBase = (function () {
+      const fromAttr = faqSection.getAttribute("data-faq-base");
+      if (fromAttr && fromAttr.trim() !== "") {
+        return fromAttr.trim();
+      }
+      const active = faqSection.querySelector(".faq-tags__link.is-active");
+      if (active) {
+        return active.getAttribute("href") || "";
+      }
+      return window.location.pathname + window.location.search;
+    })();
+
+    function buildFaqUrl(tag) {
+      try {
+        const u = new URL(faqBase, window.location.origin);
+        if (tag && tag !== "") {
+          u.searchParams.set("tag", tag);
+        } else {
+          u.searchParams.delete("tag");
+        }
+        u.hash = "";
+        return u.pathname + u.search;
+      } catch (e) {
+        return tag && tag !== ""
+          ? window.location.pathname + "?tag=" + encodeURIComponent(tag)
+          : (faqBase || window.location.pathname);
+      }
+    }
     let currentTag =
       new URL(window.location.href).searchParams.get("tag") || "";
     currentTag = currentTag.toLowerCase();
@@ -181,9 +209,7 @@
         return;
       }
 
-      const url = normalized
-        ? `/faq?tag=${encodeURIComponent(normalized)}`
-        : "/faq";
+      const url = buildFaqUrl(normalized);
       isLoading = true;
       faqSection.classList.add("is-loading");
 
