@@ -152,7 +152,6 @@ if ($blogRoute): ?>
               <a
                 class="blog-tags__link<?php echo $currentTagAlias === "" ? " is-active" : ""; ?>"
                 href="<?php echo $blogRoute; ?>"
-                data-tag-alias=""
                 <?php echo $currentTagAlias === "" ? 'aria-current="page"' : ""; ?>
               >Все статьи</a>
             </li>
@@ -171,7 +170,6 @@ if ($blogRoute): ?>
               <a
                 class="blog-tags__link<?php echo $isActive ? " is-active" : ""; ?>"
                 href="<?php echo $tagRoute; ?>"
-                data-tag-alias="<?php echo htmlspecialchars($tagAliasLower, ENT_QUOTES, "UTF-8"); ?>"
                 <?php echo $isActive ? 'aria-current="page"' : ""; ?>
               >#<?php echo htmlspecialchars($tagOption->title, ENT_QUOTES, "UTF-8"); ?></a>
             </li>

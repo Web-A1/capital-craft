@@ -152,7 +152,6 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
             <a
               class="blog-tags__link<?php echo $normalizedTagAlias === "" ? " is-active" : ""; ?>"
               href="<?php echo $blogRoute; ?>"
-              data-tag-alias=""
               <?php echo $normalizedTagAlias === "" ? 'aria-current="page"' : ""; ?>
             >Все статьи</a>
           </li>
@@ -169,7 +168,6 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
               <a
                 class="blog-tags__link<?php echo $isActiveTag ? " is-active" : ""; ?>"
                 href="<?php echo $tagRoute; ?>"
-                data-tag-alias="<?php echo htmlspecialchars($tagAliasLower, ENT_QUOTES, "UTF-8"); ?>"
                 <?php echo $isActiveTag ? 'aria-current="page"' : ""; ?>
               >#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
             </li>
