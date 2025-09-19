@@ -95,11 +95,12 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
   <?php if ($introImg): ?>
     <figure class="blog-card__image">
       <a href="<?php echo $articleLink; ?>">
-        <img src="<?php echo htmlspecialchars($introImg, ENT_QUOTES, "UTF-8"); ?>" alt="<?php echo htmlspecialchars(
-            $introImgAlt,
-            ENT_QUOTES,
-            "UTF-8",
-        ); ?>">
+        <img
+          src="<?php echo htmlspecialchars($introImg, ENT_QUOTES, "UTF-8"); ?>"
+          alt="<?php echo htmlspecialchars($introImgAlt, ENT_QUOTES, "UTF-8"); ?>"
+          loading="lazy"
+          decoding="async"
+        >
       </a>
     </figure>
   <?php endif; ?>
