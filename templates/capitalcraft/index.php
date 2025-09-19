@@ -196,9 +196,9 @@ if ($addCanonical) {
   <!-- Шрифты: локальные + предзагрузка ключевых, Syne только на главной; Google Fonts как fallback -->
   <?php
     $fontsPath = JPATH_SITE . "/templates/capitalcraft/fonts/";
-    $hasLocalCore = file_exists($fontsPath . "golos-text-400.woff2") && file_exists($fontsPath . "onest-700.woff2");
-    $hasLocalHome = file_exists($fontsPath . "syne-500.woff2") && file_exists($fontsPath . "syne-600.woff2");
-  ?>
+$hasLocalCore = file_exists($fontsPath . "golos-text-400.woff2") && file_exists($fontsPath . "onest-700.woff2");
+$hasLocalHome = file_exists($fontsPath . "syne-500.woff2") && file_exists($fontsPath . "syne-600.woff2");
+?>
   <?php if ($hasLocalCore): ?>
     <link rel="preload" href="templates/capitalcraft/fonts/golos-text-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="templates/capitalcraft/fonts/onest-700.woff2" as="font" type="font/woff2" crossorigin>
@@ -212,15 +212,15 @@ if ($addCanonical) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <?php
-      $googleFamilies = [
-        "Golos+Text:wght@400;500",
-        "Onest:wght@400;700",
-      ];
+    $googleFamilies = [
+      "Golos+Text:wght@400;500",
+      "Onest:wght@400;700",
+    ];
       if ($isHome) {
-        $googleFamilies[] = "Syne:wght@500;600";
+          $googleFamilies[] = "Syne:wght@500;600";
       }
       $googleHref = "https://fonts.googleapis.com/css2?family=" . implode("&family=", $googleFamilies) . "&display=swap";
-    ?>
+      ?>
     <link href="<?= $googleHref ?>" rel="stylesheet">
   <?php endif; ?>
 
