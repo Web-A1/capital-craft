@@ -4,6 +4,7 @@ defined("_JEXEC") or die();
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Factory;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
 use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
 
@@ -70,7 +71,7 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
                         continue;
                     }
               // Link to blog with tag parameter for unified behavior
-              $menu = JFactory::getApplication()->getMenu();
+              $menu = Factory::getApplication()->getMenu();
               $blogItem = $menu->getItems('alias', 'blog', true);
               $blogRoute = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
               $sep = (strpos($blogRoute, '?') === false) ? '?' : '&';
