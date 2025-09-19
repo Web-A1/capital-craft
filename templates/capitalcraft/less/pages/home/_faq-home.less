@@ -127,16 +127,16 @@
     list-style: none;
     font-family: @font-body;
     font-size: (@font-size-base * 1.375); // 22px
-    line-height: 140%;
     color: @color-text;
     font-style: italic;
 
     a {
       display: block; // делаем всю строку кликабельной, включая межстрочные пробелы
       width: 100%;
-      line-height: inherit; // сохраняем визуальную высоту
+      line-height: 1.4; // переносим line-height на ссылку
       color: @color-text;
       text-decoration: none;
+      cursor: pointer;
       transition: color 0.2s ease;
 
       &:hover,
