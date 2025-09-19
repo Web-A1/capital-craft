@@ -106,7 +106,7 @@ $doc->addCustomTag(
 );
 ?>
 
-<section class="faq frame section-with-divider">
+<section class="faq frame section-with-divider" data-faq-base="<?= htmlspecialchars($faqBaseRoute, ENT_QUOTES, 'UTF-8'); ?>">
     <div class="faq__container">
         <div class="faq__content">
             <div class="faq__title-block">
