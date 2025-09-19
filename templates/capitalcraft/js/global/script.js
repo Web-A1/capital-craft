@@ -17,6 +17,92 @@ initScrollTop();
 initTextTruncate();
 
 const rootElement = document.documentElement;
+
+const parsePixelValue = value => {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  const parsed = parseFloat(trimmed);
+
+  return Number.isNaN(parsed) ? null : parsed;
+};
+
+const getSectionScrollPadding = element => {
+  if (!element) {
+    return 0;
+  }
+
+  const styles = window.getComputedStyle(element);
+  const customPadding = parsePixelValue(
+    styles.getPropertyValue("--section-scroll-padding")
+  );
+
+  if (customPadding !== null) {
+    return customPadding;
+  }
+
+  return parsePixelValue(styles.paddingTop) ?? 0;
+};
+
+const getSectionScrollOffset = element => {
+  if (!element) {
+    return 0;
+  }
+
+  const styles = window.getComputedStyle(element);
+  const customOffset = parsePixelValue(
+    styles.getPropertyValue("--section-scroll-offset")
+  );
+
+  return customOffset ?? 0;
+};
+
+const getHeaderScrollOffset = element => {
+  const headerHeight =
+    parsePixelValue(
+      window
+        .getComputedStyle(rootElement)
+        .getPropertyValue("--header-height")
+    ) ?? 0;
+
+  const sectionPadding = getSectionScrollPadding(element);
+  const sectionScrollOffset = getSectionScrollOffset(element);
+
+  return headerHeight - sectionPadding + sectionScrollOffset;
+};
+
+const getTargetScrollTopWithOffset = element =>
+  element.getBoundingClientRect().top +
+  window.pageYOffset -
+  getHeaderScrollOffset(element);
+
+const resolveHashTarget = hash => {
+  if (!hash || hash === "#") {
+    return null;
+  }
+
+  try {
+    const decoded = decodeURIComponent(hash.slice(1));
+
+    if (!decoded) {
+      return null;
+    }
+
+    return document.getElementById(decoded);
+  } catch (error) {
+    return null;
+  }
+};
+
+let initialHashHandled = false;
+
 const header = document.querySelector(".site-header");
 
 if (header) {
@@ -140,6 +226,115 @@ if (header) {
       scheduleHeaderHeightUpdate();
     }
   };
+
+  const scrollTargetWithOffset = (target, behavior = "auto") => {
+    if (!target) {
+      return false;
+    }
+
+    updateHeaderHeight();
+
+    const targetTop = getTargetScrollTopWithOffset(target);
+
+    try {
+      window.scrollTo({ top: targetTop, behavior });
+    } catch (error) {
+      window.scrollTo(0, targetTop);
+    }
+
+    return true;
+  };
+
+  const scrollHashWithOffset = ({
+    hash = window.location.hash,
+    behavior = "auto",
+    freeze = false
+  } = {}) => {
+    const target = resolveHashTarget(hash);
+
+    if (!target) {
+      return false;
+    }
+
+    const shouldFreeze = freeze && Boolean(window.headerControl);
+    let wasFrozen = false;
+
+    if (shouldFreeze) {
+      wasFrozen = frozen;
+      window.headerControl.freeze();
+      window.headerControl.pin();
+    }
+
+    const scrolled = scrollTargetWithOffset(target, behavior);
+
+    if (!scrolled) {
+      if (shouldFreeze && !wasFrozen) {
+        window.headerControl.unfreeze();
+      }
+
+      return false;
+    }
+
+    if (shouldFreeze) {
+      const releaseHeader = () => {
+        window.headerControl.pin();
+
+        if (!wasFrozen) {
+          window.headerControl.unfreeze();
+        }
+      };
+
+      if (typeof window.requestAnimationFrame === "function") {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(releaseHeader);
+        });
+      } else {
+        window.setTimeout(releaseHeader, 16);
+      }
+    }
+
+    return true;
+  };
+
+  window.headerControl.scrollToHash = (options = {}) => {
+    if (typeof options === "string") {
+      return scrollHashWithOffset({ hash: options });
+    }
+
+    if (!options || typeof options !== "object") {
+      return scrollHashWithOffset({});
+    }
+
+    return scrollHashWithOffset(options);
+  };
+
+  const correctInitialHashPosition = () => {
+    const handled = scrollHashWithOffset({ freeze: true, behavior: "auto" });
+
+    if (handled) {
+      initialHashHandled = true;
+    }
+
+    return handled;
+  };
+
+  if (
+    !correctInitialHashPosition() &&
+    window.location.hash &&
+    window.location.hash !== "#"
+  ) {
+    const retryAfterLoad = () => {
+      if (!initialHashHandled) {
+        correctInitialHashPosition();
+      }
+    };
+
+    if (document.readyState === "complete") {
+      retryAfterLoad();
+    } else {
+      window.addEventListener("load", retryAfterLoad, { once: true });
+    }
+  }
 }
 
 const supportsScrollMarginTop =
@@ -148,76 +343,23 @@ const supportsScrollMarginTop =
     : false;
 
 if (!supportsScrollMarginTop) {
-  const parsePixelValue = value => {
-    if (typeof value !== "string") {
-      return null;
-    }
-
-    const trimmed = value.trim();
-    if (!trimmed) {
-      return null;
-    }
-
-    const parsed = parseFloat(trimmed);
-    return Number.isNaN(parsed) ? null : parsed;
-  };
-
-  const getSectionScrollPadding = element => {
-    const styles = window.getComputedStyle(element);
-    const customPadding = parsePixelValue(
-      styles.getPropertyValue("--section-scroll-padding")
-    );
-
-    if (customPadding !== null) {
-      return customPadding;
-    }
-
-    return parsePixelValue(styles.paddingTop) ?? 0;
-  };
-
-  const getSectionScrollOffset = element => {
-    const styles = window.getComputedStyle(element);
-    const customOffset = parsePixelValue(
-      styles.getPropertyValue("--section-scroll-offset")
-    );
-
-    return customOffset ?? 0;
-  };
-
   const supportsSmoothScroll =
     "scrollBehavior" in document.documentElement.style;
 
   const scrollToTarget = target => {
     if (!target) return;
 
-    const headerHeight =
-      parsePixelValue(
-        window.getComputedStyle(rootElement).getPropertyValue("--header-height")
-      ) ?? 0;
-    const sectionPadding = getSectionScrollPadding(target);
-    const sectionScrollOffset = getSectionScrollOffset(target);
-    const offset = headerHeight - sectionPadding + sectionScrollOffset;
-    const targetTop =
-      window.pageYOffset + target.getBoundingClientRect().top - offset;
+    const targetTop = getTargetScrollTopWithOffset(target);
 
     if (supportsSmoothScroll) {
-      window.scrollTo({ top: targetTop, behavior: "smooth" });
+      try {
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      } catch (error) {
+        window.scrollTo(0, targetTop);
+      }
     } else {
       window.scrollTo(0, targetTop);
     }
-  };
-
-  const resolveHashTarget = hash => {
-    if (!hash || hash === "#") {
-      return null;
-    }
-
-    const decoded = decodeURIComponent(hash.slice(1));
-    if (!decoded) {
-      return null;
-    }
-
-    return document.getElementById(decoded);
   };
 
   let suppressHashChange = false;
@@ -276,6 +418,10 @@ if (!supportsScrollMarginTop) {
   window.addEventListener("hashchange", handleHashNavigation);
 
   window.addEventListener("load", () => {
+    if (initialHashHandled) {
+      return;
+    }
+
     const target = resolveHashTarget(window.location.hash);
     if (target) {
       scrollToTarget(target);
