@@ -94,10 +94,13 @@
 
   &__pagination {
     left: 0px !important;
+    width: auto;
+    pointer-events: none; // не перекрываем клики по вопросам
 
     .swiper-pagination-bullet {
       background: @color-heading;
       opacity: 0.3;
+      pointer-events: auto; // оставляем возможность переключать слайды
     }
 
     .swiper-pagination-bullet-active {
