@@ -6,7 +6,7 @@ import { initFormSubmit } from "./form-submit.js";
 import { initScrollTop } from "./scroll-top.js";
 import { initTextTruncate } from "./text-truncate.js";
 
-// Делаем IMask доступным глобально
+// Делаем IMask  доступным глобально
 window.IMask = IMask;
 
 initBurger();
@@ -67,9 +67,7 @@ const getSectionScrollOffset = element => {
 const getHeaderScrollOffset = element => {
   const headerHeight =
     parsePixelValue(
-      window
-        .getComputedStyle(rootElement)
-        .getPropertyValue("--header-height")
+      window.getComputedStyle(rootElement).getPropertyValue("--header-height")
     ) ?? 0;
 
   const sectionPadding = getSectionScrollPadding(element);
