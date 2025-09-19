@@ -24,10 +24,10 @@
       'meta[property="og:title"]',
       'meta[property="og:description"]',
       'meta[name="twitter:title"]',
-      'meta[name="twitter:description"]',
+      'meta[name="twitter:description"]'
     ];
 
-    selectors.forEach((selector) => {
+    selectors.forEach(selector => {
       const fresh = doc.querySelector(selector);
       const current = document.querySelector(selector);
       if (fresh && current) {
@@ -49,7 +49,8 @@
     }
 
     const parser = new DOMParser();
-    let currentTag = (new URL(window.location.href)).searchParams.get("tag") || "";
+    let currentTag =
+      new URL(window.location.href).searchParams.get("tag") || "";
     currentTag = currentTag.toLowerCase();
     let questionNodes = [];
     let isLoading = false;
@@ -66,15 +67,15 @@
       }
       answer.classList.remove("open");
       answer.style.maxHeight = "0px";
-      answer.addEventListener(
-        "transitionend",
-        function handle(e) {
-          if (e.propertyName === "max-height" && button.getAttribute("aria-expanded") === "false") {
-            answer.style.removeProperty("max-height");
-            answer.removeEventListener("transitionend", handle);
-          }
-        },
-      );
+      answer.addEventListener("transitionend", function handle(e) {
+        if (
+          e.propertyName === "max-height" &&
+          button.getAttribute("aria-expanded") === "false"
+        ) {
+          answer.style.removeProperty("max-height");
+          answer.removeEventListener("transitionend", handle);
+        }
+      });
     }
 
     function expandQuestion(button) {
@@ -91,7 +92,7 @@
     function handleQuestionClick(event) {
       const question = event.currentTarget;
       const isExpanded = question.getAttribute("aria-expanded") === "true";
-      questionNodes.forEach((btn) => {
+      questionNodes.forEach(btn => {
         if (btn !== question && btn.getAttribute("aria-expanded") === "true") {
           collapseQuestion(btn);
         }
@@ -112,7 +113,7 @@
 
     function setupQuestions() {
       questionNodes = Array.from(faqSection.querySelectorAll(".faq__question"));
-      questionNodes.forEach((question) => {
+      questionNodes.forEach(question => {
         question.addEventListener("click", handleQuestionClick);
         question.addEventListener("keydown", handleQuestionKey);
       });
@@ -180,18 +181,20 @@
         return;
       }
 
-      const url = normalized ? `/faq?tag=${encodeURIComponent(normalized)}` : "/faq";
+      const url = normalized
+        ? `/faq?tag=${encodeURIComponent(normalized)}`
+        : "/faq";
       isLoading = true;
       faqSection.classList.add("is-loading");
 
       fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
-        .then((response) => {
+        .then(response => {
           if (!response.ok) {
             throw new Error("Network error");
           }
           return response.text();
         })
-        .then((html) => {
+        .then(html => {
           const doc = parser.parseFromString(html, "text/html");
           if (!replaceFaqContent(doc)) {
             throw new Error("Failed to update FAQ content");
@@ -231,7 +234,7 @@
     });
 
     window.addEventListener("popstate", function () {
-      const alias = (new URL(window.location.href)).searchParams.get("tag") || "";
+      const alias = new URL(window.location.href).searchParams.get("tag") || "";
       loadFaq(alias, { skipPush: true, force: true });
     });
 
