@@ -54,6 +54,7 @@
       padding-bottom: @divider-space-mobile; // 30px from content to line
       min-height: auto;
       width: 100%;
+      order: 4; // Place after navigation block
     });
 
     & .footer-logo-tagline {
@@ -128,6 +129,7 @@
       width: 100%;
       padding-left: 0;
       padding-bottom: 40px;
+      order: 1; // Place first in mobile layout
       &::before {
         display: none;
       }
@@ -313,6 +315,7 @@
       flex-direction: column;
       gap: 20px;
       align-items: flex-start;
+      order: 5; // Place last in mobile layout
     });
   }
 
