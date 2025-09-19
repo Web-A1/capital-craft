@@ -14,6 +14,29 @@ $input = $app->getInput();
 $tagParamRaw = $input->getString("tag", "");
 $tagParam = trim($tagParamRaw);
 
+// Редирект со старых алиасов тегов на новые (SEO‑безопасно)
+$aliasRedirects = [
+    'real-setate' => 'real-estate',
+];
+
+$currentAliasLower = strtolower($tagParam);
+if ($currentAliasLower !== '' && isset($aliasRedirects[$currentAliasLower])) {
+    $newAlias = $aliasRedirects[$currentAliasLower];
+    $isAjax = strtolower($app->input->server->getString('HTTP_X_REQUESTED_WITH', '')) === 'xmlhttprequest';
+
+    if (!$isAjax) {
+        // 301 на корректный URL с заменой параметра tag
+        $uri = Uri::getInstance();
+        $uri->setVar('tag', $newAlias);
+        $uri->setFragment('');
+        $app->redirect($uri->toString(), 301);
+        return;
+    }
+
+    // Для AJAX-запросов просто используем новый алиас без редиректа
+    $tagParam = $newAlias;
+}
+
 $faqData = CapitalcraftFaqHelper::getFaqPageData($tagParam);
 $faqItems = $faqData["items"];
 $faqAllTags = $faqData["allTags"];
@@ -133,10 +156,10 @@ $doc->addCustomTag(
                       <a class="faq-tags__link<?php echo $activeTagAlias === $alias
                           ? " is-active"
                           : ""; ?>" href="<?= htmlspecialchars(
-    $tagHref,
-    ENT_QUOTES,
-    "UTF-8",
-) ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+                              $tagHref,
+                              ENT_QUOTES,
+                              "UTF-8",
+                          ) ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -157,10 +180,10 @@ $doc->addCustomTag(
                                 aria-expanded="false" 
                                 aria-controls="faq-answer-<?php echo $index; ?>"
                                 aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars(
-    $item["q"],
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
+                                    $item["q"],
+                                    ENT_QUOTES,
+                                    "UTF-8",
+                                ); ?>">
                             <span class="faq__text">
                                 <?php echo htmlspecialchars($item["q"], ENT_QUOTES, "UTF-8"); ?>
                             </span>
@@ -177,14 +200,14 @@ $doc->addCustomTag(
                         </div>
                         <?php
                         $primaryTag = $item["primary_tag"] ?? null;
-                        if (empty($primaryTag) && !empty($item["tags"])) {
-                            $primaryTag = $item["tags"][0];
-                        }
-                        ?>
+                    if (empty($primaryTag) && !empty($item["tags"])) {
+                        $primaryTag = $item["tags"][0];
+                    }
+                    ?>
                         <?php if (!empty($primaryTag)): ?>
                             <?php $primaryTagLink = CapitalcraftFaqHelper::getFaqRoute([
-                                "tag" => $primaryTag["alias"],
-                            ]); ?>
+                            "tag" => $primaryTag["alias"],
+                        ]); ?>
                             <a class="faq__tag-chip" href="<?= htmlspecialchars(
                                 $primaryTagLink,
                                 ENT_QUOTES,
