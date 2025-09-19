@@ -4,13 +4,129 @@ export const initBurger = () => {
   const burger = document.querySelector(".burger");
   const header = document.querySelector(".site-header");
   const mobileNav = document.querySelector(".mobile-nav");
+  const rootElement = document.documentElement;
 
   if (!burger || !header || !mobileNav) return;
 
   // Инициализация: меню скрыто для скринридеров по умолчанию
   mobileNav.setAttribute("aria-hidden", "true");
 
-  const closeMenu = () => {
+  const parsePixelValue = value => {
+    if (typeof value !== "string") {
+      return null;
+    }
+
+    const trimmed = value.trim();
+
+    if (!trimmed) {
+      return null;
+    }
+
+    const parsed = parseFloat(trimmed);
+
+    return Number.isNaN(parsed) ? null : parsed;
+  };
+
+  const getSectionScrollPadding = element => {
+    const styles = window.getComputedStyle(element);
+    const customPadding = parsePixelValue(
+      styles.getPropertyValue("--section-scroll-padding")
+    );
+
+    if (customPadding !== null) {
+      return customPadding;
+    }
+
+    return parsePixelValue(styles.paddingTop) ?? 0;
+  };
+
+  const getSectionScrollOffset = element => {
+    const styles = window.getComputedStyle(element);
+    const customOffset = parsePixelValue(
+      styles.getPropertyValue("--section-scroll-offset")
+    );
+
+    return customOffset ?? 0;
+  };
+
+  const getHeaderScrollOffset = element => {
+    const headerHeight =
+      parsePixelValue(
+        window.getComputedStyle(rootElement).getPropertyValue("--header-height")
+      ) ?? 0;
+    const sectionPadding = getSectionScrollPadding(element);
+    const sectionScrollOffset = getSectionScrollOffset(element);
+
+    return headerHeight - sectionPadding + sectionScrollOffset;
+  };
+
+  const normalizePathname = pathname => pathname.replace(/\/+$/, "") || "/";
+
+  const resolveHashTarget = hash => {
+    if (!hash || hash === "#") {
+      return null;
+    }
+
+    try {
+      const decoded = decodeURIComponent(hash.slice(1));
+
+      if (!decoded) {
+        return null;
+      }
+
+      return document.getElementById(decoded);
+    } catch (error) {
+      return null;
+    }
+  };
+
+  const keepHeaderPinnedDuringScroll = () => {
+    if (!window.headerControl) {
+      return () => {};
+    }
+
+    window.headerControl.pin();
+    window.headerControl.freeze();
+
+    let released = false;
+    let releaseTimerId = null;
+
+    const release = () => {
+      if (released) {
+        return;
+      }
+
+      released = true;
+      window.removeEventListener("scroll", onScroll);
+
+      if (releaseTimerId !== null) {
+        window.clearTimeout(releaseTimerId);
+        releaseTimerId = null;
+      }
+
+      window.headerControl.unfreeze();
+    };
+
+    const scheduleRelease = delay => {
+      if (releaseTimerId !== null) {
+        window.clearTimeout(releaseTimerId);
+      }
+
+      releaseTimerId = window.setTimeout(release, delay);
+    };
+
+    const onScroll = () => {
+      scheduleRelease(200);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    scheduleRelease(600);
+
+    return release;
+  };
+
+  const closeMenu = ({ keepFrozen = false } = {}) => {
     burger.classList.remove("active");
     burger.setAttribute("aria-expanded", "false");
     document.body.classList.remove("menu-open");
@@ -21,9 +137,13 @@ export const initBurger = () => {
     // Восстанавливаем реакцию хедера на скролл после закрытия меню
     if (window.headerControl) {
       window.headerControl.pin();
-      setTimeout(() => {
-        window.headerControl.unfreeze();
-      }, 100);
+      if (keepFrozen) {
+        window.headerControl.freeze();
+      } else {
+        setTimeout(() => {
+          window.headerControl.unfreeze();
+        }, 100);
+      }
     }
   };
 
@@ -59,9 +179,70 @@ export const initBurger = () => {
   });
 
   // Закрытие при клике на ссылку меню (делегирование событий)
-  mobileNav.addEventListener("click", e => {
-    if (e.target.matches("a")) {
-      closeMenu();
-    }
-  });
+  mobileNav.addEventListener(
+    "click",
+    event => {
+      const anchor = event.target.closest("a");
+
+      if (!anchor) {
+        return;
+      }
+
+      const href = anchor.getAttribute("href");
+
+      if (!href) {
+        closeMenu();
+        return;
+      }
+
+      let url;
+
+      try {
+        url = new URL(href, window.location.href);
+      } catch (error) {
+        closeMenu();
+        return;
+      }
+
+      const isSamePage =
+        url.origin === window.location.origin &&
+        normalizePathname(url.pathname) ===
+          normalizePathname(window.location.pathname) &&
+        url.search === window.location.search;
+
+      const target = isSamePage ? resolveHashTarget(url.hash) : null;
+
+      if (!target) {
+        closeMenu();
+        return;
+      }
+
+      event.preventDefault();
+
+      closeMenu({ keepFrozen: true });
+
+      keepHeaderPinnedDuringScroll();
+
+      const headerScrollOffset = getHeaderScrollOffset(target);
+      const targetOffset =
+        target.getBoundingClientRect().top +
+        window.scrollY -
+        headerScrollOffset;
+
+      const scrollToTarget = () => {
+        try {
+          window.scrollTo({ top: targetOffset, behavior: "smooth" });
+        } catch (error) {
+          window.scrollTo(0, targetOffset);
+        }
+      };
+
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          scrollToTarget();
+        });
+      });
+    },
+    { passive: false }
+  );
 };
