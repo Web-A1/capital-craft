@@ -1,0 +1,16 @@
+/* Local webfonts (home-only) */
+@font-face {
+  font-family: "Syne";
+  src: url("../fonts/syne-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Syne";
+  src: url("../fonts/syne-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

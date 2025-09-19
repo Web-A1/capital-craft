@@ -1,0 +1,41 @@
+/* Local webfonts declarations (core set)
+   Place files into templates/capitalcraft/fonts/:
+   - golos-text-400.woff2
+   - golos-text-500.woff2
+   - onest-400.woff2
+   - onest-700.woff2
+*/
+
+/* Golos Text */
+@font-face {
+  font-family: "Golos Text";
+  src: url("../fonts/golos-text-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Golos Text";
+  src: url("../fonts/golos-text-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Onest */
+@font-face {
+  font-family: "Onest";
+  src: url("../fonts/onest-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Onest";
+  src: url("../fonts/onest-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
