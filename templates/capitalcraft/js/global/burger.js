@@ -1,5 +1,12 @@
 "use strict";
 
+import {
+  parsePixelValue,
+  getSectionScrollPadding,
+  getSectionScrollOffset,
+  getHeaderScrollOffset
+} from "./script.js";
+
 export const initBurger = () => {
   const burger = document.querySelector(".burger");
   const header = document.querySelector(".site-header");
@@ -10,55 +17,6 @@ export const initBurger = () => {
 
   // Инициализация: меню скрыто для скринридеров по умолчанию
   mobileNav.setAttribute("aria-hidden", "true");
-
-  const parsePixelValue = value => {
-    if (typeof value !== "string") {
-      return null;
-    }
-
-    const trimmed = value.trim();
-
-    if (!trimmed) {
-      return null;
-    }
-
-    const parsed = parseFloat(trimmed);
-
-    return Number.isNaN(parsed) ? null : parsed;
-  };
-
-  const getSectionScrollPadding = element => {
-    const styles = window.getComputedStyle(element);
-    const customPadding = parsePixelValue(
-      styles.getPropertyValue("--section-scroll-padding")
-    );
-
-    if (customPadding !== null) {
-      return customPadding;
-    }
-
-    return parsePixelValue(styles.paddingTop) ?? 0;
-  };
-
-  const getSectionScrollOffset = element => {
-    const styles = window.getComputedStyle(element);
-    const customOffset = parsePixelValue(
-      styles.getPropertyValue("--section-scroll-offset")
-    );
-
-    return customOffset ?? 0;
-  };
-
-  const getHeaderScrollOffset = element => {
-    const headerHeight =
-      parsePixelValue(
-        window.getComputedStyle(rootElement).getPropertyValue("--header-height")
-      ) ?? 0;
-    const sectionPadding = getSectionScrollPadding(element);
-    const sectionScrollOffset = getSectionScrollOffset(element);
-
-    return headerHeight - sectionPadding + sectionScrollOffset;
-  };
 
   const normalizePathname = pathname => pathname.replace(/\/+$/, "") || "/";
 
