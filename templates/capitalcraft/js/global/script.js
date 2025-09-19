@@ -19,7 +19,7 @@ initTextTruncate();
 const header = document.querySelector(".site-header");
 
 if (header) {
-  header.classList.add("pinned");
+  header.classList.add("pinned", "is-initial");
 
   let lastScrollY = window.pageYOffset;
   let frozen = false;
@@ -30,6 +30,7 @@ if (header) {
 
   const enableAutoHide = () => {
     allowAutoHide = true;
+    header.classList.remove("is-initial");
   };
 
   const interactionEvents = [
