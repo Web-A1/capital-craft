@@ -128,7 +128,8 @@ section,
     padding-top: @divider-space-mobile;
     padding-bottom: @divider-space-mobile;
     --section-scroll-padding: @divider-space-mobile;
-    --section-scroll-offset: 10px;
+    // Leave 30px of visible space between the header divider and section content
+    --section-scroll-offset: 30px;
     &::after {
       width: calc(100% - (@mobile-side-padding * 2));
     }
