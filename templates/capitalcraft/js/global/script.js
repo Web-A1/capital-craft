@@ -24,8 +24,24 @@ if (header) {
   let lastScrollY = window.pageYOffset;
   let frozen = false;
   let ignoreInitialScroll = true;
+  let allowAutoHide = false;
   const tolerance =
     window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
+
+  const enableAutoHide = () => {
+    allowAutoHide = true;
+  };
+
+  const interactionEvents = [
+    ["pointerdown", { once: true, passive: true }],
+    ["touchstart", { once: true, passive: true }],
+    ["wheel", { once: true, passive: true }],
+    ["keydown", { once: true }]
+  ];
+
+  interactionEvents.forEach(([eventName, options]) => {
+    window.addEventListener(eventName, enableAutoHide, options);
+  });
 
   const onScroll = () => {
     if (frozen) return;
@@ -34,6 +50,11 @@ if (header) {
     if (ignoreInitialScroll) {
       lastScrollY = currentScrollY;
       ignoreInitialScroll = false;
+      return;
+    }
+
+    if (!allowAutoHide) {
+      lastScrollY = currentScrollY;
       return;
     }
 
