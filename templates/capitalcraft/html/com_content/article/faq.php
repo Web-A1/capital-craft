@@ -1,4 +1,4 @@
-<?php defined("_JEXEC") or die();
+<?php defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -11,7 +11,7 @@ $app = Factory::getApplication();
 
 // Параметр фильтра по тегу (?tag=alias|id)
 $input = $app->getInput();
-$tagParamRaw = $input->getString("tag", "");
+$tagParamRaw = $input->getString('tag', '');
 $tagParam = trim($tagParamRaw);
 
 $faqData = CapitalcraftFaqHelper::getFaqPageData($tagParam);
@@ -27,31 +27,31 @@ CapitalcraftSeoHelper::addCanonicalLink($canonicalUrl);
 
 // Улучшенные структурированные данные JSON-LD для FAQ
 $faqSchema = [
-    "@context" => "https://schema.org",
-    "@type" => "FAQPage",
-    "name" => "Часто задаваемые вопросы о привлечении капитала",
-    "description" =>
-        "Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса от экспертов Capital Craft",
-    "url" => $canonicalUrl,
-    "mainEntity" => [],
-    "about" => [
-        "@type" => "Organization",
-        "name" => "Capital Craft",
-        "description" => "Бутиковое агентство инвестиционных решений",
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'name' => 'Часто задаваемые вопросы о привлечении капитала',
+    'description' =>
+        'Ответы на популярные вопросы о привлечении капитала, инвестициях и финансировании бизнеса от экспертов Capital Craft',
+    'url' => $canonicalUrl,
+    'mainEntity' => [],
+    'about' => [
+        '@type' => 'Organization',
+        'name' => 'Capital Craft',
+        'description' => 'Бутиковое агентство инвестиционных решений',
     ],
 ];
 
 foreach ($faqItems as $index => $item) {
     $question = [
-        "@type" => "Question",
-        "position" => $index + 1,
-        "name" => (string) ($item["q"] ?? ""),
+        '@type' => 'Question',
+        'position' => $index + 1,
+        'name' => (string) ($item['q'] ?? ''),
     ];
 
     $answer = [
-        "@type" => "Answer",
-        "text" => (string) ($item['answer_text'] ?? ''),
-        "upvoteCount" => 0,
+        '@type' => 'Answer',
+        'text' => (string) ($item['answer_text'] ?? ''),
+        'upvoteCount' => 0,
     ];
 
     $publishUp = (string) ($item['publish_up'] ?? '');
@@ -70,31 +70,31 @@ foreach ($faqItems as $index => $item) {
 
     $question['acceptedAnswer'] = $answer;
 
-    $faqSchema["mainEntity"][] = $question;
+    $faqSchema['mainEntity'][] = $question;
 }
 
 $doc->addCustomTag(
     '<script type="application/ld+json">' .
         json_encode($faqSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) .
-        "</script>",
+        '</script>',
 );
 
 // BreadcrumbList schema
 $breadcrumbSchema = [
-    "@context" => "https://schema.org",
-    "@type" => "BreadcrumbList",
-    "itemListElement" => [
+    '@context' => 'https://schema.org',
+    '@type' => 'BreadcrumbList',
+    'itemListElement' => [
         [
-            "@type" => "ListItem",
-            "position" => 1,
-            "name" => "Главная",
-            "item" => Uri::root(),
+            '@type' => 'ListItem',
+            'position' => 1,
+            'name' => 'Главная',
+            'item' => Uri::root(),
         ],
         [
-            "@type" => "ListItem",
-            "position" => 2,
-            "name" => "FAQ",
-            "item" => $canonicalUrl,
+            '@type' => 'ListItem',
+            'position' => 2,
+            'name' => 'FAQ',
+            'item' => $canonicalUrl,
         ],
     ],
 ];
@@ -102,7 +102,7 @@ $breadcrumbSchema = [
 $doc->addCustomTag(
     '<script type="application/ld+json">' .
         json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) .
-        "</script>",
+        '</script>',
 );
 ?>
 
@@ -118,12 +118,12 @@ $doc->addCustomTag(
               <nav class="faq__tags-nav" aria-label="Навигация по тегам FAQ">
                 <ul class="faq-tags__cloud faq-tags__cloud--nowrap">
                   <li class="faq-tags__tag">
-                    <a class="faq-tags__link<?php echo $activeTagAlias === ""
-                        ? " is-active"
-                        : ""; ?>" href="<?= htmlspecialchars(
+                    <a class="faq-tags__link<?php echo $activeTagAlias === ''
+                        ? ' is-active'
+                        : ''; ?>" href="<?= htmlspecialchars(
                             $faqBaseRoute,
                             ENT_QUOTES,
-                            "UTF-8",
+                            'UTF-8',
                         ); ?>">Все вопросы</a>
                   </li>
                   <?php foreach ($faqAllTags as $tg): ?>
@@ -131,12 +131,12 @@ $doc->addCustomTag(
                     <li class="faq-tags__tag">
                       <?php $tagHref = CapitalcraftFaqHelper::getFaqRoute(['tag' => $tg->alias]); ?>
                       <a class="faq-tags__link<?php echo $activeTagAlias === $alias
-                          ? " is-active"
-                          : ""; ?>" href="<?= htmlspecialchars(
+                          ? ' is-active'
+                          : ''; ?>" href="<?= htmlspecialchars(
                               $tagHref,
                               ENT_QUOTES,
-                              "UTF-8",
-                          ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+                              'UTF-8',
+                          ); ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, 'UTF-8'); ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
@@ -146,53 +146,53 @@ $doc->addCustomTag(
                 <?php foreach ($faqItems as $index => $item): ?>
                     <?php
                     $aliases = [];
-                    if (!empty($item["tags"])) {
-                        foreach ($item["tags"] as $t) {
-                            $aliases[] = strtolower($t["alias"]);
+                    if (!empty($item['tags'])) {
+                        foreach ($item['tags'] as $t) {
+                            $aliases[] = strtolower($t['alias']);
                         }
                     }
                     ?>
-                    <div class="faq__item" id="faq-q-<?php echo (int) ($item["id"] ??
+                    <div class="faq__item" id="faq-q-<?php echo (int) ($item['id'] ??
                         0); ?>" data-tags="<?php echo htmlspecialchars(
-                            implode(" ", $aliases),
+                            implode(' ', $aliases),
                             ENT_QUOTES,
-                            "UTF-8",
+                            'UTF-8',
                         ); ?>">
                         <button class="faq__question" 
                                 aria-expanded="false" 
                                 aria-controls="faq-answer-<?php echo $index; ?>"
                                 aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars(
-                                    $item["q"],
+                                    $item['q'],
                                     ENT_QUOTES,
-                                    "UTF-8",
+                                    'UTF-8',
                                 ); ?>">
                             <span class="faq__text">
-                                <?php echo htmlspecialchars($item["q"], ENT_QUOTES, "UTF-8"); ?>
+                                <?php echo htmlspecialchars($item['q'], ENT_QUOTES, 'UTF-8'); ?>
                             </span>
                         </button>
                         <div class="faq__answer" 
                              id="faq-answer-<?php echo $index; ?>"
                              role="region" 
                              aria-label="Ответ на вопрос: <?php echo htmlspecialchars(
-                                 $item["q"],
+                                 $item['q'],
                                  ENT_QUOTES,
-                                 "UTF-8",
+                                 'UTF-8',
                              ); ?>">
                             <?php echo $item['answer_html'] ?? ''; ?>
                         </div>
                         <?php
-                        $primaryTag = $item["primary_tag"] ?? null;
-                    if (empty($primaryTag) && !empty($item["tags"])) {
-                        $primaryTag = $item["tags"][0];
+                        $primaryTag = $item['primary_tag'] ?? null;
+                    if (empty($primaryTag) && !empty($item['tags'])) {
+                        $primaryTag = $item['tags'][0];
                     }
                     ?>
                         <?php if (!empty($primaryTag)): ?>
-                            <?php $primaryTagLink = CapitalcraftFaqHelper::getFaqRoute(['tag' => $primaryTag["alias"]]); ?>
+                            <?php $primaryTagLink = CapitalcraftFaqHelper::getFaqRoute(['tag' => $primaryTag['alias']]); ?>
                             <a class="faq__tag-chip" href="<?= htmlspecialchars(
                                 $primaryTagLink,
                                 ENT_QUOTES,
-                                "UTF-8",
-                            ); ?>">#<?php echo htmlspecialchars($primaryTag["title"], ENT_QUOTES, "UTF-8"); ?></a>
+                                'UTF-8',
+                            ); ?>">#<?php echo htmlspecialchars($primaryTag['title'], ENT_QUOTES, 'UTF-8'); ?></a>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
