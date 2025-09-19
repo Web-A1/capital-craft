@@ -21,7 +21,6 @@ export const initBurger = () => {
     // Восстанавливаем реакцию хедера на скролл после закрытия меню
     if (window.headerControl) {
       window.headerControl.pin();
-      ы;
       setTimeout(() => {
         window.headerControl.unfreeze();
       }, 100);
