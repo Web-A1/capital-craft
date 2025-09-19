@@ -1,22 +1,21 @@
-<?php defined('_JEXEC') or die();
+<?php defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
 
-require_once JPATH_SITE . '/templates/capitalcraft/helpers/RelatedHelper.php';
+require_once JPATH_SITE . "/templates/capitalcraft/helpers/RelatedHelper.php";
 
-require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
+require_once JPATH_SITE . "/templates/capitalcraft/helpers/SeoHelper.php";
 
 // Определяем, является ли это FAQ страницей
 $isFAQPage = false;
 
 // Сначала используем alias категории из объекта статьи; при его отсутствии — фолбэк на запрос
 if (isset($this->item)) {
-    $catAlias = '';
+    $catAlias = "";
 
     if (!empty($this->item->category_alias)) {
         $catAlias = strtolower((string) $this->item->category_alias);
@@ -24,20 +23,20 @@ if (isset($this->item)) {
         $catAlias = strtolower((string) $this->item->category->alias);
     }
 
-    if ($catAlias === 'faq') {
+    if ($catAlias === "faq") {
         $isFAQPage = true;
     } elseif (isset($this->item->catid)) {
         // Фолбэк: если alias не доступен в объекте, делаем единичный запрос к БД
         $db = Factory::getDbo();
         $qCatAlias = $db
             ->getQuery(true)
-            ->select($db->quoteName('alias'))
-            ->from($db->quoteName('#__categories'))
-            ->where($db->quoteName('id') . ' = ' . (int) $this->item->catid)
-            ->where($db->quoteName('published') . ' = 1');
+            ->select($db->quoteName("alias"))
+            ->from($db->quoteName("#__categories"))
+            ->where($db->quoteName("id") . " = " . (int) $this->item->catid)
+            ->where($db->quoteName("published") . " = 1");
         $db->setQuery($qCatAlias);
         $currentCatAlias = strtolower((string) $db->loadResult());
-        if ($currentCatAlias === 'faq') {
+        if ($currentCatAlias === "faq") {
             $isFAQPage = true;
         }
     }
@@ -46,7 +45,7 @@ if (isset($this->item)) {
 // Если это FAQ страница, используем наш кастомный шаблон
 if ($isFAQPage) {
     // Подключаем локальный шаблон FAQ прямо из override-директории
-    require __DIR__ . '/faq.php';
+    require __DIR__ . "/faq.php";
 } else {
 
     // Для остальных страниц используем стандартную Joomla логику
@@ -57,7 +56,7 @@ if ($isFAQPage) {
 
     // Улучшенный title
     if (!empty($this->item->title)) {
-        $doc->setTitle($this->item->title . ' - Capital Craft | Инвестиционные решения');
+        $doc->setTitle($this->item->title . " - Capital Craft | Инвестиционные решения");
     }
 
     // Description берём только из админки (без автогенерации)
@@ -71,13 +70,13 @@ if ($isFAQPage) {
 
     // Open Graph теги
     $doc->addCustomTag(
-        '<meta property="og:title" content="' . htmlspecialchars($this->item->title, ENT_QUOTES, 'UTF-8') . '" />',
+        '<meta property="og:title" content="' . htmlspecialchars($this->item->title, ENT_QUOTES, "UTF-8") . '" />',
     );
-    $ogDescription = $doc->getMetaData('description');
+    $ogDescription = $doc->getMetaData("description");
     if (!empty($ogDescription)) {
         $doc->addCustomTag(
             '<meta property="og:description" content="' .
-                htmlspecialchars($ogDescription, ENT_QUOTES, 'UTF-8') .
+                htmlspecialchars($ogDescription, ENT_QUOTES, "UTF-8") .
                 '" />',
         );
     }
@@ -87,7 +86,7 @@ if ($isFAQPage) {
     $doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
 
     // OG image: берём изображение материала, иначе дефолт
-    $ogImage = '';
+    $ogImage = "";
     if (!empty($this->item->images)) {
         $imagesObj = json_decode($this->item->images);
         if (!empty($imagesObj->image_fulltext)) {
@@ -97,26 +96,26 @@ if ($isFAQPage) {
         }
     }
     if (!empty($ogImage)) {
-        if (strpos($ogImage, 'http') !== 0) {
-            $ogImage = Uri::root() . ltrim($ogImage, '/');
+        if (strpos($ogImage, "http") !== 0) {
+            $ogImage = Uri::root() . ltrim($ogImage, "/");
         }
     } else {
-        $ogImage = Uri::root() . 'templates/capitalcraft/images/og/OG-image.webp';
+        $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
     }
     $doc->addCustomTag(
-        '<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') . '" />',
+        '<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
     );
     $doc->addCustomTag(
-        '<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, 'UTF-8') . '" />',
+        '<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
     );
 
     // Robots meta
-    $doc->setMetaData('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
+    $doc->setMetaData("robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
 
     // Структурированные данные для статьи (расширенная схема)
-    $schemaDescription = $doc->getMetaData('description');
+    $schemaDescription = $doc->getMetaData("description");
     $schemaLang = $this->item->language ?: $doc->getLanguage();
-    $schemaLang = $schemaLang ?: 'ru-RU';
+    $schemaLang = $schemaLang ?: "ru-RU";
     $schemaImage = $ogImage;
 
     $keywords = [];
@@ -128,78 +127,80 @@ if ($isFAQPage) {
         }
     }
 
-    $articleSection = '';
+    $articleSection = "";
     if (!empty($this->item->category_title)) {
         $articleSection = (string) $this->item->category_title;
     }
 
     $mainEntity = [
-        '@type' => 'WebPage',
-        '@id' => $canonical,
+        "@type" => "WebPage",
+        "@id" => $canonical,
     ];
 
-    $bodyText = '';
+    $bodyText = "";
     if (!empty($this->item->text)) {
         // Упрощённая очистка для wordCount (без включения полного текста в JSON-LD на этом этапе)
         $tmp = strip_tags($this->item->text);
-        $tmp = html_entity_decode($tmp, ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $tmp = preg_replace('/\s+/u', ' ', $tmp);
+        $tmp = html_entity_decode($tmp, ENT_QUOTES | ENT_HTML5, "UTF-8");
+        $tmp = preg_replace("/\s+/u", " ", $tmp);
         $bodyText = trim($tmp);
     }
-    $wordCount = $bodyText !== '' ? str_word_count($bodyText, 0, 'А-Яа-яЁё') : 0;
+    $wordCount = $bodyText !== "" ? str_word_count($bodyText, 0, "А-Яа-яЁё") : 0;
     // Лимитируем articleBody, чтобы не раздувать JSON-LD (до ~10k символов)
-    $articleBodyLimited = $bodyText !== '' ? mb_substr($bodyText, 0, 10000, 'UTF-8') : '';
+    $articleBodyLimited = $bodyText !== "" ? mb_substr($bodyText, 0, 10000, "UTF-8") : "";
 
     $published = $this->item->publish_up ?: $this->item->created;
 
     $articleSchema = [
-        '@context' => 'https://schema.org',
-        '@type' => 'Article',
-        'headline' => $this->item->title,
-        'description' => $schemaDescription,
-        'url' => $canonical,
-        'mainEntityOfPage' => $mainEntity,
-        'image' => $schemaImage,
-        'inLanguage' => $schemaLang,
-        'keywords' => !empty($keywords) ? implode(', ', $keywords) : null,
-        'articleSection' => $articleSection ?: null,
-        'wordCount' => $wordCount ?: null,
-        'isAccessibleForFree' => true,
-        'datePublished' => $published,
-        'dateModified' => $this->item->modified,
-        'articleBody' => $articleBodyLimited !== '' ? $articleBodyLimited : null,
-        'author' => [
-            '@type' => 'Organization',
-            'name' => 'Capital Craft',
+        "@context" => "https://schema.org",
+        "@type" => "Article",
+        "headline" => $this->item->title,
+        "description" => $schemaDescription,
+        "url" => $canonical,
+        "mainEntityOfPage" => $mainEntity,
+        "image" => $schemaImage,
+        "inLanguage" => $schemaLang,
+        "keywords" => !empty($keywords) ? implode(", ", $keywords) : null,
+        "articleSection" => $articleSection ?: null,
+        "wordCount" => $wordCount ?: null,
+        "isAccessibleForFree" => true,
+        "datePublished" => $published,
+        "dateModified" => $this->item->modified,
+        "articleBody" => $articleBodyLimited !== "" ? $articleBodyLimited : null,
+        "author" => [
+            "@type" => "Organization",
+            "name" => "Capital Craft",
         ],
-        'publisher' => [
-            '@type' => 'Organization',
-            'name' => 'Capital Craft',
-            'logo' => [
-                '@type' => 'ImageObject',
-                'url' => Uri::root() . 'templates/capitalcraft/images/logo_black.svg',
+        "publisher" => [
+            "@type" => "Organization",
+            "name" => "Capital Craft",
+            "logo" => [
+                "@type" => "ImageObject",
+                "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
             ],
         ],
     ];
 
     // Удаляем пустые ключи, чтобы не засорять JSON-LD
-    $articleSchema = array_filter($articleSchema, function ($v) { return $v !== null && $v !== ''; });
+    $articleSchema = array_filter($articleSchema, function ($v) {
+        return $v !== null && $v !== "";
+    });
 
     $doc->addCustomTag(
-        '<script type="application/ld+json">' . json_encode($articleSchema, JSON_UNESCAPED_UNICODE) . '</script>',
+        '<script type="application/ld+json">' . json_encode($articleSchema, JSON_UNESCAPED_UNICODE) . "</script>",
     );
 
     // Стандартная Joomla разметка
     ?>
     <section class="frame section-with-divider article">
     <div class="container com-content-article item-page<?php echo $this->pageclass_sfx; ?>">
-        <?php if ($this->params->get('show_title')): ?>
+        <?php if ($this->params->get("show_title")): ?>
         <div class="page-header">
             <h1><?php echo $this->escape($this->item->title); ?></h1>
         </div>
-        <?php elseif ($this->params->get('show_page_heading')): ?>
+        <?php elseif ($this->params->get("show_page_heading")): ?>
         <div class="page-header">
-            <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
+            <h1><?php echo $this->escape($this->params->get("page_heading")); ?></h1>
         </div>
         <?php endif; ?>
         
@@ -208,8 +209,8 @@ if ($isFAQPage) {
     $dateValue = $this->item->publish_up ?: $this->item->created; ?>
         <div class="blog-card__meta">
           <?php if (!empty($dateValue)): ?>
-            <time class="blog-card__date" datetime="<?php echo HTMLHelper::_('date', $dateValue, 'c'); ?>">
-              <?php echo HTMLHelper::_('date', $dateValue, Text::_('DATE_FORMAT_LC3')); ?>
+            <time class="blog-card__date" datetime="<?php echo HTMLHelper::_("date", $dateValue, "c"); ?>">
+              <?php echo HTMLHelper::_("date", $dateValue, Text::_("DATE_FORMAT_LC3")); ?>
             </time>
           <?php endif; ?>
 
@@ -217,21 +218,17 @@ if ($isFAQPage) {
             <?php
             // Получаем blogRoute один раз вне цикла тегов
             $menu = Factory::getApplication()->getMenu();
-              $blogItem = $menu->getItems('alias', 'blog', true);
-              $blogRouteBase = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-              $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
-              ?>
+            $blogItem = $menu->getItems("alias", "blog", true);
+            $blogRouteBase = $blogItem ? Route::_("index.php?Itemid=" . (int) $blogItem->id) : Route::_("index.php");
+            $blogRouteSep = strpos($blogRouteBase, "?") === false ? "?" : "&";
+            ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
                 <li class="blog-card__tag">
-                  <?php
-                  $tagHref = $blogRouteBase . $blogRouteSep . 'tag=' . rawurlencode($tag->alias ?? '');
-                  ?>
-                  <a href="<?php echo $tagHref; ?>" class="blog-card__tag-link" data-alias="<?php echo htmlspecialchars(
-                      $tag->alias ?? '',
-                      ENT_QUOTES,
-                      'UTF-8',
-                  ); ?>">#<?php echo $this->escape($tag->title); ?></a>
+                  <?php $tagHref = $blogRouteBase . $blogRouteSep . "tag=" . rawurlencode($tag->alias ?? ""); ?>
+                  <a href="<?php echo $tagHref; ?>" class="blog-card__tag-link">#<?php echo $this->escape(
+    $tag->title,
+); ?></a>
                 </li>
               <?php endforeach; ?>
             </ul>
@@ -241,33 +238,33 @@ if ($isFAQPage) {
         <?php
         // Right-side illustration (from article images)
         $imagesObj = !empty($this->item->images) ? json_decode($this->item->images) : null;
-    $mainImg =
-        $imagesObj && !empty($imagesObj->image_fulltext)
-            ? $imagesObj->image_fulltext
-            : ($imagesObj && !empty($imagesObj->image_intro)
-                ? $imagesObj->image_intro
-                : '');
-    $mainAlt =
-        $imagesObj && !empty($imagesObj->image_fulltext_alt)
-            ? $imagesObj->image_fulltext_alt
-            : ($imagesObj && !empty($imagesObj->image_intro_alt)
-                ? $imagesObj->image_intro_alt
-                : '');
-    ?>
+        $mainImg =
+            $imagesObj && !empty($imagesObj->image_fulltext)
+                ? $imagesObj->image_fulltext
+                : ($imagesObj && !empty($imagesObj->image_intro)
+                    ? $imagesObj->image_intro
+                    : "");
+        $mainAlt =
+            $imagesObj && !empty($imagesObj->image_fulltext_alt)
+                ? $imagesObj->image_fulltext_alt
+                : ($imagesObj && !empty($imagesObj->image_intro_alt)
+                    ? $imagesObj->image_intro_alt
+                    : "");
+        ?>
 
         <?php
-    // Build related articles and FAQ via helper
-    $tagIds = [];
-    if (!empty($this->item->tags->itemTags)) {
-        foreach ($this->item->tags->itemTags as $tg) {
-            if (!empty($tg->tag_id)) {
-                $tagIds[] = (int) $tg->tag_id;
+        // Build related articles and FAQ via helper
+        $tagIds = [];
+        if (!empty($this->item->tags->itemTags)) {
+            foreach ($this->item->tags->itemTags as $tg) {
+                if (!empty($tg->tag_id)) {
+                    $tagIds[] = (int) $tg->tag_id;
+                }
             }
         }
-    }
 
-    $relatedData = CapitalcraftRelatedHelper::getRelatedForArticle($this->item, $tagIds);
-    ?>
+        $relatedData = CapitalcraftRelatedHelper::getRelatedForArticle($this->item, $tagIds);
+        ?>
 
         <div class="article__grid">
           <div class="article__main">
@@ -282,24 +279,24 @@ if ($isFAQPage) {
                 <img src="<?php echo htmlspecialchars(
                     $mainImg,
                     ENT_QUOTES,
-                    'UTF-8',
-                ); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, 'UTF-8'); ?>">
+                    "UTF-8",
+                ); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, "UTF-8"); ?>">
               </figure>
             <?php endif; ?>
 
-            <?php $hasRelated = !empty($relatedData['articles']) || !empty($relatedData['faq']); ?>
+            <?php $hasRelated = !empty($relatedData["articles"]) || !empty($relatedData["faq"]); ?>
 
             <?php if ($hasRelated): ?>
               <div class="article__related-wrap">
                 <div class="article__related-header">
                   <div class="article__related-title">Читайте также</div>
-                  <?php if (!empty($relatedData['heading_tags'])): ?>
+                  <?php if (!empty($relatedData["heading_tags"])): ?>
                     <div class="article__related-tags">
-                      <?php foreach ($relatedData['heading_tags'] as $tagInfo): ?>
+                      <?php foreach ($relatedData["heading_tags"] as $tagInfo): ?>
                         <?php
-                        $safeTitle = htmlspecialchars((string) $tagInfo['title'], ENT_QUOTES, 'UTF-8');
-                          $safeTitle = preg_replace('/\s+/', '&nbsp;', $safeTitle);
-                          ?>
+                        $safeTitle = htmlspecialchars((string) $tagInfo["title"], ENT_QUOTES, "UTF-8");
+                        $safeTitle = preg_replace("/\s+/", "&nbsp;", $safeTitle);
+                        ?>
                         <span class="article__related-tag">#<?php echo $safeTitle; ?></span>
                       <?php endforeach; ?>
                     </div>
@@ -308,72 +305,64 @@ if ($isFAQPage) {
                 <div class="article__related-scroll">
                   <aside class="article__related-block">
                     <ul class="article__related-list">
-                      <?php if (!empty($relatedData['articles'])): ?>
-                        <?php foreach ($relatedData['articles'] as $rel): ?>
+                      <?php if (!empty($relatedData["articles"])): ?>
+                        <?php foreach ($relatedData["articles"] as $rel): ?>
                           <li class="article__related-item">
                             <a class="article__related-link" href="<?php echo htmlspecialchars(
-                                $rel['link'],
+                                $rel["link"],
                                 ENT_QUOTES,
-                                'UTF-8',
+                                "UTF-8",
                             ); ?>">
                               <div class="article__related-link-title">
-                                <?php echo htmlspecialchars($rel['title'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php echo htmlspecialchars($rel["title"], ENT_QUOTES, "UTF-8"); ?>
                               </div>
-                              <?php if (!empty($rel['excerpt'])): ?>
+                              <?php if (!empty($rel["excerpt"])): ?>
                                 <div class="article__related-excerpt"><?php echo htmlspecialchars(
-                                    $rel['excerpt'],
+                                    $rel["excerpt"],
                                     ENT_QUOTES,
-                                    'UTF-8'
+                                    "UTF-8",
                                 ); ?></div>
                               <?php endif; ?>
                             </a>
-                            <?php if (!empty($rel['publish_up'])): ?>
+                            <?php if (!empty($rel["publish_up"])): ?>
                               <time class="article__related-date" datetime="<?php echo HTMLHelper::_(
-                                  'date',
-                                  $rel['publish_up'],
-                                  'c'
+                                  "date",
+                                  $rel["publish_up"],
+                                  "c",
                               ); ?>">
-                                <?php echo HTMLHelper::_(
-                                    'date',
-                                    $rel['publish_up'],
-                                    Text::_('DATE_FORMAT_LC3')
-                                ); ?>
+                                <?php echo HTMLHelper::_("date", $rel["publish_up"], Text::_("DATE_FORMAT_LC3")); ?>
                               </time>
                             <?php endif; ?>
                           </li>
                         <?php endforeach; ?>
                       <?php endif; ?>
 
-                      <?php if (!empty($relatedData['faq'])): ?>
-                        <?php foreach ($relatedData['faq'] as $fq): ?>
+                      <?php if (!empty($relatedData["faq"])): ?>
+                        <?php foreach ($relatedData["faq"] as $fq): ?>
                           <li class="article__related-item">
                             <a class="article__related-link" href="<?php echo htmlspecialchars(
-                                $fq['link'],
+                                $fq["link"],
                                 ENT_QUOTES,
-                                'UTF-8'
+                                "UTF-8",
                             ); ?>">
                               <div class="article__related-link-title">
-                                <?php echo htmlspecialchars($fq['title'], ENT_QUOTES, 'UTF-8'); ?>
+                                <?php echo htmlspecialchars($fq["title"], ENT_QUOTES, "UTF-8"); ?>
                               </div>
-                              <?php if (!empty($fq['excerpt'])): ?>
+                              <?php if (!empty($fq["excerpt"])): ?>
                                 <div class="article__related-excerpt"><?php echo htmlspecialchars(
-                                    $fq['excerpt'],
+                                    $fq["excerpt"],
                                     ENT_QUOTES,
-                                    'UTF-8'
+                                    "UTF-8",
                                 ); ?></div>
                               <?php endif; ?>
                             </a>
-                            <?php if (!empty($fq['publish_up'])): ?>
+                            <?php if (!empty($fq["publish_up"])): ?>
                               <time class="article__related-date" datetime="<?php echo HTMLHelper::_(
-                                  'date',
-                                  $fq['publish_up'],
-                                  'c'
+                                  "date",
+                                  $fq["publish_up"],
+                                  "c",
                               ); ?>">
-                                <?php echo HTMLHelper::_(
-                                    'date',
-                                    $fq['publish_up'],
-                                    Text::_('DATE_FORMAT_LC3')
-                                ); ?>
+                                <?php echo HTMLHelper::_("date", $fq["publish_up"], Text::_("DATE_FORMAT_LC3")); ?>
                               </time>
                             <?php endif; ?>
                           </li>
