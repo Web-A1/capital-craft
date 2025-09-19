@@ -1,10 +1,13 @@
 <?php
 defined("_JEXEC") or die();
 
-require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
+require_once JPATH_SITE . "/templates/capitalcraft/helpers/SeoHelper.php";
 
 // Получаем объект меню и проверяем: активный пункт = главный?
-$app = JFactory::getApplication();
+$app = Factory::getApplication();
 $menu = $app->getMenu();
 $active = $menu->getActive();
 
@@ -28,7 +31,7 @@ $isFaq = $active && $active->alias === "faq";
 // Блоговые страницы: сам блог, поиск по блогу, страницы тегов
 $isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tags"], true);
 
-$document = JFactory::getDocument();
+$document = Factory::getDocument();
 $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css");
 
 if ($isHome) {
@@ -77,10 +80,10 @@ if ($addCanonical) {
       <meta property="og:description" content="<?= $ogDesc ?>">
     <?php endif; ?>
     <meta property="og:type" content="website">
-    <meta property="og:url" content="<?= JURI::root() ?>">
+    <meta property="og:url" content="<?= Uri::root() ?>">
     <meta property="og:site_name" content="Capital Craft">
     <meta property="og:locale" content="ru_RU">
-    <meta property="og:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta property="og:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Capital Craft — превью">
@@ -91,7 +94,7 @@ if ($addCanonical) {
     <?php if (!empty($ogDesc)): ?>
       <meta name="twitter:description" content="<?= $ogDesc ?>">
     <?php endif; ?>
-    <meta name="twitter:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta name="twitter:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
     <meta name="twitter:image:alt" content="Capital Craft — превью">
     
     <!-- Hreflang для языковой версии (только для главной) -->
@@ -169,10 +172,10 @@ if ($addCanonical) {
         <meta property="og:description" content="<?= $faqDesc ?>">
       <?php endif; ?>
       <meta property="og:type" content="website">
-      <meta property="og:url" content="<?= JURI::current() ?>">
+      <meta property="og:url" content="<?= Uri::current() ?>">
       <meta property="og:site_name" content="Capital Craft">
       <meta property="og:locale" content="ru_RU">
-      <meta property="og:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta property="og:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
       <meta property="og:image:width" content="1200">
       <meta property="og:image:height" content="630">
       
@@ -182,7 +185,7 @@ if ($addCanonical) {
       <?php if (!empty($faqDesc)): ?>
         <meta name="twitter:description" content="<?= $faqDesc ?>">
       <?php endif; ?>
-      <meta name="twitter:image" content="<?= JURI::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta name="twitter:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
       
       <!-- Hreflang для FAQ -->
       <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/faq">
