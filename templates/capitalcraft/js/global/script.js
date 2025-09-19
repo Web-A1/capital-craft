@@ -175,6 +175,15 @@ if (!supportsScrollMarginTop) {
     return parsePixelValue(styles.paddingTop) ?? 0;
   };
 
+  const getSectionScrollOffset = element => {
+    const styles = window.getComputedStyle(element);
+    const customOffset = parsePixelValue(
+      styles.getPropertyValue("--section-scroll-offset")
+    );
+
+    return customOffset ?? 0;
+  };
+
   const supportsSmoothScroll =
     "scrollBehavior" in document.documentElement.style;
 
@@ -186,7 +195,8 @@ if (!supportsScrollMarginTop) {
         window.getComputedStyle(rootElement).getPropertyValue("--header-height")
       ) ?? 0;
     const sectionPadding = getSectionScrollPadding(target);
-    const offset = headerHeight - sectionPadding;
+    const sectionScrollOffset = getSectionScrollOffset(target);
+    const offset = headerHeight - sectionPadding + sectionScrollOffset;
     const targetTop =
       window.pageYOffset + target.getBoundingClientRect().top - offset;
 
