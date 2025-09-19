@@ -276,11 +276,12 @@ if ($isFAQPage) {
           <div class="article__side">
             <?php if (!empty($mainImg)): ?>
               <figure class="article__image">
-                <img src="<?php echo htmlspecialchars(
-                    $mainImg,
-                    ENT_QUOTES,
-                    "UTF-8",
-                ); ?>" alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, "UTF-8"); ?>">
+                <img
+                  src="<?php echo htmlspecialchars($mainImg, ENT_QUOTES, "UTF-8"); ?>"
+                  alt="<?php echo htmlspecialchars($mainAlt, ENT_QUOTES, "UTF-8"); ?>"
+                  loading="lazy"
+                  decoding="async"
+                >
               </figure>
             <?php endif; ?>
 
