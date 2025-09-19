@@ -227,7 +227,7 @@ if (header) {
 
   const scrollTargetWithOffset = (target, behavior = "auto") => {
     if (!target) {
-      return false;
+      return null;
     }
 
     updateHeaderHeight();
@@ -240,7 +240,7 @@ if (header) {
       window.scrollTo(0, targetTop);
     }
 
-    return true;
+    return targetTop;
   };
 
   const scrollHashWithOffset = ({
@@ -263,9 +263,7 @@ if (header) {
       window.headerControl.pin();
     }
 
-    const scrolled = scrollTargetWithOffset(target, behavior);
-
-    if (!scrolled) {
+    if (scrollTargetWithOffset(target, behavior) === null) {
       if (shouldFreeze && !wasFrozen) {
         window.headerControl.unfreeze();
       }
@@ -274,7 +272,51 @@ if (header) {
     }
 
     if (shouldFreeze) {
-      const releaseHeader = () => {
+      let releaseTimerId = null;
+      let maxWaitTimerId = null;
+      let maxLoadWaitTimerId = null;
+      let released = false;
+      let scrollSettled = false;
+      let loadComplete = document.readyState === "complete";
+
+      const clearTimer = timerId => {
+        if (timerId !== null) {
+          window.clearTimeout(timerId);
+        }
+      };
+
+      const cleanup = () => {
+        window.removeEventListener("scroll", onScrollWhileFrozen);
+        clearTimer(releaseTimerId);
+        clearTimer(maxWaitTimerId);
+        clearTimer(maxLoadWaitTimerId);
+        releaseTimerId = null;
+        maxWaitTimerId = null;
+        maxLoadWaitTimerId = null;
+      };
+
+      const finalizeRelease = () => {
+        if (released) {
+          return;
+        }
+
+        released = true;
+
+        cleanup();
+
+        updateHeaderHeight();
+
+        const finalTargetTop = getTargetScrollTopWithOffset(target);
+        const currentScrollY = window.pageYOffset;
+
+        if (Math.abs(currentScrollY - finalTargetTop) > 1) {
+          try {
+            window.scrollTo({ top: finalTargetTop, behavior: "auto" });
+          } catch (error) {
+            window.scrollTo(0, finalTargetTop);
+          }
+        }
+
         window.headerControl.pin();
 
         if (!wasFrozen) {
@@ -282,12 +324,67 @@ if (header) {
         }
       };
 
-      if (typeof window.requestAnimationFrame === "function") {
-        window.requestAnimationFrame(() => {
-          window.requestAnimationFrame(releaseHeader);
-        });
+      const triggerRelease = () => {
+        if (!scrollSettled || !loadComplete) {
+          return;
+        }
+
+        if (typeof window.requestAnimationFrame === "function") {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(finalizeRelease);
+          });
+        } else {
+          window.setTimeout(finalizeRelease, 16);
+        }
+      };
+
+      const markScrollSettled = () => {
+        scrollSettled = true;
+        triggerRelease();
+      };
+
+      const scheduleScrollSettleCheck = (delay = 120) => {
+        clearTimer(releaseTimerId);
+        releaseTimerId = window.setTimeout(markScrollSettled, delay);
+      };
+
+      const scheduleMaxWaitFallback = () => {
+        clearTimer(maxWaitTimerId);
+        maxWaitTimerId = window.setTimeout(() => {
+          scrollSettled = true;
+          triggerRelease();
+        }, 800);
+      };
+
+      function onScrollWhileFrozen() {
+        scrollSettled = false;
+        scheduleScrollSettleCheck();
+        scheduleMaxWaitFallback();
+      }
+
+      window.addEventListener("scroll", onScrollWhileFrozen, { passive: true });
+
+      scheduleScrollSettleCheck();
+      scheduleMaxWaitFallback();
+
+      if (!loadComplete) {
+        window.addEventListener(
+          "load",
+          () => {
+            loadComplete = true;
+            clearTimer(maxLoadWaitTimerId);
+            maxLoadWaitTimerId = null;
+            triggerRelease();
+          },
+          { once: true }
+        );
+
+        maxLoadWaitTimerId = window.setTimeout(() => {
+          loadComplete = true;
+          triggerRelease();
+        }, 2000);
       } else {
-        window.setTimeout(releaseHeader, 16);
+        triggerRelease();
       }
     }
 
