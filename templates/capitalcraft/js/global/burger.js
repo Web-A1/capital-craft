@@ -1,25 +1,27 @@
-'use strict';
+"use strict";
 
 export const initBurger = () => {
-  const burger = document.querySelector('.burger');
-  const header = document.querySelector('.site-header');
-  const mobileNav = document.querySelector('.mobile-nav');
-  
+  const burger = document.querySelector(".burger");
+  const header = document.querySelector(".site-header");
+  const mobileNav = document.querySelector(".mobile-nav");
+
   if (!burger || !header || !mobileNav) return;
-  
+
   // Инициализация: меню скрыто для скринридеров по умолчанию
-  mobileNav.setAttribute('aria-hidden', 'true');
+  mobileNav.setAttribute("aria-hidden", "true");
 
   const closeMenu = () => {
-    burger.classList.remove('active');
-    burger.setAttribute('aria-expanded', 'false');
-    document.body.classList.remove('menu-open');
-    
+    burger.classList.remove("active");
+    burger.setAttribute("aria-expanded", "false");
+    document.body.classList.remove("menu-open");
+
     // Управление доступностью
-    mobileNav.setAttribute('aria-hidden', 'true');
-    
+    mobileNav.setAttribute("aria-hidden", "true");
+
     // Восстанавливаем реакцию хедера на скролл после закрытия меню
     if (window.headerControl) {
+      window.headerControl.pin();
+      ы;
       setTimeout(() => {
         window.headerControl.unfreeze();
       }, 100);
@@ -27,39 +29,39 @@ export const initBurger = () => {
   };
 
   const openMenu = () => {
-    burger.classList.add('active');
-    burger.setAttribute('aria-expanded', 'true');
-    document.body.classList.add('menu-open');
-    
+    burger.classList.add("active");
+    burger.setAttribute("aria-expanded", "true");
+    document.body.classList.add("menu-open");
+
     // Управление доступностью
-    mobileNav.setAttribute('aria-hidden', 'false');
-    
+    mobileNav.setAttribute("aria-hidden", "false");
+
     // Временно блокируем реакцию хедера на скролл при открытии меню
     if (window.headerControl) {
       window.headerControl.freeze();
     }
   };
 
-  burger.addEventListener('click', () => {
-    const isMenuOpen = document.body.classList.contains('menu-open');
-    
+  burger.addEventListener("click", () => {
+    const isMenuOpen = document.body.classList.contains("menu-open");
+
     if (isMenuOpen) {
       closeMenu();
     } else {
       openMenu();
     }
   });
-  
+
   // Обработка клавиши Escape для закрытия меню
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape" && document.body.classList.contains("menu-open")) {
       closeMenu();
     }
   });
 
   // Закрытие при клике на ссылку меню (делегирование событий)
-  mobileNav.addEventListener('click', (e) => {
-    if (e.target.matches('a')) {
+  mobileNav.addEventListener("click", e => {
+    if (e.target.matches("a")) {
       closeMenu();
     }
   });
