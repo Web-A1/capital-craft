@@ -55,7 +55,7 @@
                 <!-- Messengers -->
                 <div class="footer-messengers">
                     <div class="footer-section-title">
-                        <span>Месседжеры</span>
+                        <span>Мессенджеры</span>
                     </div>
 
                     <!-- WhatsApp -->
