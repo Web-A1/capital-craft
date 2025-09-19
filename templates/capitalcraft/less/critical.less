@@ -109,7 +109,7 @@ section,
   --section-scroll-padding: @section-padding;
   scroll-margin-top: calc(
     var(--header-height, var(--section-scroll-padding, 0px)) -
-      var(--section-scroll-padding, 0px)
+      var(--section-scroll-padding, 0px) + var(--section-scroll-offset, 0px)
   );
   &::after {
     content: "";
@@ -123,10 +123,12 @@ section,
   }
 
   .media(mobile, {
-    // Ensure consistent 30px spacing to the divider on mobile
+    // Ensure consistent spacing to the divider on mobile and provide extra room
+    // when scrolled into view from anchored navigation
     padding-top: @divider-space-mobile;
     padding-bottom: @divider-space-mobile;
     --section-scroll-padding: @divider-space-mobile;
+    --section-scroll-offset: 10px;
     &::after {
       width: calc(100% - (@mobile-side-padding * 2));
     }
