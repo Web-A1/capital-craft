@@ -113,14 +113,54 @@ if ($isFAQPage) {
     // Robots meta
     $doc->setMetaData('robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1');
 
-    // Структурированные данные для статьи
+    // Структурированные данные для статьи (расширенная схема)
     $schemaDescription = $doc->getMetaData('description');
+    $schemaLang = $this->item->language ?: $doc->getLanguage();
+    $schemaLang = $schemaLang ?: 'ru-RU';
+    $schemaImage = $ogImage;
+
+    $keywords = [];
+    if (!empty($this->item->tags->itemTags)) {
+        foreach ($this->item->tags->itemTags as $tg) {
+            if (!empty($tg->title)) {
+                $keywords[] = (string) $tg->title;
+            }
+        }
+    }
+
+    $articleSection = '';
+    if (!empty($this->item->category_title)) {
+        $articleSection = (string) $this->item->category_title;
+    }
+
+    $mainEntity = [
+        '@type' => 'WebPage',
+        '@id' => $canonical,
+    ];
+
+    $bodyText = '';
+    if (!empty($this->item->text)) {
+        // Упрощённая очистка для wordCount (без включения полного текста в JSON-LD на этом этапе)
+        $tmp = strip_tags($this->item->text);
+        $tmp = html_entity_decode($tmp, ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $tmp = preg_replace('/\s+/u', ' ', $tmp);
+        $bodyText = trim($tmp);
+    }
+    $wordCount = $bodyText !== '' ? str_word_count($bodyText, 0, 'А-Яа-яЁё') : 0;
+
     $articleSchema = [
         '@context' => 'https://schema.org',
         '@type' => 'Article',
         'headline' => $this->item->title,
         'description' => $schemaDescription,
         'url' => $canonical,
+        'mainEntityOfPage' => $mainEntity,
+        'image' => $schemaImage,
+        'inLanguage' => $schemaLang,
+        'keywords' => !empty($keywords) ? implode(', ', $keywords) : null,
+        'articleSection' => $articleSection ?: null,
+        'wordCount' => $wordCount ?: null,
+        'isAccessibleForFree' => true,
         'datePublished' => $this->item->publish_up,
         'dateModified' => $this->item->modified,
         'author' => [
@@ -136,6 +176,9 @@ if ($isFAQPage) {
             ],
         ],
     ];
+
+    // Удаляем пустые ключи, чтобы не засорять JSON-LD
+    $articleSchema = array_filter($articleSchema, function ($v) { return $v !== null && $v !== ''; });
 
     $doc->addCustomTag(
         '<script type="application/ld+json">' . json_encode($articleSchema, JSON_UNESCAPED_UNICODE) . '</script>',
@@ -169,9 +212,9 @@ if ($isFAQPage) {
             <?php
             // Получаем blogRoute один раз вне цикла тегов
             $menu = Factory::getApplication()->getMenu();
-            $blogItem = $menu->getItems('alias', 'blog', true);
-            $blogRouteBase = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-            $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
+              $blogItem = $menu->getItems('alias', 'blog', true);
+              $blogRouteBase = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
+              $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
               ?>
             <ul class="blog-card__tags">
               <?php foreach ($this->item->tags->itemTags as $tag): ?>
