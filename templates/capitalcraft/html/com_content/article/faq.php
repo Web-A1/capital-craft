@@ -152,12 +152,7 @@ $doc->addCustomTag(
                         }
                     }
                     ?>
-                    <div class="faq__item" id="faq-q-<?php echo (int) ($item["id"] ??
-                        0); ?>" data-tags="<?php echo htmlspecialchars(
-    implode(" ", $aliases),
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
+                    <div class="faq__item" id="faq-q-<?php echo (int) ($item["id"] ?? 0); ?>">
                         <button class="faq__question" 
                                 aria-expanded="false" 
                                 aria-controls="faq-answer-<?php echo $index; ?>"

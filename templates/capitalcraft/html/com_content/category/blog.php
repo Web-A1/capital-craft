@@ -201,11 +201,7 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
                 }
             }
             ?>
-          <article class="blog-card blog-card--lead" data-tags="<?php echo htmlspecialchars(
-              implode(" ", $aliases),
-              ENT_QUOTES,
-              "UTF-8",
-          ); ?>" data-href="<?php echo $cardLink; ?>">
+          <article class="blog-card blog-card--lead" data-href="<?php echo $cardLink; ?>">
             <?php
           $this->item = &$item;
             echo $this->loadTemplate("item");
@@ -229,11 +225,7 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
                 }
             }
             ?>
-          <article class="blog-card" data-tags="<?php echo htmlspecialchars(
-              implode(" ", $aliases),
-              ENT_QUOTES,
-              "UTF-8",
-          ); ?>" data-href="<?php echo $cardLink; ?>">
+          <article class="blog-card" data-href="<?php echo $cardLink; ?>">
             <?php
           $this->item = &$item;
             echo $this->loadTemplate("item");
