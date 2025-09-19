@@ -14,19 +14,32 @@ require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
 // Определяем, является ли это FAQ страницей
 $isFAQPage = false;
 
-// Проверяем по категории: alias категории должен быть 'faq'
-if (isset($this->item) && isset($this->item->catid)) {
-    $db = Factory::getDbo();
-    $qCatAlias = $db
-        ->getQuery(true)
-        ->select($db->quoteName('alias'))
-        ->from($db->quoteName('#__categories'))
-        ->where($db->quoteName('id') . ' = ' . (int) $this->item->catid)
-        ->where($db->quoteName('published') . ' = 1');
-    $db->setQuery($qCatAlias);
-    $currentCatAlias = strtolower((string) $db->loadResult());
-    if ($currentCatAlias === 'faq') {
+// Сначала используем alias категории из объекта статьи; при его отсутствии — фолбэк на запрос
+if (isset($this->item)) {
+    $catAlias = '';
+
+    if (!empty($this->item->category_alias)) {
+        $catAlias = strtolower((string) $this->item->category_alias);
+    } elseif (isset($this->item->category) && !empty($this->item->category->alias)) {
+        $catAlias = strtolower((string) $this->item->category->alias);
+    }
+
+    if ($catAlias === 'faq') {
         $isFAQPage = true;
+    } elseif (isset($this->item->catid)) {
+        // Фолбэк: если alias не доступен в объекте, делаем единичный запрос к БД
+        $db = Factory::getDbo();
+        $qCatAlias = $db
+            ->getQuery(true)
+            ->select($db->quoteName('alias'))
+            ->from($db->quoteName('#__categories'))
+            ->where($db->quoteName('id') . ' = ' . (int) $this->item->catid)
+            ->where($db->quoteName('published') . ' = 1');
+        $db->setQuery($qCatAlias);
+        $currentCatAlias = strtolower((string) $db->loadResult());
+        if ($currentCatAlias === 'faq') {
+            $isFAQPage = true;
+        }
     }
 }
 
