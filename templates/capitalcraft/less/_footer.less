@@ -225,6 +225,10 @@
 
     .media(mobile, {
       width: 100%;
+      --section-scroll-offset: 60px; // Увеличиваем отступ на мобильных для лучшей видимости заголовка
+      scroll-margin-top: calc(
+        var(--header-height, 76px) + var(--section-scroll-offset, 60px)
+      );
     });
 
     & .footer-contact-address {
