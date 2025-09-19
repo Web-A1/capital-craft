@@ -79,13 +79,11 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
                   $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
               }
               $tagRoute = $blogRouteBase . $blogRouteSep . 'tag=' . rawurlencode($tag->alias ?? '');
-              $tagAliasAttr = strtolower($tag->alias ?? '');
               ?>
             <li class="blog-card__tag">
               <a
                 href="<?php echo $tagRoute; ?>"
                 class="blog-card__tag-link"
-                data-tag-alias="<?php echo htmlspecialchars($tagAliasAttr, ENT_QUOTES, "UTF-8"); ?>"
               >#<?php echo $this->escape($tag->title); ?></a>
             </li>
           <?php endforeach; ?>
