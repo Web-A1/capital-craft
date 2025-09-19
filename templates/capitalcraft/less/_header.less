@@ -20,6 +20,10 @@
     will-change: transform;
     overflow: hidden; // ключевое для скрытия меню
 
+    &.is-initial {
+      transition: none !important;
+    }
+
     &.unpinned {
       transform: translateY(-100%);
     }
@@ -96,7 +100,7 @@
             position: relative; // для позиционирования псевдоэлемента
 
             &::after {
-              content: '';
+              content: "";
               position: absolute;
               left: 0;
               bottom: -5px;
@@ -114,7 +118,7 @@
           }
 
           a {
-            font-family: 'Golos Text', sans-serif;
+            font-family: "Golos Text", sans-serif;
             font-size: @font-size-text * 0.8;
             text-transform: uppercase;
             font-weight: 400;
@@ -124,7 +128,7 @@
             transition: color 0.3s ease;
 
             &::after {
-              content: '';
+              content: "";
               position: absolute;
               left: 0;
               bottom: -5px;
@@ -216,15 +220,15 @@
 
         // Базовый стиль в закрытом состоянии - черный
         opacity: 1; // всегда черный по умолчанию
-        
+
         &.active {
           opacity: 1; // активный бургер полностью видимый
-          
+
           &:hover {
             opacity: 1; // остается черным даже при hover
           }
         }
-        
+
         // Убираем hover эффект - бургер всегда должен быть черным
         &:hover {
           cursor: pointer;
@@ -260,7 +264,7 @@
 // Состояние открытого меню
 body.menu-open {
   overflow: hidden;
-  
+
   .site-header {
     .media(mobile, {
       z-index: 49; // под мобильным меню
@@ -297,15 +301,14 @@ body.menu-open {
       }
     });
   }
-
 }
 
 // Мобильное меню с правильным позиционированием
 .mobile-nav {
   // Скрыто на всех устройствах
   display: none;
-  
-    .media(mobile, {
+
+  .media(mobile, {
     // Показываем элемент но скрываем через height и max-height
     display: block;
     
