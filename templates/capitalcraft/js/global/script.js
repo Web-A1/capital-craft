@@ -16,6 +16,7 @@ initFormSubmit();
 initScrollTop();
 initTextTruncate();
 
+const rootElement = document.documentElement;
 const header = document.querySelector(".site-header");
 
 if (header) {
@@ -28,7 +29,6 @@ if (header) {
   const tolerance =
     window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
 
-  const rootElement = document.documentElement;
   let lastHeaderHeight = null;
   let rafId = null;
 
@@ -140,4 +140,135 @@ if (header) {
       scheduleHeaderHeightUpdate();
     }
   };
+}
+
+const supportsScrollMarginTop =
+  typeof CSS !== "undefined" && typeof CSS.supports === "function"
+    ? CSS.supports("scroll-margin-top: 1px")
+    : false;
+
+if (!supportsScrollMarginTop) {
+  const parsePixelValue = value => {
+    if (typeof value !== "string") {
+      return null;
+    }
+
+    const trimmed = value.trim();
+    if (!trimmed) {
+      return null;
+    }
+
+    const parsed = parseFloat(trimmed);
+    return Number.isNaN(parsed) ? null : parsed;
+  };
+
+  const getSectionScrollPadding = element => {
+    const styles = window.getComputedStyle(element);
+    const customPadding = parsePixelValue(
+      styles.getPropertyValue("--section-scroll-padding")
+    );
+
+    if (customPadding !== null) {
+      return customPadding;
+    }
+
+    return parsePixelValue(styles.paddingTop) ?? 0;
+  };
+
+  const supportsSmoothScroll =
+    "scrollBehavior" in document.documentElement.style;
+
+  const scrollToTarget = target => {
+    if (!target) return;
+
+    const headerHeight =
+      parsePixelValue(
+        window.getComputedStyle(rootElement).getPropertyValue("--header-height")
+      ) ?? 0;
+    const sectionPadding = getSectionScrollPadding(target);
+    const offset = headerHeight - sectionPadding;
+    const targetTop =
+      window.pageYOffset + target.getBoundingClientRect().top - offset;
+
+    if (supportsSmoothScroll) {
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
+    } else {
+      window.scrollTo(0, targetTop);
+    }
+  };
+
+  const resolveHashTarget = hash => {
+    if (!hash || hash === "#") {
+      return null;
+    }
+
+    const decoded = decodeURIComponent(hash.slice(1));
+    if (!decoded) {
+      return null;
+    }
+
+    return document.getElementById(decoded);
+  };
+
+  let suppressHashChange = false;
+
+  const handleHashNavigation = () => {
+    if (suppressHashChange) {
+      suppressHashChange = false;
+      return;
+    }
+
+    const target = resolveHashTarget(window.location.hash);
+    if (target) {
+      scrollToTarget(target);
+    }
+  };
+
+  document.addEventListener("click", event => {
+    const anchor = event.target.closest("a[href*='#']");
+    if (!anchor) return;
+
+    const url = new URL(anchor.getAttribute("href"), window.location.href);
+
+    if (url.origin !== window.location.origin) {
+      return;
+    }
+
+    const currentPathname = window.location.pathname.replace(/\/+$/, "");
+    const targetPathname = url.pathname.replace(/\/+$/, "");
+
+    if (currentPathname !== targetPathname) {
+      return;
+    }
+
+    const target = resolveHashTarget(url.hash);
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (url.hash) {
+      if (
+        typeof history !== "undefined" &&
+        typeof history.pushState === "function"
+      ) {
+        history.pushState(null, "", url.hash);
+      } else {
+        suppressHashChange = true;
+        window.location.hash = url.hash.slice(1);
+      }
+    }
+
+    scrollToTarget(target);
+  });
+
+  window.addEventListener("hashchange", handleHashNavigation);
+
+  window.addEventListener("load", () => {
+    const target = resolveHashTarget(window.location.hash);
+    if (target) {
+      scrollToTarget(target);
+    }
+  });
 }
