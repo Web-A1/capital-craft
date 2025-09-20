@@ -1,4 +1,4 @@
-<footer class="footer frame frame--footer" id="contacts">
+<footer class="footer frame frame--footer">
     <div class="footer-container">
         <!-- Top Block -->
         <div class="footer-top-block">
@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Contacts -->
-                <div class="footer-contacts">
+                <div class="footer-contacts" id="contacts">
                     <div class="footer-section-title">
                         <span>Контакты</span>
                     </div>
@@ -55,7 +55,7 @@
                 <!-- Messengers -->
                 <div class="footer-messengers">
                     <div class="footer-section-title">
-                        <span>Месседжеры</span>
+                        <span>Мессенджеры</span>
                     </div>
 
                     <!-- WhatsApp -->
