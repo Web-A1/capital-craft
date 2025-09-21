@@ -163,17 +163,13 @@ if (header) {
     freeze(options = {}) {
       const { scrollY } = options;
 
-      syncLastScrollY(
-        Number.isFinite(scrollY) ? scrollY : window.pageYOffset
-      );
+      syncLastScrollY(Number.isFinite(scrollY) ? scrollY : window.pageYOffset);
       frozen = true;
     },
     unfreeze(options = {}) {
       const { scrollY } = options;
 
-      syncLastScrollY(
-        Number.isFinite(scrollY) ? scrollY : window.pageYOffset
-      );
+      syncLastScrollY(Number.isFinite(scrollY) ? scrollY : window.pageYOffset);
       frozen = false;
     },
     pin(options = {}) {
