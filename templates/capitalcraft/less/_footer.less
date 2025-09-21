@@ -213,8 +213,10 @@
     scroll-margin-top: var(--header-height, 76px);
 
     .media(mobile, {
-      // Смещаем якорь вверх, чтобы разделительная линия уходила под хедер
-      --footer-contacts-anchor-buffer: -6px;
+      // Смещаем якорь вверх, чтобы разделительная линия пряталась под хедером
+      --footer-contacts-anchor-buffer: -1px;
+      // Визуальный зазор между хедером и заголовком  Контакты 
+      padding-top: 12px;
       scroll-margin-top: calc(
         var(--header-height, 76px) +
         var(--footer-contacts-anchor-gap) +
