@@ -27,6 +27,7 @@ html {
   -webkit-text-size-adjust: 100%;
   background-color: @color-bg-craft;
   scrollbar-gutter: stable;
+  scroll-padding-top: var(--header-height, 76px);
 }
 
 /* Сброс базовых стилей заголовков */
@@ -101,6 +102,7 @@ section,
 }
 
 .section-with-divider:not(.site-header) {
+  scroll-margin-top: var(--header-height, 76px);
   position: relative;
   &::after {
     content: "";
