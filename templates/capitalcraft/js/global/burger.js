@@ -70,6 +70,7 @@ export const initBurger = () => {
   const HEADER_HEIGHT_VAR = "--header-height";
   const MOBILE_NAV_HEIGHT_VAR = "--mobile-nav-open-height";
   const FOOTER_CONTACTS_ANCHOR_GAP_VAR = "--footer-contacts-anchor-gap";
+  const FOOTER_CONTACTS_ANCHOR_BUFFER_VAR = "--footer-contacts-anchor-buffer";
   const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
 
   const isMobileViewport = () => {
@@ -90,7 +91,7 @@ export const initBurger = () => {
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
   };
 
-  const getContactsAnchorGap = element => {
+  const getContactsAnchorOffset = element => {
     if (!element || typeof window.getComputedStyle !== "function") {
       return 0;
     }
@@ -101,9 +102,14 @@ export const initBurger = () => {
       return 0;
     }
 
-    return getPositiveFloat(
+    const baseGap = getPositiveFloat(
       styles.getPropertyValue(FOOTER_CONTACTS_ANCHOR_GAP_VAR)
     );
+    const buffer = getPositiveFloat(
+      styles.getPropertyValue(FOOTER_CONTACTS_ANCHOR_BUFFER_VAR)
+    );
+
+    return baseGap + buffer;
   };
 
   const getHeaderHeight = () => {
@@ -306,7 +312,7 @@ export const initBurger = () => {
     let extraOffset = 0;
 
     if (targetId === "contacts" && isMobileViewport()) {
-      extraOffset = getContactsAnchorGap(target);
+      extraOffset = getContactsAnchorOffset(target);
     }
 
     const targetPosition = normalizeScrollTarget(
