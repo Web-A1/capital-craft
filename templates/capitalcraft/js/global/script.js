@@ -146,6 +146,53 @@ if (header) {
   let mobileHideThreshold = resolveHeaderHeight();
   let lastScrollY = window.pageYOffset;
   let frozen = false;
+  let userScrollInteractionDetected = false;
+
+  const keyboardScrollInteractionKeys = new Set([
+    "ArrowDown",
+    "ArrowUp",
+    "ArrowLeft",
+    "ArrowRight",
+    "PageDown",
+    "PageUp",
+    "Home",
+    "End",
+    " ",
+    "Spacebar"
+  ]);
+
+  function cleanupInteractionListeners() {
+    window.removeEventListener("touchstart", markScrollInteractionDetected);
+    window.removeEventListener("wheel", markScrollInteractionDetected);
+    window.removeEventListener("keydown", handleKeydownInteraction, true);
+  }
+
+  function markScrollInteractionDetected() {
+    userScrollInteractionDetected = true;
+    cleanupInteractionListeners();
+  }
+
+  function handleKeydownInteraction(event) {
+    if (keyboardScrollInteractionKeys.has(event.key)) {
+      markScrollInteractionDetected();
+    }
+  }
+
+  window.addEventListener("touchstart", markScrollInteractionDetected, {
+    passive: true
+  });
+  window.addEventListener("wheel", markScrollInteractionDetected, {
+    passive: true
+  });
+  window.addEventListener("keydown", handleKeydownInteraction, true);
+
+  window.addEventListener(
+    "beforeunload",
+    () => {
+      cleanupInteractionListeners();
+    },
+    { once: true }
+  );
 
   const clampScrollY = value => {
     if (!Number.isFinite(value)) {
@@ -200,6 +247,13 @@ if (header) {
     const currentScrollY = clampScrollY(window.pageYOffset);
 
     if (isMobileViewport && currentScrollY <= mobileHideThreshold) {
+      header.classList.remove("unpinned");
+      header.classList.add("pinned");
+      syncLastScrollY(currentScrollY);
+      return;
+    }
+
+    if (!userScrollInteractionDetected) {
       header.classList.remove("unpinned");
       header.classList.add("pinned");
       syncLastScrollY(currentScrollY);
