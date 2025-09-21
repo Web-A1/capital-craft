@@ -135,14 +135,17 @@ if (header) {
 
   window.headerControl = {
     freeze() {
+      lastScrollY = window.pageYOffset;
       frozen = true;
     },
     unfreeze() {
+      lastScrollY = window.pageYOffset;
       frozen = false;
     },
     pin() {
       header.classList.remove("unpinned");
       header.classList.add("pinned");
+      lastScrollY = window.pageYOffset;
     }
   };
 }
