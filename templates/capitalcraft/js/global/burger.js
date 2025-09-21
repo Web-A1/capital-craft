@@ -64,7 +64,7 @@ export const initBurger = () => {
 
   window.addEventListener("beforeunload", cleanup);
 
-  const closeMenu = () => {
+  const closeMenu = ({ shouldUnfreeze = true, unfreezeDelay = 100 } = {}) => {
     burger.classList.remove("active");
     burger.setAttribute("aria-expanded", "false");
     document.body.classList.remove("menu-open");
@@ -75,10 +75,19 @@ export const initBurger = () => {
     clearAvailableHeight();
 
     // Восстанавливаем реакцию хедера на скролл после закрытия меню
-    if (window.headerControl) {
-      setTimeout(() => {
+    if (window.headerControl && shouldUnfreeze) {
+      const delay =
+        Number.isFinite(unfreezeDelay) && unfreezeDelay > 0
+          ? unfreezeDelay
+          : 0;
+
+      if (delay > 0) {
+        window.setTimeout(() => {
+          window.headerControl.unfreeze();
+        }, delay);
+      } else {
         window.headerControl.unfreeze();
-      }, 100);
+      }
     }
   };
 
@@ -116,9 +125,104 @@ export const initBurger = () => {
   });
 
   // Закрытие при клике на ссылку меню (делегирование событий)
-  mobileNav.addEventListener("click", e => {
-    if (e.target.matches("a")) {
+  const normalizePathname = pathname => {
+    if (typeof pathname !== "string") return "/";
+
+    const trimmed = pathname.replace(/\/+$/, "");
+
+    return trimmed === "" ? "/" : trimmed;
+  };
+
+  mobileNav.addEventListener("click", event => {
+    const link = event.target.closest("a");
+
+    if (!link) {
+      return;
+    }
+
+    const { hash } = link;
+    const hasHash = typeof hash === "string" && hash.length > 1;
+    const isSameOrigin = link.origin === window.location.origin;
+    const isSamePath =
+      normalizePathname(link.pathname) ===
+      normalizePathname(window.location.pathname);
+
+    if (!hasHash || !isSameOrigin || !isSamePath) {
       closeMenu();
+      return;
+    }
+
+    const targetId = decodeURIComponent(hash.slice(1));
+
+    if (!targetId) {
+      closeMenu();
+      return;
+    }
+
+    const target = document.getElementById(targetId);
+
+    if (!target) {
+      closeMenu();
+      return;
+    }
+
+    event.preventDefault();
+
+    if (window.headerControl) {
+      window.headerControl.freeze();
+      window.headerControl.pin();
+    }
+
+    const headerHeight = getHeaderHeight();
+    const targetPosition =
+      target.getBoundingClientRect().top + window.scrollY - headerHeight;
+
+    let released = false;
+    let releaseTimeoutId = null;
+
+    const releaseHeader = () => {
+      if (released) {
+        return;
+      }
+
+      released = true;
+
+      if (releaseTimeoutId !== null) {
+        window.clearTimeout(releaseTimeoutId);
+        releaseTimeoutId = null;
+      }
+
+      if (window.headerControl) {
+        window.headerControl.unfreeze();
+      }
+    };
+
+    if ("onscrollend" in window) {
+      window.addEventListener(
+        "scrollend",
+        () => {
+          releaseHeader();
+        },
+        { once: true }
+      );
+    }
+
+    window.scrollTo({
+      top: Math.max(targetPosition, 0),
+      behavior: "smooth"
+    });
+
+    releaseTimeoutId = window.setTimeout(() => {
+      releaseTimeoutId = null;
+      releaseHeader();
+    }, 700);
+
+    closeMenu({ shouldUnfreeze: false });
+
+    if (typeof history.replaceState === "function") {
+      history.replaceState(null, "", hash);
+    } else {
+      window.location.hash = hash;
     }
   });
 };
