@@ -85,6 +85,88 @@ export const initBurger = () => {
     return value;
   };
 
+  const createScrollCompletionWatcher = (
+    targetPosition,
+    { tolerance = 1, idleFrameThreshold = 5 } = {}
+  ) => {
+    const hasRAF = typeof window.requestAnimationFrame === "function";
+    const hasCancelRAF = typeof window.cancelAnimationFrame === "function";
+
+    if (!hasRAF || !hasCancelRAF) {
+      const resolvedPosition = Number.isFinite(targetPosition)
+        ? targetPosition
+        : window.scrollY;
+
+      return {
+        promise: Promise.resolve(resolvedPosition),
+        finish() {}
+      };
+    }
+
+    let rafId = null;
+    let resolved = false;
+    let resolvePromise = null;
+    let lastY = window.scrollY;
+    let stableFrames = 0;
+
+    const cleanup = () => {
+      if (rafId !== null) {
+        window.cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+    };
+
+    const finish = finalPosition => {
+      if (resolved) {
+        return;
+      }
+
+      resolved = true;
+      cleanup();
+
+      const normalizedPosition = Number.isFinite(finalPosition)
+        ? finalPosition
+        : window.scrollY;
+
+      if (typeof resolvePromise === "function") {
+        resolvePromise(normalizedPosition);
+      }
+    };
+
+    const tick = () => {
+      if (resolved) {
+        return;
+      }
+
+      const currentY = window.scrollY;
+
+      if (Math.abs(currentY - targetPosition) <= tolerance) {
+        if (Math.abs(currentY - lastY) <= 0.5) {
+          stableFrames += 1;
+        } else {
+          stableFrames = 0;
+        }
+
+        if (stableFrames >= idleFrameThreshold) {
+          finish(currentY);
+          return;
+        }
+      } else {
+        stableFrames = 0;
+      }
+
+      lastY = currentY;
+      rafId = window.requestAnimationFrame(tick);
+    };
+
+    const promise = new Promise(resolve => {
+      resolvePromise = resolve;
+      rafId = window.requestAnimationFrame(tick);
+    });
+
+    return { promise, finish };
+  };
+
   const closeMenu = ({ shouldUnfreeze = true, unfreezeDelay = 100 } = {}) => {
     burger.classList.remove("active");
     burger.setAttribute("aria-expanded", "false");
@@ -206,7 +288,6 @@ export const initBurger = () => {
     }
 
     let released = false;
-    let releaseTimeoutId = null;
 
     const releaseHeader = (finalScrollPosition = targetPosition) => {
       if (released) {
@@ -215,21 +296,19 @@ export const initBurger = () => {
 
       released = true;
 
-      if (releaseTimeoutId !== null) {
-        window.clearTimeout(releaseTimeoutId);
-        releaseTimeoutId = null;
-      }
-
       if (window.headerControl) {
         window.headerControl.unfreeze({ scrollY: finalScrollPosition });
       }
     };
 
+    const { promise: scrollCompletionPromise, finish: finishScrollWatch } =
+      createScrollCompletionWatcher(targetPosition);
+
     if ("onscrollend" in window) {
       window.addEventListener(
         "scrollend",
         () => {
-          releaseHeader(window.pageYOffset);
+          finishScrollWatch(window.pageYOffset);
         },
         { once: true }
       );
@@ -240,10 +319,14 @@ export const initBurger = () => {
       behavior: "smooth"
     });
 
-    releaseTimeoutId = window.setTimeout(() => {
-      releaseTimeoutId = null;
-      releaseHeader();
+    const fallbackTimeoutId = window.setTimeout(() => {
+      finishScrollWatch(window.pageYOffset);
     }, 700);
+
+    scrollCompletionPromise.then(finalScrollPosition => {
+      window.clearTimeout(fallbackTimeoutId);
+      releaseHeader(finalScrollPosition);
+    });
 
     closeMenu({ shouldUnfreeze: false });
 
