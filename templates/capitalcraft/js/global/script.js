@@ -229,6 +229,29 @@ if (header) {
 
   window.addEventListener("scroll", onScroll, { passive: true });
 
+  const dispatchHeaderControlReady = control => {
+    if (!control) {
+      return;
+    }
+
+    const readyDetail = { detail: { control } };
+    const readyEvent =
+      typeof window.CustomEvent === "function"
+        ? new CustomEvent("cc:header-control-ready", readyDetail)
+        : (() => {
+            const fallbackEvent = document.createEvent("CustomEvent");
+            fallbackEvent.initCustomEvent(
+              "cc:header-control-ready",
+              false,
+              false,
+              readyDetail.detail
+            );
+            return fallbackEvent;
+          })();
+
+    window.dispatchEvent(readyEvent);
+  };
+
   window.headerControl = {
     freeze(options = {}) {
       const { scrollY } = options;
@@ -250,4 +273,6 @@ if (header) {
       syncLastScrollY(Number.isFinite(scrollY) ? scrollY : window.pageYOffset);
     }
   };
+
+  dispatchHeaderControlReady(window.headerControl);
 }
