@@ -208,12 +208,13 @@
 
   // Contacts
   &-contacts {
-    --footer-contacts-anchor-gap: @divider-space-mobile;
+    --footer-contacts-anchor-gap: 0px;
     --footer-contacts-anchor-buffer: 0px;
     scroll-margin-top: var(--header-height, 76px);
 
     .media(mobile, {
-      --footer-contacts-anchor-buffer: 8px;
+      // Смещаем якорь вверх, чтобы разделительная линия уходила под хедер
+      --footer-contacts-anchor-buffer: -6px;
       scroll-margin-top: calc(
         var(--header-height, 76px) +
         var(--footer-contacts-anchor-gap) +
