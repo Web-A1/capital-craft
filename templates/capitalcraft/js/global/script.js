@@ -110,6 +110,32 @@ if (header) {
   const tolerance =
     window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
 
+  const clampScrollY = value => {
+    if (!Number.isFinite(value)) {
+      return window.pageYOffset;
+    }
+
+    const maxScroll = Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      0
+    );
+
+    if (value <= 0) {
+      return 0;
+    }
+
+    if (value >= maxScroll) {
+      return maxScroll;
+    }
+
+    return value;
+  };
+
+  const syncLastScrollY = value => {
+    lastScrollY = clampScrollY(value);
+    return lastScrollY;
+  };
+
   const onScroll = () => {
     if (frozen) return;
     const currentScrollY = window.pageYOffset;
@@ -134,18 +160,28 @@ if (header) {
   window.addEventListener("scroll", onScroll, { passive: true });
 
   window.headerControl = {
-    freeze() {
-      lastScrollY = window.pageYOffset;
+    freeze(options = {}) {
+      const { scrollY } = options;
+
+      syncLastScrollY(
+        Number.isFinite(scrollY) ? scrollY : window.pageYOffset
+      );
       frozen = true;
     },
-    unfreeze() {
-      lastScrollY = window.pageYOffset;
+    unfreeze(options = {}) {
+      const { scrollY } = options;
+
+      syncLastScrollY(
+        Number.isFinite(scrollY) ? scrollY : window.pageYOffset
+      );
       frozen = false;
     },
-    pin() {
+    pin(options = {}) {
+      const { scrollY } = options;
+
       header.classList.remove("unpinned");
       header.classList.add("pinned");
-      lastScrollY = window.pageYOffset;
+      syncLastScrollY(Number.isFinite(scrollY) ? scrollY : window.pageYOffset);
     }
   };
 }
