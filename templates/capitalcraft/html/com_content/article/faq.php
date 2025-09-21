@@ -138,7 +138,7 @@ $doc->addCustomTag(
         <div class="faq__content">
             <div class="faq__title-block">
                 <h1 class="faq__subtitle">часто задаваемые вопросы</h1>
-                <p class="faq__title">Сильные решения начинаются с вопросов</p>
+                <p class="faq__title">1Сильные решения начинаются с вопросов</p>
             </div>
             <?php if (!empty($faqAllTags)): ?>
               <?php $activeTagAlias = $selectedAlias; ?>
