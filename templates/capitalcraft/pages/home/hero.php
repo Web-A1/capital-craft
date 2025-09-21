@@ -1,7 +1,7 @@
 <?php
 defined("_JEXEC") or die();
 
-require_once JPATH_SITE . '/templates/capitalcraft/helpers/FaqHelper.php';
+require_once JPATH_SITE . "/templates/capitalcraft/helpers/FaqHelper.php";
 
 $faqPageLink = CapitalcraftFaqHelper::getFaqRoute();
 ?>
@@ -9,7 +9,7 @@ $faqPageLink = CapitalcraftFaqHelper::getFaqRoute();
 <main class="hero frame section-with-divider" role="main">
     <div class="container hero__inner">
         <div class="hero__content">
-            <p class="hero__title">Мы создаем <br> точные решения <br> для вашего капитала</p>
+            <p class="hero__title">1Мы создаем <br> точные решения <br> для вашего капитала</p>
             <h1 class="hero__text">CAPITAL CRAFT — бутиковое агентство инвестиционных решений, специализирующееся на привлечении финансирования для бизнеса. Мы помогаем компаниям найти оптимальные стратегии роста и максимально реализовать их потенциал</h1>
             <a href="<?= htmlspecialchars($faqPageLink, ENT_QUOTES, "UTF-8") ?>" class="btn-main hero__btn">
                 <span>вопросы - ответы</span>
