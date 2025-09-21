@@ -69,6 +69,42 @@ export const initBurger = () => {
 
   const HEADER_HEIGHT_VAR = "--header-height";
   const MOBILE_NAV_HEIGHT_VAR = "--mobile-nav-open-height";
+  const FOOTER_CONTACTS_ANCHOR_GAP_VAR = "--footer-contacts-anchor-gap";
+  const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
+
+  const isMobileViewport = () => {
+    if (typeof window.matchMedia === "function") {
+      try {
+        return window.matchMedia(MOBILE_VIEWPORT_QUERY).matches;
+      } catch (error) {
+        // ignore query issues and fallback to width check
+      }
+    }
+
+    return window.innerWidth <= 767;
+  };
+
+  const getPositiveFloat = value => {
+    const parsed = Number.parseFloat(value);
+
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+  };
+
+  const getContactsAnchorGap = element => {
+    if (!element || typeof window.getComputedStyle !== "function") {
+      return 0;
+    }
+
+    const styles = window.getComputedStyle(element);
+
+    if (!styles) {
+      return 0;
+    }
+
+    return getPositiveFloat(
+      styles.getPropertyValue(FOOTER_CONTACTS_ANCHOR_GAP_VAR)
+    );
+  };
 
   const getHeaderHeight = () => {
     const rawValue = getComputedStyle(
@@ -267,8 +303,17 @@ export const initBurger = () => {
     }
 
     const headerHeight = getHeaderHeight();
+    let extraOffset = 0;
+
+    if (targetId === "contacts" && isMobileViewport()) {
+      extraOffset = getContactsAnchorGap(target);
+    }
+
     const targetPosition = normalizeScrollTarget(
-      target.getBoundingClientRect().top + window.scrollY - headerHeight
+      target.getBoundingClientRect().top +
+        window.scrollY -
+        headerHeight -
+        extraOffset
     );
 
     if (window.headerControl) {
