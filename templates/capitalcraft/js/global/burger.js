@@ -91,6 +91,12 @@ export const initBurger = () => {
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
   };
 
+  const getFloatValue = value => {
+    const parsed = Number.parseFloat(value);
+
+    return Number.isFinite(parsed) ? parsed : 0;
+  };
+
   const getContactsAnchorOffset = element => {
     if (!element || typeof window.getComputedStyle !== "function") {
       return 0;
@@ -105,7 +111,7 @@ export const initBurger = () => {
     const baseGap = getPositiveFloat(
       styles.getPropertyValue(FOOTER_CONTACTS_ANCHOR_GAP_VAR)
     );
-    const buffer = getPositiveFloat(
+    const buffer = getFloatValue(
       styles.getPropertyValue(FOOTER_CONTACTS_ANCHOR_BUFFER_VAR)
     );
 
