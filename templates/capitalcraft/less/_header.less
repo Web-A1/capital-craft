@@ -370,13 +370,18 @@ body.menu-open {
           font-family: @font-body;
           -webkit-tap-highlight-color: transparent;
 
+          &:focus,
           &:focus-visible {
-            outline: 2px solid fade(@color-accent, 80%);
-            outline-offset: 4px;
+            outline: none;
+            outline-offset: 0;
           }
 
-          &:focus:not(:focus-visible) {
-            outline: none;
+          @media (hover: hover) and (pointer: fine) {
+            &:focus,
+            &:focus-visible {
+              outline: 2px solid fade(@color-accent, 80%);
+              outline-offset: 4px;
+            }
           }
         }
       }
