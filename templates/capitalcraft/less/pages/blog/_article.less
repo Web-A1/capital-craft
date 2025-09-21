@@ -87,6 +87,18 @@
     li p {
       margin: 0;
     }
+
+    // Horizontal rule (hr) styling
+    hr {
+      margin: 2em 0;
+      border: none;
+      height: 1px;
+      background-color: @section-divider-color;
+
+      .media(mobile, {
+        margin: 1.5em 0;
+      });
+    }
   }
 
   // Tags layout
