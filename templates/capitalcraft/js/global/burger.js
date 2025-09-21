@@ -7,6 +7,8 @@ export const initBurger = () => {
 
   if (!burger || !header || !mobileNav) return;
 
+  let suppressHashChange = false;
+
   const safeFocus = element => {
     if (!element || typeof element.focus !== "function") {
       return;
@@ -222,6 +224,149 @@ export const initBurger = () => {
     return { promise, finish };
   };
 
+  const hasUsableHash = hash => {
+    if (typeof hash !== "string") {
+      return false;
+    }
+
+    const trimmedHash = hash.trim();
+
+    return trimmedHash.length > 1 && trimmedHash !== "#";
+  };
+
+  const scrollToHashWithCompensation = (
+    rawHash,
+    { behavior = "smooth" } = {}
+  ) => {
+    if (!hasUsableHash(rawHash)) {
+      return false;
+    }
+
+    const trimmedHash = rawHash.trim();
+
+    const normalizedHash = trimmedHash.startsWith("#")
+      ? trimmedHash
+      : `#${trimmedHash}`;
+
+    let targetId = normalizedHash.slice(1);
+
+    try {
+      targetId = decodeURIComponent(targetId);
+    } catch (error) {
+      // Игнорируем ошибки декодирования и используем исходное значение
+    }
+
+    if (!targetId) {
+      return false;
+    }
+
+    const target = document.getElementById(targetId);
+
+    if (!target) {
+      return false;
+    }
+
+    const headerHeight = getHeaderHeight();
+    const targetPosition = normalizeScrollTarget(
+      target.getBoundingClientRect().top + window.scrollY - headerHeight
+    );
+
+    if (window.headerControl) {
+      window.headerControl.freeze();
+      window.headerControl.pin({ scrollY: targetPosition });
+    }
+
+    let released = false;
+
+    const releaseHeader = (finalScrollPosition = targetPosition) => {
+      if (released) {
+        return;
+      }
+
+      released = true;
+
+      if (window.headerControl) {
+        window.headerControl.unfreeze({ scrollY: finalScrollPosition });
+      }
+    };
+
+    const { promise: scrollCompletionPromise, finish: finishScrollWatch } =
+      createScrollCompletionWatcher(targetPosition);
+
+    if ("onscrollend" in window) {
+      window.addEventListener(
+        "scrollend",
+        () => {
+          finishScrollWatch(window.pageYOffset);
+        },
+        { once: true }
+      );
+    }
+
+    try {
+      window.scrollTo({
+        top: targetPosition,
+        behavior
+      });
+    } catch (error) {
+      window.scrollTo(0, targetPosition);
+    }
+
+    const fallbackTimeoutId = window.setTimeout(() => {
+      finishScrollWatch(window.pageYOffset);
+    }, 700);
+
+    scrollCompletionPromise.then(finalScrollPosition => {
+      window.clearTimeout(fallbackTimeoutId);
+      releaseHeader(finalScrollPosition);
+    });
+
+    return true;
+  };
+
+  const handleCurrentHashNavigation = ({ behavior = "auto" } = {}) => {
+    return scrollToHashWithCompensation(window.location.hash, { behavior });
+  };
+
+  const scheduleInitialHashNavigation = () => {
+    const invoke = () => {
+      handleCurrentHashNavigation({ behavior: "auto" });
+    };
+
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(invoke);
+    } else {
+      invoke();
+    }
+  };
+
+  if (hasUsableHash(window.location.hash)) {
+    if (document.readyState === "loading") {
+      document.addEventListener(
+        "DOMContentLoaded",
+        scheduleInitialHashNavigation,
+        {
+          once: true
+        }
+      );
+    } else {
+      scheduleInitialHashNavigation();
+    }
+  }
+
+  window.addEventListener("hashchange", () => {
+    if (suppressHashChange) {
+      suppressHashChange = false;
+      return;
+    }
+
+    if (!hasUsableHash(window.location.hash)) {
+      return;
+    }
+
+    handleCurrentHashNavigation({ behavior: "auto" });
+  });
+
   const closeMenu = ({ shouldUnfreeze = true, unfreezeDelay = 100 } = {}) => {
     burger.classList.remove("active");
     burger.setAttribute("aria-expanded", "false");
@@ -311,79 +456,27 @@ export const initBurger = () => {
       return;
     }
 
-    const targetId = decodeURIComponent(hash.slice(1));
-
-    if (!targetId) {
-      closeMenu();
-      return;
-    }
-
-    const target = document.getElementById(targetId);
-
-    if (!target) {
-      closeMenu();
-      return;
-    }
-
     event.preventDefault();
 
-    const headerHeight = getHeaderHeight();
-    const targetPosition = normalizeScrollTarget(
-      target.getBoundingClientRect().top + window.scrollY - headerHeight
-    );
-
-    if (window.headerControl) {
-      window.headerControl.freeze();
-      window.headerControl.pin({ scrollY: targetPosition });
-    }
-
-    let released = false;
-
-    const releaseHeader = (finalScrollPosition = targetPosition) => {
-      if (released) {
-        return;
-      }
-
-      released = true;
-
-      if (window.headerControl) {
-        window.headerControl.unfreeze({ scrollY: finalScrollPosition });
-      }
-    };
-
-    const { promise: scrollCompletionPromise, finish: finishScrollWatch } =
-      createScrollCompletionWatcher(targetPosition);
-
-    if ("onscrollend" in window) {
-      window.addEventListener(
-        "scrollend",
-        () => {
-          finishScrollWatch(window.pageYOffset);
-        },
-        { once: true }
-      );
-    }
-
-    window.scrollTo({
-      top: targetPosition,
+    const navigationHandled = scrollToHashWithCompensation(hash, {
       behavior: "smooth"
     });
 
-    const fallbackTimeoutId = window.setTimeout(() => {
-      finishScrollWatch(window.pageYOffset);
-    }, 700);
-
-    scrollCompletionPromise.then(finalScrollPosition => {
-      window.clearTimeout(fallbackTimeoutId);
-      releaseHeader(finalScrollPosition);
-    });
+    if (!navigationHandled) {
+      closeMenu();
+      return;
+    }
 
     closeMenu({ shouldUnfreeze: false });
 
     if (typeof history.replaceState === "function") {
       history.replaceState(null, "", hash);
     } else {
+      suppressHashChange = true;
       window.location.hash = hash;
+      window.setTimeout(() => {
+        suppressHashChange = false;
+      }, 0);
     }
   });
 };
