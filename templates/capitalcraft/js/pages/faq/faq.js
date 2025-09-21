@@ -59,29 +59,86 @@
       header.classList.add("pinned");
     }
 
-    function runWithHeaderControl(callback) {
-      if (typeof callback !== "function") {
-        return;
-      }
+    function createHeaderInteractionLock(options) {
+      const settings = options || {};
+      const releaseDelay =
+        Number.isFinite(settings.releaseDelay) && settings.releaseDelay >= 0
+          ? settings.releaseDelay
+          : 150;
 
-      if (window.headerControl) {
-        callback(window.headerControl);
-        return;
-      }
+      ensureHeaderPinned();
 
-      function handleReady(event) {
-        window.removeEventListener("cc:header-control-ready", handleReady);
+      let controlInstance = window.headerControl || null;
+      let releaseRequested = false;
+      let releaseTimer = null;
 
+      const freezeControl = control => {
+        if (!control) {
+          return;
+        }
+
+        control.freeze({ scrollY: window.pageYOffset });
+        control.pin({ scrollY: window.pageYOffset });
+      };
+
+      const releaseControl = control => {
+        if (!control) {
+          return;
+        }
+
+        control.pin({ scrollY: window.pageYOffset });
+
+        const finalizeRelease = () => {
+          control.unfreeze({ scrollY: window.pageYOffset });
+        };
+
+        if (releaseDelay > 0) {
+          if (releaseTimer) {
+            window.clearTimeout(releaseTimer);
+          }
+          releaseTimer = window.setTimeout(finalizeRelease, releaseDelay);
+        } else {
+          finalizeRelease();
+        }
+      };
+
+      const handleReady = event => {
         const detail = event && event.detail;
         const controlFromEvent =
           (detail && detail.control) || window.headerControl;
 
-        if (controlFromEvent) {
-          callback(controlFromEvent);
+        if (!controlFromEvent) {
+          return;
         }
+
+        controlInstance = controlFromEvent;
+        window.removeEventListener("cc:header-control-ready", handleReady);
+
+        if (releaseRequested) {
+          releaseControl(controlInstance);
+        } else {
+          freezeControl(controlInstance);
+        }
+      };
+
+      if (controlInstance) {
+        freezeControl(controlInstance);
+      } else {
+        window.addEventListener("cc:header-control-ready", handleReady);
       }
 
-      window.addEventListener("cc:header-control-ready", handleReady);
+      return function releaseHeaderLock() {
+        if (releaseRequested) {
+          return;
+        }
+
+        releaseRequested = true;
+        ensureHeaderPinned();
+
+        if (controlInstance) {
+          releaseControl(controlInstance);
+        }
+      };
     }
 
     const parser = new DOMParser();
@@ -252,21 +309,40 @@
       if (!element) {
         return;
       }
+      const releaseHeaderLock = createHeaderInteractionLock({
+        releaseDelay: 180
+      });
+      let autoReleaseId = null;
+
       const question = element.querySelector(".faq__question");
-      if (question && question.getAttribute("aria-expanded") !== "true") {
-        question.click();
+      if (question) {
+        const isExpanded = question.getAttribute("aria-expanded") === "true";
+
+        if (!isExpanded) {
+          questionNodes.forEach(btn => {
+            if (btn !== question && btn.getAttribute("aria-expanded") === "true") {
+              collapseQuestion(btn);
+            }
+          });
+
+          expandQuestion(question);
+        }
       }
 
       ensureHeaderPinned();
 
-      window.requestAnimationFrame(function () {
-        runWithHeaderControl(function (control) {
-          control.freeze();
-        });
+      const scheduleFrame =
+        typeof window.requestAnimationFrame === "function"
+          ? window.requestAnimationFrame.bind(window)
+          : callback => window.setTimeout(callback, 0);
 
+      autoReleaseId = window.setTimeout(releaseHeaderLock, 1200);
+
+      scheduleFrame(function () {
         ensureHeaderPinned();
 
         element.scrollIntoView({ block: "center", behavior: "instant" });
+
         if (
           typeof window.matchMedia === "function" &&
           window.matchMedia("(max-width: 767px)").matches &&
@@ -277,14 +353,14 @@
 
         ensureHeaderPinned();
 
-        runWithHeaderControl(function (control) {
-          control.pin();
-          control.unfreeze();
+        scheduleFrame(function () {
+          ensureHeaderPinned();
+          if (autoReleaseId !== null) {
+            window.clearTimeout(autoReleaseId);
+            autoReleaseId = null;
+          }
+          releaseHeaderLock();
         });
-
-        if (!window.headerControl) {
-          window.requestAnimationFrame(ensureHeaderPinned);
-        }
       });
     }
 
