@@ -152,8 +152,8 @@
     flex-shrink: 0;
 
     .media(mobile, {
-    width: 100%;
-  });
+      width: 100%;
+    });
 
     &-links {
       display: flex;
@@ -209,12 +209,16 @@
   // Contacts
   &-contacts {
     scroll-margin-top: var(--header-height, 76px);
+
+    .media(mobile, {
+      scroll-margin-top: calc(var(--header-height, 76px) + @divider-space-mobile);
+    });
     width: 221px;
     flex-shrink: 0;
 
     .media(mobile, {
-    width: 100%;
-  });
+      width: 100%;
+    });
 
     & .footer-contact-address {
       margin-bottom: 10px;
