@@ -7,8 +7,63 @@ export const initBurger = () => {
 
   if (!burger || !header || !mobileNav) return;
 
+  const safeFocus = element => {
+    if (!element || typeof element.focus !== "function") {
+      return;
+    }
+
+    try {
+      element.focus({ preventScroll: true });
+    } catch (error) {
+      element.focus();
+    }
+  };
+
+  const FOCUSABLE_SELECTOR = [
+    'a[href]:not([tabindex="-1"]):not([aria-disabled="true"])',
+    "button:not([disabled])",
+    'input:not([disabled]):not([type="hidden"])',
+    "select:not([disabled])",
+    "textarea:not([disabled])",
+    '[tabindex]:not([tabindex="-1"]):not([disabled])'
+  ].join(",");
+
+  const setMenuAccessibility = isOpen => {
+    if (isOpen) {
+      mobileNav.setAttribute("aria-hidden", "false");
+      mobileNav.removeAttribute("inert");
+      mobileNav.removeAttribute("tabindex");
+      if ("inert" in mobileNav) {
+        mobileNav.inert = false;
+      }
+    } else {
+      mobileNav.setAttribute("aria-hidden", "true");
+      mobileNav.setAttribute("inert", "");
+      mobileNav.setAttribute("tabindex", "-1");
+      if ("inert" in mobileNav) {
+        mobileNav.inert = true;
+      }
+    }
+  };
+
+  const focusFirstNavigationItem = () => {
+    const focusTarget = mobileNav.querySelector(FOCUSABLE_SELECTOR);
+
+    if (!focusTarget) {
+      return;
+    }
+
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(() => {
+        safeFocus(focusTarget);
+      });
+    } else {
+      safeFocus(focusTarget);
+    }
+  };
+
   // Инициализация: меню скрыто для скринридеров по умолчанию
-  mobileNav.setAttribute("aria-hidden", "true");
+  setMenuAccessibility(false);
 
   const HEADER_HEIGHT_VAR = "--header-height";
   const MOBILE_NAV_HEIGHT_VAR = "--mobile-nav-open-height";
@@ -173,15 +228,8 @@ export const initBurger = () => {
     document.body.classList.remove("menu-open");
 
     // Управление доступностью
-    const activeElement = document.activeElement;
-    if (activeElement && mobileNav.contains(activeElement)) {
-      if (typeof burger.focus === "function") {
-        burger.focus();
-      } else if (typeof document.body.focus === "function") {
-        document.body.focus();
-      }
-    }
-    mobileNav.setAttribute("aria-hidden", "true");
+    setMenuAccessibility(false);
+    safeFocus(burger);
 
     clearAvailableHeight();
 
@@ -206,9 +254,11 @@ export const initBurger = () => {
     document.body.classList.add("menu-open");
 
     // Управление доступностью
-    mobileNav.setAttribute("aria-hidden", "false");
+    setMenuAccessibility(true);
 
     setAvailableHeight();
+
+    focusFirstNavigationItem();
 
     // Временно блокируем реакцию хедера на скролл при открытии меню
     if (window.headerControl) {
