@@ -48,6 +48,42 @@
       return;
     }
 
+    const header = document.querySelector(".site-header");
+
+    function ensureHeaderPinned() {
+      if (!header) {
+        return;
+      }
+
+      header.classList.remove("unpinned");
+      header.classList.add("pinned");
+    }
+
+    function runWithHeaderControl(callback) {
+      if (typeof callback !== "function") {
+        return;
+      }
+
+      if (window.headerControl) {
+        callback(window.headerControl);
+        return;
+      }
+
+      function handleReady(event) {
+        window.removeEventListener("cc:header-control-ready", handleReady);
+
+        const detail = event && event.detail;
+        const controlFromEvent =
+          (detail && detail.control) || window.headerControl;
+
+        if (controlFromEvent) {
+          callback(controlFromEvent);
+        }
+      }
+
+      window.addEventListener("cc:header-control-ready", handleReady);
+    }
+
     const parser = new DOMParser();
     const statusEl = faqSection.querySelector("#faq-filter-status");
     const faqBase = (function () {
@@ -221,20 +257,33 @@
         question.click();
       }
 
+      ensureHeaderPinned();
+
       window.requestAnimationFrame(function () {
-        if (window.headerControl) {
-          window.headerControl.freeze();
-        }
+        runWithHeaderControl(function (control) {
+          control.freeze();
+        });
+
+        ensureHeaderPinned();
+
         element.scrollIntoView({ block: "center", behavior: "instant" });
-        if (window.matchMedia("(max-width: 767px)").matches) {
-          const header = document.querySelector(".site-header");
-          if (header) {
-            window.scrollBy(0, -header.offsetHeight);
-          }
+        if (
+          typeof window.matchMedia === "function" &&
+          window.matchMedia("(max-width: 767px)").matches &&
+          header
+        ) {
+          window.scrollBy(0, -header.offsetHeight);
         }
-        if (window.headerControl) {
-          window.headerControl.pin();
-          window.headerControl.unfreeze();
+
+        ensureHeaderPinned();
+
+        runWithHeaderControl(function (control) {
+          control.pin();
+          control.unfreeze();
+        });
+
+        if (!window.headerControl) {
+          window.requestAnimationFrame(ensureHeaderPinned);
         }
       });
     }
