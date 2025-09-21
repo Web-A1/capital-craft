@@ -94,7 +94,7 @@ $cases = [
                 </div>
 
                 <div class="show-case__button-wrapper">
-                    <a href="#" class="btn-main show-case__button">
+                    <a href="#cases" class="btn-main show-case__button">
                         <span>Завершенные кейсы</span>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 17 17 7m0 0H8m9 0v9" />
