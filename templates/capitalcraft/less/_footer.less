@@ -212,6 +212,15 @@
 
     .media(mobile, {
       scroll-margin-top: calc(var(--header-height, 76px) + @divider-space-mobile);
+      position: relative;
+
+      &::before {
+        content: "";
+        display: block;
+        height: calc(var(--header-height, 76px) + @divider-space-mobile);
+        margin-top: calc(-1 * (var(--header-height, 76px) + @divider-space-mobile));
+        pointer-events: none;
+      }
     });
     width: 221px;
     flex-shrink: 0;
