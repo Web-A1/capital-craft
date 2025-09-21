@@ -1,0 +1,747 @@
+import IMask from "imask";
+import { initBurger } from "./burger.js";
+import { initModal } from "./modal.js";
+import { initPhoneMask } from "./phone-mask.js";
+import { initFormSubmit } from "./form-submit.js";
+import { initScrollTop } from "./scroll-top.js";
+import { initTextTruncate } from "./text-truncate.js";
+
+// Делаем IMask  доступным глобально
+window.IMask = IMask;
+
+initBurger();
+initModal();
+initPhoneMask();
+initFormSubmit();
+initScrollTop();
+initTextTruncate();
+
+const rootElement = document.documentElement;
+
+const parsePixelValue = value => {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return null;
+  }
+
+  const parsed = parseFloat(trimmed);
+
+  return Number.isNaN(parsed) ? null : parsed;
+};
+
+const getSectionScrollPadding = (element, styles) => {
+  if (!element) {
+    return 0;
+  }
+
+  const computedStyles = styles ?? window.getComputedStyle(element);
+  const customPadding = parsePixelValue(
+    computedStyles.getPropertyValue("--section-scroll-padding")
+  );
+
+  if (customPadding !== null) {
+    return customPadding;
+  }
+
+  return parsePixelValue(computedStyles.paddingTop) ?? 0;
+};
+
+const getSectionScrollOffset = (element, styles) => {
+  if (!element) {
+    return 0;
+  }
+
+  const computedStyles = styles ?? window.getComputedStyle(element);
+  const customOffset = parsePixelValue(
+    computedStyles.getPropertyValue("--section-scroll-offset")
+  );
+
+  return customOffset ?? 0;
+};
+
+const getHeaderScrollOffset = element => {
+  if (element && element.dataset) {
+    const storedOffset = parsePixelValue(element.dataset.headerScrollOffset);
+
+    if (storedOffset !== null) {
+      return storedOffset;
+    }
+  }
+
+  const headerHeight =
+    parsePixelValue(
+      window.getComputedStyle(rootElement).getPropertyValue("--header-height")
+    ) ?? 0;
+
+  const styles = element ? window.getComputedStyle(element) : null;
+  const sectionPadding = getSectionScrollPadding(element, styles);
+  const sectionScrollOffset = getSectionScrollOffset(element, styles);
+
+  return headerHeight - sectionPadding + sectionScrollOffset;
+};
+
+const getTargetScrollTopWithOffset = element =>
+  element.getBoundingClientRect().top +
+  window.pageYOffset -
+  getHeaderScrollOffset(element);
+
+const resolveHashTarget = hash => {
+  if (!hash || hash === "#") {
+    return null;
+  }
+
+  try {
+    const decoded = decodeURIComponent(hash.slice(1));
+
+    if (!decoded) {
+      return null;
+    }
+
+    return document.getElementById(decoded);
+  } catch (error) {
+    return null;
+  }
+};
+
+const anchorHeadingSelectors = [
+  "[data-anchor-target]",
+  ".section__title",
+  ".section-title",
+  ".section-heading",
+  ".section__heading",
+  ".footer-section-title",
+  "h1",
+  "h2",
+  "h3",
+  "h4"
+];
+
+const anchorSections = Array.from(
+  document.querySelectorAll(".section-with-divider[id]")
+);
+const contactsSection = document.getElementById("contacts");
+const MIN_SECTION_GAP = 8;
+const PROGRAMMATIC_SCROLL_SUPPRESSION = 900;
+
+if (contactsSection) {
+  contactsSection.style.setProperty("--section-header-gap", "0px");
+}
+const uniqueAnchorElements = contactsSection
+  ? Array.from(new Set([...anchorSections, contactsSection]))
+  : anchorSections;
+
+const getAnchorContentOffset = element => {
+  if (!element) {
+    return 0;
+  }
+
+  const elementRect = element.getBoundingClientRect();
+
+  for (const selector of anchorHeadingSelectors) {
+    const candidate = element.querySelector(selector);
+
+    if (candidate) {
+      const candidateRect = candidate.getBoundingClientRect();
+      const offset = candidateRect.top - elementRect.top;
+
+      if (Number.isFinite(offset)) {
+        return Math.max(offset, 0);
+      }
+    }
+  }
+
+  if (element.firstElementChild) {
+    const childRect = element.firstElementChild.getBoundingClientRect();
+    const offset = childRect.top - elementRect.top;
+
+    if (Number.isFinite(offset)) {
+      return Math.max(offset, 0);
+    }
+  }
+
+  return getSectionScrollPadding(element);
+};
+
+const getSectionHeaderGap = (element, styles) => {
+  if (!element) {
+    return MIN_SECTION_GAP;
+  }
+
+  const computedStyles = styles ?? window.getComputedStyle(element);
+  const customGap = parsePixelValue(
+    computedStyles.getPropertyValue("--section-header-gap")
+  );
+
+  if (customGap !== null) {
+    return Math.max(customGap, 0);
+  }
+
+  const defaultGap = getSectionScrollOffset(element, computedStyles);
+
+  if (defaultGap !== 0) {
+    return Math.max(defaultGap, MIN_SECTION_GAP);
+  }
+
+  return MIN_SECTION_GAP;
+};
+
+let initialHashHandled = false;
+
+const header = document.querySelector(".site-header");
+
+if (header) {
+  header.classList.add("pinned", "is-initial");
+
+  let lastScrollY = window.pageYOffset;
+  let frozen = false;
+  let ignoreInitialScroll = true;
+  let allowAutoHide = false;
+  let autoHideSuppressedUntil = 0;
+  const tolerance =
+    window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
+
+  let lastHeaderHeight = null;
+  let rafId = null;
+  let anchorRafId = null;
+
+  const getNow = () =>
+    typeof performance !== "undefined" && typeof performance.now === "function"
+      ? performance.now()
+      : Date.now();
+
+  const updateHeaderHeight = () => {
+    const newHeight = header.offsetHeight;
+
+    if (newHeight !== lastHeaderHeight) {
+      lastHeaderHeight = newHeight;
+      rootElement.style.setProperty("--header-height", `${newHeight}px`);
+    }
+  };
+
+  const updateAnchorOffsets = () => {
+    if (!uniqueAnchorElements.length) {
+      return;
+    }
+
+    const headerHeight = lastHeaderHeight ?? header.offsetHeight;
+
+    uniqueAnchorElements.forEach(element => {
+      if (!element) {
+        return;
+      }
+
+      const styles = window.getComputedStyle(element);
+      const sectionPadding = getSectionScrollPadding(element, styles);
+      const desiredGap = getSectionHeaderGap(element, styles);
+      const contentOffset = Math.max(
+        getAnchorContentOffset(element),
+        sectionPadding
+      );
+      const scrollMargin = Math.max(
+        headerHeight + desiredGap - contentOffset,
+        0
+      );
+      const storedOffset = parsePixelValue(
+        element.dataset ? element.dataset.headerScrollOffset : null
+      );
+
+      if (
+        storedOffset === null ||
+        Math.abs(storedOffset - scrollMargin) > 0.5
+      ) {
+        element.dataset.headerScrollOffset = `${scrollMargin}`;
+      }
+
+      const currentScrollMargin = parsePixelValue(
+        element.style.scrollMarginTop
+      );
+
+      if (
+        currentScrollMargin === null ||
+        currentScrollMargin !== scrollMargin
+      ) {
+        element.style.scrollMarginTop = `${scrollMargin}px`;
+      }
+    });
+  };
+
+  const scheduleAnchorOffsetsUpdate = () => {
+    if (!uniqueAnchorElements.length) {
+      return;
+    }
+
+    if (anchorRafId !== null) {
+      return;
+    }
+
+    anchorRafId = window.requestAnimationFrame(() => {
+      anchorRafId = null;
+      updateAnchorOffsets();
+    });
+  };
+
+  const scheduleHeaderHeightUpdate = () => {
+    if (rafId !== null) return;
+
+    rafId = window.requestAnimationFrame(() => {
+      rafId = null;
+      updateHeaderHeight();
+      scheduleAnchorOffsetsUpdate();
+    });
+  };
+
+  updateHeaderHeight();
+  updateAnchorOffsets();
+
+  const enableAutoHide = () => {
+    allowAutoHide = true;
+    header.classList.remove("is-initial");
+  };
+
+  const interactionEvents = [
+    ["pointerdown", { once: true, passive: true }],
+    ["touchstart", { once: true, passive: true }],
+    ["wheel", { once: true, passive: true }],
+    ["keydown", { once: true }]
+  ];
+
+  interactionEvents.forEach(([eventName, options]) => {
+    window.addEventListener(eventName, enableAutoHide, options);
+  });
+
+  const handleResize = () => {
+    scheduleHeaderHeightUpdate();
+  };
+
+  window.addEventListener("resize", handleResize, { passive: true });
+  window.addEventListener("orientationchange", handleResize);
+
+  const suppressAutoHide = duration => {
+    const timeout = typeof duration === "number" && duration > 0 ? duration : 0;
+
+    autoHideSuppressedUntil = Math.max(
+      autoHideSuppressedUntil,
+      getNow() + timeout
+    );
+  };
+
+  const onScroll = event => {
+    const currentScrollY = window.pageYOffset;
+
+    if (frozen) {
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (event && event.isTrusted === false) {
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (getNow() < autoHideSuppressedUntil) {
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (ignoreInitialScroll) {
+      lastScrollY = currentScrollY;
+      ignoreInitialScroll = false;
+      return;
+    }
+
+    if (!allowAutoHide) {
+      lastScrollY = currentScrollY;
+      return;
+    }
+
+    if (
+      currentScrollY > lastScrollY &&
+      currentScrollY - lastScrollY > tolerance.down
+    ) {
+      header.classList.remove("pinned");
+      header.classList.add("unpinned");
+      scheduleHeaderHeightUpdate();
+    } else if (
+      currentScrollY < lastScrollY &&
+      lastScrollY - currentScrollY > tolerance.up
+    ) {
+      header.classList.remove("unpinned");
+      header.classList.add("pinned");
+      scheduleHeaderHeightUpdate();
+    }
+
+    lastScrollY = currentScrollY;
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  if (uniqueAnchorElements.length && typeof ResizeObserver !== "undefined") {
+    const anchorResizeObserver = new ResizeObserver(() => {
+      scheduleAnchorOffsetsUpdate();
+    });
+
+    uniqueAnchorElements.forEach(element => {
+      anchorResizeObserver.observe(element);
+    });
+  }
+
+  if (uniqueAnchorElements.length) {
+    window.addEventListener("load", () => {
+      scheduleAnchorOffsetsUpdate();
+    });
+  }
+
+  window.addEventListener("load", () => {
+    lastScrollY = window.pageYOffset;
+    ignoreInitialScroll = false;
+    scheduleHeaderHeightUpdate();
+  });
+
+  const requestGeometrySync = () => {
+    scheduleHeaderHeightUpdate();
+    scheduleAnchorOffsetsUpdate();
+  };
+
+  window.headerControl = {
+    freeze() {
+      frozen = true;
+      requestGeometrySync();
+    },
+    unfreeze() {
+      frozen = false;
+      lastScrollY = window.pageYOffset;
+      suppressAutoHide(150);
+      requestGeometrySync();
+    },
+    pin() {
+      header.classList.remove("unpinned");
+      header.classList.add("pinned");
+      lastScrollY = window.pageYOffset;
+      suppressAutoHide(150);
+      requestGeometrySync();
+    },
+    unpin() {
+      header.classList.remove("pinned");
+      header.classList.add("unpinned");
+      lastScrollY = window.pageYOffset;
+      requestGeometrySync();
+    },
+    suppressAutoHide(duration = 150) {
+      suppressAutoHide(duration);
+    }
+  };
+
+  const scrollTargetWithOffset = (target, behavior = "auto") => {
+    if (!target) {
+      return null;
+    }
+
+    updateHeaderHeight();
+    updateAnchorOffsets();
+    suppressAutoHide(PROGRAMMATIC_SCROLL_SUPPRESSION);
+
+    const targetTop = getTargetScrollTopWithOffset(target);
+
+    try {
+      window.scrollTo({ top: targetTop, behavior });
+    } catch (error) {
+      window.scrollTo(0, targetTop);
+    }
+
+    return targetTop;
+  };
+
+  const scrollHashWithOffset = ({
+    hash = window.location.hash,
+    behavior = "auto",
+    freeze = false
+  } = {}) => {
+    const target = resolveHashTarget(hash);
+
+    if (!target) {
+      return false;
+    }
+
+    const shouldFreeze = freeze && Boolean(window.headerControl);
+    let wasFrozen = false;
+
+    if (shouldFreeze) {
+      wasFrozen = frozen;
+      window.headerControl.freeze();
+      window.headerControl.pin();
+      window.headerControl.suppressAutoHide(PROGRAMMATIC_SCROLL_SUPPRESSION);
+    }
+
+    if (scrollTargetWithOffset(target, behavior) === null) {
+      if (shouldFreeze && !wasFrozen) {
+        window.headerControl.unfreeze();
+      }
+
+      return false;
+    }
+
+    if (shouldFreeze) {
+      let releaseTimerId = null;
+      let maxWaitTimerId = null;
+      let maxLoadWaitTimerId = null;
+      let released = false;
+      let scrollSettled = false;
+      let loadComplete = document.readyState === "complete";
+
+      const clearTimer = timerId => {
+        if (timerId !== null) {
+          window.clearTimeout(timerId);
+        }
+      };
+
+      const cleanup = () => {
+        window.removeEventListener("scroll", onScrollWhileFrozen);
+        clearTimer(releaseTimerId);
+        clearTimer(maxWaitTimerId);
+        clearTimer(maxLoadWaitTimerId);
+        releaseTimerId = null;
+        maxWaitTimerId = null;
+        maxLoadWaitTimerId = null;
+      };
+
+      const finalizeRelease = () => {
+        if (released) {
+          return;
+        }
+
+        released = true;
+
+        cleanup();
+
+        updateHeaderHeight();
+
+        const finalTargetTop = getTargetScrollTopWithOffset(target);
+        const currentScrollY = window.pageYOffset;
+
+        if (Math.abs(currentScrollY - finalTargetTop) > 1) {
+          try {
+            window.scrollTo({ top: finalTargetTop, behavior: "auto" });
+          } catch (error) {
+            window.scrollTo(0, finalTargetTop);
+          }
+        }
+
+        window.headerControl.pin();
+        window.headerControl.suppressAutoHide(PROGRAMMATIC_SCROLL_SUPPRESSION);
+
+        if (!wasFrozen) {
+          window.headerControl.unfreeze();
+        }
+      };
+
+      const triggerRelease = () => {
+        if (!scrollSettled || !loadComplete) {
+          return;
+        }
+
+        if (typeof window.requestAnimationFrame === "function") {
+          window.requestAnimationFrame(() => {
+            window.requestAnimationFrame(finalizeRelease);
+          });
+        } else {
+          window.setTimeout(finalizeRelease, 16);
+        }
+      };
+
+      const markScrollSettled = () => {
+        scrollSettled = true;
+        triggerRelease();
+      };
+
+      const scheduleScrollSettleCheck = (delay = 120) => {
+        clearTimer(releaseTimerId);
+        releaseTimerId = window.setTimeout(markScrollSettled, delay);
+      };
+
+      const scheduleMaxWaitFallback = () => {
+        clearTimer(maxWaitTimerId);
+        maxWaitTimerId = window.setTimeout(() => {
+          scrollSettled = true;
+          triggerRelease();
+        }, 800);
+      };
+
+      function onScrollWhileFrozen() {
+        scrollSettled = false;
+        scheduleScrollSettleCheck();
+        scheduleMaxWaitFallback();
+      }
+
+      window.addEventListener("scroll", onScrollWhileFrozen, { passive: true });
+
+      scheduleScrollSettleCheck();
+      scheduleMaxWaitFallback();
+
+      if (!loadComplete) {
+        window.addEventListener(
+          "load",
+          () => {
+            loadComplete = true;
+            clearTimer(maxLoadWaitTimerId);
+            maxLoadWaitTimerId = null;
+            triggerRelease();
+          },
+          { once: true }
+        );
+
+        maxLoadWaitTimerId = window.setTimeout(() => {
+          loadComplete = true;
+          triggerRelease();
+        }, 2000);
+      } else {
+        triggerRelease();
+      }
+    }
+
+    return true;
+  };
+
+  window.headerControl.scrollToHash = (options = {}) => {
+    if (typeof options === "string") {
+      return scrollHashWithOffset({ hash: options });
+    }
+
+    if (!options || typeof options !== "object") {
+      return scrollHashWithOffset({});
+    }
+
+    return scrollHashWithOffset(options);
+  };
+
+  const correctInitialHashPosition = () => {
+    const handled = scrollHashWithOffset({ freeze: true, behavior: "auto" });
+
+    if (handled) {
+      initialHashHandled = true;
+    }
+
+    return handled;
+  };
+
+  if (
+    !correctInitialHashPosition() &&
+    window.location.hash &&
+    window.location.hash !== "#"
+  ) {
+    const retryAfterLoad = () => {
+      if (!initialHashHandled) {
+        correctInitialHashPosition();
+      }
+    };
+
+    if (document.readyState === "complete") {
+      retryAfterLoad();
+    } else {
+      window.addEventListener("load", retryAfterLoad, { once: true });
+    }
+  }
+}
+
+const supportsScrollMarginTop =
+  typeof CSS !== "undefined" && typeof CSS.supports === "function"
+    ? CSS.supports("scroll-margin-top: 1px")
+    : false;
+
+if (!supportsScrollMarginTop) {
+  const supportsSmoothScroll =
+    "scrollBehavior" in document.documentElement.style;
+
+  const scrollToTarget = target => {
+    if (!target) return;
+
+    const targetTop = getTargetScrollTopWithOffset(target);
+
+    if (
+      window.headerControl &&
+      typeof window.headerControl.suppressAutoHide === "function"
+    ) {
+      window.headerControl.suppressAutoHide(PROGRAMMATIC_SCROLL_SUPPRESSION);
+    }
+
+    if (supportsSmoothScroll) {
+      try {
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      } catch (error) {
+        window.scrollTo(0, targetTop);
+      }
+    } else {
+      window.scrollTo(0, targetTop);
+    }
+  };
+
+  let suppressHashChange = false;
+
+  const handleHashNavigation = () => {
+    if (suppressHashChange) {
+      suppressHashChange = false;
+      return;
+    }
+
+    const target = resolveHashTarget(window.location.hash);
+    if (target) {
+      scrollToTarget(target);
+    }
+  };
+
+  document.addEventListener("click", event => {
+    const anchor = event.target.closest("a[href*='#']");
+    if (!anchor) return;
+
+    const url = new URL(anchor.getAttribute("href"), window.location.href);
+
+    if (url.origin !== window.location.origin) {
+      return;
+    }
+
+    const currentPathname = window.location.pathname.replace(/\/+$/, "");
+    const targetPathname = url.pathname.replace(/\/+$/, "");
+
+    if (currentPathname !== targetPathname) {
+      return;
+    }
+
+    const target = resolveHashTarget(url.hash);
+    if (!target) {
+      return;
+    }
+
+    event.preventDefault();
+
+    if (url.hash) {
+      if (
+        typeof history !== "undefined" &&
+        typeof history.pushState === "function"
+      ) {
+        history.pushState(null, "", url.hash);
+      } else {
+        suppressHashChange = true;
+        window.location.hash = url.hash.slice(1);
+      }
+    }
+
+    scrollToTarget(target);
+  });
+
+  window.addEventListener("hashchange", handleHashNavigation);
+
+  window.addEventListener("load", () => {
+    if (initialHashHandled) {
+      return;
+    }
+
+    const target = resolveHashTarget(window.location.hash);
+    if (target) {
+      scrollToTarget(target);
+    }
+  });
+}
