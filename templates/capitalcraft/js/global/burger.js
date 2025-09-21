@@ -64,12 +64,41 @@ export const initBurger = () => {
 
   window.addEventListener("beforeunload", cleanup);
 
+  const normalizeScrollTarget = value => {
+    const maxScroll = Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      0
+    );
+
+    if (!Number.isFinite(value)) {
+      return window.pageYOffset;
+    }
+
+    if (value <= 0) {
+      return 0;
+    }
+
+    if (value >= maxScroll) {
+      return maxScroll;
+    }
+
+    return value;
+  };
+
   const closeMenu = ({ shouldUnfreeze = true, unfreezeDelay = 100 } = {}) => {
     burger.classList.remove("active");
     burger.setAttribute("aria-expanded", "false");
     document.body.classList.remove("menu-open");
 
     // Управление доступностью
+    const activeElement = document.activeElement;
+    if (activeElement && mobileNav.contains(activeElement)) {
+      if (typeof burger.focus === "function") {
+        burger.focus();
+      } else if (typeof document.body.focus === "function") {
+        document.body.focus();
+      }
+    }
     mobileNav.setAttribute("aria-hidden", "true");
 
     clearAvailableHeight();
@@ -166,19 +195,20 @@ export const initBurger = () => {
 
     event.preventDefault();
 
+    const headerHeight = getHeaderHeight();
+    const targetPosition = normalizeScrollTarget(
+      target.getBoundingClientRect().top + window.scrollY - headerHeight
+    );
+
     if (window.headerControl) {
       window.headerControl.freeze();
-      window.headerControl.pin();
+      window.headerControl.pin({ scrollY: targetPosition });
     }
-
-    const headerHeight = getHeaderHeight();
-    const targetPosition =
-      target.getBoundingClientRect().top + window.scrollY - headerHeight;
 
     let released = false;
     let releaseTimeoutId = null;
 
-    const releaseHeader = () => {
+    const releaseHeader = (finalScrollPosition = targetPosition) => {
       if (released) {
         return;
       }
@@ -191,7 +221,7 @@ export const initBurger = () => {
       }
 
       if (window.headerControl) {
-        window.headerControl.unfreeze();
+        window.headerControl.unfreeze({ scrollY: finalScrollPosition });
       }
     };
 
@@ -199,14 +229,14 @@ export const initBurger = () => {
       window.addEventListener(
         "scrollend",
         () => {
-          releaseHeader();
+          releaseHeader(window.pageYOffset);
         },
         { once: true }
       );
     }
 
     window.scrollTo({
-      top: Math.max(targetPosition, 0),
+      top: targetPosition,
       behavior: "smooth"
     });
 
