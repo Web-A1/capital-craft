@@ -105,10 +105,47 @@ initScrollTop();
 initTextTruncate();
 
 if (header) {
+  const MOBILE_BREAKPOINT = 767;
+  const root = document.documentElement;
+
+  const readHeaderHeightFromStyles = () => {
+    const rawValue = getComputedStyle(root).getPropertyValue("--header-height");
+    const parsedValue = parseFloat(rawValue);
+
+    return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null;
+  };
+
+  const measureHeaderHeight = () => {
+    const rect = header.getBoundingClientRect();
+    const { height } = rect;
+
+    return Number.isFinite(height) && height > 0 ? height : null;
+  };
+
+  const resolveHeaderHeight = fallback => {
+    if (Number.isFinite(fallback) && fallback > 0) {
+      return fallback;
+    }
+
+    const fromStyles = readHeaderHeightFromStyles();
+
+    if (fromStyles !== null) {
+      return fromStyles;
+    }
+
+    const measured = measureHeaderHeight();
+
+    return Number.isFinite(measured) ? measured : 0;
+  };
+
+  const getToleranceForViewport = isMobile =>
+    isMobile ? { up: 3, down: 5 } : { up: 5, down: 10 };
+
+  let isMobileViewport = window.innerWidth <= MOBILE_BREAKPOINT;
+  let tolerance = getToleranceForViewport(isMobileViewport);
+  let mobileHideThreshold = resolveHeaderHeight();
   let lastScrollY = window.pageYOffset;
   let frozen = false;
-  const tolerance =
-    window.innerWidth <= 767 ? { up: 3, down: 5 } : { up: 5, down: 10 };
 
   const clampScrollY = value => {
     if (!Number.isFinite(value)) {
@@ -136,25 +173,58 @@ if (header) {
     return lastScrollY;
   };
 
+  const updateMobileHideThreshold = newHeight => {
+    mobileHideThreshold = resolveHeaderHeight(newHeight);
+  };
+
+  const onHeaderHeightChange = event => {
+    const nextHeight = event?.detail?.height;
+
+    updateMobileHideThreshold(nextHeight);
+  };
+
+  const onResize = () => {
+    isMobileViewport = window.innerWidth <= MOBILE_BREAKPOINT;
+    tolerance = getToleranceForViewport(isMobileViewport);
+
+    if (isMobileViewport) {
+      updateMobileHideThreshold();
+    }
+  };
+
+  window.addEventListener("cc:header-height-change", onHeaderHeightChange);
+  window.addEventListener("resize", onResize, { passive: true });
+
   const onScroll = () => {
     if (frozen) return;
-    const currentScrollY = window.pageYOffset;
+    const currentScrollY = clampScrollY(window.pageYOffset);
+
+    if (isMobileViewport && currentScrollY <= mobileHideThreshold) {
+      header.classList.remove("unpinned");
+      header.classList.add("pinned");
+      syncLastScrollY(currentScrollY);
+      return;
+    }
+
+    const isScrollingDown =
+      currentScrollY > lastScrollY &&
+      currentScrollY - lastScrollY > tolerance.down;
+    const isScrollingUp =
+      currentScrollY < lastScrollY &&
+      lastScrollY - currentScrollY > tolerance.up;
 
     if (
-      currentScrollY > lastScrollY &&
-      currentScrollY - lastScrollY > tolerance.down
+      isScrollingDown &&
+      (!isMobileViewport || currentScrollY > mobileHideThreshold)
     ) {
       header.classList.remove("pinned");
       header.classList.add("unpinned");
-    } else if (
-      currentScrollY < lastScrollY &&
-      lastScrollY - currentScrollY > tolerance.up
-    ) {
+    } else if (isScrollingUp) {
       header.classList.remove("unpinned");
       header.classList.add("pinned");
     }
 
-    lastScrollY = currentScrollY;
+    syncLastScrollY(currentScrollY);
   };
 
   window.addEventListener("scroll", onScroll, { passive: true });
