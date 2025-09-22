@@ -93,12 +93,8 @@
     hr {
       margin: 1.5em 0;
       border: none;
-      height: 1px;
-      background-color: @section-divider-color;
-
-      .media(mobile, {
-        margin: 1.5em 0;
-      });
+      height: 0.5px;
+      background-color: @color-text;
     }
 
     // Article headings styling
@@ -244,7 +240,7 @@
 
     // Mobile: ensure equal space below the divider and before the title
     .media(mobile, {
-      margin-top: 0;                        // handled by parent padding-top
+      margin-top: 0; // handled by parent padding-top
       margin-bottom: 5px; // от заголовка до списка тегов
     });
   }
@@ -332,16 +328,3 @@
   // Mobile: remove global top padding on the outer section wrapper
   .media(mobile, { padding-top: 0; });
 }
-
-// UNUSED CLASSES - не используются в текущем HTML шаблоне
-// ul.tags,
-// .tag-list {
-//   display: flex;
-//   gap: 8px;
-//   list-style: none;
-//   margin: 16px 0 0;
-//   padding: 0;
-//   a {
-//     .tag-button();
-//   }
-// }
