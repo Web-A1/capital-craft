@@ -156,17 +156,12 @@
     gap: 60px; // desktop spacing between image and related block
     position: relative;
     min-height: 900px;
-    // Убираем фиксированный max-height и скрытие переполнения,
-    // чтобы длинные рекомендации не обрезались на меньших экранах
     overflow: visible;
 
     // Mobile: 30px gap between image and the divider above related block
     .media(mobile, {
       gap: @divider-space-mobile;
       min-height: auto;
-      // переопределения избыточны после удаления max-height, оставляем для явности
-      max-height: none;
-      overflow: visible;
     });
   }
 
