@@ -192,17 +192,12 @@
     });
   }
 
-  .faq-home__btn {
-    order: 3; // кнопка всегда последняя
-
-    .media(mobile, {
-      order: 3; // на мобильных тоже последняя (после swiper с order: 2)
-    });
-
+  &__btn {
     &--desktop {
       // Перебиваем глобальный .btn-main на мобильных
       .media(mobile, {
-         display: none;
+        .faq-home__btn& { display: none; }
+        position: static; // убираем абсолютное позиционирование для мобильной версии
       });
     }
 
