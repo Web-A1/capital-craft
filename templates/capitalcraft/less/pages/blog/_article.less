@@ -176,10 +176,6 @@
     display: block;
     border-radius: @radius;
   }
-  // Mobile: remove global top padding on the outer section wrapper
-  &.frame.section-with-divider {
-    .media(mobile, { padding-top: 0; });
-  }
 
   // Related posts block on the right under image
   &__related-wrap {
@@ -347,4 +343,10 @@
   justify-content: flex-start;
   gap: 30px;
   margin: 20px 0;
+}
+
+// Frame section with divider modifier
+.frame.section-with-divider {
+  // Mobile: remove global top padding on the outer section wrapper
+  .media(mobile, { padding-top: 0; });
 }
