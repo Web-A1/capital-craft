@@ -133,6 +133,8 @@
     color: @color-text;
     font-style: italic;
 
+    .media(mobile, {font-size: @font-size-base;});
+
     a {
       display: block; // делаем всю строку кликабельной, включая межстрочные пробелы
       width: 100%;
@@ -154,10 +156,6 @@
         color: @color-accent;
       }
     }
-
-    .media(mobile, {
-      font-size: (@font-size-base * 1.125); // 18px
-    });
   }
 
   &__content {
