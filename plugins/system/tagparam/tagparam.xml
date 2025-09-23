@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="system" method="upgrade">
+    <name>plg_system_tagparam</name>
+    <author>Capital Craft</author>
+    <creationDate>2024-08-23</creationDate>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>1.0.0</version>
+    <description>PLG_SYSTEM_TAGPARAM_XML_DESCRIPTION</description>
+    <namespace path="src">CapitalCraft\Plugin\System\TagParam</namespace>
+    <files>
+        <folder plugin="tagparam">services</folder>
+        <folder>src</folder>
+    </files>
+    <languages>
+        <language tag="en-GB">language/en-GB/plg_system_tagparam.ini</language>
+        <language tag="en-GB">language/en-GB/plg_system_tagparam.sys.ini</language>
+    </languages>
+</extension>
