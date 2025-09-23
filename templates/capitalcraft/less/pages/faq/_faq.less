@@ -100,6 +100,14 @@
     border-bottom: 1px solid #e0e0e0;
     padding: 16px 0;
     position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 20px;
+    align-items: start;
+
+    .media(mobile, {
+      display: block;
+    });
   }
 
   &__question {
@@ -111,10 +119,10 @@
     font-weight: 400;
     font-size: @font-size-text;
     color: @color-text;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-right: 140px; // место под тег справа
+    display: block;
+    padding-right: 0;
+    grid-column: 1 / 2;
+    grid-row: 1;
     // На мобильных добавляем плюс как псевдоэлемент и даём место справа
     .media(mobile, {
       padding-right: 28px; // место под плюс справа
@@ -149,17 +157,18 @@
 
   // Внутренние элементы строки вопроса
   &__text {
-    flex: 1 1 auto;
+    display: block;
     min-width: 0;
   }
 
   &__tag-chip {
     .tag-button();
     white-space: nowrap;
-    position: absolute;
-    right: 0px;
-    top: 12px;
-    z-index: 2;
+    position: static;
+    grid-column: 2 / 3;
+    grid-row: 1;
+    justify-self: end;
+    align-self: start;
     .media(mobile, { display: none; }); // скрываем тег у вопроса на мобильных
   }
 
@@ -181,6 +190,8 @@
     padding: 0 20px 0 30px;
     color: @color-text;
     line-height: 160%;
+    grid-column: 1 / -1;
+    grid-row: 2;
 
     p {
       margin: 0;
