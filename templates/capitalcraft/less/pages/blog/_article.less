@@ -306,9 +306,21 @@
     line-clamp: 3; // standard property for newer engines
     -webkit-line-clamp: 3;
     text-align: justify;
+    text-align-last: left;
+    -moz-text-align-last: left;
     hyphens: auto;
     overflow-wrap: anywhere;
     word-break: break-word;
+
+    // iOS/macOS Safari misplaces the ellipsis produced by -webkit-line-clamp
+    // when the text is justified. Override the alignment and hyphenation in
+    // WebKit-only environments so that the ellipsis stays on the same line
+    // as the truncated text.
+    @supports (-webkit-touch-callout: none) {
+      text-align: left;
+      text-align-last: left;
+      hyphens: none;
+    }
   }
 
   &__related-date {
