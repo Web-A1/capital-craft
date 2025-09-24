@@ -248,7 +248,7 @@ if ($legalNoticeHtml === "" && !empty($item->attribs)) {
     }
 }
 
-$defaultIllustration = "/templates/capitalcraft/images/legal/faq_hand.webp";
+$defaultIllustration = "/templates/capitalcraft/images/legal/legal.webp";
 $illustrationSrc = "";
 $illustrationAlt = "";
 $useDefaultIllustration = false;
