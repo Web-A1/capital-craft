@@ -41,7 +41,7 @@ if (is_object($category)) {
 $pageHeading = (string) $this->params->get("page_heading", $category->title ?? "");
 $pageHeading = $pageHeading !== "" ? $pageHeading : $category->title ?? "";
 
-$defaultIllustration = "/templates/capitalcraft/images/legal/faq_hand.webp";
+$defaultIllustration = "/templates/capitalcraft/images/legal/legal.webp";
 $illustrationSrc = $defaultIllustration;
 $illustrationAlt = $illustrationDefaultAlt;
 
