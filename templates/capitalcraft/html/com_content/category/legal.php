@@ -20,7 +20,6 @@ $illustrationDefaultAlt = $translate(
     "TPL_CAPITALCRAFT_LEGAL_IMAGE_ALT",
     "Иллюстрация юридического раздела Capital Craft",
 );
-$readMoreLabel = $translate("TPL_CAPITALCRAFT_LEGAL_READ_MORE", "Читать документ");
 $updatedLabel = $translate("TPL_CAPITALCRAFT_LEGAL_UPDATED", "Обновлено");
 
 $category = $this->category;
@@ -38,8 +37,8 @@ if (is_object($category)) {
     $category->description = $category->text;
 }
 
-$pageHeading = (string) $this->params->get("page_heading", $category->title ?? "");
-$pageHeading = $pageHeading !== "" ? $pageHeading : $category->title ?? "";
+$defaultHeading = $translate("TPL_CAPITALCRAFT_LEGAL_HEADING", "Правовые основы сайта Capital Craft");
+$pageHeading = $defaultHeading;
 
 $defaultIllustration = "/templates/capitalcraft/images/legal/legal.webp";
 $illustrationSrc = $defaultIllustration;
@@ -140,12 +139,27 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                             }
                             ?>
                             <article class="legal-card">
-                                <div class="legal-card__header">
-                                    <h2 class="legal-card__title">
-                                        <a href="<?php echo htmlspecialchars($link, ENT_QUOTES, "UTF-8"); ?>">
-                                            <?php echo htmlspecialchars($item->title ?? "", ENT_QUOTES, "UTF-8"); ?>
-                                        </a>
-                                    </h2>
+                                <a class="legal-card__body" href="<?php echo htmlspecialchars(
+                                    $link,
+                                    ENT_QUOTES,
+                                    "UTF-8",
+                                ); ?>">
+                                    <div class="legal-card__header">
+                                        <h2 class="legal-card__title"><?php echo htmlspecialchars(
+                                            $item->title ?? "",
+                                            ENT_QUOTES,
+                                            "UTF-8",
+                                        ); ?></h2>
+                                    </div>
+
+                                    <?php if ($introtext !== ""): ?>
+                                        <p class="legal-card__intro"><?php echo htmlspecialchars(
+                                            $introtext,
+                                            ENT_QUOTES,
+                                            "UTF-8",
+                                        ); ?></p>
+                                    <?php endif; ?>
+
                                     <?php if ($dateDisplay !== ""): ?>
                                         <div class="legal-card__meta">
                                             <span class="legal-card__meta-label"><?php echo htmlspecialchars(
@@ -162,25 +176,7 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                                             </time>
                                         </div>
                                     <?php endif; ?>
-                                </div>
-
-                                <?php if ($introtext !== ""): ?>
-                                    <p class="legal-card__intro"><?php echo htmlspecialchars(
-                                        $introtext,
-                                        ENT_QUOTES,
-                                        "UTF-8",
-                                    ); ?></p>
-                                <?php endif; ?>
-
-                                <div class="legal-card__footer">
-                                    <a class="legal-card__link" href="<?php echo htmlspecialchars(
-                                        $link,
-                                        ENT_QUOTES,
-                                        "UTF-8",
-                                    ); ?>">
-                                        <?php echo htmlspecialchars($readMoreLabel, ENT_QUOTES, "UTF-8"); ?>
-                                    </a>
-                                </div>
+                                </a>
                             </article>
                         <?php endforeach; ?>
                     </div>
