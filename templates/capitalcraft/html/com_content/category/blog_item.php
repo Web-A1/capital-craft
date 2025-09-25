@@ -36,7 +36,8 @@ $sourceText = trim(strip_tags($this->item->introtext ?: $this->item->fulltext ??
 $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350, false, false);
 
 if (substr($excerpt, -3) === "...") {
-    $excerpt = rtrim(substr($excerpt, 0, -3)) . " ...";
+    $excerpt = mb_substr($excerpt, 0, mb_strlen($excerpt, 'UTF-8') - 3, 'UTF-8');
+    $excerpt = rtrim($excerpt) . " ...";
 }
 ?>
 
