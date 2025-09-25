@@ -1,4 +1,4 @@
-<?php defined("_JEXEC") or die();
+<?php defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\OutputFilter;
@@ -6,7 +6,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
 
-require_once JPATH_SITE . "/templates/capitalcraft/helpers/SeoHelper.php";
+require_once JPATH_SITE . '/templates/capitalcraft/helpers/SeoHelper.php';
 
 $doc = Factory::getDocument();
 $item = $this->item;
@@ -21,49 +21,49 @@ $translate = static function (string $key, string $fallback): string {
     return $text === $key ? $fallback : $text;
 };
 
-$updatedLabel = $translate("TPL_CAPITALCRAFT_LEGAL_UPDATED", "Обновлено");
-$tocTitle = $translate("TPL_CAPITALCRAFT_LEGAL_TOC_TITLE", "Содержание");
-$tocAriaLabel = $translate("TPL_CAPITALCRAFT_LEGAL_TOC_ARIA", "Оглавление документа");
-$pdfDefaultLabel = $translate("TPL_CAPITALCRAFT_LEGAL_DOWNLOAD_PDF", "Скачать PDF");
-$noticeTitle = $translate("TPL_CAPITALCRAFT_LEGAL_NOTICE_TITLE", "Важно");
-$sectionSubtitle = $translate("TPL_CAPITALCRAFT_LEGAL_SUBTITLE", "Юридическая информация");
+$updatedLabel = $translate('TPL_CAPITALCRAFT_LEGAL_UPDATED', 'Обновлено');
+$tocTitle = $translate('TPL_CAPITALCRAFT_LEGAL_TOC_TITLE', 'Содержание');
+$tocAriaLabel = $translate('TPL_CAPITALCRAFT_LEGAL_TOC_ARIA', 'Оглавление документа');
+$pdfDefaultLabel = $translate('TPL_CAPITALCRAFT_LEGAL_DOWNLOAD_PDF', 'Скачать PDF');
+$noticeTitle = $translate('TPL_CAPITALCRAFT_LEGAL_NOTICE_TITLE', 'Важно');
+$sectionSubtitle = $translate('TPL_CAPITALCRAFT_LEGAL_SUBTITLE', 'Юридическая информация');
 $illustrationDefaultAlt = $translate(
-    "TPL_CAPITALCRAFT_LEGAL_IMAGE_ALT",
-    "Иллюстрация юридического раздела Capital Craft",
+    'TPL_CAPITALCRAFT_LEGAL_IMAGE_ALT',
+    'Иллюстрация юридического раздела Capital Craft',
 );
 
-$language = !empty($item->language) && $item->language !== "*" ? $item->language : $doc->getLanguage();
-$language = $language ?: "ru-RU";
-$language = str_replace("_", "-", $language);
+$language = !empty($item->language) && $item->language !== '*' ? $item->language : $doc->getLanguage();
+$language = $language ?: 'ru-RU';
+$language = str_replace('_', '-', $language);
 
-$legalType = "WebPage";
-$articleAlias = strtolower((string) ($item->alias ?? ""));
+$legalType = 'WebPage';
+$articleAlias = strtolower((string) ($item->alias ?? ''));
 
-if ($articleAlias !== "") {
-    if (strpos($articleAlias, "privacy") !== false) {
-        $legalType = "PrivacyPolicy";
-    } elseif (strpos($articleAlias, "policy") !== false) {
-        $legalType = "PrivacyPolicy";
-    } elseif (strpos($articleAlias, "terms") !== false || strpos($articleAlias, "rules") !== false) {
-        $legalType = "TermsOfService";
+if ($articleAlias !== '') {
+    if (strpos($articleAlias, 'privacy') !== false) {
+        $legalType = 'PrivacyPolicy';
+    } elseif (strpos($articleAlias, 'policy') !== false) {
+        $legalType = 'PrivacyPolicy';
+    } elseif (strpos($articleAlias, 'terms') !== false || strpos($articleAlias, 'rules') !== false) {
+        $legalType = 'TermsOfService';
     }
 }
 
 $dateFields = [
-    "modified" => $item->modified ?? "",
-    "publish_up" => $item->publish_up ?? "",
-    "created" => $item->created ?? "",
+    'modified' => $item->modified ?? '',
+    'publish_up' => $item->publish_up ?? '',
+    'created' => $item->created ?? '',
 ];
 
-$updatedDateIso = "";
-$updatedDateDisplay = "";
+$updatedDateIso = '';
+$updatedDateDisplay = '';
 
 foreach ($dateFields as $dateValue) {
-    if (!empty($dateValue) && $dateValue !== "0000-00-00 00:00:00") {
+    if (!empty($dateValue) && $dateValue !== '0000-00-00 00:00:00') {
         try {
             $date = Factory::getDate($dateValue);
             $updatedDateIso = $date->format(DATE_ATOM, true);
-            $updatedDateDisplay = HTMLHelper::_("date", $dateValue, Text::_("DATE_FORMAT_LC3"));
+            $updatedDateDisplay = HTMLHelper::_('date', $dateValue, Text::_('DATE_FORMAT_LC3'));
             break;
         } catch (\Throwable $exception) {
             // Ignore invalid date formats
@@ -72,57 +72,57 @@ foreach ($dateFields as $dateValue) {
 }
 
 $schemaData = [
-    "@context" => "https://schema.org",
-    "@type" => $legalType,
-    "name" => (string) ($item->title ?? ""),
-    "description" => !empty($item->metadesc) ? $item->metadesc : null,
-    "url" => $canonicalUrl,
-    "inLanguage" => $language,
-    "datePublished" => null,
-    "dateModified" => null,
-    "publisher" => [
-        "@type" => "Organization",
-        "name" => "Capital Craft",
-        "url" => Uri::root(),
-        "logo" => [
-            "@type" => "ImageObject",
-            "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
+    '@context' => 'https://schema.org',
+    '@type' => $legalType,
+    'name' => (string) ($item->title ?? ''),
+    'description' => !empty($item->metadesc) ? $item->metadesc : null,
+    'url' => $canonicalUrl,
+    'inLanguage' => $language,
+    'datePublished' => null,
+    'dateModified' => null,
+    'publisher' => [
+        '@type' => 'Organization',
+        'name' => 'Capital Craft',
+        'url' => Uri::root(),
+        'logo' => [
+            '@type' => 'ImageObject',
+            'url' => Uri::root() . 'templates/capitalcraft/images/logo_black.svg',
         ],
     ],
 ];
 
-if (!empty($item->publish_up) && $item->publish_up !== "0000-00-00 00:00:00") {
+if (!empty($item->publish_up) && $item->publish_up !== '0000-00-00 00:00:00') {
     try {
-        $schemaData["datePublished"] = Factory::getDate($item->publish_up)->format(DATE_ATOM);
+        $schemaData['datePublished'] = Factory::getDate($item->publish_up)->format(DATE_ATOM);
     } catch (\Throwable $exception) {
-        $schemaData["datePublished"] = null;
+        $schemaData['datePublished'] = null;
     }
 }
 
-if ($updatedDateIso !== "") {
-    $schemaData["dateModified"] = $updatedDateIso;
+if ($updatedDateIso !== '') {
+    $schemaData['dateModified'] = $updatedDateIso;
 }
 
-$schemaData = array_filter($schemaData, static fn($value) => $value !== null && $value !== "");
+$schemaData = array_filter($schemaData, static fn ($value) => $value !== null && $value !== '');
 
 $doc->addCustomTag(
     '<script type="application/ld+json">' .
         json_encode($schemaData, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) .
-        "</script>",
+        '</script>',
 );
 
-$articleHtml = (string) ($item->text ?? "");
+$articleHtml = (string) ($item->text ?? '');
 $articleHtml = trim($articleHtml);
 $tocItems = [];
 
-if ($articleHtml !== "" && class_exists("DOMDocument")) {
+if ($articleHtml !== '' && class_exists('DOMDocument')) {
     $libxmlPreviousState = libxml_use_internal_errors(true);
-    $dom = new DOMDocument("1.0", "UTF-8");
+    $dom = new DOMDocument('1.0', 'UTF-8');
     $loaded = $dom->loadHTML('<?xml encoding="utf-8" ?>' . $articleHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
     if ($loaded) {
         $xpath = new DOMXPath($dom);
-        $nodes = $xpath->query("//h2 | //h3");
+        $nodes = $xpath->query('//h2 | //h3');
         $usedIds = [];
 
         if ($nodes !== false) {
@@ -133,42 +133,42 @@ if ($articleHtml !== "" && class_exists("DOMDocument")) {
                 }
 
                 $level = (int) substr($node->tagName, 1);
-                $textContent = trim(preg_replace("/\s+/u", " ", $node->textContent));
+                $textContent = trim(preg_replace("/\s+/u", ' ', $node->textContent));
 
-                if ($textContent === "") {
+                if ($textContent === '') {
                     continue;
                 }
 
-                $id = $node->getAttribute("id");
+                $id = $node->getAttribute('id');
 
-                if ($id === "") {
+                if ($id === '') {
                     $baseId = OutputFilter::stringURLSafe($textContent);
-                    $baseId = $baseId !== "" ? $baseId : "section-" . ($index + 1);
+                    $baseId = $baseId !== '' ? $baseId : 'section-' . ($index + 1);
                     $uniqueId = $baseId;
                     $counter = 2;
 
                     while (isset($usedIds[$uniqueId])) {
-                        $uniqueId = $baseId . "-" . $counter;
+                        $uniqueId = $baseId . '-' . $counter;
                         $counter++;
                     }
 
                     $id = $uniqueId;
-                    $node->setAttribute("id", $id);
+                    $node->setAttribute('id', $id);
                 }
 
                 $usedIds[$id] = true;
 
                 $tocItems[] = [
-                    "id" => $id,
-                    "title" => $textContent,
-                    "level" => $level,
+                    'id' => $id,
+                    'title' => $textContent,
+                    'level' => $level,
                 ];
             }
         }
 
         if (!empty($tocItems)) {
             $processedHtml = $dom->saveHTML();
-            $articleHtml = preg_replace("/^<\?xml.*?\?>/u", "", $processedHtml ?? "");
+            $articleHtml = preg_replace("/^<\?xml.*?\?>/u", '', $processedHtml ?? '');
         }
     }
 
@@ -182,39 +182,39 @@ if (!empty($item->urls)) {
     $urlsData = json_decode($item->urls, true);
 
     if (json_last_error() === JSON_ERROR_NONE && is_array($urlsData)) {
-        $linkKeys = ["urla", "urlb", "urlc"];
+        $linkKeys = ['urla', 'urlb', 'urlc'];
 
         foreach ($linkKeys as $linkKey) {
-            $url = trim((string) ($urlsData[$linkKey] ?? ""));
+            $url = trim((string) ($urlsData[$linkKey] ?? ''));
 
-            if ($url === "") {
+            if ($url === '') {
                 continue;
             }
 
             $path = parse_url($url, PHP_URL_PATH);
             $extension = strtolower((string) pathinfo((string) $path, PATHINFO_EXTENSION));
 
-            if ($extension !== "pdf") {
+            if ($extension !== 'pdf') {
                 continue;
             }
 
-            $textKey = $linkKey . "text";
-            $label = trim((string) ($urlsData[$textKey] ?? ""));
-            $label = $label !== "" ? $label : $pdfDefaultLabel;
+            $textKey = $linkKey . 'text';
+            $label = trim((string) ($urlsData[$textKey] ?? ''));
+            $label = $label !== '' ? $label : $pdfDefaultLabel;
 
-            $targetKey = $linkKey . "target";
-            $target = trim((string) ($urlsData[$targetKey] ?? ""));
+            $targetKey = $linkKey . 'target';
+            $target = trim((string) ($urlsData[$targetKey] ?? ''));
 
             $pdfLinks[] = [
-                "url" => $url,
-                "label" => $label,
-                "target" => $target,
+                'url' => $url,
+                'label' => $label,
+                'target' => $target,
             ];
         }
     }
 }
 
-$legalNoticeHtml = "";
+$legalNoticeHtml = '';
 
 if (!empty($item->jcfields) && is_array($item->jcfields)) {
     foreach ($item->jcfields as $field) {
@@ -222,71 +222,71 @@ if (!empty($item->jcfields) && is_array($item->jcfields)) {
             continue;
         }
 
-        $alias = strtolower((string) ($field->alias ?? ($field->name ?? "")));
-        $value = $field->value ?? "";
+        $alias = strtolower((string) ($field->alias ?? ($field->name ?? '')));
+        $value = $field->value ?? '';
 
-        if ($value === "") {
+        if ($value === '') {
             continue;
         }
 
-        if ($alias !== "" && (strpos($alias, "legal_notice") !== false || strpos($alias, "legal_alert") !== false)) {
-            $legalNoticeHtml = HTMLHelper::_("content.prepare", $value, "", "com_fields.field");
+        if ($alias !== '' && (strpos($alias, 'legal_notice') !== false || strpos($alias, 'legal_alert') !== false)) {
+            $legalNoticeHtml = HTMLHelper::_('content.prepare', $value, '', 'com_fields.field');
             break;
         }
     }
 }
 
-if ($legalNoticeHtml === "" && !empty($item->attribs)) {
+if ($legalNoticeHtml === '' && !empty($item->attribs)) {
     $attribs = json_decode($item->attribs, true);
 
     if (json_last_error() === JSON_ERROR_NONE && is_array($attribs)) {
-        $noticeValue = trim((string) ($attribs["legal_notice"] ?? ""));
+        $noticeValue = trim((string) ($attribs['legal_notice'] ?? ''));
 
-        if ($noticeValue !== "") {
-            $legalNoticeHtml = HTMLHelper::_("content.prepare", $noticeValue, "", "com_content.article");
+        if ($noticeValue !== '') {
+            $legalNoticeHtml = HTMLHelper::_('content.prepare', $noticeValue, '', 'com_content.article');
         }
     }
 }
 
-$defaultIllustration = "/templates/capitalcraft/images/legal/legal.webp";
-$illustrationSrc = "";
-$illustrationAlt = "";
+$defaultIllustration = '/templates/capitalcraft/images/legal/legal.webp';
+$illustrationSrc = '';
+$illustrationAlt = '';
 $useDefaultIllustration = false;
 
 if (!empty($item->images)) {
     $imagesData = json_decode($item->images, true);
 
     if (json_last_error() === JSON_ERROR_NONE && is_array($imagesData)) {
-        $illustrationSrc = trim((string) ($imagesData["image_fulltext"] ?? ""));
+        $illustrationSrc = trim((string) ($imagesData['image_fulltext'] ?? ''));
 
-        if ($illustrationSrc === "") {
-            $illustrationSrc = trim((string) ($imagesData["image_intro"] ?? ""));
+        if ($illustrationSrc === '') {
+            $illustrationSrc = trim((string) ($imagesData['image_intro'] ?? ''));
         }
 
-        $illustrationAlt = trim((string) ($imagesData["image_fulltext_alt"] ?? ""));
+        $illustrationAlt = trim((string) ($imagesData['image_fulltext_alt'] ?? ''));
 
-        if ($illustrationAlt === "") {
-            $illustrationAlt = trim((string) ($imagesData["image_intro_alt"] ?? ""));
+        if ($illustrationAlt === '') {
+            $illustrationAlt = trim((string) ($imagesData['image_intro_alt'] ?? ''));
         }
     }
 }
 
-if ($illustrationSrc === "") {
+if ($illustrationSrc === '') {
     $illustrationSrc = $defaultIllustration;
     $useDefaultIllustration = true;
 }
 
-if ($illustrationAlt === "") {
+if ($illustrationAlt === '') {
     $illustrationAlt = $illustrationDefaultAlt;
 }
 
 $illustrationWidth = $useDefaultIllustration ? 351 : null;
 $illustrationHeight = $useDefaultIllustration ? 624 : null;
 
-$beforeDisplayTitle = $item->event->beforeDisplayTitle ?? "";
-$afterDisplayTitle = $item->event->afterDisplayTitle ?? "";
-$beforeDisplayContent = $item->event->beforeDisplayContent ?? "";
-$afterDisplayContent = $item->event->afterDisplayContent ?? "";
+$beforeDisplayTitle = $item->event->beforeDisplayTitle ?? '';
+$afterDisplayTitle = $item->event->afterDisplayTitle ?? '';
+$beforeDisplayContent = $item->event->beforeDisplayContent ?? '';
+$afterDisplayContent = $item->event->afterDisplayContent ?? '';
 ?>
 
 <section class="legal frame section-with-divider">
@@ -294,42 +294,42 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
         <div class="legal__content">
             <header class="legal__intro">
                 <div class="legal__intro-text">
-                    <p class="legal__subtitle"><?php echo htmlspecialchars($sectionSubtitle, ENT_QUOTES, "UTF-8"); ?></p>
+                    <p class="legal__subtitle"><?php echo htmlspecialchars($sectionSubtitle, ENT_QUOTES, 'UTF-8'); ?></p>
                     <?php echo $beforeDisplayTitle; ?>
-                    <?php if ($params->get("show_title")): ?>
+                    <?php if ($params->get('show_title')): ?>
                         <h1 class="legal__title"><?php echo $this->escape($item->title); ?></h1>
                     <?php endif; ?>
                     <?php echo $afterDisplayTitle; ?>
                 </div>
             </header>
 
-            <?php if ($updatedDateDisplay !== ""): ?>
+            <?php if ($updatedDateDisplay !== ''): ?>
                 <div class="legal__meta">
                     <span class="legal__meta-label"><?php echo htmlspecialchars(
                         $updatedLabel,
                         ENT_QUOTES,
-                        "UTF-8",
+                        'UTF-8',
                     ); ?></span>
                     <time class="legal__meta-date" datetime="<?php echo htmlspecialchars(
                         $updatedDateIso,
                         ENT_QUOTES,
-                        "UTF-8",
+                        'UTF-8',
                     ); ?>">
-                        <?php echo htmlspecialchars($updatedDateDisplay, ENT_QUOTES, "UTF-8"); ?>
+                        <?php echo htmlspecialchars($updatedDateDisplay, ENT_QUOTES, 'UTF-8'); ?>
                     </time>
                 </div>
             <?php endif; ?>
 
-            <?php if ($legalNoticeHtml !== ""): ?>
+            <?php if ($legalNoticeHtml !== ''): ?>
                 <aside class="legal__notice" aria-label="<?php echo htmlspecialchars(
                     $noticeTitle,
                     ENT_QUOTES,
-                    "UTF-8",
+                    'UTF-8',
                 ); ?>">
                     <div class="legal__notice-title"><?php echo htmlspecialchars(
                         $noticeTitle,
                         ENT_QUOTES,
-                        "UTF-8",
+                        'UTF-8',
                     ); ?></div>
                     <div class="legal__notice-content">
                         <?php echo $legalNoticeHtml; ?>
@@ -343,24 +343,24 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
                 <nav class="legal__toc" aria-label="<?php echo htmlspecialchars(
                     $tocAriaLabel,
                     ENT_QUOTES,
-                    "UTF-8",
+                    'UTF-8',
                 ); ?>">
                     <div class="legal__toc-title" id="legal-toc-title"><?php echo htmlspecialchars(
                         $tocTitle,
                         ENT_QUOTES,
-                        "UTF-8",
+                        'UTF-8',
                     ); ?></div>
                     <ol class="legal__toc-list">
                         <?php foreach ($tocItems as $tocItem): ?>
                             <li class="legal__toc-item legal__toc-item--level-<?php echo (int) $tocItem[
-                                "level"
+                                'level'
                             ]; ?>">
                                 <a class="legal__toc-link" href="#<?php echo htmlspecialchars(
-                                    $tocItem["id"],
+                                    $tocItem['id'],
                                     ENT_QUOTES,
-                                    "UTF-8",
+                                    'UTF-8',
                                 ); ?>">
-                                    <?php echo htmlspecialchars($tocItem["title"], ENT_QUOTES, "UTF-8"); ?>
+                                    <?php echo htmlspecialchars($tocItem['title'], ENT_QUOTES, 'UTF-8'); ?>
                                 </a>
                             </li>
                         <?php endforeach; ?>
@@ -376,24 +376,24 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
                 <div class="legal__downloads">
                     <?php foreach ($pdfLinks as $pdfLink): ?>
                         <?php
-                        $targetAttr = "";
-                        $relAttr = "";
+                        $targetAttr = '';
+                        $relAttr = '';
 
-                        if ($pdfLink["target"] !== "") {
-                            $target = htmlspecialchars($pdfLink["target"], ENT_QUOTES, "UTF-8");
+                        if ($pdfLink['target'] !== '') {
+                            $target = htmlspecialchars($pdfLink['target'], ENT_QUOTES, 'UTF-8');
                             $targetAttr = ' target="' . $target . '"';
 
-                            if ($pdfLink["target"] === "_blank") {
+                            if ($pdfLink['target'] === '_blank') {
                                 $relAttr = ' rel="noopener noreferrer"';
                             }
                         }
                         ?>
                         <a class="legal__download-link" href="<?php echo htmlspecialchars(
-                            $pdfLink["url"],
+                            $pdfLink['url'],
                             ENT_QUOTES,
-                            "UTF-8",
+                            'UTF-8',
                         ); ?>"<?php echo $targetAttr . $relAttr; ?>>
-                            <?php echo htmlspecialchars($pdfLink["label"], ENT_QUOTES, "UTF-8"); ?>
+                            <?php echo htmlspecialchars($pdfLink['label'], ENT_QUOTES, 'UTF-8'); ?>
                         </a>
                     <?php endforeach; ?>
                 </div>
@@ -404,8 +404,8 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
 
         <figure class="legal__image">
             <img
-                src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, "UTF-8"); ?>"
-                alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, "UTF-8"); ?>"
+                src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, 'UTF-8'); ?>"
+                alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, 'UTF-8'); ?>"
                 loading="lazy"
                 decoding="async"
             >
