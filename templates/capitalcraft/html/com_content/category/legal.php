@@ -5,6 +5,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\String\StringHelper;
 use Joomla\Component\Content\Site\Helper\RouteHelper as ContentRouteHelper;
 
 /** @var \Joomla\Component\Content\Site\View\Category\HtmlView $this */
@@ -137,7 +138,11 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                         $introtext = trim((string) ($item->introtext ?? ""));
                         if ($introtext !== "") {
                             $introtext = preg_replace("/\s+/u", " ", strip_tags($introtext));
-                            $introtext = HTMLHelper::_("string.truncate", $introtext, 220, true, false);
+
+                            if (StringHelper::strlen($introtext) > 220) {
+                                $introtext = StringHelper::substr($introtext, 0, 220);
+                                $introtext = rtrim($introtext) . " ...";
+                            }
                         }
                         ?>
                         <article class="legal-card">
