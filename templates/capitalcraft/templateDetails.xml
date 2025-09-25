@@ -25,6 +25,10 @@
   <layoutfiles>
     <layout folder="com_content/article">
       <filename>faq.php</filename>
+      <filename>legal.php</filename>
+    </layout>
+    <layout folder="com_content/category">
+      <filename>legal.php</filename>
     </layout>
   </layoutfiles>
 </extension>
