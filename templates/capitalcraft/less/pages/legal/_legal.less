@@ -87,18 +87,10 @@
   }
 
   &__layout {
-    display: flex;
-    align-items: stretch;
-    gap: @section-padding;
-
-    .media(mobile, {
-      flex-direction: column;
-      gap: 30px;
-    });
+    display: block;
   }
 
   &__main {
-    flex: 1 1 auto;
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -109,20 +101,16 @@
     gap: 20px;
   }
 
-  &__side {
+  &__illustration {
     flex: 0 0 320px;
     max-width: 320px;
     width: 100%;
-    align-self: flex-start;
+    margin: 0;
 
     .media(mobile, {
       max-width: 100%;
       align-self: center;
     });
-  }
-
-  &__illustration {
-    margin: 0;
 
     img {
       width: 100%;
