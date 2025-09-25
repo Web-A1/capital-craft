@@ -1,12 +1,11 @@
 <?php
 defined("_JEXEC") or die();
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Factory;
 use Joomla\Component\Content\Site\Helper\RouteHelper;
-use Joomla\Component\Tags\Site\Helper\RouteHelper as TagsRouteHelper;
 
 /** @var \Joomla\Component\Content\Site\View\Category\HtmlView $this */
 $params = $this->item->params;
@@ -34,7 +33,11 @@ $introImgAlt =
 
 // Build excerpt (200 chars, plain text)
 $sourceText = trim(strip_tags($this->item->introtext ?: $this->item->fulltext ?? ""));
-$excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
+$excerpt = HTMLHelper::_("string.truncate", $sourceText, 350, false, false);
+
+if (substr($excerpt, -3) === "...") {
+    $excerpt = rtrim(substr($excerpt, 0, -3)) . " ...";
+}
 ?>
 
 <div class="blog-card__grid">
@@ -51,10 +54,10 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
       <?php echo $excerpt; ?>
       <?php if ($params->get("show_readmore") && $this->item->readmore): ?>
         <p class="blog-card__more"><a href="<?php echo $articleLink; ?>"><?php echo HTMLHelper::_(
-            "string.truncate",
-            $params->get("alternative_readmore", Text::_("COM_CONTENT_READ_MORE")) ?: Text::_("COM_CONTENT_READ_MORE"),
-            100,
-        ); ?></a></p>
+    "string.truncate",
+    $params->get("alternative_readmore", Text::_("COM_CONTENT_READ_MORE")) ?: Text::_("COM_CONTENT_READ_MORE"),
+    100,
+); ?></a></p>
       <?php endif; ?>
     </div>
 
@@ -67,19 +70,22 @@ $excerpt = HTMLHelper::_("string.truncate", $sourceText, 350);
         <ul class="blog-card__tags">
           <?php foreach ($this->item->tags->itemTags as $tag): ?>
             <?php
-                    if (empty($tag->tag_id)) {
-                        continue;
-                    }
-              // Link to blog with tag parameter; вычисляем базовый маршрут один раз (вне цикла)
-              static $blogRouteBase = null, $blogRouteSep = null;
-              if ($blogRouteBase === null) {
-                  $menu = Factory::getApplication()->getMenu();
-                  $blogItem = $menu->getItems('alias', 'blog', true);
-                  $blogRouteBase = $blogItem ? Route::_('index.php?Itemid=' . (int) $blogItem->id) : Route::_('index.php');
-                  $blogRouteSep = (strpos($blogRouteBase, '?') === false) ? '?' : '&';
-              }
-              $tagRoute = $blogRouteBase . $blogRouteSep . 'tag=' . rawurlencode($tag->alias ?? '');
-              ?>
+            if (empty($tag->tag_id)) {
+                continue;
+            }
+            // Link to blog with tag parameter; вычисляем базовый маршрут один раз (вне цикла)
+            static $blogRouteBase = null,
+                $blogRouteSep = null;
+            if ($blogRouteBase === null) {
+                $menu = Factory::getApplication()->getMenu();
+                $blogItem = $menu->getItems("alias", "blog", true);
+                $blogRouteBase = $blogItem
+                    ? Route::_("index.php?Itemid=" . (int) $blogItem->id)
+                    : Route::_("index.php");
+                $blogRouteSep = strpos($blogRouteBase, "?") === false ? "?" : "&";
+            }
+            $tagRoute = $blogRouteBase . $blogRouteSep . "tag=" . rawurlencode($tag->alias ?? "");
+            ?>
             <li class="blog-card__tag">
               <a
                 href="<?php echo $tagRoute; ?>"
