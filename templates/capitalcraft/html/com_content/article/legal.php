@@ -21,7 +21,6 @@ $translate = static function (string $key, string $fallback): string {
     return $text === $key ? $fallback : $text;
 };
 
-$updatedLabel = $translate("TPL_CAPITALCRAFT_LEGAL_UPDATED", "Обновлено");
 $tocTitle = $translate("TPL_CAPITALCRAFT_LEGAL_TOC_TITLE", "Содержание");
 $tocAriaLabel = $translate("TPL_CAPITALCRAFT_LEGAL_TOC_ARIA", "Оглавление документа");
 $pdfDefaultLabel = $translate("TPL_CAPITALCRAFT_LEGAL_DOWNLOAD_PDF", "Скачать PDF");
@@ -103,7 +102,7 @@ if ($updatedDateIso !== "") {
     $schemaData["dateModified"] = $updatedDateIso;
 }
 
-$schemaData = array_filter($schemaData, static fn ($value) => $value !== null && $value !== "");
+$schemaData = array_filter($schemaData, static fn($value) => $value !== null && $value !== "");
 
 $doc->addCustomTag(
     '<script type="application/ld+json">' .
@@ -308,20 +307,13 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
             </header>
 
             <?php if ($updatedDateDisplay !== ""): ?>
-                <div class="legal__meta">
-                    <span class="legal__meta-label"><?php echo htmlspecialchars(
-                        $updatedLabel,
-                        ENT_QUOTES,
-                        "UTF-8",
-                    ); ?></span>
-                    <time class="legal__meta-date" datetime="<?php echo htmlspecialchars(
-                        $updatedDateIso,
-                        ENT_QUOTES,
-                        "UTF-8",
-                    ); ?>">
-                        <?php echo htmlspecialchars($updatedDateDisplay, ENT_QUOTES, "UTF-8"); ?>
-                    </time>
-                </div>
+                <time class="legal__meta-date" datetime="<?php echo htmlspecialchars(
+                    $updatedDateIso,
+                    ENT_QUOTES,
+                    "UTF-8",
+                ); ?>">
+                    <?php echo htmlspecialchars($updatedDateDisplay, ENT_QUOTES, "UTF-8"); ?>
+                </time>
             <?php endif; ?>
 
             <?php if ($legalNoticeHtml !== ""): ?>
