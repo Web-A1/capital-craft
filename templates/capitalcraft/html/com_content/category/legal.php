@@ -115,6 +115,15 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                     </div>
                 <?php endif; ?>
             </div>
+
+            <figure class="legal__illustration">
+                <img
+                    src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, "UTF-8"); ?>"
+                    alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, "UTF-8"); ?>"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </figure>
         </header>
 
         <div class="legal__layout">
@@ -188,17 +197,6 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                         <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
-            </div>
-
-            <div class="legal__side">
-                <figure class="legal__illustration">
-                    <img
-                        src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, "UTF-8"); ?>"
-                        alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, "UTF-8"); ?>"
-                        loading="lazy"
-                        decoding="async"
-                    >
-                </figure>
             </div>
         </div>
     </div>
