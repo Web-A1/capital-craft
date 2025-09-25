@@ -27,11 +27,11 @@ if ($isDirectArticle) {
     $isHome = false;
 }
 
- $isFaq = $active && $active->alias === "faq";
+$isFaq = $active && $active->alias === "faq";
 // Страницы юридического раздела (категория и дочерние материалы)
-$requestUri = trim($app->input->server->getString('REQUEST_URI', ''), '/');
-$isLegalRoute = strpos($requestUri, 'legal') === 0;
-$isLegal = ($active && $active->alias === 'legal') || $isLegalRoute;
+$requestUri = trim($app->input->server->getString("REQUEST_URI", ""), "/");
+$isLegalRoute = strpos($requestUri, "legal") === 0;
+$isLegal = ($active && $active->alias === "legal") || $isLegalRoute;
 // Блоговые страницы: сам блог, поиск по блогу, страницы тегов
 $isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tags"], true);
 
