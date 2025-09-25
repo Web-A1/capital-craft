@@ -404,7 +404,7 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
             </div>
 
             <div class="legal__side">
-                <figure class="legal__illustration">
+                <figure class="legal__image">
                     <img
                         src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, "UTF-8"); ?>"
                         alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, "UTF-8"); ?>"
