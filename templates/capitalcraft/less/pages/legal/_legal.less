@@ -39,6 +39,15 @@
     gap: 12px;
   }
 
+  &__meta-date {
+    display: inline-block;
+    margin: 8px 0 16px;
+    color: lighten(@color-text, 20%);
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    font-weight: 400;
+  }
+
   &__subtitle {
     .subtitle();
     margin: 0;
@@ -88,6 +97,119 @@
     flex-direction: column;
     gap: 24px;
     min-width: 0;
+  }
+
+  &__toc {
+    padding: 24px;
+    border-radius: @radius;
+    background: @color-bg-craft;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: @color-text;
+    font-family: @font-body;
+
+    .media(mobile, {
+      padding: 20px @mobile-side-padding;
+      margin: 0 -@mobile-side-padding;
+      border-radius: 0;
+    });
+  }
+
+  &__toc-title {
+    margin: 0;
+    color: lighten(@color-text, 20%);
+    font-family: @font-body;
+    font-size: @font-size-sub;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  &__toc-list {
+    margin: 0;
+    padding-left: 1.5em;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    list-style: decimal;
+  }
+
+  &__toc-item {
+    margin: 0;
+
+    &--level-3 {
+      margin-left: 8px;
+    }
+  }
+
+  &__toc-link {
+    color: @color-text;
+    text-decoration: none;
+    transition: color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: @color-accent;
+    }
+  }
+
+  &__body {
+    color: @color-text;
+    font-family: @font-body;
+    font-size: @font-size-text;
+    line-height: 165%;
+
+    p {
+      margin: 0;
+      text-align: justify;
+
+      .media(mobile, {
+        text-align: left;
+      });
+    }
+
+    p + p {
+      margin-top: 1.5em;
+    }
+
+    ol,
+    ul {
+      margin: 16px 0;
+      padding-left: 1.5em;
+      list-style-position: outside;
+    }
+
+    li {
+      margin: 0 0 10px;
+      text-align: justify;
+      line-height: 1.4;
+
+      .media(mobile, {
+        text-align: left;
+      });
+    }
+
+    li p {
+      margin: 0;
+    }
+
+    h2,
+    h3,
+    h4 {
+      margin: 1.5em 0 0.75em;
+      font-weight: 600;
+
+      .media(mobile, {
+        margin: 1.25em 0 0.5em;
+      });
+    }
+
+    hr {
+      margin: 1.5em 0;
+      border: none;
+      height: 0.5px;
+      background-color: lighten(@color-text, 50%);
+    }
   }
 
   &__list {
