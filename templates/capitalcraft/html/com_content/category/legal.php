@@ -138,8 +138,8 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                         if ($introtext !== "") {
                             $introtext = preg_replace("/\s+/u", " ", strip_tags($introtext));
 
-                            if (mb_strlen($introtext, 'UTF-8') > 220) {
-                                $introtext = mb_substr($introtext, 0, 220, 'UTF-8');
+                            if (mb_strlen($introtext, "UTF-8") > 350) {
+                                $introtext = mb_substr($introtext, 0, 350, "UTF-8");
                                 $introtext = rtrim($introtext) . " ...";
                             }
                         }
