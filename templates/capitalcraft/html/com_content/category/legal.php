@@ -20,7 +20,6 @@ $illustrationDefaultAlt = $translate(
     "TPL_CAPITALCRAFT_LEGAL_IMAGE_ALT",
     "Иллюстрация юридического раздела Capital Craft",
 );
-$updatedLabel = $translate("TPL_CAPITALCRAFT_LEGAL_UPDATED", "Обновлено");
 
 $category = $this->category;
 
@@ -162,16 +161,24 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
 
                                     <?php if ($dateDisplay !== ""): ?>
                                         <div class="legal-card__meta">
-                                            <span class="legal-card__meta-label"><?php echo htmlspecialchars(
-                                                $updatedLabel,
-                                                ENT_QUOTES,
-                                                "UTF-8",
-                                            ); ?></span>
-                                            <time class="legal-card__meta-date" datetime="<?php echo htmlspecialchars(
-                                                $dateIso,
-                                                ENT_QUOTES,
-                                                "UTF-8",
-                                            ); ?>">
+                                            <time 
+                                                class="legal-card__meta-date" 
+                                                datetime="<?php echo htmlspecialchars(
+                                                    $dateIso,
+                                                    ENT_QUOTES,
+                                                    "UTF-8",
+                                                ); ?>"
+                                                aria-label="Дата обновления: <?php echo htmlspecialchars(
+                                                    $dateDisplay,
+                                                    ENT_QUOTES,
+                                                    "UTF-8",
+                                                ); ?>"
+                                                title="Обновлено <?php echo htmlspecialchars(
+                                                    $dateDisplay,
+                                                    ENT_QUOTES,
+                                                    "UTF-8",
+                                                ); ?>"
+                                            >
                                                 <?php echo htmlspecialchars($dateDisplay, ENT_QUOTES, "UTF-8"); ?>
                                             </time>
                                         </div>
