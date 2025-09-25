@@ -103,7 +103,7 @@ if ($updatedDateIso !== "") {
     $schemaData["dateModified"] = $updatedDateIso;
 }
 
-$schemaData = array_filter($schemaData, static fn($value) => $value !== null && $value !== "");
+$schemaData = array_filter($schemaData, static fn ($value) => $value !== null && $value !== "");
 
 $doc->addCustomTag(
     '<script type="application/ld+json">' .
@@ -404,7 +404,7 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
             <?php echo $afterDisplayContent; ?>
         </div>
 
-        <figure class="legal___image">
+        <figure class="legal__image">
             <img
                 src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, "UTF-8"); ?>"
                 alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, "UTF-8"); ?>"
