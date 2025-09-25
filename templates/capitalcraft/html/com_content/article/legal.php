@@ -1,7 +1,6 @@
 <?php defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Uri\Uri;
@@ -21,8 +20,6 @@ $translate = static function (string $key, string $fallback): string {
     return $text === $key ? $fallback : $text;
 };
 
-$tocTitle = $translate("TPL_CAPITALCRAFT_LEGAL_TOC_TITLE", "Содержание");
-$tocAriaLabel = $translate("TPL_CAPITALCRAFT_LEGAL_TOC_ARIA", "Оглавление документа");
 $pdfDefaultLabel = $translate("TPL_CAPITALCRAFT_LEGAL_DOWNLOAD_PDF", "Скачать PDF");
 $noticeTitle = $translate("TPL_CAPITALCRAFT_LEGAL_NOTICE_TITLE", "Важно");
 $sectionSubtitle = $translate("TPL_CAPITALCRAFT_LEGAL_SUBTITLE", "Юридическая информация");
@@ -110,70 +107,7 @@ $doc->addCustomTag(
         "</script>",
 );
 
-$articleHtml = (string) ($item->text ?? "");
-$articleHtml = trim($articleHtml);
-$tocItems = [];
-
-if ($articleHtml !== "" && class_exists("DOMDocument")) {
-    $libxmlPreviousState = libxml_use_internal_errors(true);
-    $dom = new DOMDocument("1.0", "UTF-8");
-    $loaded = $dom->loadHTML('<?xml encoding="utf-8" ?>' . $articleHtml, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-    if ($loaded) {
-        $xpath = new DOMXPath($dom);
-        $nodes = $xpath->query("//h2 | //h3");
-        $usedIds = [];
-
-        if ($nodes !== false) {
-            /** @var DOMElement $node */
-            foreach ($nodes as $index => $node) {
-                if (!($node instanceof DOMElement)) {
-                    continue;
-                }
-
-                $level = (int) substr($node->tagName, 1);
-                $textContent = trim(preg_replace("/\s+/u", " ", $node->textContent));
-
-                if ($textContent === "") {
-                    continue;
-                }
-
-                $id = $node->getAttribute("id");
-
-                if ($id === "") {
-                    $baseId = OutputFilter::stringURLSafe($textContent);
-                    $baseId = $baseId !== "" ? $baseId : "section-" . ($index + 1);
-                    $uniqueId = $baseId;
-                    $counter = 2;
-
-                    while (isset($usedIds[$uniqueId])) {
-                        $uniqueId = $baseId . "-" . $counter;
-                        $counter++;
-                    }
-
-                    $id = $uniqueId;
-                    $node->setAttribute("id", $id);
-                }
-
-                $usedIds[$id] = true;
-
-                $tocItems[] = [
-                    "id" => $id,
-                    "title" => $textContent,
-                    "level" => $level,
-                ];
-            }
-        }
-
-        if (!empty($tocItems)) {
-            $processedHtml = $dom->saveHTML();
-            $articleHtml = preg_replace("/^<\?xml.*?\?>/u", "", $processedHtml ?? "");
-        }
-    }
-
-    libxml_clear_errors();
-    libxml_use_internal_errors($libxmlPreviousState);
-}
+$articleHtml = trim((string) ($item->text ?? ""));
 
 $pdfLinks = [];
 
@@ -334,33 +268,6 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
             <?php endif; ?>
 
             <?php echo $beforeDisplayContent; ?>
-
-            <?php if (!empty($tocItems)): ?>
-                <nav class="legal__toc" aria-label="<?php echo htmlspecialchars(
-                    $tocAriaLabel,
-                    ENT_QUOTES,
-                    "UTF-8",
-                ); ?>">
-                    <div class="legal__toc-title" id="legal-toc-title"><?php echo htmlspecialchars(
-                        $tocTitle,
-                        ENT_QUOTES,
-                        "UTF-8",
-                    ); ?></div>
-                    <ol class="legal__toc-list">
-                        <?php foreach ($tocItems as $tocItem): ?>
-                            <li class="legal__toc-item legal__toc-item--level-<?php echo (int) $tocItem["level"]; ?>">
-                                <a class="legal__toc-link" href="#<?php echo htmlspecialchars(
-                                    $tocItem["id"],
-                                    ENT_QUOTES,
-                                    "UTF-8",
-                                ); ?>">
-                                    <?php echo htmlspecialchars($tocItem["title"], ENT_QUOTES, "UTF-8"); ?>
-                                </a>
-                            </li>
-                        <?php endforeach; ?>
-                    </ol>
-                </nav>
-            <?php endif; ?>
 
             <div class="legal__body">
                 <?php echo $articleHtml; ?>
