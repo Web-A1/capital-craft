@@ -246,7 +246,7 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
                     ENT_QUOTES,
                     "UTF-8",
                 ); ?>">
-                    <?php echo htmlspecialchars($updatedDateDisplay, ENT_QUOTES, "UTF-8"); ?>
+                    <?php echo "Дата обновления: " . htmlspecialchars($updatedDateDisplay, ENT_QUOTES, "UTF-8"); ?>
                 </time>
             <?php endif; ?>
 
