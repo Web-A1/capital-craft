@@ -54,19 +54,19 @@
       // Подпункты первого уровня (3.1.1, 3.1.2)
       ol li {
         margin-left: 1.5em;
-        margin-bottom: 8px; // Отступ между подпунктами
+        margin-bottom: 4px; // Уменьшенный отступ для плотности
       }
 
       // Подпункты второго уровня (если есть)
       ol ol li {
         margin-left: 1.5em;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
 
       // Подпункты третьего уровня (если есть)
       ol ol ol li {
         margin-left: 1.5em;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
       }
     }
 
@@ -75,13 +75,13 @@
     }
 
     h2 {
-      margin-top: 8px; // Единый отступ между разделами
-      margin-bottom: 0; // Без отступа снизу
+      margin-top: 16px; // Увеличенный отступ между разделами
+      margin-bottom: 16px; // Увеличенный отступ после заголовка
       font-weight: 600;
 
       .media(mobile, {
-        margin-top: 8px;
-        margin-bottom: 0;
+        margin-top: 12px;
+        margin-bottom: 12px;
       });
 
       // Первый раздел без отступа сверху
