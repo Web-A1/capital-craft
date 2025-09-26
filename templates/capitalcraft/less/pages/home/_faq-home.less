@@ -139,10 +139,7 @@
       display: block; // делаем всю строку кликабельной, включая межстрочные пробелы
       width: 100%;
       line-height: 1.4; // переносим line-height на ссылку
-      color: @color-text;
-      text-decoration: none;
       cursor: pointer;
-      transition: color 0.2s ease;
       position: relative; // позволит псевдо-элементу перекрывать всю высоту
 
       &::before {
@@ -153,7 +150,7 @@
 
       &:hover,
       &:focus-visible {
-        color: @color-accent;
+        color: @color-heading;
       }
     }
   }
