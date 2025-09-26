@@ -131,6 +131,10 @@ $collectItems = static function (array $groups): array {
 };
 
 $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $this->link_items ?? []]);
+
+if (empty($allItems) && !empty($this->items)) {
+    $allItems = $collectItems([$this->items]);
+}
 ?>
 
 <section class="legal legal--category frame section-with-divider">
