@@ -66,12 +66,22 @@
       ol ol li {
         margin-left: 1.5em;
         margin-bottom: 4px;
+
+        // Первый подпункт - больший отступ сверху
+        &:first-child {
+          margin-top: 8px;
+        }
       }
 
       // Подпункты третьего уровня (если есть)
       ol ol ol li {
         margin-left: 1.5em;
         margin-bottom: 4px;
+
+        // Первый подпункт - больший отступ сверху
+        &:first-child {
+          margin-top: 8px;
+        }
       }
     }
 
