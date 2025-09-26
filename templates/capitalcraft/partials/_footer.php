@@ -102,10 +102,10 @@
             <!-- Legal Links -->
             <div class="footer-legal">
                 <div class="footer-legal-terms">
-                    <a href="#terms">Пользовательское соглашение</a>
+                    <a href="/legal/terms-of-use">Пользовательское соглашение</a>
                 </div>
                 <div class="footer-legal-policy">
-                    <a href="#policy">Политика конфиденциальности</a>
+                    <a href="/legal/privacy-policy">Политика конфиденциальности</a>
                 </div>
             </div>
         </div>
