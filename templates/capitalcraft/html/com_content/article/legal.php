@@ -20,8 +20,6 @@ $translate = static function (string $key, string $fallback): string {
     return $text === $key ? $fallback : $text;
 };
 
-$pdfDefaultLabel = $translate("TPL_CAPITALCRAFT_LEGAL_DOWNLOAD_PDF", "Скачать PDF");
-$noticeTitle = $translate("TPL_CAPITALCRAFT_LEGAL_NOTICE_TITLE", "Важно");
 $sectionSubtitle = $translate("TPL_CAPITALCRAFT_LEGAL_SUBTITLE", "Юридическая информация");
 $illustrationDefaultAlt = $translate(
     "TPL_CAPITALCRAFT_LEGAL_IMAGE_ALT",
@@ -109,78 +107,6 @@ $doc->addCustomTag(
 
 $articleHtml = trim((string) ($item->text ?? ""));
 
-$pdfLinks = [];
-
-if (!empty($item->urls)) {
-    $urlsData = json_decode($item->urls, true);
-
-    if (json_last_error() === JSON_ERROR_NONE && is_array($urlsData)) {
-        $linkKeys = ["urla", "urlb", "urlc"];
-
-        foreach ($linkKeys as $linkKey) {
-            $url = trim((string) ($urlsData[$linkKey] ?? ""));
-
-            if ($url === "") {
-                continue;
-            }
-
-            $path = parse_url($url, PHP_URL_PATH);
-            $extension = strtolower((string) pathinfo((string) $path, PATHINFO_EXTENSION));
-
-            if ($extension !== "pdf") {
-                continue;
-            }
-
-            $textKey = $linkKey . "text";
-            $label = trim((string) ($urlsData[$textKey] ?? ""));
-            $label = $label !== "" ? $label : $pdfDefaultLabel;
-
-            $targetKey = $linkKey . "target";
-            $target = trim((string) ($urlsData[$targetKey] ?? ""));
-
-            $pdfLinks[] = [
-                "url" => $url,
-                "label" => $label,
-                "target" => $target,
-            ];
-        }
-    }
-}
-
-$legalNoticeHtml = "";
-
-if (!empty($item->jcfields) && is_array($item->jcfields)) {
-    foreach ($item->jcfields as $field) {
-        if (!is_object($field)) {
-            continue;
-        }
-
-        $alias = strtolower((string) ($field->alias ?? ($field->name ?? "")));
-        $value = $field->value ?? "";
-
-        if ($value === "") {
-            continue;
-        }
-
-        if ($alias !== "" && (strpos($alias, "legal_notice") !== false || strpos($alias, "legal_alert") !== false)) {
-            $legalNoticeHtml = HTMLHelper::_("content.prepare", $value, "", "com_fields.field");
-            break;
-        }
-    }
-}
-
-if ($legalNoticeHtml === "" && !empty($item->attribs)) {
-    $attribs = json_decode($item->attribs, true);
-
-    if (json_last_error() === JSON_ERROR_NONE && is_array($attribs)) {
-        $noticeValue = trim((string) ($attribs["legal_notice"] ?? ""));
-
-        if ($noticeValue !== "") {
-            $legalNoticeHtml = HTMLHelper::_("content.prepare", $noticeValue, "", "com_content.article");
-        }
-    }
-}
-
 $defaultIllustration = "/templates/capitalcraft/images/legal/legal.webp";
 $illustrationSrc = "";
 $illustrationAlt = "";
@@ -250,22 +176,6 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
                 </time>
             <?php endif; ?>
 
-            <?php if ($legalNoticeHtml !== ""): ?>
-                <aside class="legal__notice" aria-label="<?php echo htmlspecialchars(
-                    $noticeTitle,
-                    ENT_QUOTES,
-                    "UTF-8",
-                ); ?>">
-                    <div class="legal__notice-title"><?php echo htmlspecialchars(
-                        $noticeTitle,
-                        ENT_QUOTES,
-                        "UTF-8",
-                    ); ?></div>
-                    <div class="legal__notice-content">
-                        <?php echo $legalNoticeHtml; ?>
-                    </div>
-                </aside>
-            <?php endif; ?>
 
             <?php echo $beforeDisplayContent; ?>
 
@@ -273,32 +183,6 @@ $afterDisplayContent = $item->event->afterDisplayContent ?? "";
                 <?php echo $articleHtml; ?>
             </div>
 
-            <?php if (!empty($pdfLinks)): ?>
-                <div class="legal__downloads">
-                    <?php foreach ($pdfLinks as $pdfLink): ?>
-                        <?php
-                        $targetAttr = "";
-                        $relAttr = "";
-
-                        if ($pdfLink["target"] !== "") {
-                            $target = htmlspecialchars($pdfLink["target"], ENT_QUOTES, "UTF-8");
-                            $targetAttr = ' target="' . $target . '"';
-
-                            if ($pdfLink["target"] === "_blank") {
-                                $relAttr = ' rel="noopener noreferrer"';
-                            }
-                        }
-                        ?>
-                        <a class="legal__download-link" href="<?php echo htmlspecialchars(
-                            $pdfLink["url"],
-                            ENT_QUOTES,
-                            "UTF-8",
-                        ); ?>"<?php echo $targetAttr . $relAttr; ?>>
-                            <?php echo htmlspecialchars($pdfLink["label"], ENT_QUOTES, "UTF-8"); ?>
-                        </a>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
 
             <?php echo $afterDisplayContent; ?>
         </div>
