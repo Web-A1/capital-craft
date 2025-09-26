@@ -46,8 +46,18 @@ h6 {
 }
 
 a {
-  color: @color-accent;
+  color: @color-text;
   text-decoration: none;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: @color-heading;
+  }
+
+  &:focus-visible {
+    outline: 2px solid @color-accent;
+    outline-offset: 2px;
+  }
 }
 
 .container {
