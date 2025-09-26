@@ -182,7 +182,8 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                                                 "UTF-8",
                                             ); ?>"
                                         >
-                                            <?php echo htmlspecialchars($dateDisplay, ENT_QUOTES, "UTF-8"); ?>
+                                            <?php echo "Дата обновления: " .
+                                                htmlspecialchars($dateDisplay, ENT_QUOTES, "UTF-8"); ?>
                                         </time>
                                     </div>
                                 <?php endif; ?>
