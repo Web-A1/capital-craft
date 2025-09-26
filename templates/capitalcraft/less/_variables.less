@@ -145,6 +145,16 @@
 
   @media (hover: none) {
     transition: none;
+
+    &:hover {
+      background-color: @color;
+      color: @color-white;
+      border-color: @color;
+    }
+
+    &:active {
+      filter: brightness(0.92);
+    }
   }
 
   .media(mobile, {
