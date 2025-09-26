@@ -42,6 +42,7 @@ $pageHeading = $defaultHeading;
 $defaultIllustration = "/templates/capitalcraft/images/legal/legal.webp";
 $illustrationSrc = $defaultIllustration;
 $illustrationAlt = $illustrationDefaultAlt;
+$useDefaultIllustration = true;
 
 if (is_object($category) && method_exists($category, "getParams")) {
     $categoryParams = $category->getParams();
@@ -52,12 +53,43 @@ if (is_object($category) && method_exists($category, "getParams")) {
 
         if ($imageSrc !== "") {
             $illustrationSrc = $imageSrc;
+            $useDefaultIllustration = false;
         }
 
         if ($imageAlt !== "") {
             $illustrationAlt = $imageAlt;
         }
     }
+}
+
+$illustrationWidth = $useDefaultIllustration ? 351 : null;
+$illustrationHeight = $useDefaultIllustration ? 624 : null;
+
+if ($illustrationWidth === null || $illustrationHeight === null) {
+    $imagePath = (string) (parse_url($illustrationSrc, PHP_URL_PATH) ?? "");
+
+    if ($imagePath !== "") {
+        $filesystemPath = JPATH_ROOT . "/" . ltrim($imagePath, "/");
+
+        if (is_file($filesystemPath)) {
+            $size = @getimagesize($filesystemPath);
+
+            if (is_array($size) && !empty($size[0]) && !empty($size[1])) {
+                $illustrationWidth = (int) $size[0];
+                $illustrationHeight = (int) $size[1];
+            }
+        }
+    }
+}
+
+$illustrationSizeAttributes = "";
+
+if ($illustrationWidth !== null) {
+    $illustrationSizeAttributes .= ' width="' . (int) $illustrationWidth . '"';
+}
+
+if ($illustrationHeight !== null) {
+    $illustrationSizeAttributes .= ' height="' . (int) $illustrationHeight . '"';
 }
 
 $getItemDate = static function ($item): array {
@@ -198,6 +230,7 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
             <img
                 src="<?php echo htmlspecialchars($illustrationSrc, ENT_QUOTES, "UTF-8"); ?>"
                 alt="<?php echo htmlspecialchars($illustrationAlt, ENT_QUOTES, "UTF-8"); ?>"
+                <?php echo $illustrationSizeAttributes; ?>
                 loading="lazy"
                 decoding="async"
             >
