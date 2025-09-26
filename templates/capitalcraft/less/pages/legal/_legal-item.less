@@ -30,9 +30,8 @@
     }
 
     ol {
-      margin: 0; // Убираем отступы у ol для равномерности
+      margin: 0;
       padding-left: 0;
-      margin-left: 0;
       list-style: none;
     }
 
@@ -42,8 +41,9 @@
       list-style-position: outside;
     }
 
+    // Основные пункты списка (3.1, 3.2, 3.3)
     li {
-      margin: 0 0 8px; // Единый отступ между всеми пунктами внутри разделов
+      margin: 0 0 8px;
       text-align: justify;
       line-height: 1.3;
 
@@ -51,20 +51,22 @@
         text-align: left;
       });
 
-      // Отступы для подпунктов - только горизонтальные отступы
+      // Подпункты первого уровня (3.1.1, 3.1.2)
       ol li {
         margin-left: 1.5em;
-        margin-bottom: 5px; // Тот же отступ, что и у основных пунктов
+        margin-bottom: 8px; // Отступ между подпунктами
       }
 
+      // Подпункты второго уровня (если есть)
       ol ol li {
         margin-left: 1.5em;
-        margin-bottom: 0; // Тот же отступ, что и у основных пунктов
+        margin-bottom: 8px;
       }
 
+      // Подпункты третьего уровня (если есть)
       ol ol ol li {
         margin-left: 1.5em;
-        margin-bottom: 0; // Тот же отступ, что и у основных пунктов
+        margin-bottom: 8px;
       }
     }
 
@@ -73,8 +75,8 @@
     }
 
     h2 {
-      margin-top: 20px; // Такой же отступ, как между подпунктами
-      margin-bottom: 8px; // Убираем отступ снизу
+      margin-top: 8px; // Единый отступ между разделами
+      margin-bottom: 0; // Без отступа снизу
       font-weight: 600;
 
       .media(mobile, {
