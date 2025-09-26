@@ -53,8 +53,14 @@
     }
 
     & + &::before {
-      content: "/";
-      margin: 0 5px;
+      content: "";
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      margin: 0 8px;
+      border-radius: 50%;
+      background-color: currentColor;
+      vertical-align: middle;
     }
 
     // Mobile: let the last item consume remaining space and truncate
