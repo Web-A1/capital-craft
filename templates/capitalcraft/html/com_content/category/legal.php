@@ -176,7 +176,7 @@ $allItems = $collectItems([$this->lead_items ?? [], $this->intro_items ?? [], $t
                                                 ENT_QUOTES,
                                                 "UTF-8",
                                             ); ?>"
-                                            title="Обновлено <?php echo htmlspecialchars(
+                                            title="Дата обновления: <?php echo htmlspecialchars(
                                                 $dateDisplay,
                                                 ENT_QUOTES,
                                                 "UTF-8",
