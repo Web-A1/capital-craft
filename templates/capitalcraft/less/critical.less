@@ -50,8 +50,10 @@ a {
   text-decoration: none;
   transition: color 0.3s ease;
 
-  &:hover {
-    color: @color-heading;
+  @media (hover: hover) {
+    &:hover {
+      color: @color-heading;
+    }
   }
 
   &:focus-visible {
