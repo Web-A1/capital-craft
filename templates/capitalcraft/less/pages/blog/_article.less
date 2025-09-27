@@ -117,6 +117,7 @@
     grid-template-columns: 60% 1fr;
     gap: 60px; // 60px gap between text and image
     align-items: stretch;
+    margin-top: 20px;
 
     .media(mobile, {
       grid-template-columns: 1fr;
@@ -330,16 +331,6 @@
     font-size: @font-size-sub;
     font-weight: 400;
   }
-}
-
-// Blog card meta component styles moved to _blog_item.less
-
-.article__grid {
-  margin-top: 20px;
-
-  .media(mobile, {
-    margin-top: 0;
-  });
 }
 
 // Frame section with divider modifier
