@@ -55,28 +55,35 @@
   }
 
   &__excerpt {
-    color: @color-text;
+    color: @color-subtitle;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     line-clamp: 4; // progressive enhancement
     overflow: hidden;
     overflow-wrap: anywhere;
+
+    .media(mobile, {
+      font-size: @font-size-sub;
+    });
   }
 
   &__meta {
-    margin-top: auto;
+    margin: 0;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     gap: 30px;
     flex-wrap: wrap;
 
-    .media(mobile, { margin-top: 15px; });
+    .media(mobile, { 
+      margin-top: 15px;
+      gap: 12px;
+    });
   }
 
   &__date {
-    color: lighten(@color-text, 20%);
+    color: @color-subtitle;
     font-family: @font-body;
     font-size: @font-size-sub;
     font-weight: 400;
@@ -137,12 +144,13 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     // вертикальный ритм на десктопе между header, excerpt и meta
     gap: 12px;
 
     // на мобильных оставляем текущую логику отступов
     .media(mobile, {
-      gap: 8px;
+      gap: 12px;
     });
   }
 
