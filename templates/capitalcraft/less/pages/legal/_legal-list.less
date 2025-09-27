@@ -90,6 +90,10 @@
     overflow: hidden;
     overflow-wrap: anywhere;
     hyphens: auto;
+
+    .media(mobile, {
+      font-size: @font-size-sub;
+    });
   }
 
   @media (prefers-reduced-motion: reduce) {
