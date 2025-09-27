@@ -9,6 +9,7 @@
 @section-divider-color: #000000;
 @divider-space-mobile: 40px; // spacing above and below horizontal dividers on mobile
 @color-outside: #dcd8cf;
+@color-subtitle: lighten(@color-text, 20%);
 
 // Шрифты
 @font-body: "Golos Text", sans-serif;
@@ -48,7 +49,7 @@
 
 // Единый стиль подзаголовка
 .subtitle() {
-  color: lighten(@color-text, 20%);
+  color: @color-subtitle;
   font-family: @font-body;
   font-size: @font-size-sub;
   font-weight: 400; // фикс: не даём заголовкам становиться bold
