@@ -159,6 +159,81 @@ if ($isFAQPage) {
     $publishedIso = $published ? HTMLHelper::_("date", $published, DATE_ATOM) : null;
     $modifiedIso = $this->item->modified ? HTMLHelper::_("date", $this->item->modified, DATE_ATOM) : null;
 
+    // Формируем список хлебных крошек для JSON-LD
+    $breadcrumbItems = [];
+    $breadcrumbPosition = 1;
+    $app = Factory::getApplication();
+    $menu = $app->getMenu();
+    $defaultMenu = $menu ? $menu->getDefault($app->getLanguage()->getTag()) : null;
+
+    if ($defaultMenu) {
+        $homeName = $defaultMenu->title ?: Text::_("JGLOBAL_HOME");
+        $breadcrumbItems[] = [
+            "@type" => "ListItem",
+            "position" => $breadcrumbPosition++,
+            "name" => $homeName,
+            "item" => Uri::root(),
+        ];
+    }
+
+    $pathway = $app->getPathway();
+    $pathwayItems = $pathway ? $pathway->getPathway() : [];
+
+    foreach ($pathwayItems as $crumb) {
+        $crumbName = $crumb->title ?? ($crumb->name ?? "");
+        if ($crumbName === "") {
+            continue;
+        }
+
+        $crumbLink = $crumb->link ?? "";
+        if ($crumbLink !== "") {
+            $crumbLink = Route::_($crumbLink);
+            if ($crumbLink && strpos($crumbLink, "http") !== 0) {
+                $crumbLink = Uri::root() . ltrim($crumbLink, "/");
+            }
+        }
+
+        $breadcrumbItems[] = [
+            "@type" => "ListItem",
+            "position" => $breadcrumbPosition++,
+            "name" => $crumbName,
+            "item" => $crumbLink ?: null,
+        ];
+    }
+
+    $lastBreadcrumb = $breadcrumbItems ? end($breadcrumbItems) : null;
+    if (!$lastBreadcrumb || ($lastBreadcrumb["name"] ?? "") !== $this->item->title) {
+        $breadcrumbItems[] = [
+            "@type" => "ListItem",
+            "position" => $breadcrumbPosition,
+            "name" => $this->item->title,
+            "item" => $canonical,
+        ];
+    }
+
+    $breadcrumbItems = array_values(
+        array_filter($breadcrumbItems, function ($item) {
+            return !empty($item["name"]);
+        }),
+    );
+
+    $breadcrumbId = Uri::root() . "#/schema/BreadcrumbList/article-" . (int) $this->item->id;
+
+    if (!empty($breadcrumbItems)) {
+        $breadcrumbSchema = [
+            "@context" => "https://schema.org",
+            "@type" => "BreadcrumbList",
+            "@id" => $breadcrumbId,
+            "itemListElement" => $breadcrumbItems,
+        ];
+
+        $doc->addCustomTag(
+            '<script type="application/ld+json">' .
+                json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE) .
+                "</script>",
+        );
+    }
+
     $articleSchema = [
         "@context" => "https://schema.org",
         "@type" => "Article",
@@ -175,6 +250,7 @@ if ($isFAQPage) {
         "datePublished" => $publishedIso,
         "dateModified" => $modifiedIso,
         "articleBody" => $articleBodyLimited !== "" ? $articleBodyLimited : null,
+        "breadcrumb" => !empty($breadcrumbItems) ? ["@id" => $breadcrumbId] : null,
         "author" => [
             "@type" => "Organization",
             "name" => "Capital Craft",
