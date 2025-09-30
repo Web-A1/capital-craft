@@ -3,6 +3,7 @@
 defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
 
 class CapitalcraftSeoHelper
@@ -56,33 +57,20 @@ class CapitalcraftSeoHelper
      */
     public static function getDefaultBreadcrumbId(): ?string
     {
-        $doc = Factory::getDocument();
-        $head = $doc->getHeadData();
+        $module = ModuleHelper::getModule("mod_breadcrumbs");
 
-        if (empty($head["custom"])) {
+        if (empty($module) || empty($module->id)) {
+            $modulesByPosition = ModuleHelper::getModules("breadcrumbs");
+            if (!empty($modulesByPosition)) {
+                $module = $modulesByPosition[0];
+            }
+        }
+
+        if (empty($module) || empty($module->id)) {
             return null;
         }
 
-        foreach ($head["custom"] as $tag) {
-            if (stripos($tag, "application/ld+json") === false) {
-                continue;
-            }
-
-            if (strpos($tag, "#/schema/BreadcrumbList/") === false) {
-                continue;
-            }
-
-            if (strpos($tag, "article-") !== false) {
-                continue;
-            }
-
-            if (preg_match('/\\"breadcrumb\\"\s*:\s*\{\\"@id\\"\s*:\s*\\"([^\\"]+)\\"\}/', $tag, $matches)) {
-                $id = stripcslashes($matches[1]);
-                return $id !== "" ? $id : null;
-            }
-        }
-
-        return null;
+        return Uri::root() . "#/schema/BreadcrumbList/" . (int) $module->id;
     }
 
     /**
