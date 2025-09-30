@@ -41,6 +41,18 @@ const initArticleH3Indent = () => {
   });
 };
 
+const runOnReady = callback => {
+  if (typeof callback !== "function") {
+    return;
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", callback, { once: true });
+  } else {
+    callback();
+  }
+};
+
 const header = document.querySelector(".site-header");
 
 const initHeaderHeightObserver = headerElement => {
