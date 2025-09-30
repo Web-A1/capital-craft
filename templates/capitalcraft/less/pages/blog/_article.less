@@ -101,6 +101,7 @@
     h2 {
       margin: 1.5em 0 0.75em 0;
       font-weight: 600;
+      color: @color-heading;
 
       // Remove extra top gap when the article starts with an h2
       &:first-child {
@@ -113,6 +114,20 @@
         &:first-child {
           margin-top: 0;
         }
+      });
+    }
+
+    h3 {
+      margin: 1.25em 0 0.5em 0;
+      font-weight: 600;
+      color: @color-heading;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      .media(mobile, {
+        margin: 1em 0 0.5em 0;
       });
     }
   }
