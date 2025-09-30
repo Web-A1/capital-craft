@@ -28,5 +28,8 @@ Disallow: /modules/
 Disallow: /plugins/
 Disallow: /tmp/
 
+Host: https://capital-craft.ru
+Clean-param: start&Itemid&tmpl&format&lang /
+
 # Sitemap location
 Sitemap: https://capital-craft.ru/component/osmap?view=xml&id=1&format=xml
