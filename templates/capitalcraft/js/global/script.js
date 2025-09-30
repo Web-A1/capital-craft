@@ -147,6 +147,7 @@ initPhoneMask();
 initFormSubmit();
 initScrollTop();
 initTextTruncate();
+runOnReady(initArticleH3Indent);
 
 if (header) {
   const MOBILE_BREAKPOINT = 767;
