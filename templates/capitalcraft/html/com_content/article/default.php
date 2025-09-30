@@ -387,13 +387,11 @@ if ($isFAQPage) {
         "inLanguage" => $schemaLang,
         "keywords" => !empty($keywords) ? implode(", ", $keywords) : null,
         "articleSection" => $articleSection ?: null,
-        "articleTag" => !empty($keywords) ? array_values($keywords) : null,
         "wordCount" => $wordCount ?: null,
         "isAccessibleForFree" => true,
         "datePublished" => $publishedIso,
         "dateModified" => $modifiedIso,
         "articleBody" => $articleBodyLimited !== "" ? $articleBodyLimited : null,
-        "breadcrumb" => $breadcrumbSchema ? ["@id" => $breadcrumbId] : null,
         "author" => [
             "@type" => "Organization",
             "@id" => $organizationId,
@@ -421,7 +419,7 @@ if ($isFAQPage) {
     if (!empty($faqEntities)) {
         $graph[] = [
             "@type" => "FAQPage",
-            "@id" => $articleId . "#faq",
+            "@id" => $canonical . "#faq",
             "inLanguage" => $schemaLang,
             "mainEntity" => $faqEntities,
         ];
