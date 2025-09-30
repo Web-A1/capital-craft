@@ -119,6 +119,9 @@ if ($isFAQPage) {
     $schemaDescription = $doc->getMetaData("description");
     $schemaLang = $this->item->language ?: $doc->getLanguage();
     $schemaLang = $schemaLang ?: "ru-RU";
+    if ($schemaLang === "*") {
+        $schemaLang = "ru-RU";
+    }
     $schemaImage = $ogImage;
 
     $keywords = [];
@@ -153,6 +156,8 @@ if ($isFAQPage) {
     $articleBodyLimited = $bodyText !== "" ? mb_substr($bodyText, 0, 10000, "UTF-8") : "";
 
     $published = $this->item->publish_up ?: $this->item->created;
+    $publishedIso = $published ? HTMLHelper::_("date", $published, DATE_ATOM) : null;
+    $modifiedIso = $this->item->modified ? HTMLHelper::_("date", $this->item->modified, DATE_ATOM) : null;
 
     $articleSchema = [
         "@context" => "https://schema.org",
@@ -167,8 +172,8 @@ if ($isFAQPage) {
         "articleSection" => $articleSection ?: null,
         "wordCount" => $wordCount ?: null,
         "isAccessibleForFree" => true,
-        "datePublished" => $published,
-        "dateModified" => $this->item->modified,
+        "datePublished" => $publishedIso,
+        "dateModified" => $modifiedIso,
         "articleBody" => $articleBodyLimited !== "" ? $articleBodyLimited : null,
         "author" => [
             "@type" => "Organization",
