@@ -27,6 +27,8 @@ if ($isDirectArticle) {
     $isHome = false;
 }
 
+$isArticle = $app->input->getCmd("option") === "com_content" && $app->input->getCmd("view") === "article";
+
 $isFaq = $active && $active->alias === "faq";
 // Страницы юридического раздела (категория и дочерние материалы)
 $requestUri = trim($app->input->server->getString("REQUEST_URI", ""), "/");
@@ -187,16 +189,18 @@ if ($addCanonical) {
         JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
     ) ?></script>
   <?php else: ?>
-    <!-- Базовые SEO мета-теги для остальных страниц -->
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
-    <meta name="revisit-after" content="7 days">
-    
-    <!-- Open Graph теги для остальных страниц -->
-    <meta property="og:site_name" content="Capital Craft">
-    <meta property="og:locale" content="ru_RU">
-    <meta property="og:type" content="website">
-    
-    <!-- Hreflang на уровне остальных страниц не задаём глобально -->
+    <?php if (!$isArticle): ?>
+      <!-- Базовые SEO мета-теги для остальных страниц -->
+      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+      <meta name="revisit-after" content="7 days">
+
+      <!-- Open Graph теги для остальных страниц -->
+      <meta property="og:site_name" content="Capital Craft">
+      <meta property="og:locale" content="ru_RU">
+      <meta property="og:type" content="website">
+
+      <!-- Hreflang на уровне остальных страниц не задаём глобально -->
+    <?php endif; ?>
     
     <!-- Специальные мета-теги для FAQ страницы -->
     <?php if ($isFaq): ?>
