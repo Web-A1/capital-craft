@@ -9,6 +9,38 @@ import { initTextTruncate } from "./text-truncate.js";
 // Делаем IMask доступным глобально
 window.IMask = IMask;
 
+const initArticleH3Indent = () => {
+  const articleBody = document.querySelector(".com-content-article__body");
+
+  if (!articleBody) {
+    return;
+  }
+
+  const indentClass = "article__h3-indent";
+  const children = Array.from(articleBody.children);
+  let indentActive = false;
+
+  children.forEach(node => {
+    if (node.matches("h3")) {
+      indentActive = true;
+      node.classList.remove(indentClass);
+      return;
+    }
+
+    if (node.matches("h2, h4, h5, h6")) {
+      indentActive = false;
+      node.classList.remove(indentClass);
+      return;
+    }
+
+    if (indentActive) {
+      node.classList.add(indentClass);
+    } else {
+      node.classList.remove(indentClass);
+    }
+  });
+};
+
 const header = document.querySelector(".site-header");
 
 const initHeaderHeightObserver = headerElement => {
