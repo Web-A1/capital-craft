@@ -117,9 +117,17 @@ if ($isFAQPage) {
         if (strpos($ogImage, "http") !== 0) {
             $ogImage = Uri::root() . ltrim($ogImage, "/");
         }
-        // Удаляем hash-добавку Joomla (#joomlaImage://...), чтобы соцсети не считали URL некорректным
+        // Удаляем hash-добавку Joomla (#joomlaImage://...), сохраняя query-параметры (width/height)
         $ogImageParts = explode("#", $ogImage, 2);
         $ogImage = trim($ogImageParts[0]);
+
+        if (!empty($ogImageParts[1]) && strpos($ogImageParts[1], "?") !== false) {
+            [, $fragmentQuery] = explode("?", $ogImageParts[1], 2);
+            $fragmentQuery = trim($fragmentQuery);
+            if ($fragmentQuery !== "") {
+                $ogImage .= (strpos($ogImage, "?") === false ? "?" : "&") . $fragmentQuery;
+            }
+        }
     } else {
         $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
     }
