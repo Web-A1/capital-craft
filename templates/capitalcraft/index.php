@@ -119,37 +119,70 @@ if ($addCanonical) {
     <meta name="copyright" content="© 2025 Capital Craft. Все права защищены.">
     
     <!-- Структурированные данные JSON-LD -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Capital Craft",
-      "alternateName": "Capital-craft",
-      "description": "Бутиковое агентство инвестиционных решений",
-      "url": "https://capital-craft.ru/",
-      "logo": "https://capital-craft.ru/favicon.svg",
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+7 (499) 325-68-26",
-        "contactType": "customer service",
-        "areaServed": "RU",
-        "availableLanguage": "Russian"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Варшавское шоссе 33, стр 1",
-        "addressLocality": "Москва",
-        "postalCode": "117105",
-        "addressCountry": "RU"
-      },
-      "sameAs": [
-        "https://dzen.ru/capital_craft1",
-        "https://t.me/capital_craft1"
-      ],
-      "serviceType": "Инвестиционные решения",
-      "areaServed": "Россия"
-    }
-    </script>
+    <?php $organizationSchema = [
+        "@context" => "https://schema.org",
+        "@type" => "Organization",
+        "name" => "Capital Craft",
+        "alternateName" => "Capital-craft",
+        "description" =>
+            "Capital Craft — финансирование МСП: кредит, ЦФА, пополнение оборотных средств, лизинг, проектное финансирование, реструктуризация долгов",
+        "url" => Uri::root(),
+        "logo" => Uri::root() . "favicon.svg",
+        "contactPoint" => [
+            "@type" => "ContactPoint",
+            "telephone" => "+7 (499) 325-68-26",
+            "contactType" => "customer service",
+            "areaServed" => "RU",
+            "availableLanguage" => "ru",
+        ],
+        "address" => [
+            "@type" => "PostalAddress",
+            "streetAddress" => "Варшавское шоссе 33, стр 1",
+            "addressLocality" => "Москва",
+            "postalCode" => "117105",
+            "addressCountry" => "RU",
+        ],
+        "sameAs" => ["https://dzen.ru/capital_craft_official", "https://t.me/capital_craft_official"],
+        "makesOffer" => [
+            [
+                "@type" => "Offer",
+                "url" => Uri::root() . "#products",
+                "itemOffered" => [
+                    "@type" => "Service",
+                    "name" => "ЦФА для бизнеса: выпуск и размещение",
+                    "description" =>
+                        "Размещение и выпуск ЦФА, 259-ФЗ, выбор ОИС, финансирование оборотных и проектов для МСП и крупных компаний",
+                    "areaServed" => "RU",
+                ],
+            ],
+            [
+                "@type" => "Offer",
+                "url" => Uri::root() . "#products",
+                "itemOffered" => [
+                    "@type" => "Service",
+                    "name" => "Проектное финансирование: подготовка и сопровождение",
+                    "description" =>
+                        "Финмодель и пакет документов, отбор кредиторов и термшит, переговоры и закрытие сделки для МСП и крупных компаний (DSCR/CFADS, cash flow проекта)",
+                    "areaServed" => "RU",
+                ],
+            ],
+            [
+                "@type" => "Offer",
+                "url" => Uri::root() . "#products",
+                "itemOffered" => [
+                    "@type" => "Service",
+                    "name" => "Реструктуризация кредитов и лизинга, цессия",
+                    "description" =>
+                        "Переговоры с банками и лизингодателями; изменение графика, снижение ставки, цессия, добровольный возврат предмета лизинга для МСП",
+                    "areaServed" => "RU",
+                ],
+            ],
+        ],
+    ]; ?>
+    <script type="application/ld+json"><?= json_encode(
+        $organizationSchema,
+        JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+    ) ?></script>
   <?php else: ?>
     <!-- Базовые SEO мета-теги для остальных страниц -->
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
