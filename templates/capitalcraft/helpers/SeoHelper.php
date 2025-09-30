@@ -178,13 +178,32 @@ class CapitalcraftSeoHelper
         $doc = Factory::getDocument();
         $head = $doc->getHeadData();
 
-        if (empty($head["custom"]) || !is_array($head["custom"])) {
-            return;
+        if (!empty($head["custom"]) && is_array($head["custom"])) {
+            $head["custom"] = array_values(
+                array_filter(
+                    $head["custom"],
+                    static fn($tag) => stripos((string) $tag, "application/ld+json") === false,
+                ),
+            );
         }
 
-        $head["custom"] = array_values(
-            array_filter($head["custom"], static fn($tag) => stripos((string) $tag, "application/ld+json") === false),
-        );
+        if (!empty($head["script"]) && is_array($head["script"])) {
+            foreach ($head["script"] as $type => $blocks) {
+                if (stripos((string) $type, "application/ld+json") !== false) {
+                    unset($head["script"][$type]);
+                    continue;
+                }
+
+                if (is_array($blocks)) {
+                    $head["script"][$type] = array_values(
+                        array_filter(
+                            $blocks,
+                            static fn($content) => stripos((string) $content, "application/ld+json") === false,
+                        ),
+                    );
+                }
+            }
+        }
 
         $doc->setHeadData($head);
     }
