@@ -265,29 +265,78 @@ if ($isFAQPage) {
 
     $breadcrumbId = $defaultBreadcrumbId ?: Uri::root() . "#/schema/BreadcrumbList/article-" . (int) $this->item->id;
 
+    CapitalcraftSeoHelper::clearJsonLdScripts();
+
+    $siteRoot = rtrim(Uri::root(), "/");
+    $siteUrl = $siteRoot . "/";
+    $organizationId = $siteRoot . "#/schema/Organization/base";
+    $websiteId = $siteRoot . "#/schema/WebSite/base";
+    $logoId = $siteRoot . "#/schema/ImageObject/logo";
+    $logoWebp = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
+    $webPageId = $canonical . "#webpage";
+    $articleId = $canonical . "#article";
+
+    $organizationSchema = [
+        "@type" => "Organization",
+        "@id" => $organizationId,
+        "name" => "Capital Craft",
+        "url" => $siteUrl,
+        "logo" => [
+            "@type" => "ImageObject",
+            "@id" => $logoId,
+            "url" => $logoWebp,
+            "contentUrl" => $logoWebp,
+        ],
+        "image" => ["@id" => $logoId],
+        "sameAs" => ["https://t.me/capital_craft_official", "https://dzen.ru/capital_craft_official"],
+    ];
+
+    $websiteSchema = [
+        "@type" => "WebSite",
+        "@id" => $websiteId,
+        "url" => $siteUrl,
+        "name" => "CAPITAL CRAFT",
+        "publisher" => ["@id" => $organizationId],
+    ];
+
+    $webPageSchema = [
+        "@type" => "WebPage",
+        "@id" => $webPageId,
+        "url" => $canonical,
+        "name" => $doc->getTitle(),
+        "description" => $schemaDescription,
+        "inLanguage" => $schemaLang,
+        "isPartOf" => ["@id" => $websiteId],
+        "about" => ["@id" => $organizationId],
+        "breadcrumb" => !empty($breadcrumbItems) ? ["@id" => $breadcrumbId] : null,
+    ];
+
+    $webPageSchema = array_filter($webPageSchema, static fn($value) => $value !== null && $value !== "");
+
+    $breadcrumbSchema = null;
     if (!empty($breadcrumbItems)) {
         $breadcrumbSchema = [
-            "@context" => "https://schema.org",
             "@type" => "BreadcrumbList",
             "@id" => $breadcrumbId,
             "itemListElement" => $breadcrumbItems,
         ];
-
-        $doc->addCustomTag(
-            '<script type="application/ld+json">' .
-                json_encode($breadcrumbSchema, JSON_UNESCAPED_UNICODE) .
-                "</script>",
-        );
     }
 
+    $articleImageObject = [
+        "@type" => "ImageObject",
+        "url" => $ogImage,
+        "caption" => $ogImageAlt,
+    ];
+
     $articleSchema = [
-        "@context" => "https://schema.org",
         "@type" => "Article",
+        "@id" => $articleId,
         "headline" => $this->item->title,
         "description" => $schemaDescription,
         "url" => $canonical,
-        "mainEntityOfPage" => $mainEntity,
-        "image" => $schemaImage,
+        "mainEntityOfPage" => ["@id" => $webPageId],
+        "isPartOf" => ["@id" => $websiteId],
+        "image" => $articleImageObject,
         "inLanguage" => $schemaLang,
         "keywords" => !empty($keywords) ? implode(", ", $keywords) : null,
         "articleSection" => $articleSection ?: null,
@@ -296,13 +345,15 @@ if ($isFAQPage) {
         "datePublished" => $publishedIso,
         "dateModified" => $modifiedIso,
         "articleBody" => $articleBodyLimited !== "" ? $articleBodyLimited : null,
-        "breadcrumb" => !empty($breadcrumbItems) ? ["@id" => $breadcrumbId] : null,
+        "breadcrumb" => $breadcrumbSchema ? ["@id" => $breadcrumbId] : null,
         "author" => [
             "@type" => "Organization",
+            "@id" => $organizationId,
             "name" => "Capital Craft",
         ],
         "publisher" => [
             "@type" => "Organization",
+            "@id" => $organizationId,
             "name" => "Capital Craft",
             "logo" => [
                 "@type" => "ImageObject",
@@ -311,13 +362,26 @@ if ($isFAQPage) {
         ],
     ];
 
-    // Удаляем пустые ключи, чтобы не засорять JSON-LD
-    $articleSchema = array_filter($articleSchema, function ($v) {
-        return $v !== null && $v !== "";
-    });
+    $articleSchema = array_filter($articleSchema, static fn($value) => !in_array($value, [null, ""], true));
+
+    $graph = [$organizationSchema, $websiteSchema, $webPageSchema];
+
+    if ($breadcrumbSchema) {
+        $graph[] = $breadcrumbSchema;
+    }
+
+    $graph[] = $articleSchema;
 
     $doc->addCustomTag(
-        '<script type="application/ld+json">' . json_encode($articleSchema, JSON_UNESCAPED_UNICODE) . "</script>",
+        '<script type="application/ld+json">' .
+            json_encode(
+                [
+                    "@context" => "https://schema.org",
+                    "@graph" => $graph,
+                ],
+                JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+            ) .
+            "</script>",
     );
 
     // Стандартная Joomla разметка
