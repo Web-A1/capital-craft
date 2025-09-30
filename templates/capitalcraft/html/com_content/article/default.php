@@ -104,10 +104,18 @@ if ($isFAQPage) {
     $doc->addCustomTag('<meta property="og:url" content="' . $canonical . '" />');
     $doc->addCustomTag('<meta property="og:site_name" content="Capital Craft" />');
     $doc->addCustomTag('<meta property="og:locale" content="ru_RU" />');
+    if (!empty($publishedIso)) {
+        $doc->addCustomTag('<meta property="article:published_time" content="' . $publishedIso . '" />');
+    }
+    if (!empty($modifiedIso)) {
+        $doc->addCustomTag('<meta property="article:modified_time" content="' . $modifiedIso . '" />');
+    }
 
     // OG image: берём изображение материала, иначе дефолт
     $ogImage = "";
     $ogImageAlt = "";
+    $ogImageWidth = null;
+    $ogImageHeight = null;
     if ($articleImages) {
         if (!empty($articleImages->image_fulltext)) {
             $ogImage = $articleImages->image_fulltext;
@@ -130,11 +138,20 @@ if ($isFAQPage) {
             $fragmentQuery = trim($fragmentQuery);
             if ($fragmentQuery !== "") {
                 $ogImage .= (strpos($ogImage, "?") === false ? "?" : "&") . $fragmentQuery;
+                parse_str($fragmentQuery, $imgQueryParams);
+                if (isset($imgQueryParams["width"])) {
+                    $ogImageWidth = (int) $imgQueryParams["width"];
+                }
+                if (isset($imgQueryParams["height"])) {
+                    $ogImageHeight = (int) $imgQueryParams["height"];
+                }
             }
         }
     } else {
         $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
         $ogImageAlt = "Capital Craft";
+        $ogImageWidth = 1200;
+        $ogImageHeight = 630;
     }
     if ($ogImageAlt === "") {
         $ogImageAlt = $this->item->title ?: "Capital Craft";
@@ -145,6 +162,12 @@ if ($isFAQPage) {
     $doc->addCustomTag(
         '<meta property="og:image:alt" content="' . htmlspecialchars($ogImageAlt, ENT_QUOTES, "UTF-8") . '" />',
     );
+    if ($ogImageWidth && $ogImageWidth > 0) {
+        $doc->addCustomTag('<meta property="og:image:width" content="' . (int) $ogImageWidth . '" />');
+    }
+    if ($ogImageHeight && $ogImageHeight > 0) {
+        $doc->addCustomTag('<meta property="og:image:height" content="' . (int) $ogImageHeight . '" />');
+    }
     $doc->addCustomTag(
         '<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
     );
@@ -179,10 +202,36 @@ if ($isFAQPage) {
     $schemaImage = $ogImage;
 
     $keywords = [];
+    $tagIds = [];
     if (!empty($this->item->tags->itemTags)) {
         foreach ($this->item->tags->itemTags as $tg) {
             if (!empty($tg->title)) {
                 $keywords[] = (string) $tg->title;
+            }
+            if (!empty($tg->tag_id)) {
+                $tagIds[] = (int) $tg->tag_id;
+            }
+        }
+    }
+
+    $relatedData = CapitalcraftRelatedHelper::getRelatedForArticle($this->item, $tagIds);
+
+    $faqEntities = [];
+    if (!empty($relatedData["faq"])) {
+        foreach ($relatedData["faq"] as $faqItem) {
+            $questionText = trim((string) ($faqItem["title"] ?? ""));
+            $answerRaw = trim((string) ($faqItem["excerpt"] ?? ""));
+            $answerText = trim(strip_tags($answerRaw));
+
+            if ($questionText !== "" && $answerText !== "") {
+                $faqEntities[] = [
+                    "@type" => "Question",
+                    "name" => $questionText,
+                    "acceptedAnswer" => [
+                        "@type" => "Answer",
+                        "text" => $answerText,
+                    ],
+                ];
             }
         }
     }
@@ -338,6 +387,7 @@ if ($isFAQPage) {
         "inLanguage" => $schemaLang,
         "keywords" => !empty($keywords) ? implode(", ", $keywords) : null,
         "articleSection" => $articleSection ?: null,
+        "articleTag" => !empty($keywords) ? array_values($keywords) : null,
         "wordCount" => $wordCount ?: null,
         "isAccessibleForFree" => true,
         "datePublished" => $publishedIso,
@@ -366,6 +416,15 @@ if ($isFAQPage) {
 
     if ($breadcrumbSchema) {
         $graph[] = $breadcrumbSchema;
+    }
+
+    if (!empty($faqEntities)) {
+        $graph[] = [
+            "@type" => "FAQPage",
+            "@id" => $articleId . "#faq",
+            "inLanguage" => $schemaLang,
+            "mainEntity" => $faqEntities,
+        ];
     }
 
     $graph[] = $articleSchema;
@@ -441,20 +500,6 @@ if ($isFAQPage) {
                 : ($articleImages && !empty($articleImages->image_intro_alt)
                     ? $articleImages->image_intro_alt
                     : "");
-        ?>
-
-        <?php
-        // Build related articles and FAQ via helper
-        $tagIds = [];
-        if (!empty($this->item->tags->itemTags)) {
-            foreach ($this->item->tags->itemTags as $tg) {
-                if (!empty($tg->tag_id)) {
-                    $tagIds[] = (int) $tg->tag_id;
-                }
-            }
-        }
-
-        $relatedData = CapitalcraftRelatedHelper::getRelatedForArticle($this->item, $tagIds);
         ?>
 
         <div class="article__grid">
