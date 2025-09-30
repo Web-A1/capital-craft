@@ -64,6 +64,8 @@ if ($isFAQPage) {
         $bodyText = trim($tmp);
     }
 
+    $articleImages = !empty($this->item->images) ? json_decode($this->item->images) : null;
+
     // Улучшенный title
     if (!empty($this->item->title)) {
         $doc->setTitle(CapitalcraftSeoHelper::buildArticleTitle($this->item->title));
@@ -105,12 +107,14 @@ if ($isFAQPage) {
 
     // OG image: берём изображение материала, иначе дефолт
     $ogImage = "";
-    if (!empty($this->item->images)) {
-        $imagesObj = json_decode($this->item->images);
-        if (!empty($imagesObj->image_fulltext)) {
-            $ogImage = $imagesObj->image_fulltext;
-        } elseif (!empty($imagesObj->image_intro)) {
-            $ogImage = $imagesObj->image_intro;
+    $ogImageAlt = "";
+    if ($articleImages) {
+        if (!empty($articleImages->image_fulltext)) {
+            $ogImage = $articleImages->image_fulltext;
+            $ogImageAlt = $articleImages->image_fulltext_alt ?? "";
+        } elseif (!empty($articleImages->image_intro)) {
+            $ogImage = $articleImages->image_intro;
+            $ogImageAlt = $articleImages->image_intro_alt ?? "";
         }
     }
     if (!empty($ogImage)) {
@@ -130,12 +134,36 @@ if ($isFAQPage) {
         }
     } else {
         $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
+        $ogImageAlt = "Capital Craft";
+    }
+    if ($ogImageAlt === "") {
+        $ogImageAlt = $this->item->title ?: "Capital Craft";
     }
     $doc->addCustomTag(
         '<meta property="og:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
     );
     $doc->addCustomTag(
+        '<meta property="og:image:alt" content="' . htmlspecialchars($ogImageAlt, ENT_QUOTES, "UTF-8") . '" />',
+    );
+    $doc->addCustomTag(
         '<meta name="twitter:image" content="' . htmlspecialchars($ogImage, ENT_QUOTES, "UTF-8") . '" />',
+    );
+    $doc->addCustomTag(
+        '<meta name="twitter:image:alt" content="' . htmlspecialchars($ogImageAlt, ENT_QUOTES, "UTF-8") . '" />',
+    );
+    $doc->addCustomTag('<meta name="twitter:card" content="summary_large_image" />');
+    $doc->addCustomTag(
+        '<meta name="twitter:title" content="' . htmlspecialchars($this->item->title, ENT_QUOTES, "UTF-8") . '" />',
+    );
+    if (!empty($ogDescription)) {
+        $doc->addCustomTag(
+            '<meta name="twitter:description" content="' .
+                htmlspecialchars($ogDescription, ENT_QUOTES, "UTF-8") .
+                '" />',
+        );
+    }
+    $doc->addCustomTag(
+        '<meta name="twitter:url" content="' . htmlspecialchars($canonical, ENT_QUOTES, "UTF-8") . '" />',
     );
 
     // Robots meta
@@ -339,18 +367,17 @@ if ($isFAQPage) {
         
         <?php
         // Right-side illustration (from article images)
-        $imagesObj = !empty($this->item->images) ? json_decode($this->item->images) : null;
         $mainImg =
-            $imagesObj && !empty($imagesObj->image_fulltext)
-                ? $imagesObj->image_fulltext
-                : ($imagesObj && !empty($imagesObj->image_intro)
-                    ? $imagesObj->image_intro
+            $articleImages && !empty($articleImages->image_fulltext)
+                ? $articleImages->image_fulltext
+                : ($articleImages && !empty($articleImages->image_intro)
+                    ? $articleImages->image_intro
                     : "");
         $mainAlt =
-            $imagesObj && !empty($imagesObj->image_fulltext_alt)
-                ? $imagesObj->image_fulltext_alt
-                : ($imagesObj && !empty($imagesObj->image_intro_alt)
-                    ? $imagesObj->image_intro_alt
+            $articleImages && !empty($articleImages->image_fulltext_alt)
+                ? $articleImages->image_fulltext_alt
+                : ($articleImages && !empty($articleImages->image_intro_alt)
+                    ? $articleImages->image_intro_alt
                     : "");
         ?>
 
