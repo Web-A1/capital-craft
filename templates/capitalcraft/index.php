@@ -92,6 +92,9 @@ if ($addCanonical) {
     <meta property="og:site_name" content="Capital Craft">
     <meta property="og:locale" content="ru_RU">
     <meta property="og:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta property="og:image:type" content="image/webp">
+    <meta property="og:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.png">
+    <meta property="og:image:type" content="image/png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Capital Craft — превью">
@@ -102,7 +105,7 @@ if ($addCanonical) {
     <?php if (!empty($ogDesc)): ?>
       <meta name="twitter:description" content="<?= $ogDesc ?>">
     <?php endif; ?>
-    <meta name="twitter:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+    <meta name="twitter:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.png">
     <meta name="twitter:image:alt" content="Capital Craft — превью">
     
     <!-- Hreflang для языковой версии (только для главной) -->
@@ -217,6 +220,9 @@ if ($addCanonical) {
       <meta property="og:site_name" content="Capital Craft">
       <meta property="og:locale" content="ru_RU">
       <meta property="og:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta property="og:image:type" content="image/webp">
+      <meta property="og:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.png">
+      <meta property="og:image:type" content="image/png">
       <meta property="og:image:width" content="1200">
       <meta property="og:image:height" content="630">
       
@@ -226,7 +232,7 @@ if ($addCanonical) {
       <?php if (!empty($faqDesc)): ?>
         <meta name="twitter:description" content="<?= $faqDesc ?>">
       <?php endif; ?>
-      <meta name="twitter:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.webp">
+      <meta name="twitter:image" content="<?= Uri::root() ?>templates/capitalcraft/images/og/OG-image.png">
       
       <!-- Hreflang для FAQ -->
       <link rel="alternate" hreflang="ru-RU" href="https://capital-craft.ru/faq">
