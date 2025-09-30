@@ -54,6 +54,7 @@ if ($isFAQPage) {
     // SEO мета-теги
     $doc = Factory::getDocument();
     $defaultBreadcrumbId = CapitalcraftSeoHelper::getDefaultBreadcrumbId();
+    // echo '<!-- bcId: ' . $defaultBreadcrumbId . ' -->';
 
     $bodyText = "";
     if (!empty($this->item->text)) {
