@@ -172,4 +172,20 @@ class CapitalcraftSeoHelper
 
         return $clean !== "" ? $clean : $slice;
     }
+
+    public static function clearJsonLdScripts(): void
+    {
+        $doc = Factory::getDocument();
+        $head = $doc->getHeadData();
+
+        if (empty($head["custom"]) || !is_array($head["custom"])) {
+            return;
+        }
+
+        $head["custom"] = array_values(
+            array_filter($head["custom"], static fn($tag) => stripos((string) $tag, "application/ld+json") === false),
+        );
+
+        $doc->setHeadData($head);
+    }
 }
