@@ -54,9 +54,9 @@ class CapitalcraftSeoHelper
     public static function buildArticleTitle(
         string $rawTitle,
         string $brand = "Capital Craft",
-        int $maxLength = 64,
+        int $maxLength = 72,
     ): string {
-        $title = trim($rawTitle);
+        $title = trim(preg_replace("/\s+/u", " ", $rawTitle));
 
         if ($title === "") {
             return $brand;
@@ -75,9 +75,28 @@ class CapitalcraftSeoHelper
             $brandSuffix = $separator . $brandPart;
             $allowed = $baseMax - mb_strlen($brandSuffix, "UTF-8");
 
+            $markerCandidates = [];
+            foreach ([":", " — ", " – ", " - "] as $marker) {
+                $pos = mb_strpos($title, $marker);
+                if ($pos !== false && $pos >= 24) {
+                    $segment = trim(mb_substr($title, 0, $pos));
+                    if ($segment !== "") {
+                        $markerCandidates[] = $segment;
+                    }
+                }
+            }
+
+            foreach ($markerCandidates as $segment) {
+                $segmentCandidate = $segment . $brandSuffix;
+                if (mb_strlen($segmentCandidate, "UTF-8") <= $baseMax) {
+                    return $segmentCandidate;
+                }
+            }
+
             if ($allowed > 30) {
                 $trimmed = self::truncateAtWord($title, $allowed);
                 $trimmed = rtrim($trimmed, " —,;:.");
+                $trimmed = preg_replace('/\s+(?:[всииксооя]|на|по|об|из)$/iu', "", $trimmed);
                 if ($trimmed !== "") {
                     return $trimmed . $brandSuffix;
                 }
@@ -85,6 +104,8 @@ class CapitalcraftSeoHelper
         }
 
         $trimmedAlone = self::truncateAtWord($title, $baseMax);
+        $trimmedAlone = rtrim($trimmedAlone, " —,;:.");
+        $trimmedAlone = preg_replace('/\s+(?:[всииксооя]|на|по|об|из)$/iu', "", $trimmedAlone);
 
         return $trimmedAlone !== "" ? $trimmedAlone : $title;
     }
