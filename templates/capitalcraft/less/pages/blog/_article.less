@@ -120,11 +120,15 @@
     }
 
     h3 {
-      margin-bottom: 0.5em;
+      margin: 0.5em 0;
       font-weight: 400;
       color: @color-text;
       position: relative;
       padding-left: @article-h3-indent;
+
+      &:first-child {
+        margin-top: 0;
+      }
 
       &::before {
         content: "-";
