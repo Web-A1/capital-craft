@@ -44,6 +44,8 @@
 
   // Article body
   .com-content-article__body {
+    @article-h3-indent: 1.75em;
+
     color: @color-text;
 
     // Stretch text across width (justify)
@@ -119,8 +121,10 @@
 
     h3 {
       margin: 1.25em 0 0.5em 0;
-      font-weight: 600;
-      color: @color-heading;
+      font-weight: 400;
+      color: @color-text;
+      position: relative;
+      padding-left: @article-h3-indent;
 
       &:first-child {
         margin-top: 0;
@@ -128,6 +132,23 @@
 
       .media(mobile, {
         margin: 1em 0 0.5em 0;
+      });
+
+      &::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        top: 0.1em;
+        color: @color-accent;
+        font-weight: 600;
+      }
+    }
+
+    .article__h3-indent {
+      margin-left: @article-h3-indent;
+
+      .media(mobile, {
+        margin-left: (@article-h3-indent * 0.85);
       });
     }
   }
