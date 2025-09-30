@@ -265,8 +265,6 @@ if ($isFAQPage) {
 
     $breadcrumbId = $defaultBreadcrumbId ?: Uri::root() . "#/schema/BreadcrumbList/article-" . (int) $this->item->id;
 
-    CapitalcraftSeoHelper::clearJsonLdScripts();
-
     $siteRoot = rtrim(Uri::root(), "/");
     $siteUrl = $siteRoot . "/";
     $organizationId = $siteRoot . "#/schema/Organization/base";
@@ -481,9 +479,10 @@ if ($isFAQPage) {
             <?php $hasRelated = !empty($relatedData["articles"]) || !empty($relatedData["faq"]); ?>
 
             <?php if ($hasRelated): ?>
-              <div class="article__related-wrap">
+              <?php $relatedHeadingId = "article-related-" . (int) $this->item->id; ?>
+              <aside class="article__related-wrap" aria-labelledby="<?php echo $relatedHeadingId; ?>">
                 <div class="article__related-header">
-                  <div class="article__related-title">Читайте также</div>
+                  <h2 class="article__related-title" id="<?php echo $relatedHeadingId; ?>">Читайте также</h2>
                   <?php if (!empty($relatedData["heading_tags"])): ?>
                     <div class="article__related-tags">
                       <?php foreach ($relatedData["heading_tags"] as $tagInfo): ?>
@@ -497,7 +496,7 @@ if ($isFAQPage) {
                   <?php endif; ?>
                 </div>
                 <div class="article__related-scroll">
-                  <aside class="article__related-block">
+                  <div class="article__related-block">
                     <ul class="article__related-list">
                       <?php if (!empty($relatedData["articles"])): ?>
                         <?php foreach ($relatedData["articles"] as $rel): ?>
@@ -563,9 +562,9 @@ if ($isFAQPage) {
                         <?php endforeach; ?>
                       <?php endif; ?>
                     </ul>
-                  </aside>
+                  </div>
                 </div>
-              </div>
+              </aside>
             <?php endif; ?>
           </div>
         </div>
