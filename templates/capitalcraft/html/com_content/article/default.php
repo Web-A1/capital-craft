@@ -99,6 +99,9 @@ if ($isFAQPage) {
         if (strpos($ogImage, "http") !== 0) {
             $ogImage = Uri::root() . ltrim($ogImage, "/");
         }
+        // Удаляем hash-добавку Joomla (#joomlaImage://...), чтобы соцсети не считали URL некорректным
+        $ogImageParts = explode("#", $ogImage, 2);
+        $ogImage = trim($ogImageParts[0]);
     } else {
         $ogImage = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
     }
