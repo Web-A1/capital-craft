@@ -66,7 +66,7 @@ if ($isFAQPage) {
 
     // Улучшенный title
     if (!empty($this->item->title)) {
-        $doc->setTitle($this->item->title . " - Capital Craft | Инвестиционные решения");
+        $doc->setTitle(CapitalcraftSeoHelper::buildArticleTitle($this->item->title));
     }
 
     // Description берём только из админки (без автогенерации)
