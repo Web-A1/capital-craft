@@ -53,6 +53,15 @@ if ($isFAQPage) {
 
     // SEO мета-теги
     $doc = Factory::getDocument();
+    $defaultBreadcrumbId = CapitalcraftSeoHelper::getDefaultBreadcrumbId();
+
+    $bodyText = "";
+    if (!empty($this->item->text)) {
+        $tmp = strip_tags($this->item->text);
+        $tmp = html_entity_decode($tmp, ENT_QUOTES | ENT_HTML5, "UTF-8");
+        $tmp = preg_replace("/\s+/u", " ", $tmp);
+        $bodyText = trim($tmp);
+    }
 
     // Улучшенный title
     if (!empty($this->item->title)) {
@@ -62,6 +71,14 @@ if ($isFAQPage) {
     // Description берём только из админки (без автогенерации)
     if (!empty($this->item->metadesc)) {
         $doc->setDescription($this->item->metadesc);
+    }
+
+    $currentDescription = $doc->getMetaData("description");
+    if (empty($currentDescription) && $bodyText !== "") {
+        $generatedDescription = CapitalcraftSeoHelper::buildMetaDescriptionFromText($bodyText);
+        if ($generatedDescription !== "") {
+            $doc->setDescription($generatedDescription);
+        }
     }
 
     // Canonical URL
@@ -143,14 +160,6 @@ if ($isFAQPage) {
         "@id" => $canonical,
     ];
 
-    $bodyText = "";
-    if (!empty($this->item->text)) {
-        // Упрощённая очистка для wordCount (без включения полного текста в JSON-LD на этом этапе)
-        $tmp = strip_tags($this->item->text);
-        $tmp = html_entity_decode($tmp, ENT_QUOTES | ENT_HTML5, "UTF-8");
-        $tmp = preg_replace("/\s+/u", " ", $tmp);
-        $bodyText = trim($tmp);
-    }
     $wordCount = $bodyText !== "" ? str_word_count($bodyText, 0, "А-Яа-яЁё") : 0;
     // Лимитируем articleBody, чтобы не раздувать JSON-LD (до ~10k символов)
     $articleBodyLimited = $bodyText !== "" ? mb_substr($bodyText, 0, 10000, "UTF-8") : "";
@@ -217,7 +226,7 @@ if ($isFAQPage) {
         }),
     );
 
-    $breadcrumbId = Uri::root() . "#/schema/BreadcrumbList/article-" . (int) $this->item->id;
+    $breadcrumbId = $defaultBreadcrumbId ?: Uri::root() . "#/schema/BreadcrumbList/article-" . (int) $this->item->id;
 
     if (!empty($breadcrumbItems)) {
         $breadcrumbSchema = [
