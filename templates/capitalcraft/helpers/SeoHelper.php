@@ -51,6 +51,44 @@ class CapitalcraftSeoHelper
         $doc->addHeadLink($url, "canonical", "rel");
     }
 
+    public static function buildArticleTitle(
+        string $rawTitle,
+        string $brand = "Capital Craft",
+        int $maxLength = 64,
+    ): string {
+        $title = trim($rawTitle);
+
+        if ($title === "") {
+            return $brand;
+        }
+
+        $separator = " — ";
+        $brandPart = trim($brand);
+        $baseMax = max(20, $maxLength);
+
+        if ($brandPart !== "") {
+            $candidate = $title . $separator . $brandPart;
+            if (mb_strlen($candidate, "UTF-8") <= $baseMax) {
+                return $candidate;
+            }
+
+            $brandSuffix = $separator . $brandPart;
+            $allowed = $baseMax - mb_strlen($brandSuffix, "UTF-8");
+
+            if ($allowed > 30) {
+                $trimmed = self::truncateAtWord($title, $allowed);
+                $trimmed = rtrim($trimmed, " —,;:.");
+                if ($trimmed !== "") {
+                    return $trimmed . $brandSuffix;
+                }
+            }
+        }
+
+        $trimmedAlone = self::truncateAtWord($title, $baseMax);
+
+        return $trimmedAlone !== "" ? $trimmedAlone : $title;
+    }
+
     /**
      * Получаем ID хлебных крошек, который Joomla добавляет в JSON-LD по умолчанию.
      * Нужно, чтобы наша кастомная схема ссылалась на тот же @id.
