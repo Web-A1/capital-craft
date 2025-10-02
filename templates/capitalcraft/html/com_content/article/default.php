@@ -312,7 +312,9 @@ if ($isFAQPage) {
     $organizationId = $siteRoot . "#/schema/Organization/base";
     $websiteId = $siteRoot . "#/schema/WebSite/base";
     $logoId = $siteRoot . "#/schema/ImageObject/logo";
-    $logoWebp = Uri::root() . "templates/capitalcraft/images/og/OG-image.webp";
+    $logoUrl = Uri::root() . "templates/capitalcraft/images/logo_square.svg";
+    $logoWidth = 512;
+    $logoHeight = 512;
     $webPageId = $canonical . "#webpage";
     $articleId = $canonical . "#article";
 
@@ -324,8 +326,10 @@ if ($isFAQPage) {
         "logo" => [
             "@type" => "ImageObject",
             "@id" => $logoId,
-            "url" => $logoWebp,
-            "contentUrl" => $logoWebp,
+            "url" => $logoUrl,
+            "contentUrl" => $logoUrl,
+            "width" => $logoWidth,
+            "height" => $logoHeight,
         ],
         "image" => ["@id" => $logoId],
         "sameAs" => ["https://t.me/capital_craft_official", "https://dzen.ru/capital_craft_official"],
@@ -403,6 +407,10 @@ if ($isFAQPage) {
             "name" => "Capital Craft",
             "logo" => [
                 "@id" => $logoId,
+                "url" => $logoUrl,
+                "contentUrl" => $logoUrl,
+                "width" => $logoWidth,
+                "height" => $logoHeight,
             ],
         ],
     ];
