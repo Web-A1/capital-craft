@@ -199,8 +199,6 @@ if ($isFAQPage) {
     if ($schemaLang === "*") {
         $schemaLang = "ru-RU";
     }
-    $schemaImage = $ogImage;
-
     $keywords = [];
     $tagIds = [];
     if (!empty($this->item->tags->itemTags)) {
@@ -240,11 +238,6 @@ if ($isFAQPage) {
     if (!empty($this->item->category_title)) {
         $articleSection = (string) $this->item->category_title;
     }
-
-    $mainEntity = [
-        "@type" => "WebPage",
-        "@id" => $canonical,
-    ];
 
     $wordCount = $bodyText !== "" ? str_word_count($bodyText, 0, "А-Яа-яЁё") : 0;
     // Лимитируем articleBody, чтобы не раздувать JSON-LD (до ~10k символов)
@@ -369,14 +362,21 @@ if ($isFAQPage) {
         ];
     }
 
+    $articleImageId = $articleId . "-image";
     $articleImageObject = [
         "@type" => "ImageObject",
+        "@id" => $articleImageId,
         "url" => $ogImage,
+        "contentUrl" => $ogImage,
         "caption" => $ogImageAlt,
+        "width" => $ogImageWidth && $ogImageWidth > 0 ? $ogImageWidth : null,
+        "height" => $ogImageHeight && $ogImageHeight > 0 ? $ogImageHeight : null,
     ];
 
+    $articleImageObject = array_filter($articleImageObject, static fn($value) => !in_array($value, [null, ""], true));
+
     $articleSchema = [
-        "@type" => "Article",
+        "@type" => ["BlogPosting", "Article"],
         "@id" => $articleId,
         "headline" => $this->item->title,
         "description" => $schemaDescription,
@@ -402,8 +402,7 @@ if ($isFAQPage) {
             "@id" => $organizationId,
             "name" => "Capital Craft",
             "logo" => [
-                "@type" => "ImageObject",
-                "url" => Uri::root() . "templates/capitalcraft/images/logo_black.svg",
+                "@id" => $logoId,
             ],
         ],
     ];
