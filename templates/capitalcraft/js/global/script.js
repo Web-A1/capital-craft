@@ -9,62 +9,6 @@ import { initTextTruncate } from "./text-truncate.js";
 // Делаем IMask доступным глобально
 window.IMask = IMask;
 
-const initArticleH3Indent = () => {
-  const articleBody = document.querySelector(".com-content-article__body");
-
-  if (!articleBody) {
-    return;
-  }
-
-  const blockClass = "article__h3-block";
-  const headingStopSelector = "h2, h3, h4, h5, h6";
-  const children = Array.from(articleBody.children);
-
-  children.forEach(node => {
-    if (!node.matches("h3")) {
-      return;
-    }
-
-    if (node.parentElement?.classList.contains(blockClass)) {
-      return;
-    }
-
-    const block = document.createElement("div");
-    block.classList.add(blockClass);
-
-    articleBody.insertBefore(block, node);
-    block.appendChild(node);
-
-    let sibling = block.nextSibling;
-
-    while (sibling) {
-      const nextSibling = sibling.nextSibling;
-
-      if (
-        sibling.nodeType === Node.ELEMENT_NODE &&
-        sibling.matches(headingStopSelector)
-      ) {
-        break;
-      }
-
-      block.appendChild(sibling);
-      sibling = nextSibling;
-    }
-  });
-};
-
-const runOnReady = callback => {
-  if (typeof callback !== "function") {
-    return;
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", callback, { once: true });
-  } else {
-    callback();
-  }
-};
-
 const header = document.querySelector(".site-header");
 
 const initHeaderHeightObserver = headerElement => {
@@ -159,7 +103,6 @@ initPhoneMask();
 initFormSubmit();
 initScrollTop();
 initTextTruncate();
-runOnReady(initArticleH3Indent);
 
 if (header) {
   const MOBILE_BREAKPOINT = 767;
