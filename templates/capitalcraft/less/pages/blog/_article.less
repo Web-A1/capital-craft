@@ -44,9 +44,8 @@
 
   // Article body
   .com-content-article__body {
-    @article-h3-block-padding: 1.5em;
-    @article-h3-border-width: 2px;
-    @article-h3-border-color: fade(@color-heading, 60%);
+    @article-h3-block-padding: 24px;
+    @article-h3-block-bg: @color-bg-craft;
 
     color: @color-text;
 
@@ -147,10 +146,14 @@
     }
 
     .article__h3-block {
-      position: relative;
       margin: 1.8em 0;
-      padding: 1.2em 0 1.2em @article-h3-block-padding;
-      border-left: @article-h3-border-width solid @article-h3-border-color;
+      padding: @article-h3-block-padding;
+      background: @article-h3-block-bg;
+      border-radius: @radius;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.12),
+        0 4px 16px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
 
       &:first-child {
         margin-top: 0;
@@ -167,7 +170,7 @@
 
       .media(mobile, {
         margin: 1.5em 0;
-        padding: 1em 0 1em (@article-h3-block-padding * 0.75);
+        padding: (@article-h3-block-padding * 0.85);
       });
     }
   }
