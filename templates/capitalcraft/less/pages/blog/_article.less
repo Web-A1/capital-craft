@@ -44,9 +44,6 @@
 
   // Article body
   .com-content-article__body {
-    @article-h3-block-padding: 24px;
-    @article-h3-block-bg: @color-bg-craft;
-
     color: @color-text;
 
     // Stretch text across width (justify)
@@ -127,50 +124,22 @@
     }
 
     h3 {
-      margin: 1.5em 0 0.6em 0;
+      margin: 1.25em 0 0.5em 0;
       font-weight: 400;
       color: @color-heading;
-      text-decoration: none;
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
 
       &:first-child {
         margin-top: 0;
       }
 
       .media(mobile, {
-        margin: 1.25em 0 0.5em 0;
+        margin: 1em 0 0.4em 0;
 
         &:first-child {
           margin-top: 0;
         }
-      });
-    }
-
-    .article__h3-block {
-      margin: 1.8em 0;
-      padding: @article-h3-block-padding;
-      background: @article-h3-block-bg;
-      border-radius: @radius;
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.12),
-        0 4px 16px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-
-      &:first-child {
-        margin-top: 0;
-      }
-
-      h3 {
-        margin: 0 0 0.75em 0;
-        color: @color-heading;
-      }
-
-      > :last-child {
-        margin-bottom: 0;
-      }
-
-      .media(mobile, {
-        margin: 1.5em 0;
-        padding: (@article-h3-block-padding * 0.85);
       });
     }
   }
