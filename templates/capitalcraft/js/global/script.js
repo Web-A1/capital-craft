@@ -16,27 +16,39 @@ const initArticleH3Indent = () => {
     return;
   }
 
-  const indentClass = "article__h3-indent";
+  const blockClass = "article__h3-block";
+  const headingStopSelector = "h2, h3, h4, h5, h6";
   const children = Array.from(articleBody.children);
-  let indentActive = false;
 
   children.forEach(node => {
-    if (node.matches("h3")) {
-      indentActive = true;
-      node.classList.remove(indentClass);
+    if (!node.matches("h3")) {
       return;
     }
 
-    if (node.matches("h2, h4, h5, h6")) {
-      indentActive = false;
-      node.classList.remove(indentClass);
+    if (node.parentElement?.classList.contains(blockClass)) {
       return;
     }
 
-    if (indentActive) {
-      node.classList.add(indentClass);
-    } else {
-      node.classList.remove(indentClass);
+    const block = document.createElement("div");
+    block.classList.add(blockClass);
+
+    articleBody.insertBefore(block, node);
+    block.appendChild(node);
+
+    let sibling = block.nextSibling;
+
+    while (sibling) {
+      const nextSibling = sibling.nextSibling;
+
+      if (
+        sibling.nodeType === Node.ELEMENT_NODE &&
+        sibling.matches(headingStopSelector)
+      ) {
+        break;
+      }
+
+      block.appendChild(sibling);
+      sibling = nextSibling;
     }
   });
 };
