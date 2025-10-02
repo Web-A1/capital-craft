@@ -239,6 +239,7 @@ class CapitalcraftRelatedHelper
                     "id" => (int) $row->id,
                     "title" => (string) $row->title,
                     "excerpt" => $excerpt,
+                    "answer_text" => $answerText,
                     "publish_up" => $row->publish_up,
                     "link" => self::buildFaqLink((int) $row->id, $linkAlias),
                     "tag_ids" => $itemTagIds,
