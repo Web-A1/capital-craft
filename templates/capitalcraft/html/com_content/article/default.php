@@ -218,8 +218,12 @@ if ($isFAQPage) {
     if (!empty($relatedData["faq"])) {
         foreach ($relatedData["faq"] as $faqItem) {
             $questionText = trim((string) ($faqItem["title"] ?? ""));
-            $answerRaw = trim((string) ($faqItem["excerpt"] ?? ""));
-            $answerText = trim(strip_tags($answerRaw));
+            $answerText = trim((string) ($faqItem["answer_text"] ?? ""));
+
+            if ($answerText === "") {
+                $answerRaw = trim((string) ($faqItem["excerpt"] ?? ""));
+                $answerText = trim(strip_tags($answerRaw));
+            }
 
             if ($questionText !== "" && $answerText !== "") {
                 $faqEntities[] = [
