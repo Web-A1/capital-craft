@@ -233,7 +233,6 @@
 
     a {
       color: @color-accent;
-      text-decoration: underline;
       text-underline-offset: 0.18em;
       overflow-wrap: anywhere;
       word-break: break-word;
@@ -241,6 +240,7 @@
       &:hover,
       &:focus-visible {
         color: darken(@color-accent, 8%);
+        text-decoration: underline;
       }
     }
 
