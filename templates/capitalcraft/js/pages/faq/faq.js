@@ -237,6 +237,8 @@
     let isLoading = false;
     let accordionElement = faqSection.querySelector(".faq__accordion");
     let collapseOthers = false;
+    let resizeHandlerAttached = false;
+    let fontsHandlerAttached = false;
 
     function updateAccordionMeta() {
       accordionElement = faqSection.querySelector(".faq__accordion");
@@ -273,14 +275,6 @@
       return null;
     }
 
-    function detachTransitionListener(answer) {
-      const handler = answer._faqTransitionHandler;
-      if (handler) {
-        answer.removeEventListener("transitionend", handler);
-        answer._faqTransitionHandler = null;
-      }
-    }
-
     function collapseQuestion(button) {
       const answer = getAnswerForQuestion(button);
       button.setAttribute("aria-expanded", "false");
@@ -288,10 +282,9 @@
         return;
       }
 
-      detachTransitionListener(answer);
-
-      if (answer.style.maxHeight === "none") {
-        answer.style.maxHeight = answer.scrollHeight + "px";
+      const currentHeight = answer.scrollHeight;
+      if (currentHeight > 0) {
+        answer.style.maxHeight = currentHeight + "px";
       }
 
       answer.classList.remove("open");
@@ -299,19 +292,6 @@
 
       void answer.offsetHeight;
       answer.style.maxHeight = "0px";
-
-      const handle = function (event) {
-        if (
-          event.propertyName === "max-height" &&
-          button.getAttribute("aria-expanded") === "false"
-        ) {
-          answer.style.removeProperty("max-height");
-          detachTransitionListener(answer);
-        }
-      };
-
-      answer._faqTransitionHandler = handle;
-      answer.addEventListener("transitionend", handle);
     }
 
     function expandQuestion(button) {
@@ -320,27 +300,11 @@
       if (!answer) {
         return;
       }
-
-      detachTransitionListener(answer);
-
       answer.classList.add("open");
       answer.setAttribute("aria-hidden", "false");
 
       const targetHeight = answer.scrollHeight;
       answer.style.maxHeight = targetHeight + "px";
-
-      const handle = function (event) {
-        if (
-          event.propertyName === "max-height" &&
-          button.getAttribute("aria-expanded") === "true"
-        ) {
-          answer.style.maxHeight = "none";
-          detachTransitionListener(answer);
-        }
-      };
-
-      answer._faqTransitionHandler = handle;
-      answer.addEventListener("transitionend", handle);
     }
 
     function handleQuestionClick(event) {
@@ -371,6 +335,17 @@
       }
     }
 
+    function refreshOpenHeights() {
+      questionNodes.forEach(button => {
+        if (button.getAttribute("aria-expanded") === "true") {
+          const answer = getAnswerForQuestion(button);
+          if (answer) {
+            answer.style.maxHeight = answer.scrollHeight + "px";
+          }
+        }
+      });
+    }
+
     function setupQuestions() {
       questionNodes = Array.from(faqSection.querySelectorAll(".faq__question"));
       questionNodes.forEach(question => {
@@ -382,7 +357,6 @@
     function syncAnswerAria() {
       const answers = faqSection.querySelectorAll(".faq__answer");
       answers.forEach(answer => {
-        detachTransitionListener(answer);
         const item = answer.closest(".faq__item");
         const controller = item
           ? item.querySelector(
@@ -394,9 +368,9 @@
         answer.setAttribute("aria-hidden", expanded ? "false" : "true");
         answer.classList.toggle("open", expanded);
         if (expanded) {
-          answer.style.maxHeight = "none";
+          answer.style.maxHeight = answer.scrollHeight + "px";
         } else {
-          answer.style.removeProperty("max-height");
+          answer.style.maxHeight = "0px";
         }
       });
     }
@@ -485,6 +459,24 @@
         window.requestAnimationFrame(finalizeInteractive);
       } else {
         window.setTimeout(finalizeInteractive, 0);
+      }
+
+      if (!resizeHandlerAttached) {
+        const resizeHandler = function () {
+          refreshOpenHeights();
+        };
+        window.addEventListener("resize", resizeHandler);
+        window.addEventListener("orientationchange", resizeHandler);
+        resizeHandlerAttached = true;
+      }
+
+      if (
+        !fontsHandlerAttached &&
+        document.fonts &&
+        document.fonts.addEventListener
+      ) {
+        document.fonts.addEventListener("loadingdone", refreshOpenHeights);
+        fontsHandlerAttached = true;
       }
     }
 
