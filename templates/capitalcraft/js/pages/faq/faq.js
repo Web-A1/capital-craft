@@ -235,21 +235,13 @@
     currentTag = currentTag.toLowerCase();
     let questionNodes = [];
     let isLoading = false;
+    const accordionElement = faqSection.querySelector(".faq__accordion");
+    const collapseOthers =
+      accordionElement &&
+      accordionElement.getAttribute("data-accordion-mode") === "single";
 
     function getAnswerForQuestion(button) {
       return button.nextElementSibling;
-    }
-
-    function keepMultipleOpen() {
-      if (typeof window.matchMedia === "function") {
-        return window.matchMedia("(max-width: 767px)").matches;
-      }
-
-      if (typeof window.innerWidth === "number") {
-        return window.innerWidth <= 767;
-      }
-
-      return false;
     }
 
     function collapseQuestion(button) {
@@ -258,6 +250,7 @@
       if (!answer) {
         return;
       }
+      answer.setAttribute("aria-hidden", "true");
       answer.classList.remove("open");
       answer.style.maxHeight = "0px";
       answer.addEventListener("transitionend", function handle(e) {
@@ -280,14 +273,14 @@
       void answer.offsetHeight;
       answer.classList.add("open");
       answer.style.maxHeight = answer.scrollHeight + 20 + "px";
+      answer.setAttribute("aria-hidden", "false");
     }
 
     function handleQuestionClick(event) {
       const question = event.currentTarget;
       const isExpanded = question.getAttribute("aria-expanded") === "true";
-      const allowMultiple = keepMultipleOpen();
 
-      if (!allowMultiple) {
+      if (collapseOthers) {
         questionNodes.forEach(btn => {
           if (
             btn !== question &&
@@ -319,6 +312,16 @@
       });
     }
 
+    function syncAnswerAria() {
+      const answers = faqSection.querySelectorAll(".faq__answer");
+      answers.forEach(answer => {
+        const controller = answer.previousElementSibling;
+        const expanded =
+          controller && controller.getAttribute("aria-expanded") === "true";
+        answer.setAttribute("aria-hidden", expanded ? "false" : "true");
+      });
+    }
+
     function openFromHash() {
       const match = window.location.hash.match(/faq-q-(\d+)/);
       if (!match) {
@@ -338,14 +341,16 @@
         const isExpanded = question.getAttribute("aria-expanded") === "true";
 
         if (!isExpanded) {
-          questionNodes.forEach(btn => {
-            if (
-              btn !== question &&
-              btn.getAttribute("aria-expanded") === "true"
-            ) {
-              collapseQuestion(btn);
-            }
-          });
+          if (collapseOthers) {
+            questionNodes.forEach(btn => {
+              if (
+                btn !== question &&
+                btn.getAttribute("aria-expanded") === "true"
+              ) {
+                collapseQuestion(btn);
+              }
+            });
+          }
 
           expandQuestion(question);
         }
@@ -388,6 +393,7 @@
 
     function attachInteractions() {
       setupQuestions();
+      syncAnswerAria();
       openFromHash();
     }
 
