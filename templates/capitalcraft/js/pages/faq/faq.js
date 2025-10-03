@@ -237,9 +237,6 @@
     let isLoading = false;
     let accordionElement = faqSection.querySelector(".faq__accordion");
     let collapseOthers = false;
-    let resizeHandlerAttached = false;
-    let fontsHandlerAttached = false;
-    const ANSWER_HEIGHT_BUFFER = 16;
 
     function updateAccordionMeta() {
       accordionElement = faqSection.querySelector(".faq__accordion");
@@ -276,37 +273,87 @@
       return null;
     }
 
-    function collapseQuestion(button) {
-      const answer = getAnswerForQuestion(button);
-      button.setAttribute("aria-expanded", "false");
+    function getAnswerInner(answer) {
+      return answer ? answer.querySelector(".faq__answer-inner") : null;
+    }
+
+    function cancelAnimation(answer) {
       if (!answer) {
         return;
       }
 
-      const currentHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
-      if (currentHeight > 0) {
-        answer.style.maxHeight = currentHeight + "px";
+      const handler = answer._faqTransitionHandler;
+      if (handler) {
+        answer.removeEventListener("transitionend", handler);
+        answer._faqTransitionHandler = null;
       }
-
-      answer.classList.remove("open");
-      answer.setAttribute("aria-hidden", "true");
-
-      void answer.offsetHeight;
-      answer.style.maxHeight = "0px";
     }
 
     function expandQuestion(button) {
       const answer = getAnswerForQuestion(button);
+      const inner = getAnswerInner(answer);
+      if (!answer || !inner) {
+        return;
+      }
+
       button.setAttribute("aria-expanded", "true");
+      answer.setAttribute("aria-hidden", "false");
+
+      const endHeight = inner.offsetHeight;
+
+      cancelAnimation(answer);
+
+      answer.classList.add("is-animating");
+      answer.classList.add("is-open");
+      answer.style.height = answer.offsetHeight + "px";
+      answer.offsetHeight;
+      answer.style.height = endHeight + "px";
+
+      const handle = event => {
+        if (event.propertyName !== "height") {
+          return;
+        }
+        answer.classList.remove("is-animating");
+        answer.style.height = "auto";
+        answer.removeEventListener("transitionend", handle);
+        answer._faqTransitionHandler = null;
+      };
+
+      answer._faqTransitionHandler = handle;
+      answer.addEventListener("transitionend", handle);
+    }
+
+    function collapseQuestion(button) {
+      const answer = getAnswerForQuestion(button);
       if (!answer) {
         return;
       }
-      answer.classList.add("open");
-      answer.setAttribute("aria-hidden", "false");
 
-      const targetHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
-      void answer.offsetHeight;
-      answer.style.maxHeight = targetHeight + "px";
+      button.setAttribute("aria-expanded", "false");
+      answer.setAttribute("aria-hidden", "true");
+
+      const startHeight = answer.offsetHeight;
+
+      cancelAnimation(answer);
+
+      answer.classList.add("is-animating");
+      answer.classList.remove("is-open");
+      answer.style.height = startHeight + "px";
+      answer.offsetHeight;
+      answer.style.height = "0px";
+
+      const handle = event => {
+        if (event.propertyName !== "height") {
+          return;
+        }
+        answer.classList.remove("is-animating");
+        answer.style.height = "";
+        answer.removeEventListener("transitionend", handle);
+        answer._faqTransitionHandler = null;
+      };
+
+      answer._faqTransitionHandler = handle;
+      answer.addEventListener("transitionend", handle);
     }
 
     function handleQuestionClick(event) {
@@ -337,18 +384,6 @@
       }
     }
 
-    function refreshOpenHeights() {
-      questionNodes.forEach(button => {
-        if (button.getAttribute("aria-expanded") === "true") {
-          const answer = getAnswerForQuestion(button);
-          if (answer) {
-            const targetHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
-            answer.style.maxHeight = targetHeight + "px";
-          }
-        }
-      });
-    }
-
     function setupQuestions() {
       questionNodes = Array.from(faqSection.querySelectorAll(".faq__question"));
       questionNodes.forEach(question => {
@@ -368,13 +403,14 @@
           : null;
         const expanded =
           controller && controller.getAttribute("aria-expanded") === "true";
+        cancelAnimation(answer);
+        answer.classList.remove("is-animating");
         answer.setAttribute("aria-hidden", expanded ? "false" : "true");
-        answer.classList.toggle("open", expanded);
+        answer.classList.toggle("is-open", expanded);
         if (expanded) {
-          const targetHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
-          answer.style.maxHeight = targetHeight + "px";
+          answer.style.height = "auto";
         } else {
-          answer.style.maxHeight = "0px";
+          answer.style.height = "0px";
         }
       });
     }
@@ -463,28 +499,6 @@
         window.requestAnimationFrame(finalizeInteractive);
       } else {
         window.setTimeout(finalizeInteractive, 0);
-      }
-
-      if (!resizeHandlerAttached) {
-        const resizeHandler = function () {
-          refreshOpenHeights();
-        };
-        window.addEventListener("resize", resizeHandler);
-        window.addEventListener("orientationchange", resizeHandler);
-        resizeHandlerAttached = true;
-      }
-
-      if (!fontsHandlerAttached && document.fonts) {
-        if (typeof document.fonts.addEventListener === "function") {
-          document.fonts.addEventListener("loadingdone", refreshOpenHeights);
-        }
-        if (
-          typeof document.fonts.ready === "object" &&
-          typeof document.fonts.ready.then === "function"
-        ) {
-          document.fonts.ready.then(refreshOpenHeights).catch(() => {});
-        }
-        fontsHandlerAttached = true;
       }
     }
 
