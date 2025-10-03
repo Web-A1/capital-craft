@@ -166,7 +166,13 @@ $doc->addCustomTag(
               </nav>
             <?php endif; ?>
             <div class="visually-hidden" id="faq-filter-status" role="status" aria-live="polite" aria-atomic="true"></div>
-            <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов" data-accordion-mode="multiple">
+            <div
+                class="faq__accordion"
+                role="group"
+                aria-label="Список часто задаваемых вопросов"
+                aria-multiselectable="true"
+                data-accordion-mode="multiple"
+            >
                 <?php foreach ($faqItems as $index => $item): ?>
                     <?php
                     $aliases = [];
@@ -176,27 +182,29 @@ $doc->addCustomTag(
                         }
                     }
                     $questionId = "faq-question-" . $index;
+                    $questionTextId = $questionId . "-text";
                     $answerId = "faq-answer-" . $index;
                     ?>
                     <div class="faq__item" id="faq-q-<?php echo (int) ($item["id"] ?? 0); ?>">
-                        <button class="faq__question" 
+                        <h2 class="faq__heading">
+                            <button
+                                type="button"
+                                class="faq__question"
                                 id="<?php echo $questionId; ?>"
-                                aria-expanded="false" 
+                                aria-expanded="false"
                                 aria-controls="<?php echo $answerId; ?>"
-                                aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars(
-    $item["q"],
-    ENT_QUOTES,
-    "UTF-8",
-); ?>">
-                            <span class="faq__text">
-                                <?php echo htmlspecialchars($item["q"], ENT_QUOTES, "UTF-8"); ?>
-                            </span>
-                        </button>
+                                aria-labelledby="<?php echo $questionTextId; ?>"
+                            >
+                                <span class="faq__text" id="<?php echo $questionTextId; ?>">
+                                    <?php echo htmlspecialchars($item["q"], ENT_QUOTES, "UTF-8"); ?>
+                                </span>
+                            </button>
+                        </h2>
                         <div class="faq__answer" 
                              id="<?php echo $answerId; ?>"
                              role="region" 
                              aria-labelledby="<?php echo $questionId; ?>"
-                             aria-hidden="true">
+                             aria-hidden="false">
                             <?php echo $item["answer_html"] ?? ""; ?>
                         </div>
                         <?php
@@ -220,12 +228,21 @@ $doc->addCustomTag(
             </div>
         </div>
         <figure class="faq__image">
-            <img src="/templates/capitalcraft/images/faq/faq_hand.webp" 
-                 alt="Часто задаваемые вопросы о привлечении капитала и инвестициях" 
-                 loading="lazy"
-                 width="351"
-                 height="624"
-                 decoding="async">
+            <picture>
+                <source
+                    media="(max-width: 767px)"
+                    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+                >
+                <img
+                    src="/templates/capitalcraft/images/faq/faq_hand.webp"
+                    alt="Часто задаваемые вопросы о привлечении капитала и инвестициях"
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                    width="351"
+                    height="624"
+                >
+            </picture>
         </figure>
     </div>
 </section>
