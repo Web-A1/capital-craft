@@ -205,7 +205,9 @@ $doc->addCustomTag(
                              role="region" 
                              aria-labelledby="<?php echo $questionId; ?>"
                              aria-hidden="false">
-                            <?php echo $item["answer_html"] ?? ""; ?>
+                            <div class="faq__answer-inner">
+                                <?php echo $item["answer_html"] ?? ""; ?>
+                            </div>
                         </div>
                         <?php
                         $primaryTag = $item["primary_tag"] ?? null;
