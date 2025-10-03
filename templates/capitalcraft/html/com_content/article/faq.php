@@ -156,17 +156,17 @@ $doc->addCustomTag(
                       <a class="faq-tags__link<?php echo $activeTagAlias === $alias
                           ? " is-active"
                           : ""; ?>" href="<?= htmlspecialchars(
-                              $tagHref,
-                              ENT_QUOTES,
-                              "UTF-8",
-                          ) ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
+    $tagHref,
+    ENT_QUOTES,
+    "UTF-8",
+) ?>">#<?php echo htmlspecialchars($tg->title, ENT_QUOTES, "UTF-8"); ?></a>
                     </li>
                   <?php endforeach; ?>
                 </ul>
               </nav>
             <?php endif; ?>
             <div class="visually-hidden" id="faq-filter-status" role="status" aria-live="polite" aria-atomic="true"></div>
-            <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов">
+            <div class="faq__accordion" role="region" aria-label="Список часто задаваемых вопросов" data-accordion-mode="multiple">
                 <?php foreach ($faqItems as $index => $item): ?>
                     <?php
                     $aliases = [];
@@ -175,40 +175,40 @@ $doc->addCustomTag(
                             $aliases[] = strtolower($t["alias"]);
                         }
                     }
+                    $questionId = "faq-question-" . $index;
+                    $answerId = "faq-answer-" . $index;
                     ?>
                     <div class="faq__item" id="faq-q-<?php echo (int) ($item["id"] ?? 0); ?>">
                         <button class="faq__question" 
+                                id="<?php echo $questionId; ?>"
                                 aria-expanded="false" 
-                                aria-controls="faq-answer-<?php echo $index; ?>"
+                                aria-controls="<?php echo $answerId; ?>"
                                 aria-label="Вопрос <?php echo $index + 1; ?>: <?php echo htmlspecialchars(
-                                    $item["q"],
-                                    ENT_QUOTES,
-                                    "UTF-8",
-                                ); ?>">
+    $item["q"],
+    ENT_QUOTES,
+    "UTF-8",
+); ?>">
                             <span class="faq__text">
                                 <?php echo htmlspecialchars($item["q"], ENT_QUOTES, "UTF-8"); ?>
                             </span>
                         </button>
                         <div class="faq__answer" 
-                             id="faq-answer-<?php echo $index; ?>"
+                             id="<?php echo $answerId; ?>"
                              role="region" 
-                             aria-label="Ответ на вопрос: <?php echo htmlspecialchars(
-                                 $item["q"],
-                                 ENT_QUOTES,
-                                 "UTF-8",
-                             ); ?>">
+                             aria-labelledby="<?php echo $questionId; ?>"
+                             aria-hidden="true">
                             <?php echo $item["answer_html"] ?? ""; ?>
                         </div>
                         <?php
                         $primaryTag = $item["primary_tag"] ?? null;
-                    if (empty($primaryTag) && !empty($item["tags"])) {
-                        $primaryTag = $item["tags"][0];
-                    }
-                    ?>
+                        if (empty($primaryTag) && !empty($item["tags"])) {
+                            $primaryTag = $item["tags"][0];
+                        }
+                        ?>
                         <?php if (!empty($primaryTag)): ?>
                             <?php $primaryTagLink = CapitalcraftFaqHelper::getFaqRoute([
-                            "tag" => $primaryTag["alias"],
-                        ]); ?>
+                                "tag" => $primaryTag["alias"],
+                            ]); ?>
                             <a class="faq__tag-chip" href="<?= htmlspecialchars(
                                 $primaryTagLink,
                                 ENT_QUOTES,
