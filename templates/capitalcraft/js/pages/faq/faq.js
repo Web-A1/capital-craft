@@ -235,141 +235,54 @@
     currentTag = currentTag.toLowerCase();
     let questionNodes = [];
     let isLoading = false;
-    let accordionElement = faqSection.querySelector(".faq__accordion");
-    let collapseOthers = false;
-
-    function updateAccordionMeta() {
-      accordionElement = faqSection.querySelector(".faq__accordion");
-
-      if (!accordionElement) {
-        collapseOthers = false;
-        return;
-      }
-
-      const mode = (
-        accordionElement.getAttribute("data-accordion-mode") || "multiple"
-      )
-        .toLowerCase()
-        .trim();
-      collapseOthers = mode === "single";
-      accordionElement.setAttribute(
-        "aria-multiselectable",
-        collapseOthers ? "false" : "true"
-      );
-    }
-    updateAccordionMeta();
 
     function getAnswerForQuestion(button) {
       const controlId = button.getAttribute("aria-controls");
       if (controlId) {
         return document.getElementById(controlId);
       }
-
       const item = button.closest(".faq__item");
-      if (item) {
-        return item.querySelector(".faq__answer");
-      }
-
-      return null;
-    }
-
-    function getAnswerInner(answer) {
-      return answer ? answer.querySelector(".faq__answer-inner") : null;
-    }
-
-    function cancelAnimation(answer) {
-      if (!answer) {
-        return;
-      }
-
-      const handler = answer._faqTransitionHandler;
-      if (handler) {
-        answer.removeEventListener("transitionend", handler);
-        answer._faqTransitionHandler = null;
-      }
-    }
-
-    function expandQuestion(button) {
-      const answer = getAnswerForQuestion(button);
-      const inner = getAnswerInner(answer);
-      if (!answer || !inner) {
-        return;
-      }
-
-      button.setAttribute("aria-expanded", "true");
-      answer.setAttribute("aria-hidden", "false");
-
-      const endHeight = inner.offsetHeight;
-
-      cancelAnimation(answer);
-
-      answer.classList.add("is-animating");
-      answer.classList.add("is-open");
-      answer.style.height = answer.offsetHeight + "px";
-      answer.offsetHeight;
-      answer.style.height = endHeight + "px";
-
-      const handle = event => {
-        if (event.propertyName !== "height") {
-          return;
-        }
-        answer.classList.remove("is-animating");
-        answer.style.height = "auto";
-        answer.removeEventListener("transitionend", handle);
-        answer._faqTransitionHandler = null;
-      };
-
-      answer._faqTransitionHandler = handle;
-      answer.addEventListener("transitionend", handle);
+      return item ? item.querySelector(".faq__answer") : null;
     }
 
     function collapseQuestion(button) {
       const answer = getAnswerForQuestion(button);
+      button.setAttribute("aria-expanded", "false");
       if (!answer) {
         return;
       }
-
-      button.setAttribute("aria-expanded", "false");
-      answer.setAttribute("aria-hidden", "true");
-
-      const startHeight = answer.offsetHeight;
-
-      cancelAnimation(answer);
-
-      answer.classList.add("is-animating");
-      answer.classList.remove("is-open");
-      answer.style.height = startHeight + "px";
-      answer.offsetHeight;
-      answer.style.height = "0px";
-
-      const handle = event => {
-        if (event.propertyName !== "height") {
-          return;
+      answer.classList.remove("open");
+      answer.style.maxHeight = "0px";
+      answer.addEventListener("transitionend", function handle(e) {
+        if (
+          e.propertyName === "max-height" &&
+          button.getAttribute("aria-expanded") === "false"
+        ) {
+          answer.style.removeProperty("max-height");
+          answer.removeEventListener("transitionend", handle);
         }
-        answer.classList.remove("is-animating");
-        answer.style.height = "";
-        answer.removeEventListener("transitionend", handle);
-        answer._faqTransitionHandler = null;
-      };
+      });
+    }
 
-      answer._faqTransitionHandler = handle;
-      answer.addEventListener("transitionend", handle);
+    function expandQuestion(button) {
+      const answer = getAnswerForQuestion(button);
+      button.setAttribute("aria-expanded", "true");
+      if (!answer) {
+        return;
+      }
+      void answer.offsetHeight;
+      answer.classList.add("open");
+      answer.style.maxHeight = answer.scrollHeight + 20 + "px";
     }
 
     function handleQuestionClick(event) {
       const question = event.currentTarget;
       const isExpanded = question.getAttribute("aria-expanded") === "true";
-
-      if (collapseOthers) {
-        questionNodes.forEach(btn => {
-          if (
-            btn !== question &&
-            btn.getAttribute("aria-expanded") === "true"
-          ) {
-            collapseQuestion(btn);
-          }
-        });
-      }
+      questionNodes.forEach(btn => {
+        if (btn !== question && btn.getAttribute("aria-expanded") === "true") {
+          collapseQuestion(btn);
+        }
+      });
       if (isExpanded) {
         collapseQuestion(question);
       } else {
@@ -392,29 +305,6 @@
       });
     }
 
-    function syncAnswerAria() {
-      const answers = faqSection.querySelectorAll(".faq__answer");
-      answers.forEach(answer => {
-        const item = answer.closest(".faq__item");
-        const controller = item
-          ? item.querySelector(
-              '.faq__question[aria-controls="' + answer.id + '"]'
-            )
-          : null;
-        const expanded =
-          controller && controller.getAttribute("aria-expanded") === "true";
-        cancelAnimation(answer);
-        answer.classList.remove("is-animating");
-        answer.setAttribute("aria-hidden", expanded ? "false" : "true");
-        answer.classList.toggle("is-open", expanded);
-        if (expanded) {
-          answer.style.height = "auto";
-        } else {
-          answer.style.height = "0px";
-        }
-      });
-    }
-
     function openFromHash() {
       const match = window.location.hash.match(/faq-q-(\d+)/);
       if (!match) {
@@ -434,16 +324,14 @@
         const isExpanded = question.getAttribute("aria-expanded") === "true";
 
         if (!isExpanded) {
-          if (collapseOthers) {
-            questionNodes.forEach(btn => {
-              if (
-                btn !== question &&
-                btn.getAttribute("aria-expanded") === "true"
-              ) {
-                collapseQuestion(btn);
-              }
-            });
-          }
+          questionNodes.forEach(btn => {
+            if (
+              btn !== question &&
+              btn.getAttribute("aria-expanded") === "true"
+            ) {
+              collapseQuestion(btn);
+            }
+          });
 
           expandQuestion(question);
         }
@@ -485,21 +373,8 @@
     }
 
     function attachInteractions() {
-      faqSection.classList.add("faq--interactive", "faq--interactive-initial");
-      updateAccordionMeta();
       setupQuestions();
-      syncAnswerAria();
       openFromHash();
-
-      const finalizeInteractive = function () {
-        faqSection.classList.remove("faq--interactive-initial");
-      };
-
-      if (typeof window.requestAnimationFrame === "function") {
-        window.requestAnimationFrame(finalizeInteractive);
-      } else {
-        window.setTimeout(finalizeInteractive, 0);
-      }
     }
 
     attachInteractions();
