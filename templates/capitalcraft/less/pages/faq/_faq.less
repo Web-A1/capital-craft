@@ -265,24 +265,31 @@
     max-height: 0;
     overflow: hidden;
     padding: 0 20px 0 30px;
-    opacity: 0;
-    will-change: max-height, padding-top, padding-bottom, opacity;
+    margin-top: 0;
+    will-change: max-height, padding-top, padding-bottom, margin-top;
     transition:
-      max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-      padding-top 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-      padding-bottom 0.32s cubic-bezier(0.4, 0, 0.2, 1),
-      opacity 0.2s ease-in;
+      max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+      padding-top 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+      padding-bottom 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+      margin-top 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   // Мягкий зазор сверху при раскрытии (как было, когда "работало идеально")
   .faq--interactive &__answer.open {
     padding: 24px 20px 20px 30px;
-    opacity: 1;
     overflow: visible;
+    margin-top: 12px;
   }
 
   &.faq--interactive-initial &__answer {
     transition: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq--interactive &__answer,
+    .faq--interactive &__answer.open {
+      transition: none !important;
+    }
   }
 
   // Для текущей разметки: при раскрытии добавляется класс .open — увеличиваем отступ сверху
