@@ -278,50 +278,10 @@
     function handleQuestionClick(event) {
       const question = event.currentTarget;
       const isExpanded = question.getAttribute("aria-expanded") === "true";
-
       if (isExpanded) {
         collapseQuestion(question);
-        return;
-      }
-
-      let scrollCompensation = 0;
-
-      questionNodes.forEach(btn => {
-        if (btn === question || btn.getAttribute("aria-expanded") !== "true") {
-          return;
-        }
-
-        const answerNode = getAnswerForQuestion(btn);
-        const isBefore =
-          btn.compareDocumentPosition(question) &
-          Node.DOCUMENT_POSITION_FOLLOWING;
-
-        if (
-          isBefore &&
-          answerNode &&
-          typeof answerNode.offsetHeight === "number"
-        ) {
-          scrollCompensation += answerNode.offsetHeight;
-        }
-
-        collapseQuestion(btn);
-      });
-
-      expandQuestion(question);
-
-      if (scrollCompensation > 0) {
-        const scheduleFrame =
-          typeof window.requestAnimationFrame === "function"
-            ? window.requestAnimationFrame.bind(window)
-            : callback => window.setTimeout(callback, 0);
-
-        scheduleFrame(function () {
-          if (typeof window.scrollBy === "function") {
-            window.scrollBy(0, scrollCompensation);
-          } else {
-            window.scrollTo(0, window.pageYOffset + scrollCompensation);
-          }
-        });
+      } else {
+        expandQuestion(question);
       }
     }
 
