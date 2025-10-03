@@ -235,13 +235,42 @@
     currentTag = currentTag.toLowerCase();
     let questionNodes = [];
     let isLoading = false;
-    const accordionElement = faqSection.querySelector(".faq__accordion");
-    const collapseOthers =
-      accordionElement &&
-      accordionElement.getAttribute("data-accordion-mode") === "single";
+    let accordionElement = faqSection.querySelector(".faq__accordion");
+    let collapseOthers = false;
+
+    function updateAccordionMeta() {
+      accordionElement = faqSection.querySelector(".faq__accordion");
+
+      if (!accordionElement) {
+        collapseOthers = false;
+        return;
+      }
+
+      const mode = (
+        accordionElement.getAttribute("data-accordion-mode") || "multiple"
+      )
+        .toLowerCase()
+        .trim();
+      collapseOthers = mode === "single";
+      accordionElement.setAttribute(
+        "aria-multiselectable",
+        collapseOthers ? "false" : "true"
+      );
+    }
+    updateAccordionMeta();
 
     function getAnswerForQuestion(button) {
-      return button.nextElementSibling;
+      const controlId = button.getAttribute("aria-controls");
+      if (controlId) {
+        return document.getElementById(controlId);
+      }
+
+      const item = button.closest(".faq__item");
+      if (item) {
+        return item.querySelector(".faq__answer");
+      }
+
+      return null;
     }
 
     function collapseQuestion(button) {
@@ -315,7 +344,12 @@
     function syncAnswerAria() {
       const answers = faqSection.querySelectorAll(".faq__answer");
       answers.forEach(answer => {
-        const controller = answer.previousElementSibling;
+        const item = answer.closest(".faq__item");
+        const controller = item
+          ? item.querySelector(
+              '.faq__question[aria-controls="' + answer.id + '"]'
+            )
+          : null;
         const expanded =
           controller && controller.getAttribute("aria-expanded") === "true";
         answer.setAttribute("aria-hidden", expanded ? "false" : "true");
@@ -392,6 +426,8 @@
     }
 
     function attachInteractions() {
+      faqSection.classList.add("faq--interactive");
+      updateAccordionMeta();
       setupQuestions();
       syncAnswerAria();
       openFromHash();
