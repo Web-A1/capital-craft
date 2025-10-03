@@ -110,6 +110,12 @@
     });
   }
 
+  &__heading {
+    margin: 0;
+    grid-column: 1 / 2;
+    grid-row: 1;
+  }
+
   &__question {
     background: none;
     border: none;
@@ -150,6 +156,11 @@
       color: @color-accent;
     }
 
+    &:focus-visible {
+      outline: 2px solid fade(@color-accent, 60%);
+      outline-offset: 3px;
+    }
+
     &[aria-expanded="true"] {
       color: @color-accent; // акцентный цвет для открытого вопроса
     }
@@ -177,21 +188,16 @@
   // Раскрытие управляется штатным faq.js — padding задаём соседним селектором
 
   &__answer {
-    max-height: 0;
-    overflow: hidden;
-    transition:
-      max-height 0.3s,
-      opacity 0.3s,
-      padding-top 0.3s,
-      padding-bottom 0.3s;
     font-family: @font-body;
     font-size: @font-size-text;
     font-weight: 400;
-    padding: 0 20px 0 30px;
+    padding: 24px 20px 20px 30px;
     color: @color-text;
     line-height: 160%;
     grid-column: 1 / -1;
     grid-row: 2;
+    max-height: none;
+    overflow: visible;
 
     p {
       margin: 0;
@@ -255,14 +261,19 @@
     }
   }
 
-  // В новой разметке ответ не является прямым соседом кнопки,
-  // за padding отвечает JS (оставляем правило для совместимости, если структура без row)
-  &__question[aria-expanded="true"] + .faq__answer {
-    padding: 15px 20px 20px 30px;
+  .faq--interactive &__answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 20px 0 30px;
+    transition:
+      max-height 0.3s,
+      opacity 0.3s,
+      padding-top 0.3s,
+      padding-bottom 0.3s;
   }
 
   // Мягкий зазор сверху при раскрытии (как было, когда "работало идеально")
-  &__answer.open {
+  .faq--interactive &__answer.open {
     padding: 24px 20px 20px 30px;
   }
 
