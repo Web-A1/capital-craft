@@ -239,6 +239,7 @@
     let collapseOthers = false;
     let resizeHandlerAttached = false;
     let fontsHandlerAttached = false;
+    const ANSWER_HEIGHT_BUFFER = 16;
 
     function updateAccordionMeta() {
       accordionElement = faqSection.querySelector(".faq__accordion");
@@ -282,7 +283,7 @@
         return;
       }
 
-      const currentHeight = answer.scrollHeight;
+      const currentHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
       if (currentHeight > 0) {
         answer.style.maxHeight = currentHeight + "px";
       }
@@ -303,7 +304,8 @@
       answer.classList.add("open");
       answer.setAttribute("aria-hidden", "false");
 
-      const targetHeight = answer.scrollHeight;
+      const targetHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
+      void answer.offsetHeight;
       answer.style.maxHeight = targetHeight + "px";
     }
 
@@ -340,7 +342,8 @@
         if (button.getAttribute("aria-expanded") === "true") {
           const answer = getAnswerForQuestion(button);
           if (answer) {
-            answer.style.maxHeight = answer.scrollHeight + "px";
+            const targetHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
+            answer.style.maxHeight = targetHeight + "px";
           }
         }
       });
@@ -368,7 +371,8 @@
         answer.setAttribute("aria-hidden", expanded ? "false" : "true");
         answer.classList.toggle("open", expanded);
         if (expanded) {
-          answer.style.maxHeight = answer.scrollHeight + "px";
+          const targetHeight = answer.scrollHeight + ANSWER_HEIGHT_BUFFER;
+          answer.style.maxHeight = targetHeight + "px";
         } else {
           answer.style.maxHeight = "0px";
         }
@@ -470,12 +474,16 @@
         resizeHandlerAttached = true;
       }
 
-      if (
-        !fontsHandlerAttached &&
-        document.fonts &&
-        document.fonts.addEventListener
-      ) {
-        document.fonts.addEventListener("loadingdone", refreshOpenHeights);
+      if (!fontsHandlerAttached && document.fonts) {
+        if (typeof document.fonts.addEventListener === "function") {
+          document.fonts.addEventListener("loadingdone", refreshOpenHeights);
+        }
+        if (
+          typeof document.fonts.ready === "object" &&
+          typeof document.fonts.ready.then === "function"
+        ) {
+          document.fonts.ready.then(refreshOpenHeights).catch(() => {});
+        }
         fontsHandlerAttached = true;
       }
     }
