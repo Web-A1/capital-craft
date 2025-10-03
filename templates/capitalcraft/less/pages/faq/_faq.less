@@ -188,16 +188,24 @@
   // Раскрытие управляется штатным faq.js — padding задаём соседним селектором
 
   &__answer {
-    font-family: @font-body;
-    font-size: @font-size-text;
-    font-weight: 400;
-    padding: 24px 20px 20px 30px;
-    color: @color-text;
-    line-height: 160%;
     grid-column: 1 / -1;
     grid-row: 2;
     max-height: none;
     overflow: visible;
+    position: relative;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  &__answer-inner {
+    padding: 24px 20px 20px 30px;
+    font-family: @font-body;
+    font-size: @font-size-text;
+    font-weight: 400;
+    color: @color-text;
+    line-height: 160%;
+    display: block;
+    box-sizing: border-box;
 
     p {
       margin: 0;
@@ -262,21 +270,18 @@
   }
 
   .faq--interactive &__answer {
-    max-height: 0;
+    height: 0;
     overflow: hidden;
-    padding: 0 20px 0 30px;
+    padding: 0;
     margin-top: 0;
-    will-change: max-height, padding-top, padding-bottom, margin-top;
+    will-change: height, margin-top;
     transition:
-      max-height 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-      padding-top 0.28s cubic-bezier(0.4, 0, 0.2, 1),
-      padding-bottom 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+      height 0.28s cubic-bezier(0.4, 0, 0.2, 1),
       margin-top 0.28s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   // Мягкий зазор сверху при раскрытии (как было, когда "работало идеально")
-  .faq--interactive &__answer.open {
-    padding: 24px 20px 20px 30px;
+  .faq--interactive &__answer.is-open {
     overflow: visible;
     margin-top: 12px;
   }
@@ -287,13 +292,13 @@
 
   @media (prefers-reduced-motion: reduce) {
     .faq--interactive &__answer,
-    .faq--interactive &__answer.open {
+    .faq--interactive &__answer.is-open {
       transition: none !important;
     }
   }
 
-  // Для текущей разметки: при раскрытии добавляется класс .open — увеличиваем отступ сверху
-  // без класса .open — управляем только через max-height из JS
+  // Для текущей разметки: при раскрытии добавляется класс .is-open — увеличиваем отступ сверху
+  // без класса .is-open управляем показом через высоту из JS
 
   &__image {
     flex: 0 0 25%;
