@@ -240,6 +240,18 @@
       return button.nextElementSibling;
     }
 
+    function keepMultipleOpen() {
+      if (typeof window.matchMedia === "function") {
+        return window.matchMedia("(max-width: 767px)").matches;
+      }
+
+      if (typeof window.innerWidth === "number") {
+        return window.innerWidth <= 767;
+      }
+
+      return false;
+    }
+
     function collapseQuestion(button) {
       const answer = getAnswerForQuestion(button);
       button.setAttribute("aria-expanded", "false");
@@ -273,11 +285,18 @@
     function handleQuestionClick(event) {
       const question = event.currentTarget;
       const isExpanded = question.getAttribute("aria-expanded") === "true";
-      questionNodes.forEach(btn => {
-        if (btn !== question && btn.getAttribute("aria-expanded") === "true") {
-          collapseQuestion(btn);
-        }
-      });
+      const allowMultiple = keepMultipleOpen();
+
+      if (!allowMultiple) {
+        questionNodes.forEach(btn => {
+          if (
+            btn !== question &&
+            btn.getAttribute("aria-expanded") === "true"
+          ) {
+            collapseQuestion(btn);
+          }
+        });
+      }
       if (isExpanded) {
         collapseQuestion(question);
       } else {
@@ -320,7 +339,10 @@
 
         if (!isExpanded) {
           questionNodes.forEach(btn => {
-            if (btn !== question && btn.getAttribute("aria-expanded") === "true") {
+            if (
+              btn !== question &&
+              btn.getAttribute("aria-expanded") === "true"
+            ) {
               collapseQuestion(btn);
             }
           });
