@@ -265,16 +265,23 @@
     max-height: 0;
     overflow: hidden;
     padding: 0 20px 0 30px;
+    opacity: 0;
+    will-change: max-height, padding-top, padding-bottom, opacity;
     transition:
       max-height 0.3s,
-      opacity 0.3s,
       padding-top 0.3s,
-      padding-bottom 0.3s;
+      padding-bottom 0.3s,
+      opacity 0.2s ease-in;
   }
 
   // Мягкий зазор сверху при раскрытии (как было, когда "работало идеально")
   .faq--interactive &__answer.open {
     padding: 24px 20px 20px 30px;
+    opacity: 1;
+  }
+
+  &.faq--interactive-initial &__answer {
+    transition: none !important;
   }
 
   // Для текущей разметки: при раскрытии добавляется класс .open — увеличиваем отступ сверху
