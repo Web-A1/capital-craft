@@ -16,9 +16,10 @@
   const origin = window.location.origin;
   const statusEl = scope.querySelector("#blog-filter-status");
   const header = document.querySelector(".site-header");
-  const supportsSmoothScroll =
-    !!document.documentElement &&
-    "scrollBehavior" in document.documentElement.style;
+  const scheduleFrame =
+    typeof window.requestAnimationFrame === "function"
+      ? window.requestAnimationFrame.bind(window)
+      : callback => window.setTimeout(callback, 0);
   const metaSelectors = [
     'meta[name="description"]',
     'meta[property="og:url"]',
@@ -49,32 +50,15 @@
   }
 
   function scrollBlogToTop() {
-    const target = scope.querySelector(".blog__header") || scope;
-    if (!target) {
-      return;
-    }
-
     ensureHeaderPinned();
 
-    const rect = target.getBoundingClientRect();
-    const headerHeight =
-      header && typeof header.offsetHeight === "number"
-        ? header.offsetHeight
-        : 0;
-    const top = Math.max(window.pageYOffset + rect.top - headerHeight, 0);
-
-    const scrollOptions = { top: top };
-    if (supportsSmoothScroll) {
-      scrollOptions.behavior = "smooth";
-    }
-
     try {
-      window.scrollTo(scrollOptions);
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     } catch (err) {
-      window.scrollTo(0, top);
+      window.scrollTo(0, 0);
     }
 
-    window.setTimeout(ensureHeaderPinned, 200);
+    scheduleFrame(ensureHeaderPinned);
   }
 
   function setStatus(message) {
@@ -338,6 +322,8 @@
     const finalUrl = prepareUrl(url, {
       preserveLimitstart: !!(options && options.preserveLimitstart)
     });
+
+    scrollBlogToTop();
 
     if (!options || !options.force) {
       const served = loadFromCache(finalUrl, options);
