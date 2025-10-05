@@ -15,6 +15,10 @@
   const cache = new Map();
   const origin = window.location.origin;
   const statusEl = scope.querySelector("#blog-filter-status");
+  const header = document.querySelector(".site-header");
+  const supportsSmoothScroll =
+    !!document.documentElement &&
+    "scrollBehavior" in document.documentElement.style;
   const metaSelectors = [
     'meta[name="description"]',
     'meta[property="og:url"]',
@@ -27,6 +31,51 @@
   let currentController = null;
   let isLoading = false;
   let prefetchQueue = new Set();
+
+  function ensureHeaderPinned() {
+    if (!header) {
+      return;
+    }
+
+    header.classList.remove("unpinned");
+    header.classList.add("pinned");
+
+    if (
+      window.headerControl &&
+      typeof window.headerControl.pin === "function"
+    ) {
+      window.headerControl.pin({ scrollY: window.pageYOffset });
+    }
+  }
+
+  function scrollBlogToTop() {
+    const target = scope.querySelector(".blog__header") || scope;
+    if (!target) {
+      return;
+    }
+
+    ensureHeaderPinned();
+
+    const rect = target.getBoundingClientRect();
+    const headerHeight =
+      header && typeof header.offsetHeight === "number"
+        ? header.offsetHeight
+        : 0;
+    const top = Math.max(window.pageYOffset + rect.top - headerHeight, 0);
+
+    const scrollOptions = { top: top };
+    if (supportsSmoothScroll) {
+      scrollOptions.behavior = "smooth";
+    }
+
+    try {
+      window.scrollTo(scrollOptions);
+    } catch (err) {
+      window.scrollTo(0, top);
+    }
+
+    window.setTimeout(ensureHeaderPinned, 200);
+  }
 
   function setStatus(message) {
     if (statusEl) {
@@ -166,6 +215,7 @@
     ensurePagination(entry);
     syncHead(entry);
     updateStatus(entry);
+    scrollBlogToTop();
   }
 
   function extractContent(doc, url) {
