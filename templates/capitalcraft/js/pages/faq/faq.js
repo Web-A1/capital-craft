@@ -49,6 +49,13 @@
     }
 
     const header = document.querySelector(".site-header");
+    const supportsSmoothScroll =
+      !!document.documentElement &&
+      "scrollBehavior" in document.documentElement.style;
+    const scheduleFrame =
+      typeof window.requestAnimationFrame === "function"
+        ? window.requestAnimationFrame.bind(window)
+        : callback => window.setTimeout(callback, 0);
 
     function ensureHeaderPinned() {
       if (!header) {
@@ -139,6 +146,56 @@
           releaseControl(controlInstance);
         }
       };
+    }
+
+    function scrollFaqToTop(options) {
+      if (!faqSection) {
+        return;
+      }
+
+      const releaseHeaderLock = createHeaderInteractionLock({
+        releaseDelay: 180
+      });
+      let autoReleaseId = window.setTimeout(releaseHeaderLock, 1200);
+
+      scheduleFrame(function () {
+        ensureHeaderPinned();
+
+        const rect = faqSection.getBoundingClientRect();
+        const headerHeight =
+          header && typeof header.offsetHeight === "number"
+            ? header.offsetHeight
+            : 0;
+        const targetTop = Math.max(
+          window.pageYOffset + rect.top - headerHeight,
+          0
+        );
+
+        const behavior =
+          options && options.behavior ? options.behavior : "smooth";
+        const scrollOptions = { top: targetTop };
+
+        if (supportsSmoothScroll && behavior !== "auto") {
+          scrollOptions.behavior = behavior;
+        }
+
+        try {
+          window.scrollTo(scrollOptions);
+        } catch (err) {
+          window.scrollTo(0, targetTop);
+        }
+
+        ensureHeaderPinned();
+
+        scheduleFrame(function () {
+          ensureHeaderPinned();
+          if (autoReleaseId !== null) {
+            window.clearTimeout(autoReleaseId);
+            autoReleaseId = null;
+          }
+          releaseHeaderLock();
+        });
+      });
     }
 
     const parser = new DOMParser();
@@ -334,11 +391,6 @@
 
       ensureHeaderPinned();
 
-      const scheduleFrame =
-        typeof window.requestAnimationFrame === "function"
-          ? window.requestAnimationFrame.bind(window)
-          : callback => window.setTimeout(callback, 0);
-
       autoReleaseId = window.setTimeout(releaseHeaderLock, 1200);
 
       scheduleFrame(function () {
@@ -392,6 +444,14 @@
       const opts = options || {};
       const normalized = (alias || "").toLowerCase();
       if (!opts.force && normalized === currentTag) {
+        const hasFaqHash =
+          typeof window.location.hash === "string" &&
+          /#faq-q-/i.test(window.location.hash);
+        if (hasFaqHash) {
+          openFromHash();
+        } else {
+          scrollFaqToTop({ behavior: "smooth" });
+        }
         return;
       }
       if (isLoading) {
@@ -422,6 +482,12 @@
           }
           syncHead(doc);
           attachInteractions();
+          const hasFaqHash =
+            typeof window.location.hash === "string" &&
+            /#faq-q-/i.test(window.location.hash);
+          if (!hasFaqHash) {
+            scrollFaqToTop({ behavior: "smooth" });
+          }
           announceUpdate();
         })
         .catch(() => {
