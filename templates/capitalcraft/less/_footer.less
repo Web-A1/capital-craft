@@ -129,8 +129,9 @@
 
     .media-up(@bp-tablet-min, {
       position: relative;
-      display: grid;
-      grid-template-columns: minmax(100px, auto) minmax(220px, 1fr) minmax(180px, auto);
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
       gap: 40px;
       width: 100%;
       max-width: 743px;
@@ -171,10 +172,9 @@
     width: 100%;
     flex-shrink: 0;
     order: 3;
-    grid-area: navigation;
 
     .media-up(@bp-tablet-min, {
-      order: initial;
+      order: 0;
       width: 100px;
     });
 
@@ -243,10 +243,9 @@
 
     width: 100%;
     flex-shrink: 0;
-    grid-area: contacts;
 
     .media-up(@bp-tablet-min, {
-      order: initial;
+      order: 1;
       --footer-contacts-anchor-gap: 0px;
       --footer-contacts-anchor-buffer: 0px;
       scroll-margin-top: var(--header-height, 76px);
@@ -285,10 +284,9 @@
   // Messengers
   &-messengers {
     width: 100%;
-    grid-area: messengers;
 
     .media-up(@bp-tablet-min, {
-      order: initial;
+      order: 2;
       width: auto;
     });
 
