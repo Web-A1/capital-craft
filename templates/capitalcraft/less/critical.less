@@ -121,50 +121,6 @@ a {
   }
 }
 
-/*
-  Desktop experimental frame (02/05/2025):
-  Uncomment + wrap in @media (min-width: 768px) to restore.
-
-  .page-wrapper {
-    position: relative;
-    background-color: transparent;
-    z-index: 0;
-    margin: 20px auto;
-
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 1300px;
-      transform: translateX(-50%);
-      background: @color-bg-craft;
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.12),
-        0 4px 16px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.6);
-      border-radius: @radius;
-      z-index: -1;
-    }
-  }
-
-  .frame {
-    border-left: none;
-    border-right: none;
-  }
-
-  .frame--header {
-    border-top: none;
-    margin-top: 0;
-  }
-
-  .frame--footer {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
-*/
-
 section,
 .frame:not(.site-header) {
   position: relative;
@@ -174,31 +130,20 @@ section,
   max-width: 1300px;
   width: 100%;
   margin: 0 auto;
-  border-left: 1px solid @color-text;
-  border-right: 1px solid @color-text;
-
-  .media(mobile, {
-    border-left: none;
-    border-right: none;
-  });
 }
 
 .frame--header {
-  border-top: 1px solid @color-text;
   margin-top: 20px;
 
   .media(mobile, {
-    border-top: none;
     margin-top: 0;
   });
 }
 
 .frame--footer {
-  border-bottom: 1px solid @color-text;
   margin-bottom: 30px;
 
   .media(mobile, {
-    border-bottom: none;
     margin-bottom: 0;
   });
 }
