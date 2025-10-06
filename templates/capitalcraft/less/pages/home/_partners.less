@@ -5,45 +5,50 @@
   position: relative;
   width: 100%;
 
-  .media(desktop, {
-    padding: @section-padding 0;
+  .media-up(@bp-tablet-min, {
+    padding: @section-padding-desktop 0;
   });
 
   &__inner {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 32px;
+    padding: 0 @mobile-side-padding;
 
-    .media(mobile, {
-      flex-direction: column;
-      padding: 0 @mobile-side-padding;
+    .media-up(@bp-tablet-min, {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      padding: 0;
     });
   }
 
   &__title {
     max-width: 260px;
-    padding-right: 40px;
-    border-right: 1px solid @section-divider-color;
+    text-align: center;
+    border: none;
+    padding: 0;
 
-    .media(mobile, {
-      padding: 0;
-      border: none;
-      margin-bottom: 40px;
-      max-width: unset;
-      text-align: center;
+    .media-up(@bp-tablet-min, {
+      text-align: left;
+      padding-right: 40px;
+      border-right: 1px solid @section-divider-color;
     });
 
     &-text {
       color: @color-heading;
       font-family: @font-body;
-      font-size: @font-size-text;
+      font-size: @font-size-sub;
       font-weight: 500;
-      line-height: 160%;
+      line-height: 140%;
       text-transform: uppercase;
 
-      .media(mobile, {
-        font-size: @font-size-sub;
-        line-height: 140%;
+      .media-up(@bp-tablet-min, {
+        font-size: @font-size-text;
+        line-height: 160%;
       });
     }
   }
@@ -54,7 +59,7 @@
     max-width: 900px;
     flex: 1;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       max-width: 100%;
     });
   }
@@ -73,7 +78,7 @@
         display: none;
       }
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
@@ -94,7 +99,7 @@
       animation: partners-scroll 15s linear infinite;
       animation-delay: 5s;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         animation: none;
         transform: none;
       });
@@ -111,9 +116,9 @@
       align-items: center;
       padding: 0px 40px;
 
-      .media(mobile, {
-        flex: 0 0 100%;
-        scroll-snap-align: start;
+      .media-down(@bp-mobile-max, {
+        flex: 0 0 80%;
+        scroll-snap-align: center;
         padding: 0 20px;
       });
 
@@ -121,8 +126,8 @@
         max-height: 45px;
         object-fit: contain;
 
-        .media(mobile, {
-          max-width: 220px;
+        .media-down(@bp-mobile-max, {
+          max-width: 180px;
         });
       }
     }
