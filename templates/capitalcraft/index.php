@@ -40,41 +40,28 @@ $isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tag
 $document = Factory::getDocument();
 $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css");
 
-$bodyClasses = [];
-
 if ($isHome) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/home.css");
-    $bodyClasses[] = "page-home";
+    $document->addBodyClass("page-home");
 }
 
 if ($isFaq) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/faq.css");
-    $bodyClasses[] = "page-faq";
+    $document->addBodyClass("page-faq");
 }
 
 if ($isLegal) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/legal.css");
-    $bodyClasses[] = "page-legal";
+    $document->addBodyClass("page-legal");
 }
 
 if ($isBlog) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/blog.css");
-    $bodyClasses[] = "page-blog";
+    $document->addBodyClass("page-blog");
 }
 
 if ($isArticle) {
-    $bodyClasses[] = "page-article";
-}
-
-$bodyClassAttr = "";
-if (!empty($bodyClasses)) {
-    if (method_exists($document, "addBodyClass")) {
-        foreach ($bodyClasses as $class) {
-            $document->addBodyClass($class);
-        }
-    } else {
-        $bodyClassAttr = ' class="' . implode(" ", $bodyClasses) . '"';
-    }
+    $document->addBodyClass("page-article");
 }
 
 $canonicalParams = [];
@@ -332,7 +319,7 @@ if ($addCanonical) {
   <!-- /Yandex.Metrika counter -->
 </head>
 
-<body<?= $bodyClassAttr ?>>
+<body>
   <!-- Yandex.Metrika noscript -->
   <noscript><div><img src="https://mc.yandex.ru/watch/104139634" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika noscript -->
