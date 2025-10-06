@@ -24,18 +24,30 @@
 
 // Размеры
 @container-width: 1170px;
-@gap: 30px;
+@gap-desktop: 30px;
+@gap-mobile: 20px;
+@gap: @gap-desktop; // временный алиас до полного перехода на новые токены
 @padding-button: 10px 20px;
-@section-padding: 60px;
+@section-padding-desktop: 60px;
+@section-padding-mobile: @divider-space-mobile;
+@section-padding: @section-padding-desktop; // временный алиас для совместимости
 @radius: 6px;
 @subtitle-title-gap: 5px;
 @title-desc-margin: 30px;
 
-//Адаптация для устройств
+// Адаптация для устройств (mobile-first)
 @mobile-side-padding: 20px;
-@screen-mobile: ~"only screen and (max-width: 767px)";
-@screen-tablet: ~"only screen and (min-width: 768px) and (max-width: 1023px)";
-@screen-desktop: ~"only screen and (min-width: 768px)";
+@bp-tablet-min: 768px;
+@bp-desktop-min: 1024px;
+@bp-wide-min: 1280px;
+@bp-mobile-max: (@bp-tablet-min - 1);
+@bp-tablet-max: (@bp-desktop-min - 1);
+
+@screen-mobile: ~"only screen and (max-width: @{bp-mobile-max})";
+@screen-tablet: ~"only screen and (min-width: @{bp-tablet-min}) and (max-width: @{bp-tablet-max})";
+@screen-desktop: ~"only screen and (min-width: @{bp-tablet-min})";
+@screen-desktop-lg: ~"only screen and (min-width: @{bp-desktop-min})";
+@screen-desktop-xl: ~"only screen and (min-width: @{bp-wide-min})";
 
 .media(@breakpoint, @rules) when (@breakpoint = mobile) {
   @media @screen-mobile {
@@ -51,6 +63,18 @@
 
 .media(@breakpoint, @rules) when (@breakpoint = desktop) {
   @media @screen-desktop {
+    @rules();
+  }
+}
+
+.media-up(@min-width, @rules) {
+  @media only screen and (min-width: @min-width) {
+    @rules();
+  }
+}
+
+.media-down(@max-width, @rules) {
+  @media only screen and (max-width: @max-width) {
     @rules();
   }
 }
