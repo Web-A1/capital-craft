@@ -42,18 +42,26 @@ $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css"
 
 if ($isHome) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/home.css");
+    $document->addBodyClass("page-home");
 }
 
 if ($isFaq) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/faq.css");
+    $document->addBodyClass("page-faq");
 }
 
 if ($isLegal) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/legal.css");
+    $document->addBodyClass("page-legal");
 }
 
 if ($isBlog) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/blog.css");
+    $document->addBodyClass("page-blog");
+}
+
+if ($isArticle) {
+    $document->addBodyClass("page-article");
 }
 
 $canonicalParams = [];
