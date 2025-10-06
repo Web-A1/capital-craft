@@ -1,16 +1,14 @@
 // out: false
 
 .products {
-  padding: @section-padding 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: @section-padding;
-  
-  // mobile overrides for the root block
-  .media(mobile, {
-    // Rely on global .section-with-divider mobile spacing
-    padding: 0;
-    gap: 30px;
+  gap: 30px;
+
+  .media(desktop, {
+    padding: @section-padding 0;
+    gap: @section-padding;
   });
 
   &__container {
@@ -18,21 +16,21 @@
 
   &__wrapper {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch;
-    gap: @gap * 2;
+    flex-direction: column;
+    gap: 0;
     position: relative;
-    min-height: 560px; // Добавлено для выравнивания высоты блоков
-    
-    .media(mobile, {
-      flex-direction: column;
-      gap: 0;
-      min-height: auto; // Сброс для мобильных
+    min-height: auto;
+
+    .media(desktop, {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: @gap * 2;
+      min-height: 560px; // выравнивание высоты блоков
     });
 
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       bottom: 0;
@@ -40,25 +38,25 @@
       width: 1px;
       background: @section-divider-color;
       transform: translateX(-50%);
+      display: none;
 
-      .media(mobile, {
-        display: none;
+      .media(desktop, {
+        display: block;
       });
     }
   }
 
   &__left {
-    max-width: 585px;
+    max-width: none;
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    justify-content: space-between; // Добавлено для равномерного распределения
+    gap: 30px;
+    justify-content: flex-start;
 
-    .media(mobile, {
-      max-width: none;
-      gap: 30px;
-      height: auto; // Сброс для мобильных
-      justify-content: flex-start; // Сброс для мобильных
+    .media(desktop, {
+      max-width: 585px;
+      gap: 40px;
+      justify-content: space-between; // равномерное распределение
     });
   }
 
@@ -84,15 +82,14 @@
 
   &__title {
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: @font-size-title-mobile;
     font-weight: 600;
     line-height: 110%;
     color: @color-heading;
     margin: 0;
 
-    .media(mobile, {
-      font-size: @font-size-title-mobile;
-      margin-bottom: 30px;
+    .media(desktop, {
+      font-size: @font-size-title;
     });
 
     p {
@@ -102,9 +99,7 @@
   }
 
   &__icon {
-    width: 370px;
-    height: 370px; 
-    flex-shrink: 0;
+    display: none;
 
     img {
       display: block;
@@ -112,47 +107,47 @@
       object-fit: contain;
     }
 
-    .media(mobile, {
-      display: none;
+    .media(desktop, {
+      display: block;
+      width: 370px;
+      height: 370px;
+      flex-shrink: 0;
     });
 
-    // Планшетные стили
-    @media (min-width: 768px) and (max-width: 1023px) {
+    .media(tablet, {
       width: 350px;
       height: 260px;
-    }
+    });
   }
 
   &__right {
-    max-width: 544px;
+    max-width: none;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    height: 100%; // Добавлено для выравнивания высоты
+    gap: 30px;
+    height: auto;
 
-    .media(mobile, {
-      max-width: none;
-      gap: 30px;
-      height: auto; // Сброс для мобильных
+    .media(desktop, {
+      max-width: 544px;
+      gap: 20px;
+      height: 100%;
     });
   }
 
   &__item {
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 30px;
     align-items: flex-start;
 
-    .media(mobile, {
-      flex-direction: row;
-      gap: 30px;
-      align-items: flex-start;
+    .media(desktop, {
+      gap: 40px;
     });
   }
 
   &__number {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     flex-shrink: 0;
 
     img {
@@ -162,28 +157,28 @@
       object-fit: contain;
     }
 
-    .media(mobile, {
-      width: 60px;
-      height: 60px;
+    .media(desktop, {
+      width: 70px;
+      height: 70px;
     });
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 13px;
-    padding-bottom: 20px;
+    gap: 10px;
+    padding-bottom: 0;
     flex: 1;
 
-    .media(mobile, {
-      gap: 10px;
-      padding-bottom: 0;
+    .media(desktop, {
+      gap: 13px;
+      padding-bottom: 20px;
     });
   }
 
   &__item-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 30px;
+    font-family: "Syne", sans-serif;
+    font-size: 24px;
     font-weight: 500;
     line-height: 140%;
     text-transform: uppercase;
@@ -195,14 +190,13 @@
       line-height: normal;
     }
 
-    .media(mobile, {
-      font-size: 24px;
-    });
+    .media(desktop, {
+      font-size: 30px;
 
-    // Планшетные стили
-    @media (min-width: 768px) and (max-width: 1023px) {
-      font-size: 28px;
-    }
+      @media (max-width: 1023px) {
+        font-size: 28px;
+      }
+    });
   }
 
   &__item-description {
@@ -210,7 +204,7 @@
     font-size: @font-size-text;
     line-height: 140%;
     color: @color-text;
-    text-align: justify;
+    text-align: start;
     margin: 0;
 
     p {
@@ -219,8 +213,6 @@
     }
 
     .media(mobile, {
-      text-align: start;
-      
       // Стили для обрезанного текста (применяются к параграфу)
       p.truncated {
         overflow: hidden !important;
@@ -248,6 +240,10 @@
         -webkit-box-orient: unset !important;
         cursor: pointer !important;
       }
+    });
+
+    .media(desktop, {
+      text-align: justify;
     });
   }
 }
