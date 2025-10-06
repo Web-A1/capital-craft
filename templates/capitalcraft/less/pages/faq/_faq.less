@@ -289,3 +289,16 @@
     });
   }
 }
+
+@media only screen and (min-width: 768px) {
+  .faq {
+    &__accordion {
+      .card-paper-desktop();
+      padding: 0 20px;
+    }
+
+    &__item:last-child {
+      border-bottom: none;
+    }
+  }
+}
