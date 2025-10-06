@@ -130,12 +130,12 @@
   }
 
   &__pagination {
-    background: transparent;
-    bottom: auto !important;
+    background: @color-bg-craft;
+    bottom: var(--swiper-pagination-bottom, 12px) !important;
     top: auto;
-    height: auto;
+    height: 30px;
     right: auto;
-    left: auto;
+    left: 0;
 
     .swiper-pagination-bullet {
       background: @color-heading;
@@ -146,7 +146,12 @@
       opacity: 1;
     }
 
-    /* positioning handled inside swiper block */
+    .media-up(@bp-tablet-min, {
+      background: transparent;
+      bottom: auto !important;
+      height: auto;
+      left: auto;
+    });
   }
 
   &__card {
