@@ -3,9 +3,13 @@
 .faq-home {
   padding: 0;
 
-  .media(desktop, {
-    padding: @section-padding 0;
-  });
+  &.section-with-divider {
+    padding: @divider-space-mobile 0;
+
+    .media(desktop, {
+      padding: @section-padding 0;
+    });
+  }
 
   &__inner {
     display: flex;
