@@ -27,7 +27,7 @@
             <!-- Right Block -->
             <div class="footer-right-block">
                 <!-- Navigation -->
-                <div class="footer-navigation">
+                <div class="footer-navigation" data-order-desktop="0">
                     <div class="footer-section-title">
                         <span>Навигация</span>
                     </div>
@@ -37,7 +37,7 @@
                 </div>
 
                 <!-- Contacts -->
-                <div class="footer-contacts" id="contacts">
+                <div class="footer-contacts" id="contacts" data-order-desktop="1">
                     <div class="footer-section-title">
                         <span>Контакты</span>
                     </div>
@@ -53,7 +53,7 @@
                 </div>
 
                 <!-- Messengers -->
-                <div class="footer-messengers">
+                <div class="footer-messengers" data-order-desktop="2">
                     <div class="footer-section-title">
                         <span>Мессенджеры</span>
                     </div>
@@ -64,7 +64,7 @@
                             <img src="/templates/capitalcraft/images/wa_contacts_footer.svg" alt="Вотсап футер контакты" />
                         </div>
                         <div class="footer-messenger-number">
-                            <a href="https://wa.me/79951550644">+7 (995) 155-06-44</a>
+                            <a href="https://wa.me/79164421144">+7 (916) 442-11-44</a>
                         </div>
                     </div>
 
@@ -74,7 +74,7 @@
                             <img src="/templates/capitalcraft/images/tg_contacts_footer.svg" alt="Телеграм футер контакты" />
                         </div>
                         <div class="footer-messenger-number">
-                            <a href="https://t.me/79951550644">+7 (995) 155-06-44</a>
+                            <a href="https://t.me/79164421144">+7 (916) 442-11-44</a>
                         </div>
                     </div>
                 </div>
