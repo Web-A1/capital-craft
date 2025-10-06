@@ -7,9 +7,16 @@
   gap: 30px;
 
   .media(desktop, {
-    padding: @section-padding 0;
     gap: @section-padding;
   });
+
+  &.section-with-divider {
+    padding: @divider-space-mobile 0;
+
+    .media(desktop, {
+      padding: @section-padding 0;
+    });
+  }
 
   &__wrapper {
     display: flex;
