@@ -139,8 +139,7 @@ section,
 .section-with-divider:not(.site-header) {
   scroll-margin-top: var(--header-height, 76px);
   position: relative;
-  padding-top: @divider-space-mobile;
-  padding-bottom: @divider-space-mobile;
+  padding: @divider-space-mobile 0;
 
   &::after {
     content: "";
@@ -154,8 +153,7 @@ section,
   }
 
   .media(desktop, {
-    padding-top: @section-padding;
-    padding-bottom: @section-padding;
+    padding: 0;
 
     &::after {
       width: @container-width;
