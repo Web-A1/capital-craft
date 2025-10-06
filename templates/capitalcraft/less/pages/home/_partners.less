@@ -1,17 +1,13 @@
 // out: false
 
 .partners {
-  padding: 0;
+  padding: @divider-space-mobile 0;
   position: relative;
   width: 100%;
 
-  &.section-with-divider {
-    padding: @divider-space-mobile 0;
-
-    .media(desktop, {
-      padding: @section-padding 0;
-    });
-  }
+  .media(desktop, {
+    padding: @section-padding 0;
+  });
 
   &__inner {
     display: flex;
