@@ -150,6 +150,18 @@
         width: 1px;
         background-color: @section-divider-color;
       }
+
+      .footer-navigation {
+        order: 0;
+      }
+
+      .footer-contacts {
+        order: 1;
+      }
+
+      .footer-messengers {
+        order: 2;
+      }
     });
   }
 
@@ -174,7 +186,6 @@
     order: 3;
 
     .media-up(@bp-tablet-min, {
-      order: 0;
       width: 100px;
     });
 
@@ -245,7 +256,6 @@
     flex-shrink: 0;
 
     .media-up(@bp-tablet-min, {
-      order: 1;
       --footer-contacts-anchor-gap: 0px;
       --footer-contacts-anchor-buffer: 0px;
       scroll-margin-top: var(--header-height, 76px);
@@ -286,7 +296,6 @@
     width: 100%;
 
     .media-up(@bp-tablet-min, {
-      order: 2;
       width: auto;
     });
 
