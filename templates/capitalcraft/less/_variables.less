@@ -27,7 +27,9 @@
 @gap-desktop: 30px;
 @gap-mobile: 20px;
 @gap: @gap-desktop; // временный алиас до полного перехода на новые токены
-@padding-button: 10px 20px;
+@padding-button-desktop: 10px 20px;
+@padding-button-mobile: 8px 12px;
+@padding-button: @padding-button-desktop; // временный алиас для совместимости
 @section-padding-desktop: 60px;
 @section-padding-mobile: @divider-space-mobile;
 @section-padding: @section-padding-desktop; // временный алиас для совместимости
@@ -165,14 +167,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: @padding-button;
+  padding: @padding-button-mobile;
   border-radius: @radius;
   border: 1px solid transparent;
   background-color: @color;
   color: @color-white;
   font-family: @font-body;
-  font-size: @font-size;
-  font-weight: 400;
+  font-size: @mobile-font-size;
+  font-weight: 500;
   text-transform: @text-transform;
   text-decoration: none;
   cursor: pointer;
@@ -181,6 +183,7 @@
     color 0.3s ease,
     border-color 0.3s ease,
     transform 0.1s ease;
+  height: @mobile-height;
 
   @media (hover: hover) {
     &:hover {
@@ -204,11 +207,11 @@
     }
   }
 
-  .media(mobile, {
-    padding: 8px 12px;
-    font-size: @mobile-font-size;
-    font-weight: 500;
-    height: @mobile-height;
+  .media-up(@bp-tablet-min, {
+    padding: @padding-button;
+    font-size: @font-size;
+    font-weight: 400;
+    height: auto;
   });
 
   // States
