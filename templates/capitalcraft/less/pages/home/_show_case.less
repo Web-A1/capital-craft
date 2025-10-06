@@ -116,7 +116,10 @@
   &__pagination {
     background: @color-bg-craft;
     bottom: var(--swiper-pagination-bottom, 0px) !important;
+    top: auto;
     height: 30px;
+    right: auto;
+    left: 0;
 
     .swiper-pagination-bullet {
       background: @color-heading;
@@ -128,10 +131,13 @@
     }
 
     .media-up(@bp-tablet-min, {
+      top: 50% !important;
       right: 30px !important;
       background: transparent;
       height: auto;
       bottom: auto;
+      transform: translateY(-50%);
+      left: auto;
     });
   }
 
