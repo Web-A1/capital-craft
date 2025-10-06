@@ -73,19 +73,13 @@ a {
 
 .page-wrapper {
   background-color: @color-bg-craft;
-}
 
-@media only screen and (min-width: 768px) {
-  body,
-  html {
-    background-color: @color-white;
-  }
-
-  .page-wrapper {
+  .media(desktop, {
     position: relative;
     background-color: transparent;
     z-index: 0;
     margin: 20px auto;
+    padding: 20px 0;
 
     &::before {
       content: "";
@@ -103,40 +97,37 @@ a {
       border-radius: @radius;
       z-index: -1;
     }
-  }
-
-  .frame {
-    border-left: none;
-    border-right: none;
-  }
-
-  .frame--header {
-    border-top: none;
-    margin-top: 0;
-  }
-
-  .frame--footer {
-    border-bottom: none;
-    margin-bottom: 0;
-  }
+  });
 }
 
-section,
-.frame:not(.site-header) {
-  position: relative;
-}
+.media(desktop, {
+  body,
+  html {
+    background-color: @color-white;
+  }
+});
 
 .frame {
   max-width: 1300px;
   width: 100%;
   margin: 0 auto;
+
+  .media(desktop, {
+    border-left: none;
+    border-right: none;
+  });
 }
 
 .frame--header {
   margin-top: 20px;
 
-  .media(mobile, {
+.media(mobile, {
     margin-top: 0;
+  });
+
+  .media(desktop, {
+    margin-top: 0;
+    border-top: none;
   });
 }
 
@@ -146,6 +137,16 @@ section,
   .media(mobile, {
     margin-bottom: 0;
   });
+
+  .media(desktop, {
+    margin-bottom: 0;
+    border-bottom: none;
+  });
+}
+
+section,
+.frame:not(.site-header) {
+  position: relative;
 }
 
 .section-with-divider:not(.site-header) {

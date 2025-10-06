@@ -169,10 +169,8 @@
       transition: none;
     }
   }
-}
 
-@media only screen and (min-width: 768px) {
-  .blog-card {
+  .media(desktop, {
     .card-paper-desktop();
     transition:
       transform 0.2s ease,
@@ -198,5 +196,5 @@
           inset 0 1px 0 rgba(255, 255, 255, 0.55);
       }
     }
-  }
+  });
 }

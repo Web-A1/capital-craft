@@ -105,13 +105,11 @@
     .swiper-slide {
       height: 100%;
     }
-  }
 
-  @media only screen and (min-width: 768px) {
-    &__swiper {
+    .media(desktop, {
       .card-paper-desktop();
       height: 450px;
-    }
+    });
   }
 
   &__pagination {
