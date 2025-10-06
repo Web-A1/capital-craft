@@ -20,6 +20,10 @@ body {
   background-color: @color-bg-craft;
   color: @color-text;
   line-height: 1.4;
+
+  .media(desktop, {
+    background-color: @color-white;
+  });
 }
 
 /* Предотвращаем авто-масштабирование текста в iOS Safari */
@@ -28,6 +32,10 @@ html {
   background-color: @color-bg-craft;
   scrollbar-gutter: stable;
   scroll-padding-top: var(--header-height, 76px);
+
+  .media(desktop, {
+    background-color: @color-white;
+  });
 }
 
 /* Сброс базовых стилей заголовков */
@@ -79,7 +87,6 @@ a {
     background-color: transparent;
     z-index: 0;
     margin: 20px auto;
-    padding: 20px 0;
 
     &::before {
       content: "";
@@ -100,47 +107,33 @@ a {
   });
 }
 
-.media(desktop, {
-  body,
-  html {
-    background-color: @color-white;
-  }
-});
-
 .frame {
   max-width: 1300px;
   width: 100%;
   margin: 0 auto;
-
-  .media(desktop, {
-    border-left: none;
-    border-right: none;
-  });
 }
 
 .frame--header {
   margin-top: 20px;
 
-.media(mobile, {
+  .media(desktop, {
     margin-top: 0;
   });
 
-  .media(desktop, {
+  .media(mobile, {
     margin-top: 0;
-    border-top: none;
   });
 }
 
 .frame--footer {
   margin-bottom: 30px;
 
-  .media(mobile, {
+  .media(desktop, {
     margin-bottom: 0;
   });
 
-  .media(desktop, {
+  .media(mobile, {
     margin-bottom: 0;
-    border-bottom: none;
   });
 }
 
