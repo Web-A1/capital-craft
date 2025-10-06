@@ -150,20 +150,11 @@
   // Desktop crossfade + micro-scale on quote; delayed fade for signature
   .media(desktop, {
     .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
-      .reviews__quote-text {
-        opacity: 0;
-        transform: scale(0.98);
-        transition: opacity 160ms ease-out, transform 160ms ease-out;
-        will-change: opacity, transform;
-      }
+      .reviews__quote-text,
       .reviews__signature {
-        opacity: 0;
-        transition: opacity 140ms ease-out 40ms;
-        will-change: opacity;
-      }
-      &.reviews__slide--animate {
-        .reviews__quote-text { opacity: 1; transform: scale(1); }
-        .reviews__signature { opacity: 1; }
+        opacity: 1;
+        transform: none;
+        transition: none;
       }
     }
   });
