@@ -1,27 +1,25 @@
 // out: false
 
 .reviews {
-  padding: @section-padding 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: @section-padding;
+  gap: 30px;
 
-  // mobile overrides for the root block
-  .media(mobile, {
-    // Rely on global .section-with-divider mobile spacing
-    padding: 0;
-    gap: 30px;
+  .media(desktop, {
+    padding: @section-padding 0;
+    gap: @section-padding;
   });
 
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 50px;
     align-items: center;
 
-    .media(mobile, {
-     gap: 50px;
-  });
+    .media(desktop, {
+      gap: 40px;
+    });
   }
 
   &__subtitle {
@@ -33,32 +31,34 @@
     .subtitle();
     line-height: 1;
     margin: 0;
-
-    .media(mobile, {
     font-size: @font-size-sub;
     letter-spacing: 0.15em;
-  });
   }
 
   // Новый контейнер для слайдера и стрелок
   &__slider-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: center;
     width: 100%;
     max-width: 1170px;
     position: relative;
 
-    .media(mobile, {
     flex-direction: column;
-    gap: 15px; // Между отзывом и пагинацией
-  });
+    gap: 15px;
+
+    .media(desktop, {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0;
+    });
 
     // Фиксированные кавычки на фоне
     &::before {
       content: "\201C"; //Левая двойная кавычка Unicode
       position: absolute;
-      top: 9%;
+      top: 3%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-family: @font-title;
@@ -69,9 +69,9 @@
       pointer-events: none;
       user-select: none;
 
-      .media(mobile, {
-    top: 3%;
-  });
+      .media(desktop, {
+        top: 9%;
+      });
     }
   }
 
@@ -85,8 +85,8 @@
     // min-height можно настроить под дизайн при необходимости
 
     .media(mobile, {
-    max-width: 100%;
-  });
+      max-width: 100%;
+    });
   }
 
   // Повышаем специфичность для перебивания Swiper стилей
@@ -101,8 +101,8 @@
     z-index: 2; // Поверх фоновых кавычек
 
     .media(mobile, {
-    gap: 30px; // Меньший отступ для мобильных
-  });
+      gap: 30px;
+    });
   }
 
   // Внутри слайда используем семантический контейнер figure
@@ -117,8 +117,8 @@
     // высота зависит от контента
 
     .media(mobile, {
-    gap: 30px;
-  });
+      gap: 30px;
+    });
   }
 
   // Повышаем специфичность для quote-text
