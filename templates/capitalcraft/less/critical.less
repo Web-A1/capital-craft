@@ -74,8 +74,10 @@ a {
   max-width: @container-width;
   width: 100%;
   margin: 0 auto;
-  .media(mobile, {
-    padding: 0 @mobile-side-padding;
+  padding: 0 @mobile-side-padding;
+
+  .media(desktop, {
+    padding: 0;
   });
 }
 
@@ -137,23 +139,26 @@ section,
 .section-with-divider:not(.site-header) {
   scroll-margin-top: var(--header-height, 76px);
   position: relative;
+  padding-top: @divider-space-mobile;
+  padding-bottom: @divider-space-mobile;
+
   &::after {
     content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: @container-width;
+    width: calc(100% - (@mobile-side-padding * 2));
     height: 1px;
     background: @section-divider-color;
     bottom: 0;
   }
 
-  .media(mobile, {
-    // Ensure consistent 30px spacing to the divider on mobile
-    padding-top: @divider-space-mobile;
-    padding-bottom: @divider-space-mobile;
+  .media(desktop, {
+    padding-top: 0;
+    padding-bottom: 0;
+
     &::after {
-      width: calc(100% - (@mobile-side-padding * 2));
+      width: @container-width;
     }
   });
 }
