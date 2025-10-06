@@ -1,40 +1,38 @@
 // out: false
 
 .philosophy {
-  padding: @section-padding 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: @section-padding;
+  gap: 30px;
 
-  // mobile overrides for the root block
-  .media(mobile, {
-    // Rely on global .section-with-divider mobile spacing
-    padding: 0;
-    gap: 30px;
+  .media(desktop, {
+    padding: @section-padding 0;
+    gap: @section-padding;
   });
 
   &__wrapper {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: @gap * 2;
+    flex-direction: column;
+    align-items: stretch;
+    gap: @gap;
 
-    .media(mobile, {
-      flex-direction: column;
-      gap: @gap;
+    .media(desktop, {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: @gap * 2;
     });
   }
 
   &__left {
-    max-width: 290px;
+    max-width: none;
     display: flex;
     flex-direction: column;
     gap: @subtitle-title-gap;
 
-    .media(mobile, {
-      max-width: none;
-      gap: @subtitle-title-gap;
+    .media(desktop, {
+      max-width: 290px;
     });
   }
 
@@ -85,49 +83,26 @@
 
   &__grid {
     display: grid;
-    max-width: 743px;
     width: 100%;
-    // Сетка 3x3 для broken cross эффекта
-    grid-template-areas:
-      "item1 line-top item2"
-      "line-left empty line-right"
-      "item3 line-bottom item4";
-    grid-template-columns: 1fr 1px 1fr;
-    grid-template-rows: auto 1px auto;
-    gap: @gap; // Добавляем gap между элементами
     position: relative;
+    grid-template-areas:
+      "item1"
+      "item2"
+      "item3"
+      "item4";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 0;
 
-    // Горизонтальные линии
-    .philosophy__line--top,
-    .philosophy__line--bottom {
-      height: auto;
-      width: 1px;
-      background: @color-heading;
-      justify-self: stretch;
-    }
-    .philosophy__line--top {
-      grid-area: line-top;
-    }
-    .philosophy__line--bottom {
-      grid-area: line-bottom;
+    .philosophy__line {
+      display: none;
     }
 
-    // Вертикальные линии
-    .philosophy__line--left,
-    .philosophy__line--right {
-      width: auto;
-      height: 1px;
-      background: @color-heading;
-      align-self: stretch;
-    }
-    .philosophy__line--left {
-      grid-area: line-left;
-    }
-    .philosophy__line--right {
-      grid-area: line-right;
+    .center-gap {
+      display: none;
+      grid-area: auto;
     }
 
-    // Content items positioned in grid areas
     .philosophy-item {
       &--1 {
         grid-area: item1;
@@ -143,22 +118,51 @@
       }
     }
 
-    .center-gap {
-      grid-area: empty;
-    }
+    .media(desktop, {
+      max-width: 743px;
+      grid-template-areas:
+        "item1 line-top item2"
+        "line-left empty line-right"
+        "item3 line-bottom item4";
+      grid-template-columns: 1fr 1px 1fr;
+      grid-template-rows: auto 1px auto;
+      gap: @gap;
 
-    .media(mobile, {
-      grid-template-areas: 
-        "item1"
-        "item2" 
-        "item3"
-        "item4";
-      grid-template-columns: 1fr;
-      grid-template-rows: auto auto auto auto;
-      gap: 0;
+      .philosophy__line {
+        display: block;
+        background: @color-heading;
+      }
 
-      .philosophy__line,
-      .center-gap { display: none; }
+      .philosophy__line--top,
+      .philosophy__line--bottom {
+        height: auto;
+        width: 1px;
+        justify-self: stretch;
+      }
+      .philosophy__line--top {
+        grid-area: line-top;
+      }
+      .philosophy__line--bottom {
+        grid-area: line-bottom;
+      }
+
+      .philosophy__line--left,
+      .philosophy__line--right {
+        width: auto;
+        height: 1px;
+        align-self: stretch;
+      }
+      .philosophy__line--left {
+        grid-area: line-left;
+      }
+      .philosophy__line--right {
+        grid-area: line-right;
+      }
+
+      .center-gap {
+        display: block;
+        grid-area: empty;
+      }
     });
   }
 }
