@@ -139,26 +139,24 @@ section,
 .section-with-divider:not(.site-header) {
   scroll-margin-top: var(--header-height, 76px);
   position: relative;
-  padding-top: @divider-space-mobile;
-  padding-bottom: @divider-space-mobile;
 
   &::after {
     content: "";
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    width: calc(100% - (@mobile-side-padding * 2));
+    width: @container-width;
     height: 1px;
     background: @section-divider-color;
     bottom: 0;
   }
 
-  .media(desktop, {
-    padding-top: revert;
-    padding-bottom: revert;
-
+  .media(mobile, {
+    // Ensure consistent 30px spacing to the divider on mobile
+    padding-top: @divider-space-mobile;
+    padding-bottom: @divider-space-mobile;
     &::after {
-      width: @container-width;
+      width: calc(100% - (@mobile-side-padding * 2));
     }
   });
 }
