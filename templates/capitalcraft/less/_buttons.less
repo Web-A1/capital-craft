@@ -15,7 +15,7 @@
   .btn-base(@mobile-font-size: @font-size-text * 0.75);
   display: inline-flex;
   gap: 10px;
-  .btn-arrow(24px, 24px);
+  .btn-arrow(20px, 20px);
 
   svg {
     transition: transform 0.3s;
@@ -33,7 +33,7 @@
     }
   }
 
-  .media(mobile, {
-    .btn-arrow(20px, 20px);
+  .media-up(@bp-tablet-min, {
+    .btn-arrow(24px, 24px);
   });
 }
