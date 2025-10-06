@@ -56,24 +56,6 @@ if ($isBlog) {
     $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/blog.css");
 }
 
-$bodyClasses = [];
-if ($isHome) {
-    $bodyClasses[] = "page-home";
-}
-if ($isFaq) {
-    $bodyClasses[] = "page-faq";
-}
-if ($isLegal) {
-    $bodyClasses[] = "page-legal";
-}
-if ($isBlog) {
-    $bodyClasses[] = "page-blog";
-}
-if ($isArticle) {
-    $bodyClasses[] = "page-article";
-}
-$bodyClassAttr = $bodyClasses ? ' class="' . implode(" ", $bodyClasses) . '"' : "";
-
 $canonicalParams = [];
 $addCanonical = true;
 
@@ -329,7 +311,7 @@ if ($addCanonical) {
   <!-- /Yandex.Metrika counter -->
 </head>
 
-<body<?= $bodyClassAttr ?>>
+<body>
   <!-- Yandex.Metrika noscript -->
   <noscript><div><img src="https://mc.yandex.ru/watch/104139634" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika noscript -->
