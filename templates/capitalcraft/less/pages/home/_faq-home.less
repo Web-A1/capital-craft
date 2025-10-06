@@ -10,7 +10,7 @@
     align-items: stretch;
     position: static;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       flex-direction: row;
       justify-content: space-between;
       align-items: stretch;
@@ -29,13 +29,12 @@
       transform: translateX(-50%);
       display: none;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         display: block;
       });
     }
 
     .faq-home__content {
-      order: 1;
       width: 100%;
       max-width: 100%;
       gap: 30px;
@@ -43,8 +42,7 @@
       flex-direction: column;
       justify-content: flex-start;
 
-      .media(desktop, {
-        order: 2;
+      .media-up(@bp-tablet-min, {
         flex: 1 1 0;
         height: 200px;
         justify-content: space-between;
@@ -52,7 +50,6 @@
     }
 
     .faq-home__swiper {
-      order: 2;
       flex: 0 0 auto;
       width: 100%;
       height: auto;
@@ -70,7 +67,7 @@
         height: auto;
         padding-bottom: 20px;
 
-        .media(desktop, {
+        .media-up(@bp-tablet-min, {
           height: 100%;
           padding-bottom: 0;
         });
@@ -79,13 +76,12 @@
       .swiper-slide {
         height: auto;
 
-        .media(desktop, {
+        .media-up(@bp-tablet-min, {
           height: 100%;
         });
       }
 
-      .media(desktop, {
-        order: 1;
+      .media-up(@bp-tablet-min, {
         flex: 1 1 0;
         height: 200px;
         padding-left: 60px;
@@ -96,9 +92,7 @@
     }
 
     .faq-home__btn {
-      order: 3;
-
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         order: initial;
       });
     }
@@ -148,7 +142,7 @@
     color: @color-text;
     font-style: italic;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       font-size: (@font-size-base * 1.25);
     });
 
@@ -211,7 +205,7 @@
   & .faq-home__btn--desktop {
     display: none;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       display: inline-flex;
       position: static;
     });
@@ -220,7 +214,7 @@
   & .faq-home__btn--mobile {
     display: inline-flex;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       display: none;
     });
   }
