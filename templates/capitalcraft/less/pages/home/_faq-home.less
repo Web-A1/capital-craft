@@ -211,22 +211,21 @@
     });
   }
 
-  &__btn {
-    &--desktop {
-      display: none !important;
+  // Перебиваем глобальный .btn-main без использования !important за счёт большей специфичности
+  & .faq-home__btn--desktop {
+    display: none;
 
-      .media(desktop, {
-        display: inline-flex !important;
-        position: static;
-      });
-    }
+    .media(desktop, {
+      display: inline-flex;
+      position: static;
+    });
+  }
 
-    &--mobile {
-      display: inline-flex !important;
+  & .faq-home__btn--mobile {
+    display: inline-flex;
 
-      .media(desktop, {
-        display: none !important;
-      });
-    }
+    .media(desktop, {
+      display: none;
+    });
   }
 }
