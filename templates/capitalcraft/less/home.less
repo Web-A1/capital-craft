@@ -14,8 +14,8 @@
   .section-with-divider:not(.site-header) {
     padding: @divider-space-mobile 0;
 
-    .media(desktop, {
-      padding: @section-padding 0;
+    .media-up(@bp-tablet-min, {
+      padding: @section-padding-desktop 0;
     });
   }
 }
