@@ -1,14 +1,14 @@
 // out: false
 
 .show-case {
-  padding: 0;
+  padding: @divider-space-mobile 0;
   display: flex;
   flex-direction: column;
   gap: 30px;
 
-  .media(desktop, {
-    padding: @section-padding 0;
-    gap: @section-padding;
+  .media-up(@bp-tablet-min, {
+    padding: @section-padding-desktop 0;
+    gap: @section-padding-desktop;
   });
 
   &__inner {
@@ -16,7 +16,7 @@
     flex-direction: column;
     gap: 40px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       gap: 60px;
     });
   }
@@ -39,7 +39,7 @@
     line-height: 110%;
     color: @color-heading;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       font-size: @font-size-title;
     });
   }
@@ -49,7 +49,7 @@
     flex-direction: column;
     gap: 20px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       flex-direction: row;
       gap: 60px;
     });
@@ -66,7 +66,7 @@
       border-radius: @radius;
     }
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       display: block;
       width: 352px;
       flex-shrink: 0;
@@ -82,9 +82,9 @@
     width: 100%;
     order: 1;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       justify-content: space-between;
-      gap: (@section-padding / 2);
+      gap: (@section-padding-desktop / 2);
       width: auto;
       order: initial;
     });
@@ -107,7 +107,7 @@
       height: 100%;
     }
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       .card-paper-desktop();
       height: 450px;
     });
@@ -127,7 +127,7 @@
       opacity: 1;
     }
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       right: 30px !important;
       background: transparent;
       height: auto;
@@ -150,7 +150,7 @@
     height: auto;
     padding: 20px 20px 40px 20px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       justify-content: space-between;
       height: 100%;
       padding: 35px 60px 35px 40px;
@@ -165,7 +165,7 @@
     margin-bottom: 20px;
     font-size: @font-size-title * 0.7;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       margin-bottom: 30px;
       font-size: @font-size-text * 1.5;
     });
@@ -177,7 +177,7 @@
     gap: 10px;
     flex: 1;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       gap: 15px;
     });
   }
@@ -195,16 +195,12 @@
     font-size: @font-size-text;
     line-height: 140%;
     color: @color-heading;
-
-    .media(mobile, {
-      font-size: @font-size-text;
-    });
   }
 
   &__button-wrapper {
     display: flex;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       display: none;
     });
   }
