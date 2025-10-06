@@ -213,16 +213,16 @@
 
   &__btn {
     &--desktop {
-      display: none;
+      display: none !important;
 
       .media(desktop, {
-        display: inline-flex;
+        display: inline-flex !important;
         position: static;
       });
     }
 
     &--mobile {
-      display: inline-flex;
+      display: inline-flex !important;
 
       .media(desktop, {
         display: none !important;
