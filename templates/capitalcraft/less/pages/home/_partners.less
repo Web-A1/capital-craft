@@ -1,11 +1,15 @@
 // out: false
 
 .partners {
-  padding-block: @section-padding-mobile;
+  padding-block: @section-padding;
   position: relative;
   width: 100%;
 
   .media-up(@bp-tablet-min, {
+    padding-block: @section-padding-tablet;
+  });
+
+  .media-up(@bp-desktop-min, {
     padding-block: @section-padding-desktop;
   });
 

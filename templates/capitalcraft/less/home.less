@@ -12,12 +12,16 @@
 @import "pages/home/_reviews.less";
 .page-home {
   .section-with-divider:not(.site-header):not(.hero) {
-    padding-block: @section-padding-mobile;
+    padding-block: @section-padding;
     padding-inline: 0;
 
     .media-up(@bp-tablet-min, {
-      padding-block: @section-padding-desktop;
+      padding-block: @section-padding-tablet;
       padding-inline: 0;
+    });
+
+    .media-up(@bp-desktop-min, {
+      padding-block: @section-padding-desktop;
     });
   }
 }

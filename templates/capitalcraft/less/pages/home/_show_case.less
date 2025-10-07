@@ -1,12 +1,17 @@
 // out: false
 
 .show-case {
-  padding: @divider-space-mobile 0;
+  padding: @section-padding 0;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: @gap;
 
   .media-up(@bp-tablet-min, {
+    padding: @section-padding-tablet 0;
+    gap: @section-padding-tablet;
+  });
+
+  .media-up(@bp-desktop-min, {
     padding: @section-padding-desktop 0;
     gap: @section-padding-desktop;
   });
@@ -14,10 +19,14 @@
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: @section-padding;
 
     .media-up(@bp-tablet-min, {
-      gap: 60px;
+      gap: @section-padding-tablet * 1.2;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: @section-padding-desktop;
     });
   }
 
@@ -78,15 +87,19 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    gap: 40px;
+    gap: @section-padding;
     width: 100%;
     order: 1;
 
     .media-up(@bp-tablet-min, {
       justify-content: space-between;
-      gap: (@section-padding-desktop / 2);
+      gap: (@section-padding-tablet / 2);
       width: auto;
       order: initial;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: (@section-padding-desktop / 2);
     });
   }
 

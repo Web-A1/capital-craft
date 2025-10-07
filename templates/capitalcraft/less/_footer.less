@@ -3,7 +3,7 @@
   width: 100%;
   margin: 0 auto 20px;
   padding: 0;
-  padding-top: @section-padding-mobile;
+  padding-top: @section-padding;
 
   .media-up(@bp-tablet-min, {
     padding-top: 0;
@@ -29,7 +29,12 @@
     .media-up(@bp-tablet-min, {
       flex-direction: row;
       align-items: flex-start;
-      gap: 40px;
+      gap: @gap-tablet * 1.66;
+      padding: @section-padding-tablet 0;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: @gap-desktop * 2;
       padding: @section-padding-desktop 0;
     });
   }
@@ -137,7 +142,7 @@
       position: relative;
       grid-template-columns: minmax(140px, 165px) minmax(240px, 1fr) minmax(180px, auto);
       grid-template-areas: "navigation contacts messengers";
-      gap: 60px;
+      gap: @gap-tablet * 2.5;
       width: 100%;
       max-width: 743px;
       padding-left: 40px;
@@ -155,6 +160,10 @@
         width: 1px;
         background-color: @section-divider-color;
       }
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: 60px;
     });
   }
 

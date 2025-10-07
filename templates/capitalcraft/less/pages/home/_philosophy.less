@@ -4,9 +4,14 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: @gap;
 
   .media-up(@bp-tablet-min, {
+    padding: @section-padding-tablet 0;
+    gap: @section-padding-tablet;
+  });
+
+  .media-up(@bp-desktop-min, {
     padding: @section-padding-desktop 0;
     gap: @section-padding-desktop;
   });
@@ -21,7 +26,11 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      gap: @gap * 2;
+      gap: @gap-tablet * 2;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: @gap-desktop * 2;
     });
   }
 
@@ -119,7 +128,7 @@
         "item3 line-bottom item4";
       grid-template-columns: 1fr 1px 1fr;
       grid-template-rows: auto 1px auto;
-      gap: @gap;
+      gap: @gap-tablet;
 
       .philosophy__line {
         display: block;
@@ -157,7 +166,11 @@
         grid-area: empty;
       }
     });
-  }
+
+    .media-up(@bp-desktop-min, {
+      gap: @gap-desktop;
+    });
+}
 }
 
 .philosophy-item {

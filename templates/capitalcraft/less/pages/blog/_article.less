@@ -4,6 +4,8 @@
 .com-content-article.item-page {
   padding-top: 0;
   padding-bottom: @section-padding;
+  .media-up(@bp-tablet-min, { padding-bottom: @section-padding-tablet; });
+  .media-up(@bp-desktop-min, { padding-bottom: @section-padding-desktop; });
 
   // Mobile: avoid double bottom space with section divider padding
   .media(mobile, { padding-bottom: 0; });

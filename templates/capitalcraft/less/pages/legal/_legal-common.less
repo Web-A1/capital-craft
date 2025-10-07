@@ -2,6 +2,8 @@
 
 .legal {
   padding-bottom: @section-padding;
+  .media-up(@bp-tablet-min, { padding-bottom: @section-padding-tablet; });
+  .media-up(@bp-desktop-min, { padding-bottom: @section-padding-desktop; });
   .media(mobile, { padding-bottom: 0; });
 
   &.frame.section-with-divider {
@@ -17,6 +19,14 @@
     display: flex;
     gap: @section-padding;
     justify-content: space-between;
+
+    .media-up(@bp-tablet-min, {
+      gap: @section-padding-tablet;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: @section-padding-desktop;
+    });
 
     .media(mobile, {
       padding: 0 @mobile-side-padding;

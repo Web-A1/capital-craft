@@ -3,6 +3,8 @@
 .blog {
   // Align vertical rhythm with FAQ: no extra top padding, only bottom
   padding: 0 0 @section-padding;
+  .media-up(@bp-tablet-min, { padding: 0 0 @section-padding-tablet; });
+  .media-up(@bp-desktop-min, { padding: 0 0 @section-padding-desktop; });
   // Mobile: rely on global .section-with-divider spacing (30/line/30)
   .media(mobile, { padding: 0; });
 

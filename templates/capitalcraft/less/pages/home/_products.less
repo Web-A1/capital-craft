@@ -1,12 +1,17 @@
 // out: false
 
 .products {
-  padding: @section-padding-mobile 0;
+  padding: @section-padding 0;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: @gap;
 
   .media-up(@bp-tablet-min, {
+    padding: @section-padding-tablet 0;
+    gap: @section-padding-tablet;
+  });
+
+  .media-up(@bp-desktop-min, {
     padding: @section-padding-desktop 0;
     gap: @section-padding-desktop;
   });
@@ -14,15 +19,19 @@
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: @gap;
     position: relative;
 
     .media-up(@bp-tablet-min, {
       flex-direction: row;
       justify-content: space-between;
       align-items: stretch;
-      gap: (@gap * 2);
+      gap: (@gap-tablet * 2);
       min-height: 560px; // выравнивание высоты блоков
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: (@gap-desktop * 2);
     });
 
     &::before {
@@ -46,14 +55,18 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: @gap;
     justify-content: flex-start;
 
     .media-up(@bp-tablet-min, {
       flex: 0 0 585px;
       max-width: 585px;
-      gap: 40px;
+      gap: @gap-tablet * 1.75;
       justify-content: space-between;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: 40px;
     });
   }
 
@@ -121,24 +134,32 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: @gap;
     height: auto;
 
     .media-up(@bp-tablet-min, {
       flex: 1 1 544px;
       max-width: 544px;
-      gap: 20px;
+      gap: @gap-tablet;
       height: 100%;
+    });
+
+    .media-up(@bp-desktop-min, {
+      gap: 20px;
     });
   }
 
   &__item {
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    gap: @gap;
     align-items: flex-start;
 
     .media-up(@bp-tablet-min, {
+      gap: @gap-tablet * 1.66;
+    });
+
+    .media-up(@bp-desktop-min, {
       gap: 40px;
     });
   }

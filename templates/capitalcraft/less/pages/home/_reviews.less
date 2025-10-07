@@ -1,14 +1,19 @@
 // out: false
 
 .reviews {
-  padding: 0;
+  padding: @section-padding 0;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: @gap;
 
-  .media(desktop, {
-    padding: @section-padding 0;
-    gap: @section-padding;
+  .media-up(@bp-tablet-min, {
+    padding: @section-padding-tablet 0;
+    gap: @section-padding-tablet;
+  });
+
+  .media-up(@bp-desktop-min, {
+    padding: @section-padding-desktop 0;
+    gap: @section-padding-desktop;
   });
 
   &__inner {
@@ -17,7 +22,7 @@
     gap: 50px;
     align-items: center;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       gap: 40px;
     });
   }
@@ -47,7 +52,7 @@
     flex-direction: column;
     gap: 15px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
@@ -69,7 +74,7 @@
       pointer-events: none;
       user-select: none;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         top: 9%;
       });
     }
@@ -94,14 +99,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px; // Отступ между элементами внутри figure (сохраняем для резервного варианта)
+    gap: @gap;
     text-align: center;
     height: 100%; // высота равна заданной контейнеру через JS
     justify-content: center; // Центрируем содержимое по вертикали
     z-index: 2; // Поверх фоновых кавычек
 
     .media(mobile, {
-      gap: 30px;
+      gap: @gap;
+    });
+
+    .media-up(@bp-tablet-min, {
+      gap: @gap-desktop;
     });
   }
 
@@ -111,13 +120,17 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px; // Отступ между цитатой и подписью
+    gap: @gap;
     text-align: center;
     margin: 0; // Сбрасываем дефолтные отступы figure
     // высота зависит от контента
 
     .media(mobile, {
-      gap: 30px;
+      gap: @gap;
+    });
+
+    .media-up(@bp-tablet-min, {
+      gap: @gap-desktop;
     });
   }
 
@@ -148,7 +161,7 @@
   }
 
   // Desktop crossfade + micro-scale on quote; delayed fade for signature
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     .reviews__swiper .swiper-wrapper .swiper-slide.reviews__slide {
       .reviews__quote-text,
       .reviews__signature {
