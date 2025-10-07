@@ -1,9 +1,10 @@
 // out: false
 
 .hero {
-  padding-block: 80px 60px;
+  padding-block: @hero-padding-top-mobile @hero-padding-bottom-mobile;
   padding-inline: 0;
   background: none;
+  position: relative;
 
   &__inner {
     max-width: @container-width;
@@ -80,12 +81,12 @@
   }
 
   .media-up(@bp-tablet-min, {
-    padding-block: 120px 100px;
+    padding-block: @hero-padding-top-tablet @hero-padding-bottom-tablet;
     display: flex;
     align-items: center;
   });
 
   .media-up(@bp-desktop-min, {
-    padding-block: 140px 120px;
+    padding-block: @hero-padding-top-desktop @hero-padding-bottom-desktop;
   });
 }
