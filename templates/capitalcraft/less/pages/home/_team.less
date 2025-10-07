@@ -1,31 +1,45 @@
 // out: false
 
 .team {
-  padding: 0;
+  padding: @section-padding-mobile 0;
   display: flex;
   flex-direction: column;
   gap: 30px;
 
-  .media(desktop, {
-    padding: @section-padding 0;
-    gap: @section-padding;
+  .media-up(@bp-tablet-min, {
+    padding: @section-padding-desktop 0;
+    gap: @section-padding-desktop;
   });
-
-  &__container {
-  }
 
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: @gap;
-    align-items: flex-start;
+    gap: 30px;
+    position: relative;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       flex-direction: row;
       justify-content: flex-start;
       align-items: stretch;
       gap: 0;
+      min-height: 560px; // выравнивание высоты блоков
     });
+
+    &::before {
+      content: "";
+      display: none;
+
+      .media-up(@bp-tablet-min, {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: 1px;
+        background: @section-divider-color;
+        transform: translateX(-50%);
+        display: block;
+      });
+    }
   }
 
   &__left {
@@ -33,42 +47,44 @@
     padding-right: 0;
     display: flex;
     flex-direction: column;
-    gap: 0;
+    gap: 30px;
     position: relative;
 
-    .media(desktop, {
-      width: 440px;
+    .media-up(@bp-tablet-min, {
+      flex: 0 0 440px;
+      max-width: 440px;
       padding-right: 60px;
+      gap: 0;
     });
   }
 
   &__right {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
     width: 100%;
-    flex-shrink: 0;
     margin-left: 0;
     position: relative;
 
-    .media(desktop, {
-      width: 670px;
+    .media-up(@bp-tablet-min, {
+      flex: 1 1 670px;
+      max-width: 670px;
       gap: 40px;
-      margin-left: 60px; // Отступ слева от линии
+      margin-left: 60px; // отступ слева от линии
     });
 
     &::before {
       content: "";
-      position: absolute;
-      top: 0;
-      left: -60px;
-      width: 1px;
-      height: 100%;
-      background-color: #000000;
-      pointer-events: none;
       display: none;
+      pointer-events: none;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
+        position: absolute;
+        top: 0;
+        left: -60px;
+        width: 1px;
+        height: 100%;
+        background-color: @color-heading;
         display: block;
       });
     }
@@ -78,7 +94,6 @@
     display: flex;
     flex-direction: column;
     gap: @subtitle-title-gap;
-    position: relative;
     margin-bottom: @title-desc-margin;
   }
 
@@ -88,28 +103,33 @@
 
   &__title {
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: @font-size-title-mobile;
     font-weight: 600;
-    line-height: 110%;
+    line-height: 120%;
     color: @color-heading;
     margin: 0;
 
-    .media(mobile, {
-      font-size: @font-size-title-mobile;
-      line-height: 120%;
+    .media-up(@bp-tablet-min, {
+      font-size: 34px;
+      line-height: 110%;
+    });
+
+    .media-up(@bp-desktop-min, {
+      font-size: @font-size-title;
     });
   }
 
   &__desc {
     font-family: @font-body;
     font-size: @font-size-text;
-    line-height: 140%;
+    line-height: 150%;
     color: @color-text;
-    text-align: justify;
+    text-align: left;
     margin: 0;
 
-    .media(mobile, {
-      text-align: left;
+    .media-up(@bp-tablet-min, {
+      line-height: 140%;
+      text-align: justify;
     });
 
     p {
@@ -125,51 +145,42 @@
     display: none; // временно скрываем пока не сделаем отдельную страницу team
     margin-top: 30px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       margin-top: 40px;
     });
   }
 
   &__btn {
     // Использует базовые стили из btn-main
-    // Дополнительные стили для блока team можно добавить здесь при необходимости
   }
 
   &__icon {
+    display: none;
     align-self: flex-start;
-    margin-top: auto; // Прижимает иконку к низу
+    margin-top: auto; // прижимает иконку к низу
 
-    .media(mobile, {
-      display: none;
+    .media-up(@bp-tablet-min, {
+      display: block;
     });
 
     img {
-      width: 87.55px;
-      height: 62.5px;
+      width: 70px;
+      height: 50px;
 
-      .media(mobile, {
-        width: 70px;
-        height: 50px;
+      .media-up(@bp-desktop-min, {
+        width: 87.55px;
+        height: 62.5px;
       });
     }
   }
 
-  &__gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-
-    .media(desktop, {
-      gap: 40px;
-    });
-  }
-
+  &__gallery,
   &__images-secondary {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       gap: 40px;
     });
   }
@@ -178,7 +189,7 @@
     position: relative;
     border-radius: 5px;
     overflow: hidden;
-    background-color: #f5f5f5; // Fallback цвет
+    background-color: #f5f5f5; // fallback
 
     img {
       width: 100%;
@@ -190,7 +201,7 @@
     &--main {
       height: 250px;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         height: 390px;
       });
     }
@@ -198,7 +209,7 @@
     &--secondary {
       display: none;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         display: block;
         height: 150px;
       });
@@ -208,12 +219,12 @@
   &__image-overlay {
     display: none; // временно скрываем пока не сделаем модалку
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
 
-    .media(mobile, {
-      bottom: 20px;
-      right: 20px;
+    .media-up(@bp-tablet-min, {
+      bottom: 30px;
+      right: 30px;
     });
   }
 
@@ -225,16 +236,19 @@
     background-color: rgba(253, 251, 245, 0.9);
     border-radius: 3px;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition:
+      background-color 0.3s ease,
+      transform 0.3s ease;
     backdrop-filter: blur(10px);
+    color: @color-heading;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       gap: 10px;
       padding: 10px 20px;
     });
 
     span {
-      color: #000000;
+      color: currentColor;
       font-family: "Syne", sans-serif;
       font-weight: 500;
       font-size: 11px;
@@ -242,7 +256,7 @@
       white-space: nowrap;
       letter-spacing: 0.05em;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         font-size: 12px;
       });
     }
@@ -250,11 +264,11 @@
     svg {
       width: 10px;
       height: 7.5px;
-      color: #000000;
+      color: currentColor;
       transform: rotate(270deg);
       transition: transform 0.3s ease;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         width: 12px;
         height: 9px;
       });
