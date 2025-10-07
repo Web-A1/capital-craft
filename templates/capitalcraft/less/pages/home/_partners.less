@@ -152,6 +152,7 @@
     filter: grayscale(100%) brightness(0) opacity(0.8);
     transition: filter 0.3s ease;
 
+    &:hover,
     &:active,
     &:focus-visible,
     &.no-filter {
@@ -161,12 +162,6 @@
     &:focus-visible {
       outline: 2px solid @color-accent;
       outline-offset: 4px;
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        filter: none;
-      }
     }
   }
 }
