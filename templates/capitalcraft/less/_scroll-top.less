@@ -1,10 +1,10 @@
 // out: false
 .scroll-top {
   position: fixed;
-  right: calc((100vw - 1300px + 10px) / 2);
-  bottom: 40px;
-  width: 40px;
-  height: 40px;
+  right: @mobile-side-padding;
+  bottom: @gap;
+  width: @scroll-top-size-mobile;
+  height: @scroll-top-size-mobile;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -36,14 +36,18 @@
     animation: pulse 2s infinite;
   }
 
-  .media(tablet, {
-    right: @mobile-side-padding;
-    bottom: 20px;
+  .media-up(@bp-tablet-min, {
+    right: @gap-tablet;
+    bottom: @gap-tablet;
+    width: @scroll-top-size-tablet;
+    height: @scroll-top-size-tablet;
   });
 
-  .media(mobile, {
-    right: @mobile-side-padding;
-    bottom: 20px;
+  .media-up(@bp-desktop-min, {
+    right: @scroll-top-desktop-offset;
+    bottom: @gap-desktop;
+    width: @scroll-top-size-desktop;
+    height: @scroll-top-size-desktop;
   });
 }
 

@@ -31,6 +31,13 @@
 @gap-tablet: 24px;
 @gap-desktop: 30px;
 @gap: @gap-mobile; // alias теперь хранит мобильное значение (mobile-first)
+@scroll-top-size-mobile: 40px;
+@scroll-top-size-tablet: 48px;
+@scroll-top-size-desktop: 56px;
+@scroll-top-desktop-gap: 10px; // дополнительный отступ, заложенный в макете десктопной версии
+@scroll-top-desktop-offset: calc(
+  (100vw - 1300px + @scroll-top-desktop-gap) / 2
+); // вынос кнопки scroll-top за контейнер на десктопе
 @padding-button-mobile: 8px 12px;
 @padding-button-tablet: 9px 16px;
 @padding-button-desktop: 10px 20px;
