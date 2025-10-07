@@ -1,15 +1,8 @@
 // out: false
 
 .hero {
-  padding: @section-padding-mobile 0;
-  display: flex;
-  align-items: center;
+  padding: 80px 0 60px;
   background: none;
-  min-height: 500px;
-
-  .media-up(@bp-tablet-min, {
-    min-height: 600px;
-  });
 
   &__inner {
     max-width: @container-width;
@@ -86,3 +79,17 @@
     });
   }
 }
+
+.media-up(@bp-tablet-min, {
+  .hero {
+    padding: 120px 0 100px;
+    display: flex;
+    align-items: center;
+  }
+});
+
+.media-up(@bp-desktop-min, {
+  .hero {
+    padding: 140px 0 120px;
+  }
+});
