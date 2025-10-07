@@ -21,7 +21,7 @@ body {
   color: @color-text;
   line-height: 1.4;
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     background-color: @color-white;
   });
 }
@@ -33,7 +33,7 @@ html {
   scrollbar-gutter: stable;
   scroll-padding-top: var(--header-height, 76px);
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     background-color: @color-white;
   });
 }
@@ -74,17 +74,17 @@ a {
   max-width: @container-width;
   width: 100%;
   margin: 0 auto;
-  padding: 0 @mobile-side-padding;
+  padding-inline: @mobile-side-padding;
 
-  .media(desktop, {
-    padding: 0;
+  .media-up(@bp-tablet-min, {
+    padding-inline: 0;
   });
 }
 
 .page-wrapper {
   background-color: @color-bg-craft;
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     position: relative;
     background-color: transparent;
     z-index: 0;
@@ -118,7 +118,7 @@ a {
 .frame--header {
   margin-top: 0;
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     margin-top: 20px;
   });
 }
@@ -126,7 +126,7 @@ a {
 .frame--footer {
   margin-bottom: 0;
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     margin-bottom: 30px;
   });
 }
@@ -139,7 +139,8 @@ section,
 .section-with-divider:not(.site-header):not(.hero) {
   scroll-margin-top: var(--header-height, 76px);
   position: relative;
-  padding: @divider-space-mobile 0;
+  padding-block: @divider-space-mobile;
+  padding-inline: 0;
 
   &::after {
     content: "";
@@ -152,8 +153,9 @@ section,
     bottom: 0;
   }
 
-  .media(desktop, {
-    padding: 0;
+  .media-up(@bp-tablet-min, {
+    padding-block: 0;
+    padding-inline: 0;
 
     &::after {
       width: @container-width;
