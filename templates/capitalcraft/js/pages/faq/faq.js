@@ -492,7 +492,22 @@
     });
 
     window.addEventListener("popstate", function () {
-      const alias = new URL(window.location.href).searchParams.get("tag") || "";
+      const alias = (
+        new URL(window.location.href).searchParams.get("tag") || ""
+      ).toLowerCase();
+
+      if (alias === currentTag) {
+        const hasFaqHash =
+          typeof window.location.hash === "string" &&
+          /#faq-q-/i.test(window.location.hash);
+
+        if (hasFaqHash) {
+          openFromHash();
+        }
+
+        return;
+      }
+
       loadFaq(alias, { skipPush: true, force: true });
     });
 
