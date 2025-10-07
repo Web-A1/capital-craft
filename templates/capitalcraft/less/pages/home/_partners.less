@@ -27,15 +27,16 @@
   }
 
   &__title {
-    max-width: 260px;
     text-align: center;
     border: none;
     padding: 0;
 
     .media-up(@bp-tablet-min, {
+      max-width: 260px;
       text-align: left;
       padding-right: 40px;
       border-right: 1px solid @section-divider-color;
+      line-height: 140%;
     });
 
     &-text {
