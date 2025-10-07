@@ -6,9 +6,9 @@
   flex-direction: column;
   gap: 30px;
 
-  .media(desktop, {
-    padding: @section-padding 0;
-    gap: @section-padding;
+  .media-up(@bp-tablet-min, {
+    padding: @section-padding-desktop 0;
+    gap: @section-padding-desktop;
   });
 
   &__wrapper {
@@ -18,11 +18,11 @@
     position: relative;
     min-height: auto;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       flex-direction: row;
       justify-content: space-between;
       align-items: stretch;
-      gap: @gap * 2;
+      gap: (@gap * 2);
       min-height: 560px; // выравнивание высоты блоков
     });
 
@@ -37,7 +37,7 @@
       transform: translateX(-50%);
       display: none;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         display: block;
       });
     }
@@ -50,10 +50,10 @@
     gap: 30px;
     justify-content: flex-start;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       max-width: 585px;
       gap: 40px;
-      justify-content: space-between; // равномерное распределение
+      justify-content: space-between;
     });
   }
 
@@ -63,7 +63,7 @@
     gap: @subtitle-title-gap;
     max-width: 491px;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       gap: @subtitle-title-gap;
     });
   }
@@ -85,7 +85,11 @@
     color: @color-heading;
     margin: 0;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
+      font-size: 34px;
+    });
+
+    .media-up(@bp-desktop-min, {
       font-size: @font-size-title;
     });
 
@@ -104,16 +108,16 @@
       object-fit: contain;
     }
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       display: block;
-      width: 370px;
-      height: 370px;
+      width: 350px;
+      height: 260px;
       flex-shrink: 0;
     });
 
-    .media(tablet, {
-      width: 350px;
-      height: 260px;
+    .media-up(@bp-desktop-min, {
+      width: 370px;
+      height: 370px;
     });
   }
 
@@ -124,7 +128,7 @@
     gap: 30px;
     height: auto;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       max-width: 544px;
       gap: 20px;
       height: 100%;
@@ -137,7 +141,7 @@
     gap: 30px;
     align-items: flex-start;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       gap: 40px;
     });
   }
@@ -154,7 +158,7 @@
       object-fit: contain;
     }
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       width: 70px;
       height: 70px;
     });
@@ -167,7 +171,11 @@
     padding-bottom: 0;
     flex: 1;
 
-    .media(desktop, {
+    .media-down(@bp-mobile-max, {
+      gap: 6px;
+    });
+
+    .media-up(@bp-tablet-min, {
       gap: 13px;
       padding-bottom: 20px;
     });
@@ -182,18 +190,22 @@
     color: @color-heading;
     margin: 0;
 
+    .media-down(@bp-mobile-max, {
+      font-size: 22px;
+    });
+
+    .media-up(@bp-tablet-min, {
+      font-size: 28px;
+    });
+
+    .media-up(@bp-desktop-min, {
+      font-size: 30px;
+    });
+
     p {
       margin: 0;
       line-height: normal;
     }
-
-    .media(desktop, {
-      font-size: 30px;
-
-      @media (max-width: 1023px) {
-        font-size: 28px;
-      }
-    });
   }
 
   &__item-description {
@@ -209,15 +221,14 @@
       line-height: inherit;
     }
 
-    .media(mobile, {
-      // Стили для обрезанного текста (применяются к параграфу)
+    .media-down(@bp-mobile-max, {
       p.truncated {
         overflow: hidden !important;
         display: -webkit-box !important;
         line-clamp: 4 !important; // standard property for newer engines
         -webkit-line-clamp: 4 !important;
         -webkit-box-orient: vertical !important;
-        max-height: calc(1.5em * 4) !important; // 4 строки с line-height 150%
+        max-height: calc(1.5em * 4) !important; // 4 строки
         cursor: pointer !important;
 
         .products__read-more {
@@ -227,7 +238,6 @@
         }
       }
 
-      // Стили для развернутого текста (применяются к параграфу)
       p.expanded {
         overflow: visible !important;
         display: block !important;
@@ -239,7 +249,7 @@
       }
     });
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       text-align: justify;
     });
   }
