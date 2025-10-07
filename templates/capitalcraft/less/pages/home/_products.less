@@ -183,23 +183,15 @@
 
   &__item-title {
     font-family: "Syne", sans-serif;
-    font-size: 24px;
+    font-size: @font-size-base*1.5; //24px
     font-weight: 500;
     line-height: 140%;
     text-transform: uppercase;
     color: @color-heading;
     margin: 0;
 
-    .media-down(@bp-mobile-max, {
-      font-size: 22px;
-    });
-
     .media-up(@bp-tablet-min, {
-      font-size: 28px;
-    });
-
-    .media-up(@bp-desktop-min, {
-      font-size: 30px;
+      font-size: @font-size-base*1.875; //30px
     });
 
     p {
