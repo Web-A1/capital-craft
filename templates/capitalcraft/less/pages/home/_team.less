@@ -1,45 +1,28 @@
 // out: false
 
 .team {
-  padding: @section-padding-mobile 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 30px;
 
-  .media-up(@bp-tablet-min, {
-    padding: @section-padding-desktop 0;
-    gap: @section-padding-desktop;
+  .media(desktop, {
+    padding: @section-padding 0;
+    gap: @section-padding;
   });
 
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: 30px;
-    position: relative;
+    gap: @gap;
+    align-items: flex-start;
 
-    .media-up(@bp-tablet-min, {
+    .media(desktop, {
       flex-direction: row;
       justify-content: flex-start;
       align-items: stretch;
       gap: 0;
-      min-height: 560px; // выравнивание высоты блоков
     });
-
-    &::before {
-      content: "";
-      display: none;
-
-      .media-up(@bp-tablet-min, {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 1px;
-        background: @section-divider-color;
-        transform: translateX(-50%);
-        display: block;
-      });
-    }
   }
 
   &__left {
@@ -47,44 +30,42 @@
     padding-right: 0;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 0;
     position: relative;
 
-    .media-up(@bp-tablet-min, {
-      flex: 0 0 440px;
-      max-width: 440px;
+    .media(desktop, {
+      width: 440px;
       padding-right: 60px;
-      gap: 0;
     });
   }
 
   &__right {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     width: 100%;
+    flex-shrink: 0;
     margin-left: 0;
     position: relative;
 
-    .media-up(@bp-tablet-min, {
-      flex: 1 1 670px;
-      max-width: 670px;
+    .media(desktop, {
+      width: 670px;
       gap: 40px;
-      margin-left: 60px; // отступ слева от линии
+      margin-left: 60px; // Отступ слева от линии
     });
 
     &::before {
       content: "";
-      display: none;
+      position: absolute;
+      top: 0;
+      left: -60px;
+      width: 1px;
+      height: 100%;
+      background-color: #000000;
       pointer-events: none;
+      display: none;
 
-      .media-up(@bp-tablet-min, {
-        position: absolute;
-        top: 0;
-        left: -60px;
-        width: 1px;
-        height: 100%;
-        background-color: @color-heading;
+      .media(desktop, {
         display: block;
       });
     }
@@ -94,6 +75,7 @@
     display: flex;
     flex-direction: column;
     gap: @subtitle-title-gap;
+    position: relative;
     margin-bottom: @title-desc-margin;
   }
 
@@ -103,33 +85,28 @@
 
   &__title {
     font-family: @font-title;
-    font-size: @font-size-title-mobile;
+    font-size: @font-size-title;
     font-weight: 600;
-    line-height: 120%;
+    line-height: 110%;
     color: @color-heading;
     margin: 0;
 
-    .media-up(@bp-tablet-min, {
-      font-size: 34px;
-      line-height: 110%;
-    });
-
-    .media-up(@bp-desktop-min, {
-      font-size: @font-size-title;
+    .media(mobile, {
+      font-size: @font-size-title-mobile;
+      line-height: 120%;
     });
   }
 
   &__desc {
     font-family: @font-body;
     font-size: @font-size-text;
-    line-height: 150%;
+    line-height: 140%;
     color: @color-text;
-    text-align: left;
+    text-align: justify;
     margin: 0;
 
-    .media-up(@bp-tablet-min, {
-      line-height: 140%;
-      text-align: justify;
+    .media(mobile, {
+      text-align: left;
     });
 
     p {
@@ -145,42 +122,46 @@
     display: none; // временно скрываем пока не сделаем отдельную страницу team
     margin-top: 30px;
 
-    .media-up(@bp-tablet-min, {
+    .media(desktop, {
       margin-top: 40px;
     });
   }
 
-  &__btn {
-    // Использует базовые стили из btn-main
-  }
-
   &__icon {
-    display: none;
     align-self: flex-start;
-    margin-top: auto; // прижимает иконку к низу
+    margin-top: auto; // Прижимает иконку к низу
 
-    .media-up(@bp-tablet-min, {
-      display: block;
+    .media(mobile, {
+      display: none;
     });
 
     img {
-      width: 70px;
-      height: 50px;
+      width: 87.55px;
+      height: 62.5px;
 
-      .media-up(@bp-desktop-min, {
-        width: 87.55px;
-        height: 62.5px;
+      .media(mobile, {
+        width: 70px;
+        height: 50px;
       });
     }
   }
 
-  &__gallery,
+  &__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .media(desktop, {
+      gap: 40px;
+    });
+  }
+
   &__images-secondary {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
-    .media-up(@bp-tablet-min, {
+    .media(desktop, {
       gap: 40px;
     });
   }
@@ -189,7 +170,7 @@
     position: relative;
     border-radius: 5px;
     overflow: hidden;
-    background-color: #f5f5f5; // fallback
+    background-color: #f5f5f5; // Fallback цвет
 
     img {
       width: 100%;
@@ -201,7 +182,7 @@
     &--main {
       height: 250px;
 
-      .media-up(@bp-tablet-min, {
+      .media(desktop, {
         height: 390px;
       });
     }
@@ -209,7 +190,7 @@
     &--secondary {
       display: none;
 
-      .media-up(@bp-tablet-min, {
+      .media(desktop, {
         display: block;
         height: 150px;
       });
@@ -219,12 +200,12 @@
   &__image-overlay {
     display: none; // временно скрываем пока не сделаем модалку
     position: absolute;
-    bottom: 20px;
-    right: 20px;
+    bottom: 30px;
+    right: 30px;
 
-    .media-up(@bp-tablet-min, {
-      bottom: 30px;
-      right: 30px;
+    .media(mobile, {
+      bottom: 20px;
+      right: 20px;
     });
   }
 
@@ -236,19 +217,16 @@
     background-color: rgba(253, 251, 245, 0.9);
     border-radius: 3px;
     text-decoration: none;
-    transition:
-      background-color 0.3s ease,
-      transform 0.3s ease;
+    transition: all 0.3s ease;
     backdrop-filter: blur(10px);
-    color: @color-heading;
 
-    .media-up(@bp-tablet-min, {
+    .media(desktop, {
       gap: 10px;
       padding: 10px 20px;
     });
 
     span {
-      color: currentColor;
+      color: #000000;
       font-family: "Syne", sans-serif;
       font-weight: 500;
       font-size: 11px;
@@ -256,7 +234,7 @@
       white-space: nowrap;
       letter-spacing: 0.05em;
 
-      .media-up(@bp-tablet-min, {
+      .media(desktop, {
         font-size: 12px;
       });
     }
@@ -264,11 +242,11 @@
     svg {
       width: 10px;
       height: 7.5px;
-      color: currentColor;
+      color: #000000;
       transform: rotate(270deg);
       transition: transform 0.3s ease;
 
-      .media-up(@bp-tablet-min, {
+      .media(desktop, {
         width: 12px;
         height: 9px;
       });
