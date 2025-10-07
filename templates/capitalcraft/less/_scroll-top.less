@@ -3,8 +3,8 @@
   position: fixed;
   right: @mobile-side-padding;
   bottom: @gap;
-  width: @scroll-top-size-mobile;
-  height: @scroll-top-size-mobile;
+  width: @scroll-top-size;
+  height: @scroll-top-size;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -39,15 +39,11 @@
   .media-up(@bp-tablet-min, {
     right: @gap-tablet;
     bottom: @gap-tablet;
-    width: @scroll-top-size-tablet;
-    height: @scroll-top-size-tablet;
   });
 
   .media-up(@bp-desktop-min, {
     right: @scroll-top-desktop-offset;
     bottom: @gap-desktop;
-    width: @scroll-top-size-desktop;
-    height: @scroll-top-size-desktop;
   });
 }
 
