@@ -4,6 +4,7 @@ export const initScrollTop = () => {
   const btn = document.querySelector(".scroll-top");
   if (!btn) return;
 
+<<<<<<< ours
   let animationFrameId = null;
   const prefersReducedMotion = window.matchMedia?.(
     "(prefers-reduced-motion: reduce)"
@@ -47,6 +48,8 @@ export const initScrollTop = () => {
     animationFrameId = requestAnimationFrame(step);
   };
 
+=======
+>>>>>>> theirs
   const toggleVisibility = () => {
     if (window.scrollY > 300) {
       btn.classList.add("visible");
@@ -57,7 +60,7 @@ export const initScrollTop = () => {
 
   btn.addEventListener("click", e => {
     e.preventDefault();
-    scrollToTopFast();
+    window.scrollTo(0, 0);
   });
 
   window.addEventListener("scroll", toggleVisibility, { passive: true });
