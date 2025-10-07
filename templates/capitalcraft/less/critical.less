@@ -170,15 +170,7 @@ section,
 }
 
 .section-with-divider.hero {
-  padding-block: @hero-padding-top-mobile;
-
-  .media-up(@bp-tablet-min, {
-    padding-block: @hero-padding-top-tablet @hero-padding-bottom-tablet;
-  });
-
-  .media-up(@bp-desktop-min, {
-    padding-block: @hero-padding-top-desktop @hero-padding-bottom-desktop;
-  });
+  .hero-section-spacing();
 }
 
 .btn-main {

@@ -1,7 +1,7 @@
 // out: false
 
 .hero {
-  padding-block: @hero-padding-top-mobile @hero-padding-bottom-mobile;
+  .hero-section-spacing();
   padding-inline: 0;
   background: none;
   position: relative;
@@ -81,12 +81,7 @@
   }
 
   .media-up(@bp-tablet-min, {
-    padding-block: @hero-padding-top-tablet @hero-padding-bottom-tablet;
     display: flex;
     align-items: center;
-  });
-
-  .media-up(@bp-desktop-min, {
-    padding-block: @hero-padding-top-desktop @hero-padding-bottom-desktop;
   });
 }
