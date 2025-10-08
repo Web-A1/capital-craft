@@ -385,9 +385,41 @@ export const initBurger = () => {
     return scrollToHashWithCompensation(window.location.hash, { behavior });
   };
 
+  const shouldHandleInitialHash = hasUsableHash(window.location.hash);
+  let initialHashNavigationHandled = false;
+  let ensureInitialHashAlignment = null;
+
+  /**
+   * Для переходов по якорям с других страниц мы не знаем точную высоту
+   * хедера в момент первого вызова. Поэтому делаем повторные попытки
+   * до тех пор, пока событие `cc:header-height-change` не сообщит
+   * измеренную высоту. Так гарантируем, что итоговое смещение секции
+   * останется ровно под фиксированной шапкой.
+   */
+  const attemptInitialHashNavigation = ({ behavior = "auto" } = {}) => {
+    if (!shouldHandleInitialHash || initialHashNavigationHandled) {
+      return false;
+    }
+
+    const handled = handleCurrentHashNavigation({ behavior });
+
+    if (handled) {
+      initialHashNavigationHandled = true;
+
+      if (typeof ensureInitialHashAlignment === "function") {
+        window.removeEventListener(
+          "cc:header-height-change",
+          ensureInitialHashAlignment
+        );
+      }
+    }
+
+    return handled;
+  };
+
   const scheduleInitialHashNavigation = () => {
     const invoke = () => {
-      handleCurrentHashNavigation({ behavior: "auto" });
+      attemptInitialHashNavigation({ behavior: "auto" });
     };
 
     if (typeof window.requestAnimationFrame === "function") {
@@ -397,7 +429,17 @@ export const initBurger = () => {
     }
   };
 
-  if (hasUsableHash(window.location.hash)) {
+  if (shouldHandleInitialHash) {
+    // Ловим обновления высоты шапки и перезапускаем выравнивание,
+    // чтобы компенсировать момент, когда контент ещё перестраивается.
+    ensureInitialHashAlignment = () => {
+      if (initialHashNavigationHandled) {
+        return;
+      }
+
+      attemptInitialHashNavigation({ behavior: "auto" });
+    };
+
     if (document.readyState === "loading") {
       document.addEventListener(
         "DOMContentLoaded",
@@ -409,6 +451,14 @@ export const initBurger = () => {
     } else {
       scheduleInitialHashNavigation();
     }
+
+    window.addEventListener("load", ensureInitialHashAlignment, { once: true });
+
+    window.addEventListener(
+      "cc:header-height-change",
+      ensureInitialHashAlignment,
+      { passive: true }
+    );
   }
 
   window.addEventListener("hashchange", () => {
