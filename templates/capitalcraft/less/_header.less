@@ -441,7 +441,7 @@ body.menu-open .mobile-nav {
     // Анимируем height, max-height и opacity
     
     &__menu {
-      padding: 0 20px; // упрощенные отступы
+      padding: 0 @mobile-side-padding; // упрощенные отступы
     }
     
     .mod-menu li {
@@ -467,5 +467,18 @@ body.menu-open .mobile-nav {
   .mobile-nav__close,
   .btn.btn--primary {
     transition: none;
+  }
+
+  body.menu-open .mobile-nav {
+    transition: none;
+  }
+
+  .mobile-nav .mod-menu li {
+    transition: none;
+    transition-delay: 0s;
+  }
+
+  body.menu-open .mobile-nav .mod-menu li {
+    transition-delay: 0s;
   }
 }

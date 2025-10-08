@@ -33,6 +33,17 @@
     }
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    svg {
+      transition: none;
+    }
+
+    &:hover svg {
+      animation: none;
+      transform: none;
+    }
+  }
+
   .media-up(@bp-tablet-min, {
     .btn-arrow(24px, 24px);
   });

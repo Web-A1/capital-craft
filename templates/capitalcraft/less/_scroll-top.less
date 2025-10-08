@@ -14,6 +14,7 @@
   backdrop-filter: blur(5px);
   color: @color-heading;
   cursor: pointer;
+  touch-action: manipulation;
   visibility: hidden;
   opacity: 0;
   transition:
@@ -51,5 +52,15 @@
   }
   100% {
     box-shadow: 0 0 0 0 fade(@color-heading, 0%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-top {
+    transition: none;
+
+    &.visible {
+      animation: none;
+    }
   }
 }
