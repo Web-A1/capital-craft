@@ -11,6 +11,16 @@ window.IMask = IMask;
 
 const header = document.querySelector(".site-header");
 
+const hasUsableHash = hash => {
+  if (typeof hash !== "string") {
+    return false;
+  }
+
+  const trimmed = hash.trim();
+
+  return trimmed.length > 1 && trimmed !== "#";
+};
+
 const initHeaderHeightObserver = headerElement => {
   if (!headerElement) return;
 
@@ -146,6 +156,7 @@ if (header) {
   let mobileHideThreshold = resolveHeaderHeight();
   let lastScrollY = window.pageYOffset;
   let frozen = false;
+  let autoHideSuspended = false;
 
   const clampScrollY = value => {
     if (!Number.isFinite(value)) {
@@ -173,6 +184,33 @@ if (header) {
     return lastScrollY;
   };
 
+  const enforcePinnedState = scrollY => {
+    header.classList.remove("unpinned");
+    header.classList.add("pinned");
+
+    if (Number.isFinite(scrollY)) {
+      syncLastScrollY(scrollY);
+    }
+  };
+
+  const suspendAutoHide = (options = {}) => {
+    const { scrollY } = options;
+
+    autoHideSuspended = true;
+    enforcePinnedState(
+      Number.isFinite(scrollY) ? scrollY : clampScrollY(window.pageYOffset)
+    );
+  };
+
+  const resumeAutoHide = (options = {}) => {
+    const { scrollY } = options;
+
+    autoHideSuspended = false;
+    syncLastScrollY(
+      Number.isFinite(scrollY) ? scrollY : clampScrollY(window.pageYOffset)
+    );
+  };
+
   const updateMobileHideThreshold = newHeight => {
     mobileHideThreshold = resolveHeaderHeight(newHeight);
   };
@@ -198,6 +236,11 @@ if (header) {
   const onScroll = () => {
     if (frozen) return;
     const currentScrollY = clampScrollY(window.pageYOffset);
+
+    if (autoHideSuspended) {
+      enforcePinnedState(currentScrollY);
+      return;
+    }
 
     if (isMobileViewport && currentScrollY <= mobileHideThreshold) {
       header.classList.remove("unpinned");
@@ -271,8 +314,21 @@ if (header) {
       header.classList.remove("unpinned");
       header.classList.add("pinned");
       syncLastScrollY(Number.isFinite(scrollY) ? scrollY : window.pageYOffset);
+    },
+    suspendAutoHide(options = {}) {
+      suspendAutoHide(options);
+    },
+    resumeAutoHide(options = {}) {
+      resumeAutoHide(options);
+    },
+    isAutoHideSuspended() {
+      return autoHideSuspended;
     }
   };
+
+  if (isMobileViewport && hasUsableHash(window.location.hash)) {
+    suspendAutoHide({ scrollY: window.pageYOffset });
+  }
 
   dispatchHeaderControlReady(window.headerControl);
 }
