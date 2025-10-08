@@ -11,6 +11,42 @@ window.IMask = IMask;
 
 const header = document.querySelector(".site-header");
 
+const restoreScrollRestoration = (() => {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+
+  const { history } = window;
+
+  if (!history || typeof history.scrollRestoration === "undefined") {
+    return () => {};
+  }
+
+  const previousMode = history.scrollRestoration;
+
+  if (previousMode !== "manual") {
+    try {
+      history.scrollRestoration = "manual";
+    } catch (error) {
+      return () => {};
+    }
+
+    const restore = () => {
+      try {
+        history.scrollRestoration = previousMode || "auto";
+      } catch (error) {
+        /* noop */
+      }
+    };
+
+    window.addEventListener("beforeunload", restore, { once: true });
+
+    return restore;
+  }
+
+  return () => {};
+})();
+
 const hasUsableHash = hash => {
   if (typeof hash !== "string") {
     return false;
@@ -157,6 +193,34 @@ if (header) {
   let lastScrollY = window.pageYOffset;
   let frozen = false;
   let autoHideSuspended = false;
+  let autoHideReady = true;
+
+  const shouldDeferAutoHide =
+    isMobileViewport && hasUsableHash(window.location.hash);
+
+  const initializingClass = "is-header-initializing";
+
+  if (shouldDeferAutoHide) {
+    autoHideReady = false;
+
+    try {
+      window.scrollTo(0, 0);
+    } catch (error) {
+      document.documentElement.scrollTop = 0;
+    }
+
+    root.classList.add(initializingClass);
+  }
+
+  const flagInitializing = () => {
+    if (!root.classList.contains(initializingClass)) {
+      root.classList.add(initializingClass);
+    }
+  };
+
+  const clearInitializing = () => {
+    root.classList.remove(initializingClass);
+  };
 
   const clampScrollY = value => {
     if (!Number.isFinite(value)) {
@@ -197,6 +261,7 @@ if (header) {
     const { scrollY } = options;
 
     autoHideSuspended = true;
+    flagInitializing();
     enforcePinnedState(
       Number.isFinite(scrollY) ? scrollY : clampScrollY(window.pageYOffset)
     );
@@ -206,6 +271,8 @@ if (header) {
     const { scrollY } = options;
 
     autoHideSuspended = false;
+    autoHideReady = true;
+    clearInitializing();
     syncLastScrollY(
       Number.isFinite(scrollY) ? scrollY : clampScrollY(window.pageYOffset)
     );
@@ -233,9 +300,17 @@ if (header) {
   window.addEventListener("cc:header-height-change", onHeaderHeightChange);
   window.addEventListener("resize", onResize, { passive: true });
 
-  const onScroll = () => {
+  let scrollScheduled = false;
+
+  const evaluateScroll = () => {
+    scrollScheduled = false;
     if (frozen) return;
     const currentScrollY = clampScrollY(window.pageYOffset);
+
+    if (!autoHideReady) {
+      enforcePinnedState(currentScrollY);
+      return;
+    }
 
     if (autoHideSuspended) {
       enforcePinnedState(currentScrollY);
@@ -269,6 +344,22 @@ if (header) {
 
     syncLastScrollY(currentScrollY);
   };
+
+  const onScroll = () => {
+    if (!scrollScheduled) {
+      scrollScheduled = true;
+
+      if (typeof window.requestAnimationFrame === "function") {
+        window.requestAnimationFrame(evaluateScroll);
+      } else {
+        evaluateScroll();
+      }
+    }
+  };
+
+  if (shouldDeferAutoHide) {
+    suspendAutoHide({ scrollY: window.pageYOffset });
+  }
 
   window.addEventListener("scroll", onScroll, { passive: true });
 
@@ -326,9 +417,15 @@ if (header) {
     }
   };
 
-  if (isMobileViewport && hasUsableHash(window.location.hash)) {
-    suspendAutoHide({ scrollY: window.pageYOffset });
-  }
-
   dispatchHeaderControlReady(window.headerControl);
 }
+
+window.addEventListener(
+  "pageshow",
+  () => {
+    if (typeof restoreScrollRestoration === "function") {
+      restoreScrollRestoration();
+    }
+  },
+  { once: true }
+);
