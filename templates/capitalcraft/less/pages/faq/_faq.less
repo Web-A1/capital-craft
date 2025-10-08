@@ -1,9 +1,9 @@
 // out: false
 
 .faq {
-  padding-bottom: @section-padding;
-  .media-up(@bp-tablet-min, { padding-bottom: @section-padding-tablet; });
-  .media-up(@bp-desktop-min, { padding-bottom: @section-padding-desktop; });
+  padding-bottom: @spacing-3xl;
+  .media-up(@bp-tablet-min, { padding-bottom: @spacing-4xl; });
+  .media-up(@bp-desktop-min, { padding-bottom: @spacing-5xl; });
   // Mobile: rely on global .section-with-divider spacing for footer gap
   .media(mobile, { padding-bottom: 0; });
 
@@ -20,15 +20,15 @@
     width: 100%;
     margin: 0 auto;
     display: flex;
-    gap: @section-padding;
+    gap: @spacing-3xl;
     justify-content: space-between;
 
     .media-up(@bp-tablet-min, {
-      gap: @section-padding-tablet;
+      gap: @spacing-4xl;
     });
 
     .media-up(@bp-desktop-min, {
-      gap: @section-padding-desktop;
+      gap: @spacing-5xl;
     });
 
     .media(mobile, {

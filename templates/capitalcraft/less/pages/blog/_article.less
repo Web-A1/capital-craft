@@ -3,9 +3,9 @@
 // Styles affecting single article page when blog.css is loaded
 .com-content-article.item-page {
   padding-top: 0;
-  padding-bottom: @section-padding;
-  .media-up(@bp-tablet-min, { padding-bottom: @section-padding-tablet; });
-  .media-up(@bp-desktop-min, { padding-bottom: @section-padding-desktop; });
+  padding-bottom: @spacing-3xl;
+  .media-up(@bp-tablet-min, { padding-bottom: @spacing-4xl; });
+  .media-up(@bp-desktop-min, { padding-bottom: @spacing-5xl; });
 
   // Mobile: avoid double bottom space with section divider padding
   .media(mobile, { padding-bottom: 0; });

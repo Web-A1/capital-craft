@@ -3,7 +3,7 @@
   width: 100%;
   margin: 0 auto 20px;
   padding: 0;
-  padding-top: @section-padding;
+  padding-top: @spacing-3xl;
 
   .media-up(@bp-tablet-min, {
     padding-top: 0;
@@ -29,13 +29,13 @@
     .media-up(@bp-tablet-min, {
       flex-direction: row;
       align-items: flex-start;
-      gap: @gap-tablet * 1.66;
-      padding: @section-padding-tablet 0;
+      gap: @spacing-xl * 1.66;
+      padding: @spacing-4xl 0;
     });
 
     .media-up(@bp-desktop-min, {
-      gap: @gap-desktop * 2;
-      padding: @section-padding-desktop 0;
+      gap: @spacing-2xl * 2;
+      padding: @spacing-5xl 0;
     });
   }
 
@@ -142,7 +142,7 @@
       position: relative;
       grid-template-columns: minmax(140px, 165px) minmax(240px, 1fr) minmax(180px, auto);
       grid-template-areas: "navigation contacts messengers";
-      gap: @gap-tablet * 2.5;
+      gap: @spacing-xl * 2.5;
       width: 100%;
       max-width: 743px;
       padding-left: 40px;
@@ -163,7 +163,7 @@
     });
 
     .media-up(@bp-desktop-min, {
-      gap: 60px;
+      gap: @spacing-5xl;
     });
   }
 

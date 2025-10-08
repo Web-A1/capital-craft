@@ -2,9 +2,9 @@
 
 .blog-tags {
   // Align vertical rhythm with main blog page: no top padding, only bottom
-  padding: 0 0 @section-padding;
-  .media-up(@bp-tablet-min, { padding: 0 0 @section-padding-tablet; });
-  .media-up(@bp-desktop-min, { padding: 0 0 @section-padding-desktop; });
+  padding: 0 0 @spacing-3xl;
+  .media-up(@bp-tablet-min, { padding: 0 0 @spacing-4xl; });
+  .media-up(@bp-desktop-min, { padding: 0 0 @spacing-5xl; });
   // Mobile: rely on global .section-with-divider spacing (30/line/30)
   .media(mobile, { padding: 0; });
 
@@ -15,9 +15,9 @@
   }
 
   &__others {
-    margin-top: @section-padding;
-    .media-up(@bp-tablet-min, { margin-top: @section-padding-tablet; });
-    .media-up(@bp-desktop-min, { margin-top: @section-padding-desktop; });
+    margin-top: @spacing-3xl;
+    .media-up(@bp-tablet-min, { margin-top: @spacing-4xl; });
+    .media-up(@bp-desktop-min, { margin-top: @spacing-5xl; });
     .media(mobile, { margin-top: @divider-space-mobile; });
   }
 

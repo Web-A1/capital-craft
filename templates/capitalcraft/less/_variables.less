@@ -24,31 +24,30 @@
 
 // Размеры
 @container-width: 1170px;
-// Alias-переменные ниже следуют mobile-first подходу:
-// базовый @*-alias использует мобильное значение, а расширения
-// для планшетов и десктопов подключаются через media-up с @*-tablet/@*-desktop.
-@gap-mobile: 20px;
-@gap-tablet: 24px;
-@gap-desktop: 30px;
-@gap: @gap-mobile; // alias теперь хранит мобильное значение (mobile-first)
+
+// Шкала отступов (mobile first)
+@spacing-xs: 8px;
+@spacing-sm: 12px;
+@spacing-md: 16px;
+@spacing-lg: 20px;
+@spacing-xl: 24px;
+@spacing-2xl: 30px;
+@spacing-3xl: 40px;
+@spacing-4xl: 50px;
+@spacing-5xl: 60px;
+@spacing-6xl: 75px;
+@spacing-7xl: 80px;
+
 @scroll-top-size: 40px;
 @scroll-top-desktop-gap: 10px; // дополнительный отступ, заложенный в макете десктопной версии
-@scroll-top-desktop-bottom: @section-padding-desktop; // выравниваем нижний край кнопки с юридическими ссылками в футере
+@scroll-top-desktop-bottom: @spacing-5xl; // выравниваем нижний край кнопки с юридическими ссылками в футере
 @scroll-top-desktop-offset: calc(
   (100vw - 1300px + @scroll-top-desktop-gap) / 2
 ); // вынос кнопки scroll-top за контейнер на десктопе
-@padding-button-mobile: 8px 12px;
-@padding-button-tablet: 9px 16px;
-@padding-button-desktop: 10px 20px;
-@padding-button: @padding-button-mobile; // alias теперь хранит мобильное значение (mobile-first)
-@section-padding-mobile: @divider-space-mobile;
-@section-padding-tablet: 50px;
-@section-padding-desktop: 60px;
-@section-padding: @section-padding-mobile; // alias теперь хранит мобильное значение (mobile-first)
-@hero-padding-mobile: @section-padding-mobile * 2;
-@hero-padding-tablet: @section-padding-tablet * 1.5;
-@hero-padding-desktop: @section-padding-desktop * 1.25;
-@hero-padding: @hero-padding-mobile; // alias теперь хранит мобильное значение (mobile-first)
+
+@hero-padding-mobile: @spacing-7xl;
+@hero-padding-tablet: @spacing-6xl;
+@hero-padding-desktop: @spacing-6xl;
 
 .hero-section-spacing() {
   padding-block: @hero-padding-mobile;
@@ -195,7 +194,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: @padding-button-mobile;
+  padding: @spacing-xs @spacing-sm;
   border-radius: @radius;
   border: 1px solid transparent;
   background-color: @color;
@@ -236,14 +235,14 @@
   }
 
   .media-up(@bp-tablet-min, {
-    padding: @padding-button-tablet;
+    padding: (@spacing-xs + 1px) @spacing-md;
     font-size: @font-size;
     font-weight: 400;
     height: auto;
   });
 
   .media-up(@bp-desktop-min, {
-    padding: @padding-button-desktop;
+    padding: (@spacing-xs + 2px) @spacing-lg;
   });
 
   // States

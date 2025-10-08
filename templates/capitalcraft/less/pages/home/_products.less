@@ -1,37 +1,37 @@
 // out: false
 
 .products {
-  padding: @section-padding 0;
+  padding: @spacing-3xl 0;
   display: flex;
   flex-direction: column;
-  gap: @gap;
+  gap: @spacing-lg;
 
   .media-up(@bp-tablet-min, {
-    padding: @section-padding-tablet 0;
-    gap: @section-padding-tablet;
+    padding: @spacing-4xl 0;
+    gap: @spacing-4xl;
   });
 
   .media-up(@bp-desktop-min, {
-    padding: @section-padding-desktop 0;
-    gap: @section-padding-desktop;
+    padding: @spacing-5xl 0;
+    gap: @spacing-5xl;
   });
 
   &__wrapper {
     display: flex;
     flex-direction: column;
-    gap: @gap;
+    gap: @spacing-lg;
     position: relative;
 
     .media-up(@bp-tablet-min, {
       flex-direction: row;
       justify-content: space-between;
       align-items: stretch;
-      gap: (@gap-tablet * 2);
+      gap: (@spacing-xl * 2);
       min-height: 560px; // выравнивание высоты блоков
     });
 
     .media-up(@bp-desktop-min, {
-      gap: (@gap-desktop * 2);
+      gap: (@spacing-2xl * 2);
     });
 
     &::before {
@@ -55,18 +55,18 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: @gap;
+    gap: @spacing-lg;
     justify-content: flex-start;
 
     .media-up(@bp-tablet-min, {
       flex: 0 0 585px;
       max-width: 585px;
-      gap: @gap-tablet * 1.75;
+      gap: @spacing-xl * 1.75;
       justify-content: space-between;
     });
 
     .media-up(@bp-desktop-min, {
-      gap: 40px;
+      gap: @spacing-3xl;
     });
   }
 
@@ -134,13 +134,13 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: @gap;
+    gap: @spacing-lg;
     height: auto;
 
     .media-up(@bp-tablet-min, {
       flex: 1 1 544px;
       max-width: 544px;
-      gap: @gap-tablet;
+      gap: @spacing-xl;
       height: 100%;
     });
 
@@ -152,15 +152,15 @@
   &__item {
     display: flex;
     flex-direction: row;
-    gap: @gap;
+    gap: @spacing-lg;
     align-items: flex-start;
 
     .media-up(@bp-tablet-min, {
-      gap: @gap-tablet * 1.66;
+      gap: @spacing-xl * 1.66;
     });
 
     .media-up(@bp-desktop-min, {
-      gap: 40px;
+      gap: @spacing-3xl;
     });
   }
 

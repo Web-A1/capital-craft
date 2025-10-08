@@ -14,17 +14,17 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: @gap;
+    gap: @spacing-lg;
 
     .media-up(@bp-tablet-min, {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      gap: @gap-tablet;
+      gap: @spacing-xl;
     });
 
     .media-up(@bp-desktop-min, {
-      gap: @gap-desktop;
+      gap: @spacing-2xl;
     });
   }
 
@@ -32,15 +32,15 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: @gap;
+    gap: @spacing-lg;
 
     .media-up(@bp-tablet-min, {
       max-width: 500px;
-      gap: @gap-tablet * 1.33;
+      gap: @spacing-xl * 1.33;
     });
 
     .media-up(@bp-desktop-min, {
-      gap: @gap-desktop * 1.33;
+      gap: @spacing-2xl * 1.33;
     });
   }
 

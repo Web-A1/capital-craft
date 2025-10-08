@@ -1,16 +1,16 @@
 // out: false
 
 .partners {
-  padding-block: @section-padding;
+  padding-block: @spacing-3xl;
   position: relative;
   width: 100%;
 
   .media-up(@bp-tablet-min, {
-    padding-block: @section-padding-tablet;
+    padding-block: @spacing-4xl;
   });
 
   .media-up(@bp-desktop-min, {
-    padding-block: @section-padding-desktop;
+    padding-block: @spacing-5xl;
   });
 
   &__inner {
@@ -42,7 +42,7 @@
       inline-size: 260px;
       flex: 0 0 260px;
       text-align: left;
-      padding-inline-end: 40px;
+      padding-inline-end: @spacing-3xl;
       border-inline-end: 1px solid @section-divider-color;
     });
 
