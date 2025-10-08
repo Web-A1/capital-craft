@@ -40,7 +40,7 @@
     text-decoration: none;
     color: inherit;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       gap: 12px;
     });
   }
@@ -59,7 +59,7 @@
     color: @color-text;
     transition: color 0.2s ease;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: (@font-size-base * 1.125);
     });
   }
@@ -94,7 +94,7 @@
     overflow-wrap: anywhere;
     hyphens: auto;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: @font-size-sub;
     });
   }
@@ -111,7 +111,7 @@
     }
   }
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     .card-paper-desktop();
     transition:
       transform 0.2s ease,

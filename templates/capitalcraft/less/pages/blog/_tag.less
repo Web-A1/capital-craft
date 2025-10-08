@@ -6,7 +6,7 @@
   .media-up(@bp-tablet-min, { padding: 0 0 @spacing-4xl; });
   .media-up(@bp-desktop-min, { padding: 0 0 @spacing-5xl; });
   // Mobile: rely on global .section-with-divider spacing (30/line/30)
-  .media(mobile, { padding: 0; });
+  .media-down(@bp-mobile-max, { padding: 0; });
 
   // Use the same spacing as general blog list
   .blog-list {
@@ -18,7 +18,7 @@
     margin-top: @spacing-3xl;
     .media-up(@bp-tablet-min, { margin-top: @spacing-4xl; });
     .media-up(@bp-desktop-min, { margin-top: @spacing-5xl; });
-    .media(mobile, { margin-top: @divider-space-mobile; });
+    .media-down(@bp-mobile-max, { margin-top: @divider-space-mobile; });
   }
 
   &__cloud {
@@ -42,5 +42,5 @@
 
 // Mobile: remove global top padding on tag listing section
 .blog-tags.frame.section-with-divider {
-  .media(mobile, { padding-top: 0; });
+  .media-down(@bp-mobile-max, { padding-top: 0; });
 }

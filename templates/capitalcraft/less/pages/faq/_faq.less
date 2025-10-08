@@ -5,12 +5,12 @@
   .media-up(@bp-tablet-min, { padding-bottom: @spacing-4xl; });
   .media-up(@bp-desktop-min, { padding-bottom: @spacing-5xl; });
   // Mobile: rely on global .section-with-divider spacing for footer gap
-  .media(mobile, { padding-bottom: 0; });
+  .media-down(@bp-mobile-max, { padding-bottom: 0; });
 
   // Mobile override for this section when used with frame + section-with-divider:
   // remove the 30px top padding added globally, keeping bottom at 30px
   &.frame.section-with-divider {
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       padding-top: 0;
     });
   }
@@ -31,7 +31,7 @@
       gap: @spacing-5xl;
     });
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       padding: 0 @mobile-side-padding;
       flex-direction: column;
       gap: 0;
@@ -58,7 +58,7 @@
     flex-wrap: wrap;
   }
   .faq-tags__cloud--nowrap .faq-tags__link {
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       display: inline-block;
       padding: 8px 12px;
     });
@@ -90,7 +90,7 @@
     font-weight: 600;
     line-height: 110%;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: @font-size-title-mobile;
     });
   }
@@ -101,7 +101,7 @@
     border-radius: @radius;
     box-shadow: 0 2px 8px fade(@color-heading, 10%);
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       flex-basis: 100%;
     });
   }
@@ -115,7 +115,7 @@
     column-gap: 20px;
     align-items: start;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       display: block;
     });
   }
@@ -140,7 +140,7 @@
     grid-column: 1 / 2;
     grid-row: 1;
     // На мобильных добавляем плюс как псевдоэлемент и даём место справа
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       padding-right: 28px; // место под плюс справа
       position: relative;
       &::after {
@@ -185,7 +185,7 @@
     grid-row: 1;
     justify-self: end;
     align-self: start;
-    .media(mobile, { display: none; }); // скрываем тег у вопроса на мобильных
+    .media-down(@bp-mobile-max, { display: none; }); // скрываем тег у вопроса на мобильных
   }
 
   // Раскрытие управляется штатным faq.js — padding задаём соседним селектором
@@ -294,11 +294,11 @@
       border-radius: @radius;
     }
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       display: none;
     });
   }
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     &__accordion {
       .card-paper-desktop();
       padding: 0 20px;

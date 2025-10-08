@@ -8,7 +8,7 @@
   .media-up(@bp-desktop-min, { padding-bottom: @spacing-5xl; });
 
   // Mobile: avoid double bottom space with section divider padding
-  .media(mobile, { padding-bottom: 0; });
+  .media-down(@bp-mobile-max, { padding-bottom: 0; });
 
   .page-header {
     max-width: 700px;
@@ -21,7 +21,7 @@
       font-weight: 600;
       line-height: 110%;
       color: @color-heading;
-      .media(mobile, { font-size: @font-size-title-mobile; });
+      .media-down(@bp-mobile-max, { font-size: @font-size-title-mobile; });
     }
   }
 
@@ -56,7 +56,7 @@
       //-ms-hyphens: auto;
       //hyphens: auto;
 
-      .media(mobile, { 
+      .media-down(@bp-mobile-max, { 
         text-align: left; 
         //hyphens: none;
       });
@@ -110,7 +110,7 @@
         margin-top: 0;
       }
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         margin: 1.25em 0 0.5em 0;
 
         &:first-child {
@@ -130,7 +130,7 @@
         margin-top: 0;
       }
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         margin: 1em 0 0.4em 0;
 
         &:first-child {
@@ -151,7 +151,7 @@
     align-items: stretch;
     margin-top: 20px;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       grid-template-columns: 1fr;
       gap: 40px;
     });
@@ -161,7 +161,7 @@
     max-width: none;
     min-height: 900px;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       min-height: auto;
       padding-top: 0;
     });
@@ -176,7 +176,7 @@
     overflow: visible;
 
     // Mobile: 30px gap between image and the divider above related block
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       gap: @divider-space-mobile;
       min-height: auto;
     });
@@ -208,11 +208,11 @@
       width: 1px;
       background-color: @section-divider-color;
       pointer-events: none;
-      .media(mobile, { display: none; });
+      .media-down(@bp-mobile-max, { display: none; });
     }
 
     // Mobile: spacing and horizontal divider
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       padding-left: 0;
       padding-top: @divider-space-mobile; // space from divider above
       flex: none;
@@ -242,7 +242,7 @@
     scrollbar-color: rgba(80, 80, 80, 0.15) @color-bg-craft;
     padding-right: 16px;
 
-    .media(mobile, {padding-right: 0; });
+    .media-down(@bp-mobile-max, {padding-right: 0; });
 
     // Scrollbar styling
     &::-webkit-scrollbar {
@@ -262,7 +262,7 @@
       background: rgba(80, 80, 80, 0.3);
     }
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       overflow: visible;
       background: none;
     });
@@ -273,7 +273,7 @@
     margin: 0 0 5px;
 
     // Mobile: ensure equal space below the divider and before the title
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       margin-top: 0; // handled by parent padding-top
       margin-bottom: 5px; // от заголовка до списка тегов
     });
@@ -368,5 +368,5 @@
 // Frame section with divider modifier
 .frame.section-with-divider:not(.site-header) {
   // Mobile: remove global top padding on the outer section wrapper
-  .media(mobile, { padding-top: 0; });
+  .media-down(@bp-mobile-max, { padding-top: 0; });
 }

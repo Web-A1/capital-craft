@@ -19,7 +19,7 @@
       margin: 0;
       text-align: justify;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         text-align: left;
       });
     }
@@ -45,7 +45,7 @@
       margin: 0 0 8px;
       text-align: justify;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         text-align: left;
       });
 
@@ -92,7 +92,7 @@
       margin-bottom: 16px; // Увеличенный отступ после заголовка
       font-weight: 600;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         margin-top: 12px;
         margin-bottom: 12px;
       });
@@ -108,7 +108,7 @@
       margin: 1.5em 0 0.75em;
       font-weight: 600;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         margin: 1.25em 0 0.5em;
       });
     }

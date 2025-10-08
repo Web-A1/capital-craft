@@ -5,7 +5,7 @@
   max-width: @container-width;
   margin: 0 auto;
 
-  .media(mobile, {
+  .media-down(@bp-mobile-max, {
         width: 100%;
         padding:30px @mobile-side-padding;
       });
@@ -17,7 +17,7 @@
     overflow: hidden; // prevent overflow beyond container
 
     // Mobile: single line with ellipsis on the last item
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       flex-wrap: nowrap;
       overflow: hidden;
     });
@@ -59,7 +59,7 @@
     }
 
     // Mobile: let the last item consume remaining space and truncate
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       &:last-child {
         flex: 1 1 auto;
         min-width: 0;

@@ -33,7 +33,7 @@
     text-decoration: none;
     transition: color 0.2s ease;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: (@font-size-base * 1.125);
     });
 
@@ -63,7 +63,7 @@
     overflow: hidden;
     overflow-wrap: anywhere;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: @font-size-sub;
     });
   }
@@ -76,7 +76,7 @@
     gap: 30px;
     flex-wrap: wrap;
 
-    .media(mobile, { 
+    .media-down(@bp-mobile-max, { 
       gap: 12px;
     });
   }
@@ -106,7 +106,7 @@
     grid-template-columns: 1fr minmax(260px, 320px);
     gap: 20px;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       grid-template-columns: 1fr;
     });
   }
@@ -115,7 +115,7 @@
     aspect-ratio: 4 / 3;
     overflow: hidden;
     align-self: start;
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       display: none;
     });
     img {
@@ -148,7 +148,7 @@
     gap: 20px;
 
     // на мобильных оставляем текущую логику отступов
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       gap: 12px;
     });
   }
@@ -170,7 +170,7 @@
     }
   }
 
-  .media(desktop, {
+  .media-up(@bp-tablet-min, {
     .card-paper-desktop();
     transition:
       transform 0.2s ease,

@@ -37,7 +37,7 @@
     position: relative;
     z-index: 2;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       padding: 20px;
     });
   }
@@ -122,7 +122,7 @@
       border: none;
       background: #ededed;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
           font-size: @font-size-text;
         });
     }

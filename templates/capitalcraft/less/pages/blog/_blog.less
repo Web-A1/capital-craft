@@ -6,7 +6,7 @@
   .media-up(@bp-tablet-min, { padding: 0 0 @spacing-4xl; });
   .media-up(@bp-desktop-min, { padding: 0 0 @spacing-5xl; });
   // Mobile: rely on global .section-with-divider spacing (30/line/30)
-  .media(mobile, { padding: 0; });
+  .media-down(@bp-mobile-max, { padding: 0; });
 
   &__header {
     margin-bottom: 25px;
@@ -56,7 +56,7 @@
     font-weight: 600;
     line-height: 110%;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: @font-size-title-mobile;
     });
   }
@@ -137,7 +137,7 @@
 
 // Mobile helper: keep pills full-width friendly with bigger tap area
 .blog-tags__cloud--nowrap {
-  .media(mobile, {
+  .media-down(@bp-mobile-max, {
     .blog-tags__link {
       display: inline-block;
       padding: 8px 12px;
@@ -147,12 +147,12 @@
 
 // Mobile: remove global top padding when blog section follows breadcrumbs
 .blog.frame.section-with-divider {
-  .media(mobile, { padding-top: 0; });
+  .media-down(@bp-mobile-max, { padding-top: 0; });
 }
 
 // Mobile: search page (blog-page) uses the same frame+divider — remove top padding
 .blog-page.frame.section-with-divider {
-  .media(mobile, { padding-top: 0; });
+  .media-down(@bp-mobile-max, { padding-top: 0; });
 }
 
 // Article sidebar: related block heading and tags

@@ -96,7 +96,7 @@
     color: @color-heading;
     margin: 0;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       font-size: @font-size-title-mobile;
       line-height: 120%;
     });
@@ -110,7 +110,7 @@
     text-align: justify;
     margin: 0;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       text-align: left;
     });
 
@@ -136,7 +136,7 @@
     align-self: flex-start;
     margin-top: auto; // Прижимает иконку к низу
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       display: none;
     });
 
@@ -144,7 +144,7 @@
       width: 87.55px;
       height: 62.5px;
 
-      .media(mobile, {
+      .media-down(@bp-mobile-max, {
         width: 70px;
         height: 50px;
       });
@@ -208,7 +208,7 @@
     bottom: 30px;
     right: 30px;
 
-    .media(mobile, {
+    .media-down(@bp-mobile-max, {
       bottom: 20px;
       right: 20px;
     });

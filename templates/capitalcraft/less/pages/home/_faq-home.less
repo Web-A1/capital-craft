@@ -131,7 +131,7 @@
       height: auto;
       justify-content: flex-start;
 
-      .media(desktop, {
+      .media-up(@bp-tablet-min, {
         height: 100%;
         gap: inherit;
         padding: 0;
@@ -177,7 +177,7 @@
     flex: 1 1 auto;
     justify-content: flex-start;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       flex: 1 1 0;
       justify-content: space-between; // заголовок сверху, кнопка внизу
     });
@@ -201,7 +201,7 @@
     line-height: 110%;
     max-width: 363px;
 
-    .media(desktop, {
+    .media-up(@bp-tablet-min, {
       font-size: @font-size-title;
     });
   }
