@@ -59,6 +59,18 @@
   });
 }
 
+// Единые вертикальные отступы для секций главной страницы
+.home-section-spacing(
+  @padding-mobile: @spacing-3xl,
+  @padding-desktop: @spacing-5xl
+) {
+  padding-block: @padding-mobile;
+
+  .media-up(@bp-tablet-min, {
+    padding-block: @padding-desktop;
+  });
+}
+
 // Токены кнопок: позволяют переопределять значения без изменения миксина
 @btn-padding-block-mobile: @spacing-xs;
 @btn-padding-inline-mobile: @spacing-sm;

@@ -1,13 +1,8 @@
 // out: false
 
 .partners {
-  padding-block: @spacing-3xl;
   position: relative;
   width: 100%;
-
-  .media-up(@bp-tablet-min, {
-    padding-block: @spacing-5xl;
-  });
 
   &__inner {
     display: flex;
@@ -15,7 +10,6 @@
     align-items: center;
     justify-content: center;
     row-gap: (@spacing-2xl + 2px);
-    padding-inline: @mobile-side-padding;
 
     .media-up(@bp-tablet-min, {
       flex-direction: row;
@@ -23,7 +17,6 @@
       justify-content: space-between;
       row-gap: 0;
       column-gap: 0;
-      padding-inline: 0;
     });
   }
 

@@ -11,13 +11,34 @@
 @import "pages/home/_team.less";
 @import "pages/home/_reviews.less";
 .page-home {
-  .section-with-divider:not(.site-header):not(.hero) {
-    padding-block: @spacing-3xl;
-    padding-inline: 0;
+  .section-with-divider:not(.site-header) {
+    padding-inline: @mobile-side-padding;
+
+    > .container {
+      padding-inline: 0;
+    }
 
     .media-up(@bp-tablet-min, {
-      padding-block: @spacing-5xl;
       padding-inline: 0;
+      max-width: @container-width;
+      margin-inline: auto;
+      width: 100%;
+
+      > .container {
+        max-width: 100%;
+        margin-inline: 0;
+        padding-inline: 0;
+      }
     });
+  }
+
+  .section-with-divider:not(.site-header):not(.hero) {
+    .home-section-spacing();
+  }
+
+  .philosophy.section-with-divider,
+  .team.section-with-divider,
+  .faq-home.section-with-divider {
+    .home-section-spacing(0, @spacing-5xl);
   }
 }
