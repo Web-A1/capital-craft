@@ -73,6 +73,7 @@ export const initBurger = () => {
   const FOOTER_CONTACTS_ANCHOR_BUFFER_VAR = "--footer-contacts-anchor-buffer";
   const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
   const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
+  const POINTER_COARSE_QUERY = "(pointer: coarse)";
 
   const isMobileViewport = () => {
     if (typeof window.matchMedia === "function") {
@@ -96,6 +97,66 @@ export const initBurger = () => {
     } catch (error) {
       return false;
     }
+  };
+
+  const isCoarsePointer = () => {
+    if (typeof window.matchMedia !== "function") {
+      return false;
+    }
+
+    try {
+      return window.matchMedia(POINTER_COARSE_QUERY).matches;
+    } catch (error) {
+      return false;
+    }
+  };
+
+  let restoreFocus = null;
+  let deactivateFocusTrap = null;
+
+  const getFocusableElements = () => {
+    return Array.from(mobileNav.querySelectorAll(FOCUSABLE_SELECTOR)).filter(
+      element =>
+        element.offsetParent !== null || element === document.activeElement
+    );
+  };
+
+  const trapFocus = () => {
+    const focusableElements = getFocusableElements();
+
+    if (!focusableElements.length) {
+      return;
+    }
+
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    const handleKeydown = event => {
+      if (event.key !== "Tab") {
+        return;
+      }
+
+      const activeElement = document.activeElement;
+      const isShift = event.shiftKey;
+
+      if (!isShift && activeElement === lastElement) {
+        event.preventDefault();
+        safeFocus(firstElement);
+        return;
+      }
+
+      if (isShift && activeElement === firstElement) {
+        event.preventDefault();
+        safeFocus(lastElement);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeydown);
+
+    deactivateFocusTrap = () => {
+      document.removeEventListener("keydown", handleKeydown);
+      deactivateFocusTrap = null;
+    };
   };
 
   const getPositiveFloat = value => {
@@ -465,7 +526,15 @@ export const initBurger = () => {
 
     // Управление доступностью
     setMenuAccessibility(false);
-    safeFocus(burger);
+
+    if (typeof deactivateFocusTrap === "function") {
+      deactivateFocusTrap();
+    }
+
+    if (typeof restoreFocus === "function") {
+      restoreFocus();
+      restoreFocus = null;
+    }
 
     clearAvailableHeight();
 
@@ -494,7 +563,30 @@ export const initBurger = () => {
 
     setAvailableHeight();
 
-    focusFirstNavigationItem();
+    if (!isCoarsePointer()) {
+      const previouslyFocused = document.activeElement;
+
+      restoreFocus = () => {
+        if (
+          previouslyFocused &&
+          previouslyFocused !== document.body &&
+          typeof previouslyFocused.focus === "function"
+        ) {
+          try {
+            previouslyFocused.focus({ preventScroll: true });
+          } catch (error) {
+            previouslyFocused.focus();
+          }
+        } else {
+          safeFocus(burger);
+        }
+      };
+
+      focusFirstNavigationItem();
+      trapFocus();
+    } else {
+      restoreFocus = null;
+    }
 
     // Временно блокируем реакцию хедера на скролл при открытии меню
     if (window.headerControl) {
