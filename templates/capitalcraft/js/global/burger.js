@@ -72,6 +72,7 @@ export const initBurger = () => {
   const FOOTER_CONTACTS_ANCHOR_GAP_VAR = "--footer-contacts-anchor-gap";
   const FOOTER_CONTACTS_ANCHOR_BUFFER_VAR = "--footer-contacts-anchor-buffer";
   const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
+  const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
   const isMobileViewport = () => {
     if (typeof window.matchMedia === "function") {
@@ -83,6 +84,18 @@ export const initBurger = () => {
     }
 
     return window.innerWidth <= 767;
+  };
+
+  const prefersReducedMotion = () => {
+    if (typeof window.matchMedia !== "function") {
+      return false;
+    }
+
+    try {
+      return window.matchMedia(REDUCED_MOTION_QUERY).matches;
+    } catch (error) {
+      return false;
+    }
   };
 
   const getPositiveFloat = value => {
@@ -124,7 +137,25 @@ export const initBurger = () => {
     ).getPropertyValue(HEADER_HEIGHT_VAR);
     const parsedValue = parseFloat(rawValue);
 
-    return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : 76;
+    if (Number.isFinite(parsedValue) && parsedValue > 0) {
+      return parsedValue;
+    }
+
+    if (header) {
+      const { height } = header.getBoundingClientRect();
+
+      if (Number.isFinite(height) && height > 0) {
+        return height;
+      }
+
+      const offsetHeight = header.offsetHeight;
+
+      if (Number.isFinite(offsetHeight) && offsetHeight > 0) {
+        return offsetHeight;
+      }
+    }
+
+    return 0;
   };
 
   const setAvailableHeight = (headerHeight = getHeaderHeight()) => {
@@ -360,10 +391,13 @@ export const initBurger = () => {
       );
     }
 
+    const shouldReduceMotion = prefersReducedMotion();
+    const scrollBehavior = shouldReduceMotion ? "auto" : behavior;
+
     try {
       window.scrollTo({
         top: targetPosition,
-        behavior
+        behavior: scrollBehavior
       });
     } catch (error) {
       window.scrollTo(0, targetPosition);
