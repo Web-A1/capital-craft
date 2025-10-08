@@ -20,7 +20,16 @@ export const initScrollTop = () => {
       return;
     }
 
-    const duration = Math.max(120, Math.min(220, startY / 5));
+    const prefersReducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      window.scrollTo({ top: 0, behavior: "auto" });
+      return;
+    }
+
+    const duration = Math.max(220, Math.min(450, startY / 3));
 
     if (typeof window.requestAnimationFrame !== "function") {
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -29,10 +38,15 @@ export const initScrollTop = () => {
 
     const startTime = performance.now();
 
+    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+
     const step = now => {
       const progress = Math.min((now - startTime) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 2);
-      window.scrollTo(0, Math.round(startY * (1 - eased)));
+      const eased = easeOutCubic(progress);
+      window.scrollTo({
+        top: Math.round(startY * (1 - eased)),
+        behavior: "auto"
+      });
 
       if (progress < 1) {
         requestAnimationFrame(step);
