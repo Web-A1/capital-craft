@@ -3,8 +3,7 @@
 .blog-tags {
   // Align vertical rhythm with main blog page: no top padding, only bottom
   padding: 0 0 @spacing-3xl;
-  .media-up(@bp-tablet-min, { padding: 0 0 @spacing-4xl; });
-  .media-up(@bp-desktop-min, { padding: 0 0 @spacing-5xl; });
+  .media-up(@bp-tablet-min, { padding: 0 0 @spacing-5xl; });
   // Mobile: rely on global .section-with-divider spacing (30/line/30)
   .media-down(@bp-mobile-max, { padding: 0; });
 
@@ -16,8 +15,7 @@
 
   &__others {
     margin-top: @spacing-3xl;
-    .media-up(@bp-tablet-min, { margin-top: @spacing-4xl; });
-    .media-up(@bp-desktop-min, { margin-top: @spacing-5xl; });
+    .media-up(@bp-tablet-min, { margin-top: @spacing-5xl; });
     .media-down(@bp-mobile-max, { margin-top: @divider-space-mobile; });
   }
 

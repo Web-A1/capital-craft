@@ -53,10 +53,6 @@
   padding-block: @hero-padding-mobile;
 
   .media-up(@bp-tablet-min, {
-    padding-block: @hero-padding-tablet;
-  });
-
-  .media-up(@bp-desktop-min, {
     padding-block: @hero-padding-desktop;
   });
 }
@@ -212,14 +208,10 @@
   }
 
   .media-up(@bp-tablet-min, {
-    padding: (@spacing-xs + 1px) @spacing-md;
+    padding: (@spacing-xs + 2px) @spacing-lg;
     font-size: @font-size;
     font-weight: 400;
     height: auto;
-  });
-
-  .media-up(@bp-desktop-min, {
-    padding: (@spacing-xs + 2px) @spacing-lg;
   });
 
   // States

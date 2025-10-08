@@ -7,11 +7,6 @@
   gap: @spacing-lg;
 
   .media-up(@bp-tablet-min, {
-    padding: @spacing-4xl 0;
-    gap: @spacing-4xl;
-  });
-
-  .media-up(@bp-desktop-min, {
     padding: @spacing-5xl 0;
     gap: @spacing-5xl;
   });
@@ -26,10 +21,6 @@
       flex-direction: row;
       justify-content: space-between;
       align-items: flex-start;
-      gap: @spacing-xl * 2;
-    });
-
-    .media-up(@bp-desktop-min, {
       gap: @spacing-2xl * 2;
     });
   }
@@ -128,7 +119,7 @@
         "item3 line-bottom item4";
       grid-template-columns: 1fr 1px 1fr;
       grid-template-rows: auto 1px auto;
-      gap: @spacing-xl;
+      gap: @spacing-2xl;
 
       .philosophy__line {
         display: block;
@@ -166,11 +157,7 @@
         grid-area: empty;
       }
     });
-
-    .media-up(@bp-desktop-min, {
-      gap: @spacing-2xl;
-    });
-}
+  }
 }
 
 .philosophy-item {

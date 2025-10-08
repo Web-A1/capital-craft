@@ -20,10 +20,6 @@
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
-      gap: @spacing-xl;
-    });
-
-    .media-up(@bp-desktop-min, {
       gap: @spacing-2xl;
     });
   }
@@ -36,10 +32,6 @@
 
     .media-up(@bp-tablet-min, {
       max-width: 500px;
-      gap: @spacing-xl * 1.33;
-    });
-
-    .media-up(@bp-desktop-min, {
       gap: @spacing-2xl * 1.33;
     });
   }
@@ -51,7 +43,7 @@
     font-weight: 700;
     line-height: 110%;
 
-    .media-up(@bp-desktop-min, {
+    .media-up(@bp-tablet-min, {
       line-height: 100%;
     });
   }
@@ -64,7 +56,7 @@
     line-height: 150%;
     margin: 0;
 
-    .media-up(@bp-desktop-min, {
+    .media-up(@bp-tablet-min, {
       text-align: justify;
       line-height: 140%;
     });
