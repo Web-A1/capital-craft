@@ -1,4 +1,5 @@
-<header class="site-header frame frame--header section-with-divider">
+<a class="skip-link" href="#main-content">Перейти к основному содержимому</a>
+<header class="site-header frame frame--header section-with-divider" role="banner">
     <div class="container header__inner">
 
         <div class="header-logo">
@@ -19,7 +20,7 @@
                 <button type="button" class="btn btn--primary" data-micromodal-trigger="contact-modal">Обсудить проект</button>
 
                 <div class="divider"></div>
-                <div class="header-controls__icons">
+                <div class="header-controls__icons" role="presentation" aria-hidden="true">
                     <a href="https://dzen.ru/capital_craft_official" target="_blank" rel="noopener" class="icon-link icon-link--invertable">
                         <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 40 40">
                             <path class="bg" d="M19.92 40.002h.16c7.944 0 12.555-.8 15.82-3.97 3.331-3.364 4.1-8.006 4.1-15.919v-.224c0-7.91-.769-12.521-4.1-15.918C32.638.8 27.994 0 20.083 0h-.16C11.98 0 7.366.8 4.1 3.97.77 7.335 0 11.98 0 19.89v.223c0 7.91 1.769 12.522 4.1 15.919 3.234 3.17 7.879 3.97 15.82 3.97Z" fill="#FDFBF5" stroke="#000" />
@@ -35,7 +36,7 @@
                     </a>
                 </div>
             </div>
-            <button class="burger" type="button" aria-label="Открыть меню" aria-controls="mobile-nav" aria-expanded="false">
+            <button class="burger" type="button" aria-label="Открыть мобильное меню" aria-controls="mobile-nav" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -44,8 +45,8 @@
     </div>
 
     <!-- Мобильное меню ВНЕ header__inner для правильного позиционирования -->
-    <div class="mobile-nav" id="mobile-nav">
-        <nav class="mobile-nav__menu">
+    <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Мобильное меню">
+        <nav class="mobile-nav__menu" role="navigation" aria-label="Мобильное меню сайта">
             <jdoc:include type="modules" name="mobile-menu" style="none" />
         </nav>
     </div>
