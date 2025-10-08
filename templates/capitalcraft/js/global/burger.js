@@ -30,23 +30,34 @@ export const initBurger = () => {
     '[tabindex]:not([tabindex="-1"]):not([disabled])'
   ].join(",");
 
+  const supportsInert = "inert" in HTMLElement.prototype;
+
   const setMenuAccessibility = isOpen => {
     if (isOpen) {
       mobileNav.setAttribute("aria-hidden", "false");
-      mobileNav.removeAttribute("inert");
       mobileNav.removeAttribute("tabindex");
-      if ("inert" in mobileNav) {
+
+      if (supportsInert) {
         mobileNav.inert = false;
+      } else {
+        mobileNav.setAttribute("data-inert-polyfill", "false");
       }
     } else {
       mobileNav.setAttribute("aria-hidden", "true");
-      mobileNav.setAttribute("inert", "");
       mobileNav.setAttribute("tabindex", "-1");
-      if ("inert" in mobileNav) {
+
+      if (supportsInert) {
         mobileNav.inert = true;
+      } else {
+        mobileNav.setAttribute("data-inert-polyfill", "true");
       }
     }
   };
+
+  if (!supportsInert) {
+    setMenuAccessibility(false);
+    mobileNav.setAttribute("data-inert-polyfill", "true");
+  }
 
   const focusFirstNavigationItem = () => {
     const focusTarget = mobileNav.querySelector(FOCUSABLE_SELECTOR);
@@ -678,5 +689,26 @@ export const initBurger = () => {
         suppressHashChange = false;
       }, 0);
     }
+
+    window.requestAnimationFrame(() => {
+      const items = mobileNav.querySelectorAll("li");
+
+      items.forEach(item => {
+        const anchor = item.querySelector("a");
+
+        if (!anchor) return;
+
+        const isCurrent = anchor.hash === hash;
+
+        item.classList.toggle("current", isCurrent);
+        item.classList.toggle("active", isCurrent);
+
+        if (isCurrent) {
+          anchor.setAttribute("aria-current", "page");
+        } else {
+          anchor.removeAttribute("aria-current");
+        }
+      });
+    });
   });
 };
