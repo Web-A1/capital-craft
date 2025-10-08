@@ -74,6 +74,8 @@ export const initBurger = () => {
   const MOBILE_VIEWPORT_QUERY = "(max-width: 767px)";
   const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
   const POINTER_COARSE_QUERY = "(pointer: coarse)";
+  const DEFAULT_HEADER_HEIGHT = 76;
+  const MIN_HEADER_HEIGHT = 48;
 
   const isMobileViewport = () => {
     if (typeof window.matchMedia === "function") {
@@ -193,30 +195,40 @@ export const initBurger = () => {
   };
 
   const getHeaderHeight = () => {
-    const rawValue = getComputedStyle(
-      document.documentElement
-    ).getPropertyValue(HEADER_HEIGHT_VAR);
-    const parsedValue = parseFloat(rawValue);
+    let measuredHeight = 0;
 
-    if (Number.isFinite(parsedValue) && parsedValue > 0) {
-      return parsedValue;
-    }
+    if (typeof window.getComputedStyle === "function") {
+      const styles = window.getComputedStyle(document.documentElement);
 
-    if (header) {
-      const { height } = header.getBoundingClientRect();
+      if (styles) {
+        const rawValue = styles.getPropertyValue(HEADER_HEIGHT_VAR);
+        const parsedValue = parseFloat(rawValue);
 
-      if (Number.isFinite(height) && height > 0) {
-        return height;
-      }
-
-      const offsetHeight = header.offsetHeight;
-
-      if (Number.isFinite(offsetHeight) && offsetHeight > 0) {
-        return offsetHeight;
+        if (Number.isFinite(parsedValue) && parsedValue > 0) {
+          measuredHeight = parsedValue;
+        }
       }
     }
 
-    return 0;
+    if ((!Number.isFinite(measuredHeight) || measuredHeight <= 0) && header) {
+      const rect = header.getBoundingClientRect();
+      const rectHeight = rect?.height;
+
+      if (Number.isFinite(rectHeight) && rectHeight > 0) {
+        measuredHeight = rectHeight;
+      } else if (
+        Number.isFinite(header.offsetHeight) &&
+        header.offsetHeight > 0
+      ) {
+        measuredHeight = header.offsetHeight;
+      }
+    }
+
+    if (!Number.isFinite(measuredHeight) || measuredHeight <= 0) {
+      measuredHeight = DEFAULT_HEADER_HEIGHT;
+    }
+
+    return Math.max(measuredHeight, MIN_HEADER_HEIGHT);
   };
 
   const setAvailableHeight = (headerHeight = getHeaderHeight()) => {
