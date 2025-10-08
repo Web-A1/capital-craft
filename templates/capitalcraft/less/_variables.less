@@ -38,6 +38,7 @@
 @spacing-6xl: 75px;
 @spacing-7xl: 80px;
 
+// Scroll-to-top tokens: мобильное базовое состояние + десктопное расширение
 @scroll-top-size: 40px;
 @scroll-top-desktop-gap: 10px; // дополнительный отступ, заложенный в макете десктопной версии
 @scroll-top-desktop-bottom: @spacing-5xl; // выравниваем нижний край кнопки с юридическими ссылками в футере
@@ -45,8 +46,9 @@
   (100vw - 1300px + @scroll-top-desktop-gap) / 2
 ); // вынос кнопки scroll-top за контейнер на десктопе
 
+// Hero spacing: мобильное значение базовое, ≥768 px использует десктопный токен
 @hero-padding-mobile: @spacing-7xl;
-@hero-padding-tablet: @spacing-6xl;
+@hero-padding-tablet: @spacing-6xl; // резерв под будущую планшетную адаптацию
 @hero-padding-desktop: @spacing-6xl;
 
 .hero-section-spacing() {
@@ -56,16 +58,27 @@
     padding-block: @hero-padding-desktop;
   });
 }
+
+// Токены кнопок: позволяют переопределять значения без изменения миксина
+@btn-padding-block-mobile: @spacing-xs;
+@btn-padding-inline-mobile: @spacing-sm;
+@btn-padding-block-desktop: (@spacing-xs + 2px);
+@btn-padding-inline-desktop: @spacing-lg;
+@btn-font-size-mobile-default: @font-size-sub * 0.85;
 @radius: 6px;
 @subtitle-title-gap: 5px;
 @title-desc-margin: 30px;
 
 // Адаптация для устройств (mobile-first)
 @mobile-side-padding: 20px;
+
+// Рабочий breakpoint: всё что ≥768 px трактуется как расширение мобильной базы
 @bp-tablet-min: 768px;
-@bp-desktop-min: 1024px;
-@bp-wide-min: 1280px;
 @bp-mobile-max: (@bp-tablet-min - 1);
+
+// Резервные брейкпоинты: оставляем для будущей планшетной/десктопной адаптации
+@bp-desktop-min: 1024px; // не используется в текущей сборке
+@bp-wide-min: 1280px; // не используется в текущей сборке
 @bp-tablet-max: (@bp-desktop-min - 1);
 
 // Универсальные миксины медиазапросов
@@ -159,15 +172,19 @@
 .btn-base(
   @color: @color-accent,
   @font-size: @font-size-text,
-  @mobile-font-size: @font-size-sub * 0.85,
+  @mobile-font-size: @btn-font-size-mobile-default,
   @mobile-height: auto,
-  @text-transform: uppercase
+  @text-transform: uppercase,
+  @padding-block-mobile: @btn-padding-block-mobile,
+  @padding-inline-mobile: @btn-padding-inline-mobile,
+  @padding-block-desktop: @btn-padding-block-desktop,
+  @padding-inline-desktop: @btn-padding-inline-desktop
 ) {
   width: fit-content;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: @spacing-xs @spacing-sm;
+  padding: @padding-block-mobile @padding-inline-mobile;
   border-radius: @radius;
   border: 1px solid transparent;
   background-color: @color;
@@ -208,7 +225,7 @@
   }
 
   .media-up(@bp-tablet-min, {
-    padding: (@spacing-xs + 2px) @spacing-lg;
+    padding: @padding-block-desktop @padding-inline-desktop;
     font-size: @font-size;
     font-weight: 400;
     height: auto;

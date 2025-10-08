@@ -14,7 +14,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    row-gap: 32px;
+    row-gap: (@spacing-2xl + 2px);
     padding-inline: @mobile-side-padding;
 
     .media-up(@bp-tablet-min, {
@@ -127,12 +127,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-inline: 20px;
+      padding-inline: @spacing-lg;
       scroll-snap-align: center;
 
       .media-up(@bp-tablet-min, {
         flex: 0 0 33.3333%;
-        padding-inline: 40px;
+        padding-inline: @spacing-3xl;
         scroll-snap-align: none;
       });
 
