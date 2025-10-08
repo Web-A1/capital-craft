@@ -432,9 +432,12 @@ export const initBurger = () => {
         extraOffset
     );
 
-    if (window.headerControl) {
-      window.headerControl.freeze();
-      window.headerControl.pin({ scrollY: targetPosition });
+    const headerControl = window.headerControl;
+
+    if (headerControl) {
+      headerControl.freeze();
+      headerControl.suspendAutoHide({ scrollY: targetPosition });
+      headerControl.pin({ scrollY: targetPosition });
     }
 
     let released = false;
@@ -446,8 +449,9 @@ export const initBurger = () => {
 
       released = true;
 
-      if (window.headerControl) {
-        window.headerControl.unfreeze({ scrollY: finalScrollPosition });
+      if (headerControl) {
+        headerControl.unfreeze({ scrollY: finalScrollPosition });
+        headerControl.resumeAutoHide({ scrollY: finalScrollPosition });
       }
     };
 
@@ -603,6 +607,7 @@ export const initBurger = () => {
     // Временно блокируем реакцию хедера на скролл при открытии меню
     if (window.headerControl) {
       window.headerControl.freeze();
+      window.headerControl.suspendAutoHide();
     }
   };
 
