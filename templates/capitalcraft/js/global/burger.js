@@ -388,6 +388,27 @@ export const initBurger = () => {
   const shouldHandleInitialHash = hasUsableHash(window.location.hash);
   let initialHashNavigationHandled = false;
   let ensureInitialHashAlignment = null;
+  let headerHeightSettled = false;
+
+  const markHeaderHeightSettled = () => {
+    headerHeightSettled = true;
+  };
+
+  const finalizeInitialHashNavigation = () => {
+    if (initialHashNavigationHandled) {
+      return;
+    }
+
+    initialHashNavigationHandled = true;
+
+    if (typeof ensureInitialHashAlignment === "function") {
+      window.removeEventListener(
+        "cc:header-height-change",
+        ensureInitialHashAlignment
+      );
+      window.removeEventListener("load", ensureInitialHashAlignment);
+    }
+  };
 
   /**
    * Для переходов по якорям с других страниц мы не знаем точную высоту
@@ -396,25 +417,25 @@ export const initBurger = () => {
    * измеренную высоту. Так гарантируем, что итоговое смещение секции
    * останется ровно под фиксированной шапкой.
    */
-  const attemptInitialHashNavigation = ({ behavior = "auto" } = {}) => {
+  const attemptInitialHashNavigation = ({
+    behavior = "auto",
+    force = false
+  } = {}) => {
     if (!shouldHandleInitialHash || initialHashNavigationHandled) {
       return false;
     }
 
     const handled = handleCurrentHashNavigation({ behavior });
 
-    if (handled) {
-      initialHashNavigationHandled = true;
-
-      if (typeof ensureInitialHashAlignment === "function") {
-        window.removeEventListener(
-          "cc:header-height-change",
-          ensureInitialHashAlignment
-        );
-      }
+    if (!handled) {
+      return false;
     }
 
-    return handled;
+    if (force || headerHeightSettled) {
+      finalizeInitialHashNavigation();
+    }
+
+    return true;
   };
 
   const scheduleInitialHashNavigation = () => {
@@ -432,12 +453,29 @@ export const initBurger = () => {
   if (shouldHandleInitialHash) {
     // Ловим обновления высоты шапки и перезапускаем выравнивание,
     // чтобы компенсировать момент, когда контент ещё перестраивается.
-    ensureInitialHashAlignment = () => {
+    ensureInitialHashAlignment = event => {
       if (initialHashNavigationHandled) {
         return;
       }
 
-      attemptInitialHashNavigation({ behavior: "auto" });
+      if (event?.type === "cc:header-height-change") {
+        const detail = event.detail;
+        const measuredHeight =
+          detail && typeof detail.height === "number" && detail.height > 0
+            ? detail.height
+            : null;
+
+        if (measuredHeight !== null) {
+          markHeaderHeightSettled();
+        }
+      } else if (event?.type === "load") {
+        markHeaderHeightSettled();
+      }
+
+      attemptInitialHashNavigation({
+        behavior: "auto",
+        force: headerHeightSettled
+      });
     };
 
     if (document.readyState === "loading") {
