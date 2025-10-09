@@ -29,6 +29,7 @@
     "esbuild": "^0.25.9",
     "imask": "^7.6.1",
     "less": "^4.4.1",
+    "wicg-inert": "^3.1.1",
     "mcp-pagespeed-server": "github:PhialsBasement/Pagespeed-MCP-Server",
     "npm-run-all": "^4.1.5"
   },
