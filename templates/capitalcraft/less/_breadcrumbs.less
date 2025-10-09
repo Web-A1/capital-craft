@@ -1,26 +1,15 @@
 // out: false
 
 .breadcrumbs {
-  padding: 30px 0;
-  max-width: @container-width;
-  margin: 0 auto;
-
-  .media-down(@bp-mobile-max, {
-        width: 100%;
-        padding:30px @mobile-side-padding;
-      });
+  width: 100%;
+  margin: 0;
+  padding: @spacing-2xl @mobile-side-padding;
 
   &__list {
     display: flex;
     list-style: none;
-    flex-wrap: nowrap; // keep on one line on desktop too
-    overflow: hidden; // prevent overflow beyond container
-
-    // Mobile: single line with ellipsis on the last item
-    .media-down(@bp-mobile-max, {
-      flex-wrap: nowrap;
-      overflow: hidden;
-    });
+    flex-wrap: nowrap;
+    overflow: hidden;
   }
 
   &__item {
@@ -29,7 +18,6 @@
     white-space: nowrap;
     flex: 0 0 auto;
 
-    // Desktop: let the last item consume remaining space and truncate
     &:last-child {
       flex: 1 1 auto;
       min-width: 0;
@@ -58,22 +46,14 @@
       vertical-align: middle;
     }
 
-    // Mobile: let the last item consume remaining space and truncate
-    .media-down(@bp-mobile-max, {
-      &:last-child {
-        flex: 1 1 auto;
-        min-width: 0;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
-        a, span { // link or plain text
-          display: inline-block;
-          max-width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          vertical-align: bottom;
-        }
-      }
+    .media-up(@bp-tablet-min, {
+      color: @color-heading;
     });
   }
+
+  .media-up(@bp-tablet-min, {
+    max-width: @container-width;
+    margin: 0 auto;
+    padding: @spacing-2xl 0;
+  });
 }
