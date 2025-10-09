@@ -110,13 +110,13 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: (@spacing-sm*2);
+    gap: (@spacing-sm*2); //24px
     height: auto;
 
     .media-up(@bp-tablet-min, {
       flex: 1 1 544px;
       max-width: 544px;
-      gap: 20px;
+      gap: @spacing-lg; //20px
       height: 100%;
     });
   }
