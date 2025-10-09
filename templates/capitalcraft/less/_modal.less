@@ -24,21 +24,23 @@
   }
   &__body {
     background: @color-bg-craft;
-    padding: 30px;
+    padding: @spacing-2xl;
     border-radius: @radius;
-    width: 480px;
+    width: 100%;
     max-width: 90%;
     max-height: 90vh;
     overflow-y: auto;
     box-shadow: 0 141px 200px rgba(25, 58, 75, 0.3);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: @spacing-lg;
     position: relative;
     z-index: 2;
 
-    .media-down(@bp-mobile-max, {
-      padding: 20px;
+    .media-up(@bp-tablet-min, {
+      padding: @spacing-3xl;
+      width: 480px;
+      gap: @spacing-xl;
     });
   }
   &__close {
@@ -91,21 +93,21 @@
   &__form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: @spacing-lg;
     .personal-data {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 10px;
+      gap: @spacing-sm;
       margin: 0;
       padding: 0;
-      input[type='checkbox'] {
+      input[type="checkbox"] {
         width: auto;
         cursor: pointer;
         margin: 0;
       }
       span {
-        font-size: @font-size-base * 0.75;
+        font-size: @font-size-sub;
       }
     }
     .modal__btn {
@@ -115,16 +117,12 @@
     input,
     textarea {
       width: 100%;
-      padding: 10px;
+      padding: @spacing-sm;
       font-family: @font-body;
-      font-size: @font-size-sub;
+      font-size: @font-size-text;
       border-radius: @radius;
       border: none;
       background: #ededed;
-
-      .media-down(@bp-mobile-max, {
-          font-size: @font-size-text;
-        });
     }
     textarea {
       height: 100px;
