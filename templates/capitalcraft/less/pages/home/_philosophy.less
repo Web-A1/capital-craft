@@ -166,18 +166,18 @@
   position: relative;
 
   &__icon {
-    width: 55px;
-    height: 55px;
-    flex: 0 0 55px;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
     color: @color-heading;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    .media-down(@bp-mobile-max, {
-      width: 44px;
-      height: 44px;
-      flex-basis: 44px;
+    .media-up(@bp-tablet-min, {
+      width: 55px;
+      height: 55px;
+      flex: 0 0 55px;
     });
   }
 
@@ -192,11 +192,7 @@
   &__content {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-
-    .media-down(@bp-mobile-max, {
-      gap: 6px;
-    });
+    gap: 6px;
 
     .media-up(@bp-tablet-min, {
       gap: 15px;
