@@ -112,18 +112,6 @@ export const initBurger = () => {
     }
   };
 
-  const isCoarsePointer = () => {
-    if (typeof window.matchMedia !== "function") {
-      return false;
-    }
-
-    try {
-      return window.matchMedia(POINTER_COARSE_QUERY).matches;
-    } catch (error) {
-      return false;
-    }
-  };
-
   let restoreFocus = null;
   let deactivateFocusTrap = null;
 
@@ -590,7 +578,7 @@ export const initBurger = () => {
 
     setAvailableHeight();
 
-    if (!isCoarsePointer()) {
+    {
       const previouslyFocused = document.activeElement;
 
       restoreFocus = () => {
@@ -611,8 +599,6 @@ export const initBurger = () => {
 
       focusFirstNavigationItem();
       trapFocus();
-    } else {
-      restoreFocus = null;
     }
 
     // Временно блокируем реакцию хедера на скролл при открытии меню
