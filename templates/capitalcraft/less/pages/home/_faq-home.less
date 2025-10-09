@@ -1,7 +1,6 @@
 // out: false
 
 .faq-home {
-
   &__inner {
     display: flex;
     flex-direction: column;
@@ -103,9 +102,13 @@
   }
 
   &__pagination {
-    left: 0px !important;
+    left: 0;
     width: auto;
     pointer-events: none; // не перекрываем клики по вопросам
+
+    &.swiper-pagination {
+      left: 0;
+    }
 
     .swiper-pagination-bullet {
       background: @color-heading;
