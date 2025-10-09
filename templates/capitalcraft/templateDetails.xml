@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="4.0" type="template" client="site">
+<extension version="5.0" type="template" client="site">
   <name>capitalcraft</name>
   <version>1.0.0</version>
   <author>A1_dev</author>
+  <creationDate>2025-10-09</creationDate>
+  <authorUrl>https://capital-craft.ru</authorUrl>
+  <license>Proprietary</license>
   <description>Шаблон Capital Craft</description>
 
   <positions>
