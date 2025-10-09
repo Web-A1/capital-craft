@@ -127,6 +127,14 @@
       .media-up(@bp-tablet-min, {
         font-size: @font-size-sub;
       });
+
+      &:focus,
+      &:focus-visible {
+        outline: none;
+        box-shadow:
+          0 0 0 2px fade(@color-bg-craft, 100%),
+          0 0 0 4px fade(@color-accent, 60%);
+      }
     }
     textarea {
       height: 100px;
