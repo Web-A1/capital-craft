@@ -45,7 +45,16 @@
     </div>
 
     <!-- Мобильное меню ВНЕ header__inner для правильного позиционирования -->
-    <div class="mobile-nav" id="mobile-nav" role="dialog" aria-modal="true" aria-label="Мобильное меню">
+    <div
+        class="mobile-nav"
+        id="mobile-nav"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Мобильное меню"
+        aria-hidden="true"
+        tabindex="-1"
+        inert
+    >
         <nav class="mobile-nav__menu" role="navigation" aria-label="Мобильное меню сайта">
             <jdoc:include type="modules" name="mobile-menu" style="none" />
         </nav>
