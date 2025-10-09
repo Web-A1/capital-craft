@@ -83,15 +83,15 @@
 
   &__title {
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: @font-size-title-mobile;
     font-weight: 600;
-    line-height: 110%;
+    line-height: 120%;
     color: @color-heading;
     margin: 0;
 
-    .media-down(@bp-mobile-max, {
-      font-size: @font-size-title-mobile;
-      line-height: 120%;
+    .media-up(@bp-tablet-min, {
+      font-size: @font-size-title;
+      line-height: 110%;
     });
   }
 
@@ -100,11 +100,11 @@
     font-size: @font-size-text;
     line-height: 140%;
     color: @color-text;
-    text-align: justify;
+    text-align: left;
     margin: 0;
 
-    .media-down(@bp-mobile-max, {
-      text-align: left;
+    .media-up(@bp-tablet-min, {
+      text-align: justify;
     });
 
     p {
@@ -126,20 +126,21 @@
   }
 
   &__icon {
+    display: none;
     align-self: flex-start;
     margin-top: auto; // Прижимает иконку к низу
 
-    .media-down(@bp-mobile-max, {
-      display: none;
+    .media-up(@bp-tablet-min, {
+      display: block;
     });
 
     img {
-      width: 87.55px;
-      height: 62.5px;
+      width: 70px;
+      height: 50px;
 
-      .media-down(@bp-mobile-max, {
-        width: 70px;
-        height: 50px;
+      .media-up(@bp-tablet-min, {
+        width: 87.55px;
+        height: 62.5px;
       });
     }
   }
@@ -198,12 +199,12 @@
   &__image-overlay {
     display: none; // временно скрываем пока не сделаем модалку
     position: absolute;
-    bottom: 30px;
-    right: 30px;
+    bottom: 20px;
+    right: 20px;
 
-    .media-down(@bp-mobile-max, {
-      bottom: 20px;
-      right: 20px;
+    .media-up(@bp-tablet-min, {
+      bottom: 30px;
+      right: 30px;
     });
   }
 
