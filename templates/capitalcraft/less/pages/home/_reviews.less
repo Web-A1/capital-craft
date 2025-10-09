@@ -12,11 +12,11 @@
   &__inner {
     display: flex;
     flex-direction: column;
-    gap: 50px;
+    gap: 40px;
     align-items: center;
 
     .media-up(@bp-tablet-min, {
-      gap: 40px;
+      gap: 50px;
     });
   }
 
@@ -76,14 +76,14 @@
   &__swiper {
     position: relative;
     width: 100%;
-    max-width: 870px;
+    max-width: 100%;
     flex: 1;
     // высота управляется содержимым и Swiper autoHeight
     // оставляем небольшой запас только если понадобится стабильность раскладки
     // min-height можно настроить под дизайн при необходимости
 
-    .media-down(@bp-mobile-max, {
-      max-width: 100%;
+    .media-up(@bp-tablet-min, {
+      max-width: 870px;
     });
   }
 
@@ -97,10 +97,6 @@
     height: 100%; // высота равна заданной контейнеру через JS
     justify-content: center; // Центрируем содержимое по вертикали
     z-index: 2; // Поверх фоновых кавычек
-
-    .media-down(@bp-mobile-max, {
-      gap: @spacing-lg;
-    });
 
     .media-up(@bp-tablet-min, {
       gap: @spacing-2xl;
@@ -118,10 +114,6 @@
     margin: 0; // Сбрасываем дефолтные отступы figure
     // высота зависит от контента
 
-    .media-down(@bp-mobile-max, {
-      gap: @spacing-lg;
-    });
-
     .media-up(@bp-tablet-min, {
       gap: @spacing-2xl;
     });
@@ -133,24 +125,24 @@
     .swiper-slide.reviews__slide
     .reviews__quote-text {
     font-family: @font-body;
-    font-size: (@font-size-base * 1.375);
+    font-size: (@font-size-base * 1.125);
     font-weight: 400;
     color: @color-heading;
     text-align: center;
     width: 100%;
     // Ограничиваем по количеству строк вместо пикселей
     display: -webkit-box;
-    -webkit-line-clamp: 6; // десктоп
-    line-clamp: 6; // стандартное свойство для совместимости
+    -webkit-line-clamp: 8; // мобильная версия — можно показать больше строк
+    line-clamp: 8; // стандартное свойство для совместимости
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin: 0;
 
-    .media-down(@bp-mobile-max, {
-    font-size: (@font-size-base * 1.125);
-    -webkit-line-clamp: 8; // мобильная версия — можно показать больше строк
-    line-clamp: 8; // стандартное свойство для совместимости
-  });
+    .media-up(@bp-tablet-min, {
+      font-size: (@font-size-base * 1.375);
+      -webkit-line-clamp: 6; // десктоп
+      line-clamp: 6; // стандартное свойство для совместимости
+    });
   }
 
   // Desktop crossfade + micro-scale on quote; delayed fade for signature
@@ -187,8 +179,8 @@
 
   // Навигационные стрелки
   &__arrow {
-    width: 140px; // Увеличиваем для предотвращения обрезания
-    height: 100px; // Увеличиваем для предотвращения обрезания
+    width: 100px;
+    height: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -203,10 +195,9 @@
     // Центрируем по вертикали относительно текста отзыва
     align-self: flex-start;
 
-    // Универсальные SVG классы
     .arrow-svg {
-      width: 80px;
-      height: 80px;
+      width: 60px;
+      height: 60px;
       transition: all 0.3s ease;
     }
 
@@ -219,41 +210,37 @@
       // Стрелка остается черной
     }
 
-    &--prev {
-      .media-down(@bp-mobile-max, {
-      display: none;
-    });
-    }
-
+    &--prev,
     &--next {
-      .media-down(@bp-mobile-max, {
-    display: none;
-  });
+      display: none;
+
+      .media-up(@bp-tablet-min, {
+        display: flex;
+      });
     }
 
-    // Адаптивность для мобильных
-    .media-down(@bp-mobile-max, {
-  width: 100px; // Увеличиваем мобильный контейнер
-  height: 80px; // Увеличиваем мобильный контейнер
-  margin-top: 25px; // Меньший отступ для мобильных
+    .media-up(@bp-tablet-min, {
+      width: 140px;
+      height: 100px;
 
-  .arrow-svg {
-    width: 60px;
-    height: 60px;
-  }
-});
+      .arrow-svg {
+        width: 80px;
+        height: 80px;
+      }
+    });
   }
 
   // Пагинация для мобильных
   &__pagination {
-    // Вынесена за слайдер, показываем на мобиле
-    display: none;
+    display: block;
     text-align: center;
     position: static !important;
     bottom: auto !important;
     z-index: auto !important;
 
-    .media-down(@bp-mobile-max, { display: block; });
+    .media-up(@bp-tablet-min, {
+      display: none;
+    });
 
     // Стиль для дробной пагинации 1/3
     &.swiper-pagination-fraction {
@@ -296,15 +283,15 @@
     .reviews__signature
     .reviews__author-name {
     font-family: @font-body;
-    font-size: (@font-size-base * 1.375);
+    font-size: (@font-size-base * 1.125);
     font-weight: 400;
     line-height: 1;
     color: @color-heading;
     text-align: center;
 
-    .media-down(@bp-mobile-max, {
-    font-size: (@font-size-base * 1.125);
-  });
+    .media-up(@bp-tablet-min, {
+      font-size: (@font-size-base * 1.375);
+    });
   }
 
   // Убраны временные классы подписи
@@ -321,11 +308,11 @@
     line-height: 1;
     color: lighten(@color-text, 30%);
     text-transform: uppercase;
-    letter-spacing: 0.35em;
+    letter-spacing: 0.25em;
     text-align: center;
 
-    .media-down(@bp-mobile-max, {
-    letter-spacing: 0.25em;
-  });
+    .media-up(@bp-tablet-min, {
+      letter-spacing: 0.35em;
+    });
   }
 }
