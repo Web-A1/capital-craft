@@ -1,3 +1,4 @@
+import "wicg-inert";
 import IMask from "imask";
 import { initBurger } from "./burger.js";
 import { initModal } from "./modal.js";
