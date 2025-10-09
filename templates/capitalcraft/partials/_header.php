@@ -53,7 +53,7 @@
         tabindex="-1"
         inert
     >
-        <div class="mobile-nav__menu" aria-label="Мобильное меню">
+        <div class="mobile-nav__menu">
             <jdoc:include type="modules" name="mobile-menu" style="none" />
         </div>
     </nav>
