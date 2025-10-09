@@ -24,7 +24,7 @@
   }
   &__body {
     background: @color-bg-craft;
-    padding: @spacing-2xl;
+    padding: @spacing-lg;
     border-radius: @radius;
     width: 100%;
     max-width: 90%;
@@ -38,9 +38,9 @@
     z-index: 2;
 
     .media-up(@bp-tablet-min, {
-      padding: @spacing-3xl;
+      padding: @spacing-2xl;
       width: 480px;
-      gap: @spacing-xl;
+      gap: @spacing-lg;
     });
   }
   &__close {
@@ -98,7 +98,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: @spacing-sm;
+      gap: 10px;
       margin: 0;
       padding: 0;
       input[type="checkbox"] {
@@ -117,12 +117,16 @@
     input,
     textarea {
       width: 100%;
-      padding: @spacing-sm;
+      padding: 10px;
       font-family: @font-body;
       font-size: @font-size-text;
       border-radius: @radius;
       border: none;
       background: #ededed;
+
+      .media-up(@bp-tablet-min, {
+        font-size: @font-size-sub;
+      });
     }
     textarea {
       height: 100px;
