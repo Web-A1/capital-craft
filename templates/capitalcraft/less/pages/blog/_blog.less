@@ -1,18 +1,33 @@
 // out: false
 
+@blog-header-margin-bottom: (@spacing-2xl - 5px);
+@blog-subtitle-margin-bottom: (@spacing-xs - 2px);
+@blog-tags-gap: @spacing-xs;
+@blog-tag-padding-block-mobile: @spacing-xs;
+@blog-tag-padding-inline-mobile: @spacing-sm;
+@blog-tag-padding-block-desktop: (@spacing-xs - 2px);
+@blog-tag-padding-inline-desktop: (@spacing-sm - 2px);
+@blog-pagination-margin-top: @spacing-xl;
+@blog-pagination-gap: @spacing-sm;
+@blog-pagination-link-inline-padding: 2px;
+@blog-pagination-link-min-width: @spacing-md;
+@blog-pagination-button-size: 36px;
+@blog-pagination-active-bg: #f0f0f0;
+
 .blog {
-  // Align vertical rhythm with FAQ: no extra top padding, only bottom
-  padding: 0 0 @spacing-3xl;
-  .media-up(@bp-tablet-min, { padding: 0 0 @spacing-5xl; });
-  // Mobile: rely on global .section-with-divider spacing (30/line/30)
-  .media-down(@bp-mobile-max, { padding: 0; });
+  // Мобильная база: rely on global section spacing
+  padding: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding: 0 0 @spacing-5xl;
+  });
 
   &__header {
-    margin-bottom: 25px;
+    margin-bottom: @blog-header-margin-bottom;
   }
 
   &__tags-nav {
-    margin-bottom: 40px;
+    margin-bottom: @spacing-3xl;
 
     .blog-tags__cloud {
       margin: 0;
@@ -20,7 +35,7 @@
       list-style: none;
       display: flex;
       flex-wrap: wrap; // теги переносятся целиком на новую строку
-      gap: 8px;
+      gap: @blog-tags-gap;
     }
     .blog-tags__tag {
       margin: 0;
@@ -44,34 +59,34 @@
 
   &__subtitle {
     .subtitle();
-    margin: 0 0 6px;
+    margin: 0 0 @blog-subtitle-margin-bottom;
   }
 
   &__title {
     margin: 0;
     color: @color-heading;
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: @font-size-title-mobile;
     font-weight: 600;
     line-height: 110%;
 
-    .media-down(@bp-mobile-max, {
-      font-size: @font-size-title-mobile;
+    .media-up(@bp-tablet-min, {
+      font-size: @font-size-title;
     });
   }
 
   .blog-list {
     display: grid;
-    gap: 20px;
+    gap: @spacing-lg;
   }
 
   // pagination
   .blog-pagination {
-    margin-top: 24px;
+    margin-top: @blog-pagination-margin-top;
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: @blog-pagination-gap;
 
     &__counter {
       display: none;
@@ -84,7 +99,7 @@
         padding: 0;
         margin: 0;
         display: flex;
-        gap: 12px;
+        gap: @blog-pagination-gap;
         align-items: center;
       }
       li,
@@ -100,9 +115,9 @@
         text-decoration: none;
         color: @color-heading;
         font-family: @font-body;
-        padding: 0 2px;
-        min-width: 16px;
-        height: 36px;
+        padding: 0 @blog-pagination-link-inline-padding;
+        min-width: @blog-pagination-link-min-width;
+        height: @blog-pagination-button-size;
         background: transparent;
         border: 0;
       }
@@ -113,13 +128,13 @@
       .active > a,
       .active > span,
       .page-item.active .page-link {
-        width: 36px;
-        height: 36px;
+        width: @blog-pagination-button-size;
+        height: @blog-pagination-button-size;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         border-radius: 999px;
-        background: #f0f0f0;
+        background: @blog-pagination-active-bg;
         color: @color-heading;
         border: 0;
       }
@@ -136,22 +151,35 @@
 
 // Mobile helper: keep pills full-width friendly with bigger tap area
 .blog-tags__cloud--nowrap {
-  .media-down(@bp-mobile-max, {
+  .blog-tags__link {
+    display: inline-block;
+    padding: @blog-tag-padding-block-mobile @blog-tag-padding-inline-mobile;
+  }
+
+  .media-up(@bp-tablet-min, {
     .blog-tags__link {
-      display: inline-block;
-      padding: 8px 12px;
+      display: inline-flex;
+      padding: @blog-tag-padding-block-desktop @blog-tag-padding-inline-desktop;
     }
   });
 }
 
 // Mobile: remove global top padding when blog section follows breadcrumbs
 .blog.frame.section-with-divider {
-  .media-down(@bp-mobile-max, { padding-top: 0; });
+  padding-top: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding-top: @spacing-2xl;
+  });
 }
 
 // Mobile: search page (blog-page) uses the same frame+divider — remove top padding
 .blog-page.frame.section-with-divider {
-  .media-down(@bp-mobile-max, { padding-top: 0; });
+  padding-top: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding-top: @spacing-2xl;
+  });
 }
 
 // Article sidebar: related block heading and tags
