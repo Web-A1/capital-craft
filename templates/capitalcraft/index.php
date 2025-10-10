@@ -3,7 +3,6 @@ defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\WebAsset\WebAssetManager;
 
 require_once JPATH_SITE . "/templates/capitalcraft/helpers/SeoHelper.php";
 
@@ -105,13 +104,12 @@ if ($isArticle) {
     $bodyClasses[] = "page-article";
 }
 
+$bundleOptions = array_merge(["version" => "auto"], $assetPositionAfterBodyOption);
+
 if (!$wa->assetExists("script", "tpl.capitalcraft.bundle")) {
-    $wa->registerScript(
-        "tpl.capitalcraft.bundle",
-        "templates/capitalcraft/js/global/bundle.js",
-        ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
-        ["type" => "module"],
-    );
+    $wa->registerScript("tpl.capitalcraft.bundle", "templates/capitalcraft/js/global/bundle.js", $bundleOptions, [
+        "type" => "module",
+    ]);
 }
 $wa->useScript("tpl.capitalcraft.bundle");
 
@@ -130,7 +128,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.swiper",
             "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.js",
-            ["version" => "11.1.3", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "11.1.3"], $assetPositionAfterBodyOption),
             ["defer" => true],
         );
     }
@@ -140,7 +138,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.embla",
             "templates/capitalcraft/js/vendor/embla/embla-carousel.umd.js",
-            ["version" => "7.1.0", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "7.1.0"], $assetPositionAfterBodyOption),
             ["defer" => true],
         );
     }
@@ -150,7 +148,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.embla-autoplay",
             "templates/capitalcraft/js/vendor/embla/embla-carousel-autoplay.umd.js",
-            ["version" => "7.1.0", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "7.1.0"], $assetPositionAfterBodyOption),
             ["defer" => true],
             ["tpl.capitalcraft.embla"],
         );
@@ -161,7 +159,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.partners",
             "templates/capitalcraft/js/pages/home/partners.js",
-            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
             ["defer" => true],
             ["tpl.capitalcraft.embla-autoplay"],
         );
@@ -172,7 +170,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.showcase",
             "templates/capitalcraft/js/pages/home/show_case_swiper.js",
-            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
             ["defer" => true],
             ["tpl.capitalcraft.swiper"],
         );
@@ -183,7 +181,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.faq",
             "templates/capitalcraft/js/pages/home/faq_swiper.js",
-            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
             ["defer" => true],
             ["tpl.capitalcraft.swiper"],
         );
@@ -194,7 +192,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.reviews",
             "templates/capitalcraft/js/pages/home/reviews_swiper.js",
-            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
             ["defer" => true],
             ["tpl.capitalcraft.swiper"],
         );
@@ -207,7 +205,7 @@ if ($isFaq) {
         $wa->registerScript(
             "tpl.capitalcraft.faq-script",
             "templates/capitalcraft/js/pages/faq/faq.js",
-            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
+            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
             ["defer" => true],
         );
     }
