@@ -1,16 +1,15 @@
 // out: false
 
 .faq {
-  padding-bottom: @spacing-3xl;
+  padding-bottom: 0; // мобильная база: rely on global .section-with-divider spacing
   .media-up(@bp-tablet-min, { padding-bottom: @spacing-5xl; });
-  // Mobile: rely on global .section-with-divider spacing for footer gap
-  .media-down(@bp-mobile-max, { padding-bottom: 0; });
 
-  // Mobile override for this section when used with frame + section-with-divider:
-  // remove the 30px top padding added globally, keeping bottom at 30px
+  // На мобильных секция должна быть без верхнего паддинга, чтобы не дублировать глобальный отступ
   &.frame.section-with-divider {
-    .media-down(@bp-mobile-max, {
-      padding-top: 0;
+    padding-top: 0;
+
+    .media-up(@bp-tablet-min, {
+      padding-top: @spacing-2xl; //30px
     });
   }
 
@@ -19,17 +18,15 @@
     width: 100%;
     margin: 0 auto;
     display: flex;
-    gap: @spacing-3xl;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 @mobile-side-padding;
 
     .media-up(@bp-tablet-min, {
+      flex-direction: row;
+      justify-content: space-between;
       gap: @spacing-5xl;
-    });
-
-    .media-down(@bp-mobile-max, {
-      padding: 0 @mobile-side-padding;
-      flex-direction: column;
-      gap: 0;
+      padding: 0;
     });
   }
 
@@ -53,9 +50,12 @@
     flex-wrap: wrap;
   }
   .faq-tags__cloud--nowrap .faq-tags__link {
-    .media-down(@bp-mobile-max, {
-      display: inline-block;
-      padding: 8px 12px;
+    display: inline-block;
+    padding: @spacing-xs @spacing-sm; //8px 12px
+
+    .media-up(@bp-tablet-min, {
+      display: inline-flex;
+      padding: 6px 10px;
     });
   }
 
@@ -81,23 +81,25 @@
   &__title {
     color: @color-heading;
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: @font-size-title-mobile;
     font-weight: 600;
     line-height: 110%;
 
-    .media-down(@bp-mobile-max, {
-      font-size: @font-size-title-mobile;
+    .media-up(@bp-tablet-min, {
+      font-size: @font-size-title;
     });
   }
 
   &__accordion {
-    flex: 0 0 75%;
+    flex: 1 1 auto;
+    width: 100%;
     padding: 0 20px;
     border-radius: @radius;
     box-shadow: 0 2px 8px fade(@color-heading, 10%);
 
-    .media-down(@bp-mobile-max, {
-      flex-basis: 100%;
+    .media-up(@bp-tablet-min, {
+      flex: 0 0 75%;
+      width: auto;
     });
   }
 
@@ -105,13 +107,13 @@
     border-bottom: 1px solid #e0e0e0;
     padding: 16px 0;
     position: relative;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 20px;
-    align-items: start;
+    display: block;
 
-    .media-down(@bp-mobile-max, {
-      display: block;
+    .media-up(@bp-tablet-min, {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      column-gap: @spacing-lg; //20px
+      align-items: start;
     });
   }
 
@@ -131,29 +133,23 @@
     font-size: @font-size-text;
     color: @color-text;
     display: block;
-    padding-right: 0;
+    padding-right: 28px;
+    position: relative;
     grid-column: 1 / 2;
     grid-row: 1;
-    // На мобильных добавляем плюс как псевдоэлемент и даём место справа
-    .media-down(@bp-mobile-max, {
-      padding-right: 28px; // место под плюс справа
-      position: relative;
-      &::after {
-        content: '+';
-        position: absolute;
-        right: 6px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 26px;
-        line-height: 1;
-        color: @color-text;
-        transition: transform 0.3s ease, color 0.3s ease;
-      }
-      &[aria-expanded="true"]::after {
-        transform: translateY(-50%) rotate(45deg);
-        color: @color-accent;
-      }
-    });
+    &::after {
+      content: "+";
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 26px;
+      line-height: 1;
+      color: @color-text;
+      transition:
+        transform 0.3s ease,
+        color 0.3s ease;
+    }
     cursor: pointer;
     transition: color 0.3s ease;
 
@@ -164,6 +160,20 @@
     &[aria-expanded="true"] {
       color: @color-accent; // акцентный цвет для открытого вопроса
     }
+
+    &[aria-expanded="true"]::after {
+      transform: translateY(-50%) rotate(45deg);
+      color: @color-accent;
+    }
+
+    .media-up(@bp-tablet-min, {
+      padding-right: 0;
+      position: static;
+
+      &::after {
+        content: none;
+      }
+    });
   }
 
   // Внутренние элементы строки вопроса
@@ -180,7 +190,11 @@
     grid-row: 1;
     justify-self: end;
     align-self: start;
-    .media-down(@bp-mobile-max, { display: none; }); // скрываем тег у вопроса на мобильных
+    display: none; // скрываем тег у вопроса на мобильных
+
+    .media-up(@bp-tablet-min, {
+      display: inline-flex;
+    });
   }
 
   // Раскрытие управляется штатным faq.js — padding задаём соседним селектором
@@ -276,7 +290,7 @@
   }
 
   &__image {
-    flex: 0 0 25%;
+    display: none;
     max-width: 100%;
     border-radius: @radius;
     clip-path: border-box;
@@ -289,8 +303,9 @@
       border-radius: @radius;
     }
 
-    .media-down(@bp-mobile-max, {
-      display: none;
+    .media-up(@bp-tablet-min, {
+      display: block;
+      flex: 0 0 25%;
     });
   }
   .media-up(@bp-tablet-min, {
