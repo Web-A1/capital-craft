@@ -230,6 +230,12 @@ if ($isFaq) {
     $wa->useScript("tpl.capitalcraft.faq-script");
 }
 
+$styleAssets = $wa->getAssets("style");
+$scriptAssets = $wa->getAssets("script");
+
+$styleNames = is_array($styleAssets) ? array_keys($styleAssets) : [];
+$scriptNames = is_array($scriptAssets) ? array_keys($scriptAssets) : [];
+
 $requiredStyles = ["tpl.capitalcraft.base"];
 $requiredScripts = ["tpl.capitalcraft.bundle"];
 
@@ -331,9 +337,6 @@ try {
 } catch (\RuntimeException $exception) {
     $bundleModulePreload = "";
 }
-
-$styleNames = array_keys($wa->getAssets("style"));
-$scriptNames = array_keys($wa->getAssets("script"));
 
 if (!empty($bodyClasses)) {
     if (method_exists($document, "addBodyClass")) {
