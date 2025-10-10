@@ -44,6 +44,15 @@ $wa->getRegistry()->addTemplateRegistryFile("capitalcraft", 0);
 $wa->useStyle("tpl.capitalcraft.base");
 $wa->useScript("tpl.capitalcraft.bundle");
 
+if ($wa->assetExists("style", "tpl.capitalcraft.base")) {
+    try {
+        echo "\n<!-- tpl.capitalcraft.base uri: " .
+            htmlspecialchars($wa->getAsset("style", "tpl.capitalcraft.base")->getUri(), ENT_QUOTES, "UTF-8") .
+            " -->";
+    } catch (\RuntimeException) {
+    }
+}
+
 $bodyClasses = [];
 $bodyClassAttr = "";
 
