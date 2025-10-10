@@ -1,7 +1,21 @@
 // out: false
 
+@blog-card-padding: @spacing-lg;
+@blog-card-title-font-size-mobile: (@font-size-base * 1.125);
+@blog-card-title-font-size-desktop: (@font-size-base * 1.375);
+@blog-card-excerpt-font-size-mobile: @font-size-sub;
+@blog-card-meta-gap-mobile: @spacing-sm;
+@blog-card-meta-gap-desktop: @spacing-2xl;
+@blog-card-tags-gap: @spacing-xs;
+@blog-card-main-gap-mobile: @spacing-sm;
+@blog-card-main-gap-desktop: @spacing-lg;
+@blog-card-grid-image-min: 260px;
+@blog-card-grid-image-max: 320px;
+@blog-card-border-color-base: #dcd7ce;
+@blog-card-border-color-hover: darken(@blog-card-border-color-base, 6%);
+
 .blog-card {
-  padding: 20px;
+  padding: @blog-card-padding;
   background: @color-bg-craft;
   border-radius: @radius;
   box-shadow:
@@ -27,29 +41,26 @@
 
   &__title-link {
     font-family: @font-body;
-    font-size: (@font-size-base * 1.375);
+    font-size: @blog-card-title-font-size-mobile;
     font-weight: 400;
     color: @color-heading;
     text-decoration: none;
     transition: color 0.2s ease;
 
-    .media-down(@bp-mobile-max, {
-      font-size: (@font-size-base * 1.125);
+    .media-up(@bp-tablet-min, {
+      font-size: @blog-card-title-font-size-desktop;
     });
 
-    // Keyboard focus style
     &:focus-visible {
       outline: 2px solid @color-accent;
       outline-offset: 2px;
     }
   }
 
-  // Title accent on card hover (clickable anywhere)
   &:hover &__title-link {
     color: @color-accent;
   }
 
-  // Mirror hover accent when any child is focused via keyboard
   &:focus-within &__title-link {
     color: @color-accent;
   }
@@ -59,12 +70,13 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
-    line-clamp: 4; // progressive enhancement
+    line-clamp: 4;
     overflow: hidden;
     overflow-wrap: anywhere;
+    font-size: @blog-card-excerpt-font-size-mobile;
 
-    .media-down(@bp-mobile-max, {
-      font-size: @font-size-sub;
+    .media-up(@bp-tablet-min, {
+      font-size: @font-size-text;
     });
   }
 
@@ -73,11 +85,11 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 30px;
+    gap: @blog-card-meta-gap-mobile;
     flex-wrap: wrap;
 
-    .media-down(@bp-mobile-max, { 
-      gap: 12px;
+    .media-up(@bp-tablet-min, {
+      gap: @blog-card-meta-gap-desktop;
     });
   }
 
@@ -90,8 +102,8 @@
 
   &__tags {
     display: flex;
-    flex-wrap: wrap; // переносить целые теги на следующую строку
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: @blog-card-tags-gap;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -100,24 +112,28 @@
   &__tag-link {
     .tag-button();
   }
-  // Grid inside the card: text left, image right
+
   &__grid {
     display: grid;
-    grid-template-columns: 1fr minmax(260px, 320px);
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: @blog-card-main-gap-mobile;
 
-    .media-down(@bp-mobile-max, {
-      grid-template-columns: 1fr;
+    .media-up(@bp-tablet-min, {
+      grid-template-columns: 1fr minmax(@blog-card-grid-image-min, @blog-card-grid-image-max);
+      gap: @blog-card-main-gap-desktop;
     });
   }
 
   &__image {
+    display: none;
     aspect-ratio: 4 / 3;
     overflow: hidden;
     align-self: start;
-    .media-down(@bp-mobile-max, {
-      display: none;
+
+    .media-up(@bp-tablet-min, {
+      display: block;
     });
+
     img {
       width: 100%;
       height: 100%;
@@ -129,12 +145,10 @@
     }
   }
 
-  // Remove grayscale on hover
   &:hover &__image img {
     filter: none;
   }
 
-  // Remove grayscale when card has keyboard focus inside
   &:focus-within &__image img {
     filter: none;
   }
@@ -144,16 +158,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    // вертикальный ритм на десктопе между header, excerpt и meta
-    gap: 20px;
+    gap: @blog-card-main-gap-mobile;
 
-    // на мобильных оставляем текущую логику отступов
-    .media-down(@bp-mobile-max, {
-      gap: 12px;
+    .media-up(@bp-tablet-min, {
+      gap: @blog-card-main-gap-desktop;
     });
   }
 
-  // Respect user preference to reduce motion
   @media (prefers-reduced-motion: reduce) {
     transition: none;
 
@@ -179,7 +190,7 @@
 
     &:hover {
       transform: translateY(-2px);
-      border-color: darken(#dcd7ce, 6%);
+      border-color: @blog-card-border-color-hover;
       box-shadow:
         0 3px 12px rgba(0, 0, 0, 0.12),
         inset 0 1px 0 rgba(255, 255, 255, 0.55);
@@ -190,7 +201,7 @@
 
       &:hover {
         transform: none;
-        border-color: #dcd7ce;
+        border-color: @blog-card-border-color-base;
         box-shadow:
           0 2px 8px rgba(0, 0, 0, 0.08),
           inset 0 1px 0 rgba(255, 255, 255, 0.55);
