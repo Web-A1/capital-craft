@@ -27,6 +27,7 @@ $htag = $this->params->get("show_page_heading") ? "h2" : "h1";
 
     <?php
     $app = Factory::getApplication();
+    $app->getDocument()->getWebAssetManager()->useScript("tpl.capitalcraft.blog.filter");
 $menu = $app->getMenu();
 $blogMenu = $menu->getItems("alias", "blog", true);
 $blogCategoryId = 0;
@@ -219,5 +220,3 @@ if ($currentTagId) {
 
   </div>
 </section>
-
-<script defer src="/templates/capitalcraft/js/pages/blog/filter.js"></script>

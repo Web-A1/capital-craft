@@ -16,6 +16,7 @@ require_once __DIR__ . "/../../../helpers/TagFilterHelper.php";
 // Prepare category description plugins like core does
 $this->category->text = $this->category->description;
 $app = Factory::getApplication();
+$app->getDocument()->getWebAssetManager()->useScript("tpl.capitalcraft.blog.filter");
 $app->triggerEvent("onContentPrepare", [
     $this->category->extension . ".categories",
     &$this->category,
@@ -248,5 +249,3 @@ $allTags = CapitalcraftTagFilterHelper::getBlogTags((int) $this->category->id, [
 
   </div>
 </section>
-
-<script defer src="/templates/capitalcraft/js/pages/blog/filter.js"></script>
