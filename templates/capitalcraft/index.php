@@ -39,6 +39,9 @@ $isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tag
 
 $document = Factory::getDocument();
 $wa = $document->getWebAssetManager();
+$assetPositionAfterBodyOption = defined(WebAssetManager::class . "::POSITION_AFTER_BODY")
+    ? ["position" => WebAssetManager::POSITION_AFTER_BODY]
+    : [];
 
 if (!$wa->assetExists("style", "tpl.capitalcraft.base")) {
     $wa->registerStyle("tpl.capitalcraft.base", "templates/capitalcraft/css/base.css", [], ["version" => "auto"]);
