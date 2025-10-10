@@ -50,20 +50,19 @@ $assetPositionAfterBodyOption = defined(WebAssetManager::class . "::POSITION_AFT
     : [];
 
 if (!$wa->assetExists("style", "tpl.capitalcraft.base")) {
-    $wa->registerAndUseStyle("tpl.capitalcraft.base", "templates/capitalcraft/css/base.css", ["version" => "auto"]);
-} else {
-    $wa->useStyle("tpl.capitalcraft.base");
+    $wa->registerStyle("tpl.capitalcraft.base", "templates/capitalcraft/css/base.css", ["version" => "auto"]);
 }
+$wa->useStyle("tpl.capitalcraft.base");
+
 if (!$wa->assetExists("script", "tpl.capitalcraft.bundle")) {
-    $wa->registerAndUseScript(
+    $wa->registerScript(
         "tpl.capitalcraft.bundle",
         "templates/capitalcraft/js/global/bundle.js",
         array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
         ["type" => "module"],
     );
-} else {
-    $wa->useScript("tpl.capitalcraft.bundle");
 }
+$wa->useScript("tpl.capitalcraft.bundle");
 
 $bodyClasses = [];
 $bodyClassAttr = "";
@@ -73,8 +72,9 @@ if ($isHome) {
         $wa->registerStyle(
             "tpl.capitalcraft.home",
             "templates/capitalcraft/css/home.css",
-            ["tpl.capitalcraft.base"],
             ["version" => "auto"],
+            [],
+            ["tpl.capitalcraft.base"],
         );
     }
     $wa->useStyle("tpl.capitalcraft.home");
@@ -86,8 +86,9 @@ if ($isFaq) {
         $wa->registerStyle(
             "tpl.capitalcraft.faq",
             "templates/capitalcraft/css/faq.css",
-            ["tpl.capitalcraft.base"],
             ["version" => "auto"],
+            [],
+            ["tpl.capitalcraft.base"],
         );
     }
     $wa->useStyle("tpl.capitalcraft.faq");
@@ -99,8 +100,9 @@ if ($isLegal) {
         $wa->registerStyle(
             "tpl.capitalcraft.legal",
             "templates/capitalcraft/css/legal.css",
-            ["tpl.capitalcraft.base"],
             ["version" => "auto"],
+            [],
+            ["tpl.capitalcraft.base"],
         );
     }
     $wa->useStyle("tpl.capitalcraft.legal");
@@ -112,8 +114,9 @@ if ($isBlog) {
         $wa->registerStyle(
             "tpl.capitalcraft.blog",
             "templates/capitalcraft/css/blog.css",
-            ["tpl.capitalcraft.base"],
             ["version" => "auto"],
+            [],
+            ["tpl.capitalcraft.base"],
         );
     }
     $wa->useStyle("tpl.capitalcraft.blog");
@@ -139,8 +142,9 @@ if ($isHome) {
         $wa->registerStyle(
             "tpl.capitalcraft.swiper.css",
             "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.css",
-            ["tpl.capitalcraft.base"],
             ["version" => "11.1.3"],
+            [],
+            ["tpl.capitalcraft.base"],
         );
     }
     $wa->useStyle("tpl.capitalcraft.swiper.css");
@@ -150,7 +154,6 @@ if ($isHome) {
             "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.js",
             array_merge(["version" => "11.1.3"], $assetPositionAfterBodyOption),
             ["defer" => true],
-            [],
         );
     }
     $wa->useScript("tpl.capitalcraft.swiper");
@@ -160,7 +163,6 @@ if ($isHome) {
             "templates/capitalcraft/js/vendor/embla/embla-carousel.umd.js",
             array_merge(["version" => "7.1.0"], $assetPositionAfterBodyOption),
             ["defer" => true],
-            [],
         );
     }
     $wa->useScript("tpl.capitalcraft.embla");
@@ -223,7 +225,6 @@ if ($isFaq) {
             "templates/capitalcraft/js/pages/faq/faq.js",
             array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
             ["defer" => true],
-            [],
         );
     }
     $wa->useScript("tpl.capitalcraft.faq-script");
