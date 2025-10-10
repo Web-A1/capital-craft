@@ -261,18 +261,28 @@
         // Базовый стиль в закрытом состоянии - черный
         opacity: 1; // всегда черный по умолчанию
 
-        &.active {
-          opacity: 1; // активный бургер полностью видимый
-
-          &:hover {
-            opacity: 1; // остается черным даже при hover
-          }
-        }
-
-        // Убираем hover эффект - бургер всегда должен быть черным
         &:hover {
           cursor: pointer;
-          // НЕ меняем opacity - остается черным
+          opacity: 1;
+        }
+
+        &.active {
+          opacity: 1;
+
+          span {
+            &:first-child {
+              transform: translateY(0) rotate(-45deg);
+            }
+
+            &:nth-child(2) {
+              opacity: 0;
+              transform: scaleX(0);
+            }
+
+            &:last-child {
+              transform: translateY(0) rotate(45deg);
+            }
+          }
         }
 
         span {
@@ -312,9 +322,8 @@ body.menu-open {
   .site-header {
     .media-down(@bp-mobile-max, {
       z-index: 49; // под мобильным меню
-      overflow: visible !important; // УБИРАЕМ overflow: hidden чтобы показать меню
-      // Принудительно показываем header при открытом мобильном меню
-      transform: translateY(0) !important;
+      overflow: visible; // УБИРАЕМ overflow: hidden чтобы показать меню
+      transform: translateY(0);
     });
   }
 
@@ -322,27 +331,6 @@ body.menu-open {
   .site-header .burger {
     .media-down(@bp-mobile-max, {
       z-index: 51;
-      // убрана transition у родителя - анимируем только span
-
-      span {
-        background-color: @color-heading; // ЧЕРНЫЙ во всех состояниях
-        transition: transform 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99), 
-                   opacity 0.3s cubic-bezier(0.4, 0.01, 0.165, 0.99);
-        // УБРАНА задержка - мгновенная реакция
-
-        &:first-child {
-          transform: translateY(0px) rotate(-45deg) !important; // ПРОВЕРЕНО в DevTools
-        }
-
-        &:nth-child(2) {
-          opacity: 0;
-          transform: scaleX(0);
-        }
-
-        &:last-child {
-          transform: translateY(0px) rotate(45deg) !important; // ПРОВЕРЕНО в DevTools
-        }
-      }
     });
   }
 }
