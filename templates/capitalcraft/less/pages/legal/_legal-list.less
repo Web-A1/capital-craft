@@ -1,8 +1,7 @@
 // out: false
 
 @legal-list-gap: @spacing-lg;
-@legal-list-margin-mobile: @spacing-3xl;
-@legal-list-margin-desktop: @spacing-5xl;
+@legal-list-margin: @spacing-3xl;
 @legal-card-padding-mobile: @spacing-xl;
 @legal-card-body-gap-mobile: @spacing-sm;
 @legal-card-body-gap-desktop: @spacing-lg;
@@ -15,11 +14,7 @@
   &__list {
     display: grid;
     gap: @legal-list-gap;
-    margin-top: @legal-list-margin-mobile;
-
-    .media-up(@bp-tablet-min, {
-      margin-top: @legal-list-margin-desktop;
-    });
+    margin-top: @legal-list-margin;
   }
 }
 
