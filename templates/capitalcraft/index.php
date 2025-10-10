@@ -3,6 +3,7 @@ defined("_JEXEC") or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\WebAsset\WebAssetManager;
 
 require_once JPATH_SITE . "/templates/capitalcraft/helpers/SeoHelper.php";
 
@@ -108,7 +109,7 @@ if (!$wa->assetExists("script", "tpl.capitalcraft.bundle")) {
     $wa->registerScript(
         "tpl.capitalcraft.bundle",
         "templates/capitalcraft/js/global/bundle.js",
-        ["version" => "auto"],
+        ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
         ["type" => "module"],
     );
 }
@@ -118,8 +119,9 @@ if ($isHome) {
     if (!$wa->assetExists("style", "tpl.capitalcraft.swiper.css")) {
         $wa->registerStyle(
             "tpl.capitalcraft.swiper.css",
-            "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css",
-            ["relative" => false],
+            "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.css",
+            ["tpl.capitalcraft.base"],
+            ["version" => "11.1.3"],
         );
     }
     $wa->useStyle("tpl.capitalcraft.swiper.css");
@@ -127,8 +129,8 @@ if ($isHome) {
     if (!$wa->assetExists("script", "tpl.capitalcraft.swiper")) {
         $wa->registerScript(
             "tpl.capitalcraft.swiper",
-            "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js",
-            ["relative" => false],
+            "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.js",
+            ["version" => "11.1.3", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
         );
     }
@@ -137,8 +139,8 @@ if ($isHome) {
     if (!$wa->assetExists("script", "tpl.capitalcraft.embla")) {
         $wa->registerScript(
             "tpl.capitalcraft.embla",
-            "https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js",
-            ["relative" => false],
+            "templates/capitalcraft/js/vendor/embla/embla-carousel.umd.js",
+            ["version" => "7.1.0", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
         );
     }
@@ -147,8 +149,8 @@ if ($isHome) {
     if (!$wa->assetExists("script", "tpl.capitalcraft.embla-autoplay")) {
         $wa->registerScript(
             "tpl.capitalcraft.embla-autoplay",
-            "https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js",
-            ["relative" => false],
+            "templates/capitalcraft/js/vendor/embla/embla-carousel-autoplay.umd.js",
+            ["version" => "7.1.0", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
             ["tpl.capitalcraft.embla"],
         );
@@ -159,7 +161,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.partners",
             "templates/capitalcraft/js/pages/home/partners.js",
-            ["version" => "auto"],
+            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
             ["tpl.capitalcraft.embla-autoplay"],
         );
@@ -170,7 +172,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.showcase",
             "templates/capitalcraft/js/pages/home/show_case_swiper.js",
-            ["version" => "auto"],
+            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
             ["tpl.capitalcraft.swiper"],
         );
@@ -181,7 +183,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.faq",
             "templates/capitalcraft/js/pages/home/faq_swiper.js",
-            ["version" => "auto"],
+            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
             ["tpl.capitalcraft.swiper"],
         );
@@ -192,7 +194,7 @@ if ($isHome) {
         $wa->registerScript(
             "tpl.capitalcraft.home.reviews",
             "templates/capitalcraft/js/pages/home/reviews_swiper.js",
-            ["version" => "auto"],
+            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
             ["tpl.capitalcraft.swiper"],
         );
@@ -205,7 +207,7 @@ if ($isFaq) {
         $wa->registerScript(
             "tpl.capitalcraft.faq-script",
             "templates/capitalcraft/js/pages/faq/faq.js",
-            ["version" => "auto"],
+            ["version" => "auto", "position" => WebAssetManager::POSITION_AFTER_BODY],
             ["defer" => true],
         );
     }
