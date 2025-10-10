@@ -1,5 +1,17 @@
 // out: false
 
+@faq-title-block-margin: (@spacing-2xl - 5px);
+@faq-tags-gap: (@spacing-sm - 2px);
+@faq-tag-padding-desktop-block: (@spacing-xs - 2px);
+@faq-tag-padding-desktop-inline: (@spacing-sm - 2px);
+@faq-question-padding-inline-mobile: (@spacing-2xl - 2px);
+@faq-toggle-offset-inline: (@spacing-xs - 2px);
+@faq-answer-padding-inline: @spacing-lg;
+@faq-answer-padding-left: @spacing-2xl;
+@faq-answer-expanded-padding-top: (@spacing-md - 1px);
+@faq-answer-open-padding-top: @spacing-xl;
+@faq-toggle-icon-size: 26px;
+
 .faq {
   padding-bottom: 0; // мобильная база: rely on global .section-with-divider spacing
   .media-up(@bp-tablet-min, { padding-bottom: @spacing-5xl; });
@@ -14,7 +26,7 @@
   }
 
   &__container {
-    max-width: 1170px;
+    max-width: @container-width;
     width: 100%;
     margin: 0 auto;
     display: flex;
@@ -33,18 +45,18 @@
   &__title-block {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-bottom: 25px;
+    gap: @subtitle-title-gap;
+    margin-bottom: @faq-title-block-margin;
   }
 
   // Навигация по тегам на странице FAQ
   &__tags-nav {
-    margin: 0 0 40px;
+    margin: 0 0 @spacing-3xl;
   }
   .faq-tags__cloud {
     list-style: none;
     display: flex;
-    gap: 10px;
+    gap: @faq-tags-gap;
     padding: 0;
     margin: 0;
     flex-wrap: wrap;
@@ -55,7 +67,7 @@
 
     .media-up(@bp-tablet-min, {
       display: inline-flex;
-      padding: 6px 10px;
+      padding: @faq-tag-padding-desktop-block @faq-tag-padding-desktop-inline;
     });
   }
 
@@ -93,7 +105,7 @@
   &__accordion {
     flex: 1 1 auto;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 @spacing-lg;
     border-radius: @radius;
     box-shadow: 0 2px 8px fade(@color-heading, 10%);
 
@@ -105,7 +117,7 @@
 
   &__item {
     border-bottom: 1px solid #e0e0e0;
-    padding: 16px 0;
+    padding: @spacing-md 0;
     position: relative;
     display: block;
 
@@ -133,17 +145,17 @@
     font-size: @font-size-text;
     color: @color-text;
     display: block;
-    padding-right: 28px;
+    padding-right: @faq-question-padding-inline-mobile;
     position: relative;
     grid-column: 1 / 2;
     grid-row: 1;
     &::after {
       content: "+";
       position: absolute;
-      right: 6px;
+      right: @faq-toggle-offset-inline;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 26px;
+      font-size: @faq-toggle-icon-size;
       line-height: 1;
       color: @color-text;
       transition:
@@ -210,7 +222,7 @@
     font-family: @font-body;
     font-size: @font-size-text;
     font-weight: 400;
-    padding: 0 20px 0 30px;
+    padding: 0 @faq-answer-padding-inline 0 @faq-answer-padding-left;
     color: @color-text;
     line-height: 160%;
     grid-column: 1 / -1;
@@ -227,7 +239,7 @@
     // Отступы между списками и остальным текстом, повторяем решение из блога
     ol,
     ul {
-      margin: 16px 0;
+      margin: @spacing-md 0;
       padding-left: 1.5em;
       list-style-position: outside;
     }
@@ -241,7 +253,7 @@
     }
 
     li {
-      margin: 0 0 8px;
+      margin: 0 0 @spacing-xs;
       text-align: left;
     }
 
@@ -274,19 +286,21 @@
     // Дополнительный зазор после списков перед следующим абзацем
     ul + p,
     ol + p {
-      margin-top: 16px;
+      margin-top: @spacing-md;
     }
   }
 
   // В новой разметке ответ не является прямым соседом кнопки,
   // за padding отвечает JS (оставляем правило для совместимости, если структура без row)
   &__question[aria-expanded="true"] + .faq__answer {
-    padding: 15px 20px 20px 30px;
+    padding: @faq-answer-expanded-padding-top @faq-answer-padding-inline
+      @faq-answer-padding-inline @faq-answer-padding-left;
   }
 
   // Мягкий зазор сверху при раскрытии (как было, когда "работало идеально")
   &__answer.open {
-    padding: 24px 20px 20px 30px;
+    padding: @faq-answer-open-padding-top @faq-answer-padding-inline
+      @faq-answer-padding-inline @faq-answer-padding-left;
   }
 
   &__image {
@@ -311,7 +325,7 @@
   .media-up(@bp-tablet-min, {
     &__accordion {
       .card-paper-desktop();
-      padding: 0 20px;
+      padding: 0 @spacing-lg;
     }
 
     &__item:last-child {
