@@ -34,8 +34,13 @@ $isFaq = $active && $active->alias === "faq";
 $requestUri = trim($app->input->server->getString("REQUEST_URI", ""), "/");
 $isLegalRoute = strpos($requestUri, "legal") === 0;
 $isLegal = ($active && $active->alias === "legal") || $isLegalRoute;
-// Блоговые страницы: сам блог, поиск по блогу, страницы тегов
-$isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tags"], true);
+// Блоговый раздел: основная страница, поиск по материалам и теги
+$option = $app->input->getCmd("option");
+$view = $app->input->getCmd("view");
+$isBlog =
+    ($active && ($active->alias ?? "") === "blog") ||
+    ($option === "com_finder" && $view === "search") ||
+    ($option === "com_tags" && $view === "tag");
 
 $document = Factory::getDocument();
 $wa = $document->getWebAssetManager();
