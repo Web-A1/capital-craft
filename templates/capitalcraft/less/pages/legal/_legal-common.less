@@ -1,13 +1,22 @@
 // out: false
 
+@legal-intro-gap: @spacing-md;
+@legal-intro-text-gap: (@spacing-xs - 2px);
+@legal-description-gap: @spacing-md;
+@legal-list-indent: @spacing-lg;
+
 .legal {
-  padding-bottom: @spacing-3xl;
-  .media-up(@bp-tablet-min, { padding-bottom: @spacing-5xl; });
-  .media-down(@bp-mobile-max, { padding-bottom: 0; });
+  padding-bottom: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding-bottom: @spacing-5xl;
+  });
 
   &.frame.section-with-divider {
-    .media-down(@bp-mobile-max, {
-      padding-top: 0;
+    padding-top: 0;
+
+    .media-up(@bp-tablet-min, {
+      padding-top: @spacing-2xl;
     });
   }
 
@@ -16,31 +25,29 @@
     width: 100%;
     margin: 0 auto;
     display: flex;
-    gap: @spacing-3xl;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 @mobile-side-padding;
 
     .media-up(@bp-tablet-min, {
+      flex-direction: row;
+      justify-content: space-between;
       gap: @spacing-5xl;
-    });
-
-    .media-down(@bp-mobile-max, {
-      padding: 0 @mobile-side-padding;
-      flex-direction: column;
-      gap: 0;
+      padding: 0;
     });
   }
 
   &__intro {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: @legal-intro-gap;
   }
 
   &__intro-text {
     max-width: 760px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: @legal-intro-text-gap;
   }
 
   &__subtitle {
@@ -51,13 +58,13 @@
   &__title {
     margin: 0;
     font-family: @font-title;
-    font-size: @font-size-title;
+    font-size: @font-size-title-mobile;
     line-height: 110%;
     font-weight: 600;
     color: @color-heading;
 
-    .media-down(@bp-mobile-max, {
-      font-size: @font-size-title-mobile;
+    .media-up(@bp-tablet-min, {
+      font-size: @font-size-title;
     });
   }
 
@@ -69,20 +76,20 @@
     line-height: 165%;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: @legal-description-gap;
 
     p {
       margin: 0;
     }
 
     p + p {
-      margin-top: 16px;
+      margin-top: @legal-description-gap;
     }
 
     ul,
     ol {
       margin: 0;
-      padding-left: 20px;
+      padding-left: @legal-list-indent;
     }
   }
 
@@ -94,7 +101,7 @@
   }
 
   &__image {
-    flex: 0 0 25%;
+    display: none;
     max-width: 100%;
     border-radius: @radius;
     clip-path: border-box;
@@ -107,8 +114,9 @@
       border-radius: @radius;
     }
 
-    .media-down(@bp-mobile-max, {
-      display: none;
+    .media-up(@bp-tablet-min, {
+      display: block;
+      flex: 0 0 25%;
     });
   }
 }
