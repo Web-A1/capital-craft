@@ -38,28 +38,65 @@ $isLegal = ($active && $active->alias === "legal") || $isLegalRoute;
 $isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tags"], true);
 
 $document = Factory::getDocument();
-$document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/base.css");
+$wa = $document->getWebAssetManager();
+
+if (!$wa->assetExists("style", "tpl.capitalcraft.base")) {
+    $wa->registerStyle("tpl.capitalcraft.base", "templates/capitalcraft/css/base.css", [], ["version" => "auto"]);
+}
+$wa->useStyle("tpl.capitalcraft.base");
 
 $bodyClasses = [];
 $bodyClassAttr = "";
 
 if ($isHome) {
-    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/home.css");
+    if (!$wa->assetExists("style", "tpl.capitalcraft.home")) {
+        $wa->registerStyle(
+            "tpl.capitalcraft.home",
+            "templates/capitalcraft/css/home.css",
+            ["tpl.capitalcraft.base"],
+            ["version" => "auto"],
+        );
+    }
+    $wa->useStyle("tpl.capitalcraft.home");
     $bodyClasses[] = "page-home";
 }
 
 if ($isFaq) {
-    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/faq.css");
+    if (!$wa->assetExists("style", "tpl.capitalcraft.faq")) {
+        $wa->registerStyle(
+            "tpl.capitalcraft.faq",
+            "templates/capitalcraft/css/faq.css",
+            ["tpl.capitalcraft.base"],
+            ["version" => "auto"],
+        );
+    }
+    $wa->useStyle("tpl.capitalcraft.faq");
     $bodyClasses[] = "page-faq";
 }
 
 if ($isLegal) {
-    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/legal.css");
+    if (!$wa->assetExists("style", "tpl.capitalcraft.legal")) {
+        $wa->registerStyle(
+            "tpl.capitalcraft.legal",
+            "templates/capitalcraft/css/legal.css",
+            ["tpl.capitalcraft.base"],
+            ["version" => "auto"],
+        );
+    }
+    $wa->useStyle("tpl.capitalcraft.legal");
     $bodyClasses[] = "page-legal";
 }
 
 if ($isBlog) {
-    $document->addStyleSheet($this->baseurl . "/templates/capitalcraft/css/blog.css");
+    if (!$wa->assetExists("style", "tpl.capitalcraft.blog")) {
+        $wa->registerStyle(
+            "tpl.capitalcraft.blog",
+            "templates/capitalcraft/css/blog.css",
+            ["tpl.capitalcraft.base"],
+            ["version" => "auto"],
+        );
+    }
+    $wa->useStyle("tpl.capitalcraft.blog");
     $bodyClasses[] = "page-blog";
 }
 
