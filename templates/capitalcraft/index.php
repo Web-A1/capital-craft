@@ -230,11 +230,110 @@ if ($isFaq) {
     $wa->useScript("tpl.capitalcraft.faq-script");
 }
 
+$requiredStyles = ["tpl.capitalcraft.base"];
+$requiredScripts = ["tpl.capitalcraft.bundle"];
+
+if ($isHome) {
+    $requiredStyles[] = "tpl.capitalcraft.home";
+    $requiredStyles[] = "tpl.capitalcraft.swiper.css";
+    $requiredScripts = array_merge($requiredScripts, [
+        "tpl.capitalcraft.swiper",
+        "tpl.capitalcraft.embla",
+        "tpl.capitalcraft.embla-autoplay",
+        "tpl.capitalcraft.home.partners",
+        "tpl.capitalcraft.home.showcase",
+        "tpl.capitalcraft.home.faq",
+        "tpl.capitalcraft.home.reviews",
+    ]);
+}
+
+if ($isFaq) {
+    $requiredStyles[] = "tpl.capitalcraft.faq";
+    $requiredScripts[] = "tpl.capitalcraft.faq-script";
+}
+
+if ($isLegal) {
+    $requiredStyles[] = "tpl.capitalcraft.legal";
+}
+
+if ($isBlog) {
+    $requiredStyles[] = "tpl.capitalcraft.blog";
+    $requiredScripts[] = "tpl.capitalcraft.blog.filter";
+}
+
+$styleFallbackMap = [
+    "tpl.capitalcraft.base" => "templates/capitalcraft/css/base.css",
+    "tpl.capitalcraft.home" => "templates/capitalcraft/css/home.css",
+    "tpl.capitalcraft.faq" => "templates/capitalcraft/css/faq.css",
+    "tpl.capitalcraft.legal" => "templates/capitalcraft/css/legal.css",
+    "tpl.capitalcraft.blog" => "templates/capitalcraft/css/blog.css",
+    "tpl.capitalcraft.swiper.css" => "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.css",
+];
+
+$scriptFallbackMap = [
+    "tpl.capitalcraft.bundle" => [
+        "path" => "templates/capitalcraft/js/global/bundle.js",
+        "attribs" => ["type" => "module"],
+    ],
+    "tpl.capitalcraft.swiper" => [
+        "path" => "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.embla" => [
+        "path" => "templates/capitalcraft/js/vendor/embla/embla-carousel.umd.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.embla-autoplay" => [
+        "path" => "templates/capitalcraft/js/vendor/embla/embla-carousel-autoplay.umd.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.home.partners" => [
+        "path" => "templates/capitalcraft/js/pages/home/partners.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.home.showcase" => [
+        "path" => "templates/capitalcraft/js/pages/home/show_case_swiper.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.home.faq" => [
+        "path" => "templates/capitalcraft/js/pages/home/faq_swiper.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.home.reviews" => [
+        "path" => "templates/capitalcraft/js/pages/home/reviews_swiper.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.faq-script" => [
+        "path" => "templates/capitalcraft/js/pages/faq/faq.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+    "tpl.capitalcraft.blog.filter" => [
+        "path" => "templates/capitalcraft/js/pages/blog/filter.js",
+        "attribs" => ["defer" => "defer"],
+    ],
+];
+
+foreach (array_diff($requiredStyles, $styleNames) as $missingStyle) {
+    if (isset($styleFallbackMap[$missingStyle])) {
+        $document->addStyleSheet($styleFallbackMap[$missingStyle], ["version" => "auto"]);
+    }
+}
+
+foreach (array_diff($requiredScripts, $scriptNames) as $missingScript) {
+    if (isset($scriptFallbackMap[$missingScript])) {
+        $scriptInfo = $scriptFallbackMap[$missingScript];
+        $document->addScript($scriptInfo["path"], ["version" => "auto"], $scriptInfo["attribs"]);
+    }
+}
+
 try {
     $bundleModulePreload = $wa->getAsset("script", "tpl.capitalcraft.bundle")->getUri();
 } catch (\RuntimeException $exception) {
     $bundleModulePreload = "";
 }
+
+$styleNames = array_keys($wa->getAssets("style"));
+$scriptNames = array_keys($wa->getAssets("script"));
 
 if (!empty($bodyClasses)) {
     if (method_exists($document, "addBodyClass")) {
