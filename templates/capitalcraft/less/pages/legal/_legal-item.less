@@ -1,5 +1,15 @@
 // out: false
 
+@legal-item-meta-margin-block: @spacing-lg;
+@legal-item-list-indent: @spacing-lg;
+@legal-item-list-gap: @spacing-xs;
+@legal-item-sublist-gap: (@spacing-xs - 4px);
+@legal-item-heading-gap-mobile: @spacing-md;
+@legal-item-heading-gap-desktop: @spacing-md;
+@legal-item-subheading-gap-mobile: 1.25em;
+@legal-item-subheading-gap-desktop: 1.5em;
+@legal-item-body-paragraph-gap: 1.5em;
+
 .legal {
   &__meta-date {
     display: inline-block;
@@ -7,7 +17,7 @@
     font-family: @font-body;
     font-size: @font-size-text;
     font-weight: 400;
-    margin: 20px 0;
+    margin: @legal-item-meta-margin-block 0;
   }
 
   &__body {
@@ -17,15 +27,15 @@
 
     p {
       margin: 0;
-      text-align: justify;
+      text-align: left;
 
-      .media-down(@bp-mobile-max, {
-        text-align: left;
+      .media-up(@bp-tablet-min, {
+        text-align: justify;
       });
     }
 
     p + p {
-      margin-top: 1.5em;
+      margin-top: @legal-item-body-paragraph-gap;
     }
 
     ol {
@@ -35,50 +45,50 @@
     }
 
     ul {
-      margin: 16px 0;
-      padding-left: 1.5em;
+      margin: @legal-item-list-gap 0;
+      padding-left: @legal-item-list-indent;
       list-style-position: outside;
     }
 
     // Основные пункты списка (3.1, 3.2, 3.3)
     li {
-      margin: 0 0 8px;
-      text-align: justify;
+      margin: 0 0 @legal-item-list-gap;
+      text-align: left;
 
-      .media-down(@bp-mobile-max, {
-        text-align: left;
+      .media-up(@bp-tablet-min, {
+        text-align: justify;
       });
 
       // Подпункты первого уровня (3.1.1, 3.1.2)
       ol li {
-        margin-left: 1.5em;
-        margin-bottom: 4px; // Уменьшенный отступ для плотности
+        margin-left: @legal-item-list-indent;
+        margin-bottom: @legal-item-sublist-gap;
 
         // Первый подпункт - больший отступ сверху
         &:first-child {
-          margin-top: 8px; // Увеличенный отступ от основного пункта
+          margin-top: @legal-item-list-gap; // Увеличенный отступ от основного пункта
         }
       }
 
       // Подпункты второго уровня (если есть)
       ol ol li {
-        margin-left: 1.5em;
-        margin-bottom: 4px;
+        margin-left: @legal-item-list-indent;
+        margin-bottom: @legal-item-sublist-gap;
 
         // Первый подпункт - больший отступ сверху
         &:first-child {
-          margin-top: 8px;
+          margin-top: @legal-item-list-gap;
         }
       }
 
       // Подпункты третьего уровня (если есть)
       ol ol ol li {
-        margin-left: 1.5em;
-        margin-bottom: 4px;
+        margin-left: @legal-item-list-indent;
+        margin-bottom: @legal-item-sublist-gap;
 
         // Первый подпункт - больший отступ сверху
         &:first-child {
-          margin-top: 8px;
+          margin-top: @legal-item-list-gap;
         }
       }
     }
@@ -88,13 +98,13 @@
     }
 
     h2 {
-      margin-top: 16px; // Увеличенный отступ между разделами
-      margin-bottom: 16px; // Увеличенный отступ после заголовка
+      margin-top: @legal-item-heading-gap-mobile;
+      margin-bottom: @legal-item-heading-gap-mobile;
       font-weight: 600;
 
-      .media-down(@bp-mobile-max, {
-        margin-top: 12px;
-        margin-bottom: 12px;
+      .media-up(@bp-tablet-min, {
+        margin-top: @legal-item-heading-gap-desktop;
+        margin-bottom: @legal-item-heading-gap-desktop;
       });
 
       // Первый раздел без отступа сверху
@@ -105,11 +115,11 @@
 
     h3,
     h4 {
-      margin: 1.5em 0 0.75em;
+      margin: @legal-item-subheading-gap-mobile 0 0.5em;
       font-weight: 600;
 
-      .media-down(@bp-mobile-max, {
-        margin: 1.25em 0 0.5em;
+      .media-up(@bp-tablet-min, {
+        margin: @legal-item-subheading-gap-desktop 0 0.75em;
       });
     }
 
