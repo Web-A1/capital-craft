@@ -39,67 +39,31 @@ $isBlog = $active && in_array($active->alias ?? "", ["blog", "blog-search", "tag
 
 $document = Factory::getDocument();
 $wa = $document->getWebAssetManager();
-$assetPositionAfterBodyOption = defined(WebAssetManager::class . "::POSITION_AFTER_BODY")
-    ? ["position" => WebAssetManager::POSITION_AFTER_BODY]
-    : [];
 
-if (!$wa->assetExists("style", "tpl.capitalcraft.base")) {
-    $wa->registerStyle("tpl.capitalcraft.base", "templates/capitalcraft/css/base.css", [], ["version" => "auto"]);
-}
 $wa->useStyle("tpl.capitalcraft.base");
+$wa->useScript("tpl.capitalcraft.bundle");
 
 $bodyClasses = [];
 $bodyClassAttr = "";
 
 if ($isHome) {
-    if (!$wa->assetExists("style", "tpl.capitalcraft.home")) {
-        $wa->registerStyle(
-            "tpl.capitalcraft.home",
-            "templates/capitalcraft/css/home.css",
-            ["tpl.capitalcraft.base"],
-            ["version" => "auto"],
-        );
-    }
     $wa->useStyle("tpl.capitalcraft.home");
     $bodyClasses[] = "page-home";
 }
 
 if ($isFaq) {
-    if (!$wa->assetExists("style", "tpl.capitalcraft.faq")) {
-        $wa->registerStyle(
-            "tpl.capitalcraft.faq",
-            "templates/capitalcraft/css/faq.css",
-            ["tpl.capitalcraft.base"],
-            ["version" => "auto"],
-        );
-    }
     $wa->useStyle("tpl.capitalcraft.faq");
     $bodyClasses[] = "page-faq";
 }
 
 if ($isLegal) {
-    if (!$wa->assetExists("style", "tpl.capitalcraft.legal")) {
-        $wa->registerStyle(
-            "tpl.capitalcraft.legal",
-            "templates/capitalcraft/css/legal.css",
-            ["tpl.capitalcraft.base"],
-            ["version" => "auto"],
-        );
-    }
     $wa->useStyle("tpl.capitalcraft.legal");
     $bodyClasses[] = "page-legal";
 }
 
 if ($isBlog) {
-    if (!$wa->assetExists("style", "tpl.capitalcraft.blog")) {
-        $wa->registerStyle(
-            "tpl.capitalcraft.blog",
-            "templates/capitalcraft/css/blog.css",
-            ["tpl.capitalcraft.base"],
-            ["version" => "auto"],
-        );
-    }
     $wa->useStyle("tpl.capitalcraft.blog");
+    $wa->useScript("tpl.capitalcraft.blog.filter");
     $bodyClasses[] = "page-blog";
 }
 
@@ -107,112 +71,25 @@ if ($isArticle) {
     $bodyClasses[] = "page-article";
 }
 
-$bundleOptions = array_merge(["version" => "auto"], $assetPositionAfterBodyOption);
-
-if (!$wa->assetExists("script", "tpl.capitalcraft.bundle")) {
-    $wa->registerScript("tpl.capitalcraft.bundle", "templates/capitalcraft/js/global/bundle.js", $bundleOptions, [
-        "type" => "module",
-    ]);
-}
-$wa->useScript("tpl.capitalcraft.bundle");
-
 if ($isHome) {
-    if (!$wa->assetExists("style", "tpl.capitalcraft.swiper.css")) {
-        $wa->registerStyle(
-            "tpl.capitalcraft.swiper.css",
-            "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.css",
-            ["tpl.capitalcraft.base"],
-            ["version" => "11.1.3"],
-        );
-    }
     $wa->useStyle("tpl.capitalcraft.swiper.css");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.swiper")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.swiper",
-            "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.js",
-            array_merge(["version" => "11.1.3"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.swiper");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.embla")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.embla",
-            "templates/capitalcraft/js/vendor/embla/embla-carousel.umd.js",
-            array_merge(["version" => "7.1.0"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.embla");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.embla-autoplay")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.embla-autoplay",
-            "templates/capitalcraft/js/vendor/embla/embla-carousel-autoplay.umd.js",
-            array_merge(["version" => "7.1.0"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-            ["tpl.capitalcraft.embla"],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.embla-autoplay");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.home.partners")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.home.partners",
-            "templates/capitalcraft/js/pages/home/partners.js",
-            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-            ["tpl.capitalcraft.embla-autoplay"],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.home.partners");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.home.showcase")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.home.showcase",
-            "templates/capitalcraft/js/pages/home/show_case_swiper.js",
-            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-            ["tpl.capitalcraft.swiper"],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.home.showcase");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.home.faq")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.home.faq",
-            "templates/capitalcraft/js/pages/home/faq_swiper.js",
-            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-            ["tpl.capitalcraft.swiper"],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.home.faq");
-
-    if (!$wa->assetExists("script", "tpl.capitalcraft.home.reviews")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.home.reviews",
-            "templates/capitalcraft/js/pages/home/reviews_swiper.js",
-            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-            ["tpl.capitalcraft.swiper"],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.home.reviews");
 }
 
 if ($isFaq) {
-    if (!$wa->assetExists("script", "tpl.capitalcraft.faq-script")) {
-        $wa->registerScript(
-            "tpl.capitalcraft.faq-script",
-            "templates/capitalcraft/js/pages/faq/faq.js",
-            array_merge(["version" => "auto"], $assetPositionAfterBodyOption),
-            ["defer" => true],
-        );
-    }
     $wa->useScript("tpl.capitalcraft.faq-script");
+}
+
+try {
+    $bundleModulePreload = $wa->getAsset("script", "tpl.capitalcraft.bundle")->getUri();
+} catch (\RuntimeException $exception) {
+    $bundleModulePreload = "";
 }
 
 if (!empty($bodyClasses)) {
@@ -464,7 +341,9 @@ if ($addCanonical) {
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <link rel="modulepreload" href="templates/capitalcraft/js/global/bundle.js">
+  <?php if ($bundleModulePreload !== ""): ?>
+    <link rel="modulepreload" href="<?= htmlspecialchars($bundleModulePreload, ENT_QUOTES, "UTF-8") ?>">
+  <?php endif; ?>
 
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
