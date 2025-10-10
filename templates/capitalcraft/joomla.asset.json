@@ -8,13 +8,13 @@
     {
       "name": "tpl.capitalcraft.base",
       "type": "style",
-      "uri": "css/base.css",
+      "uri": "templates/capitalcraft/css/base.css",
       "version": "auto"
     },
     {
       "name": "tpl.capitalcraft.home",
       "type": "style",
-      "uri": "css/home.css",
+      "uri": "templates/capitalcraft/css/home.css",
       "version": "auto",
       "dependencies": [
         "tpl.capitalcraft.base"
@@ -23,7 +23,7 @@
     {
       "name": "tpl.capitalcraft.faq",
       "type": "style",
-      "uri": "css/faq.css",
+      "uri": "templates/capitalcraft/css/faq.css",
       "version": "auto",
       "dependencies": [
         "tpl.capitalcraft.base"
@@ -32,7 +32,7 @@
     {
       "name": "tpl.capitalcraft.legal",
       "type": "style",
-      "uri": "css/legal.css",
+      "uri": "templates/capitalcraft/css/legal.css",
       "version": "auto",
       "dependencies": [
         "tpl.capitalcraft.base"
@@ -41,7 +41,7 @@
     {
       "name": "tpl.capitalcraft.blog",
       "type": "style",
-      "uri": "css/blog.css",
+      "uri": "templates/capitalcraft/css/blog.css",
       "version": "auto",
       "dependencies": [
         "tpl.capitalcraft.base"
@@ -50,7 +50,7 @@
     {
       "name": "tpl.capitalcraft.swiper.css",
       "type": "style",
-      "uri": "js/vendor/swiper/swiper-bundle.min.css",
+      "uri": "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.css",
       "version": "11.1.3",
       "dependencies": [
         "tpl.capitalcraft.base"
@@ -59,7 +59,7 @@
     {
       "name": "tpl.capitalcraft.bundle",
       "type": "script",
-      "uri": "js/global/bundle.js",
+      "uri": "templates/capitalcraft/js/global/bundle.js",
       "version": "auto",
       "attributes": {
         "type": "module"
@@ -71,7 +71,7 @@
     {
       "name": "tpl.capitalcraft.swiper",
       "type": "script",
-      "uri": "js/vendor/swiper/swiper-bundle.min.js",
+      "uri": "templates/capitalcraft/js/vendor/swiper/swiper-bundle.min.js",
       "version": "11.1.3",
       "attributes": {
         "defer": true
@@ -83,7 +83,7 @@
     {
       "name": "tpl.capitalcraft.embla",
       "type": "script",
-      "uri": "js/vendor/embla/embla-carousel.umd.js",
+      "uri": "templates/capitalcraft/js/vendor/embla/embla-carousel.umd.js",
       "version": "7.1.0",
       "attributes": {
         "defer": true
@@ -95,7 +95,7 @@
     {
       "name": "tpl.capitalcraft.embla-autoplay",
       "type": "script",
-      "uri": "js/vendor/embla/embla-carousel-autoplay.umd.js",
+      "uri": "templates/capitalcraft/js/vendor/embla/embla-carousel-autoplay.umd.js",
       "version": "7.1.0",
       "attributes": {
         "defer": true
@@ -110,7 +110,7 @@
     {
       "name": "tpl.capitalcraft.home.partners",
       "type": "script",
-      "uri": "js/pages/home/partners.js",
+      "uri": "templates/capitalcraft/js/pages/home/partners.js",
       "version": "auto",
       "attributes": {
         "defer": true
@@ -125,7 +125,7 @@
     {
       "name": "tpl.capitalcraft.home.showcase",
       "type": "script",
-      "uri": "js/pages/home/show_case_swiper.js",
+      "uri": "templates/capitalcraft/js/pages/home/show_case_swiper.js",
       "version": "auto",
       "attributes": {
         "defer": true
@@ -140,7 +140,7 @@
     {
       "name": "tpl.capitalcraft.home.faq",
       "type": "script",
-      "uri": "js/pages/home/faq_swiper.js",
+      "uri": "templates/capitalcraft/js/pages/home/faq_swiper.js",
       "version": "auto",
       "attributes": {
         "defer": true
@@ -155,7 +155,7 @@
     {
       "name": "tpl.capitalcraft.home.reviews",
       "type": "script",
-      "uri": "js/pages/home/reviews_swiper.js",
+      "uri": "templates/capitalcraft/js/pages/home/reviews_swiper.js",
       "version": "auto",
       "attributes": {
         "defer": true
@@ -170,7 +170,7 @@
     {
       "name": "tpl.capitalcraft.faq-script",
       "type": "script",
-      "uri": "js/pages/faq/faq.js",
+      "uri": "templates/capitalcraft/js/pages/faq/faq.js",
       "version": "auto",
       "attributes": {
         "defer": true
@@ -185,7 +185,7 @@
     {
       "name": "tpl.capitalcraft.blog.filter",
       "type": "script",
-      "uri": "js/pages/blog/filter.js",
+      "uri": "templates/capitalcraft/js/pages/blog/filter.js",
       "version": "auto",
       "attributes": {
         "defer": true
