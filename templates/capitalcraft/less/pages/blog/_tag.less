@@ -1,31 +1,40 @@
 // out: false
 
-.blog-tags {
-  // Align vertical rhythm with main blog page: no top padding, only bottom
-  padding: 0 0 @spacing-3xl;
-  .media-up(@bp-tablet-min, { padding: 0 0 @spacing-5xl; });
-  // Mobile: rely on global .section-with-divider spacing (30/line/30)
-  .media-down(@bp-mobile-max, { padding: 0; });
+@blog-tags-bottom-gap-desktop: @spacing-5xl;
+@blog-tags-list-gap: @spacing-lg;
+@blog-tags-cloud-gap-row: @spacing-xs;
+@blog-tags-cloud-gap-column: @spacing-sm;
+@blog-tags-cloud-margin-top: @spacing-sm;
 
-  // Use the same spacing as general blog list
+.blog-tags {
+  // мобильная база — rely on global section spacing
+  padding: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding: 0 0 @blog-tags-bottom-gap-desktop;
+  });
+
+  // сетка карточек повторяет список блога
   .blog-list {
     display: grid;
-    gap: 20px;
+    gap: @blog-tags-list-gap;
   }
 
   &__others {
-    margin-top: @spacing-3xl;
-    .media-up(@bp-tablet-min, { margin-top: @spacing-5xl; });
-    .media-down(@bp-mobile-max, { margin-top: @divider-space-mobile; });
+    margin-top: @divider-space-mobile;
+
+    .media-up(@bp-tablet-min, {
+      margin-top: @spacing-5xl;
+    });
   }
 
   &__cloud {
     list-style: none;
     padding: 0;
-    margin: 12px 0 0;
+    margin: @blog-tags-cloud-margin-top 0 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 12px;
+    gap: @blog-tags-cloud-gap-row @blog-tags-cloud-gap-column;
   }
 
   &__cloud--nowrap {
@@ -38,7 +47,10 @@
   }
 }
 
-// Mobile: remove global top padding on tag listing section
 .blog-tags.frame.section-with-divider {
-  .media-down(@bp-mobile-max, { padding-top: 0; });
+  padding-top: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding-top: @spacing-2xl;
+  });
 }
