@@ -1,42 +1,66 @@
 // out: false
 
+@blog-article-header-max-width: 700px;
+@blog-article-header-margin-bottom: @spacing-lg;
+@blog-article-meta-margin-top: @spacing-xs;
+@blog-article-meta-margin-bottom: @spacing-md;
+@blog-article-meta-gap: (@spacing-xs - 2px);
+@blog-article-meta-item-margin: @spacing-md;
+@blog-article-grid-gap-mobile: @spacing-3xl;
+@blog-article-grid-gap-desktop: @spacing-5xl;
+@blog-article-grid-margin-top: @spacing-lg;
+@blog-article-side-gap-mobile: @divider-space-mobile;
+@blog-article-side-gap-desktop: @spacing-5xl;
+@blog-article-scroll-gap: @spacing-xl;
+@blog-article-scroll-padding-right: @spacing-md;
+@blog-article-related-header-margin: (@spacing-2xl - 5px);
+@blog-article-related-list-gap: (@spacing-2xl - 5px);
+@blog-article-related-item-gap: (@spacing-xs - 2px);
+@blog-article-related-tag-gap: (@spacing-sm - 2px);
+@blog-article-related-title-margin-bottom: (@spacing-xs - 3px);
+@blog-article-main-min-height-desktop: 900px;
+@blog-article-side-min-height-desktop: 900px;
+@blog-article-related-padding-left-desktop: @spacing-5xl;
+@blog-article-section-divider-padding-desktop: @spacing-2xl;
+@blog-article-related-link-margin-bottom: (@spacing-xs - 2px);
+
 // Styles affecting single article page when blog.css is loaded
 .com-content-article.item-page {
   padding-top: 0;
-  padding-bottom: @spacing-3xl;
-  .media-up(@bp-tablet-min, { padding-bottom: @spacing-5xl; });
+  padding-bottom: 0;
 
-  // Mobile: avoid double bottom space with section divider padding
-  .media-down(@bp-mobile-max, { padding-bottom: 0; });
+  .media-up(@bp-tablet-min, {
+    padding-bottom: @spacing-5xl;
+  });
 
   .page-header {
-    max-width: 700px;
-    margin-bottom: 20px;
+    max-width: @blog-article-header-max-width;
+    margin-bottom: @blog-article-header-margin-bottom;
     h1,
     h2 {
       margin: 0;
       font-family: @font-title;
-      font-size: @font-size-title;
+      font-size: @font-size-title-mobile;
       font-weight: 600;
       line-height: 110%;
       color: @color-heading;
-      .media-down(@bp-mobile-max, { font-size: @font-size-title-mobile; });
+      .media-up(@bp-tablet-min, { font-size: @font-size-title; });
     }
   }
 
   // Meta area (Joomla default list)
   dl.article-info,
   .article-info {
-    margin: 8px 0 16px;
+    margin: @blog-article-meta-margin-top 0 @blog-article-meta-margin-bottom;
     color: @color-text;
     dt {
       display: none;
     }
     dd {
-      margin-right: 16px;
+      margin-right: @blog-article-meta-item-margin;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: @blog-article-meta-gap;
     }
     time {
       .subtitle();
@@ -49,15 +73,14 @@
 
     // Stretch text across width (justify)
     p {
-      text-align: justify;
+      text-align: left;
       //text-justify: inter-word;
       //-webkit-hyphens: auto;
       //-ms-hyphens: auto;
       //hyphens: auto;
 
-      .media-down(@bp-mobile-max, { 
-        text-align: left; 
-        //hyphens: none;
+      .media-up(@bp-tablet-min, {
+        text-align: justify;
       });
     }
 
@@ -75,13 +98,13 @@
     // so that numbers align and inner <p> tags don't add extra gaps
     ol,
     ul {
-      margin: 12px 0 12px;
+      margin: @spacing-sm 0;
       padding-left: 2em; // visible indent for multi-line items
       list-style-position: outside; // wrap lines under text, not under number
     }
 
     li {
-      margin: 0 0 12px;
+      margin: 0 0 @spacing-sm;
       line-height: 1.2;
     }
 
@@ -100,7 +123,7 @@
 
     // Article headings styling
     h2 {
-      margin: 1.5em 0 0.75em 0;
+      margin: 1.25em 0 0.5em 0;
       font-weight: 600;
       color: @color-heading;
 
@@ -109,17 +132,13 @@
         margin-top: 0;
       }
 
-      .media-down(@bp-mobile-max, {
-        margin: 1.25em 0 0.5em 0;
-
-        &:first-child {
-          margin-top: 0;
-        }
+      .media-up(@bp-tablet-min, {
+        margin: 1.5em 0 0.75em 0;
       });
     }
 
     h3 {
-      margin: 1.25em 0 0.5em 0;
+      margin: 1em 0 0.4em 0;
       font-weight: 400;
       color: @color-heading;
       text-decoration: underline;
@@ -129,12 +148,8 @@
         margin-top: 0;
       }
 
-      .media-down(@bp-mobile-max, {
-        margin: 1em 0 0.4em 0;
-
-        &:first-child {
-          margin-top: 0;
-        }
+      .media-up(@bp-tablet-min, {
+        margin: 1.25em 0 0.5em 0;
       });
     }
   }
@@ -145,39 +160,37 @@
   // Article layout grid: text left, image right
   &__grid {
     display: grid;
-    grid-template-columns: 60% 1fr;
-    gap: 60px; // 60px gap between text and image
+    grid-template-columns: 1fr;
+    gap: @blog-article-grid-gap-mobile;
     align-items: stretch;
-    margin-top: 20px;
+    margin-top: @blog-article-grid-margin-top;
 
-    .media-down(@bp-mobile-max, {
-      grid-template-columns: 1fr;
-      gap: 40px;
+    .media-up(@bp-tablet-min, {
+      grid-template-columns: 60% 1fr;
+      gap: @blog-article-grid-gap-desktop;
     });
   }
 
   &__main {
     max-width: none;
-    min-height: 900px;
+    min-height: auto;
 
-    .media-down(@bp-mobile-max, {
-      min-height: auto;
-      padding-top: 0;
+    .media-up(@bp-tablet-min, {
+      min-height: @blog-article-main-min-height-desktop;
     });
   }
 
   &__side {
     display: flex;
     flex-direction: column;
-    gap: 60px; // desktop spacing between image and related block
+    gap: @blog-article-side-gap-mobile;
     position: relative;
-    min-height: 900px;
+    min-height: auto;
     overflow: visible;
 
-    // Mobile: 30px gap between image and the divider above related block
-    .media-down(@bp-mobile-max, {
-      gap: @divider-space-mobile;
-      min-height: auto;
+    .media-up(@bp-tablet-min, {
+      gap: @blog-article-side-gap-desktop;
+      min-height: @blog-article-side-min-height-desktop;
     });
   }
 
@@ -191,57 +204,55 @@
   // Related posts block on the right under image
   &__related-wrap {
     position: relative;
-    padding-left: 60px;
-    flex: 1;
-    min-height: 0; // allow inner scroll area to shrink
+    padding-left: 0;
+    padding-top: @blog-article-side-gap-mobile; // space from divider above
+    flex: none;
+    min-height: 0;
     display: flex;
     flex-direction: column;
 
-    // Desktop vertical divider
-    &::before {
+    &::after {
       content: "";
       position: absolute;
-      top: 0;
-      bottom: 0;
       left: 0;
-      width: 1px;
+      right: 0;
+      top: 0;
+      height: 1px;
       background-color: @section-divider-color;
-      pointer-events: none;
-      .media-down(@bp-mobile-max, { display: none; });
     }
 
-    // Mobile: spacing and horizontal divider
-    .media-down(@bp-mobile-max, {
-      padding-left: 0;
-      padding-top: @divider-space-mobile; // space from divider above
-      flex: none;
+    .media-up(@bp-tablet-min, {
+      padding-left: @blog-article-related-padding-left-desktop;
+      padding-top: 0;
+      flex: 1;
 
       &::after {
+        content: none;
+      }
+    });
+
+    // Desktop vertical divider
+    .media-up(@bp-tablet-min, {
+      &::before {
         content: "";
         position: absolute;
         left: 0;
-        right: 0;
-        top: 0; // divider sits at the top edge of the related block
-        height: 1px;
+        top: 0;
+        bottom: 0;
+        width: 1px;
         background-color: @section-divider-color;
-        display: block;
+        pointer-events: none;
       }
     });
   }
 
   &__related-scroll {
-    flex: 1;
-    min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    overflow-y: auto;
-    background-color: @color-bg-craft;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(80, 80, 80, 0.15) @color-bg-craft;
-    padding-right: 16px;
-
-    .media-down(@bp-mobile-max, {padding-right: 0; });
+    gap: @blog-article-scroll-gap;
+    overflow: visible;
+    background: none;
+    padding-right: 0;
 
     // Scrollbar styling
     &::-webkit-scrollbar {
@@ -261,25 +272,24 @@
       background: rgba(80, 80, 80, 0.3);
     }
 
-    .media-down(@bp-mobile-max, {
-      overflow: visible;
-      background: none;
+    .media-up(@bp-tablet-min, {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      background-color: @color-bg-craft;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(80, 80, 80, 0.15) @color-bg-craft;
+      padding-right: @blog-article-scroll-padding-right;
     });
   }
 
   &__related-title {
     .subtitle();
-    margin: 0 0 5px;
-
-    // Mobile: ensure equal space below the divider and before the title
-    .media-down(@bp-mobile-max, {
-      margin-top: 0; // handled by parent padding-top
-      margin-bottom: 5px; // от заголовка до списка тегов
-    });
+    margin: 0 0 @blog-article-related-title-margin-bottom;
   }
 
   &__related-header {
-    margin-bottom: 25px;
+    margin-bottom: @blog-article-related-header-margin;
   }
 
   &__related-tags {
@@ -289,7 +299,7 @@
 
   &__related-tag {
     display: inline-block;
-    margin-right: 10px; // интервал между тегами
+    margin-right: @blog-article-related-tag-gap;
   }
   &__related-tag:last-child {
     margin-right: 0;
@@ -300,12 +310,12 @@
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 25px;
+    gap: @blog-article-related-list-gap;
   }
 
   &__related-item {
     display: grid;
-    gap: 6px;
+    gap: @blog-article-related-item-gap;
   }
 
   &__related-link {
@@ -320,7 +330,7 @@
     text-align: justify;
     hyphens: auto;
     line-height: 130%;
-    margin-bottom: 6px;
+    margin-bottom: @blog-article-related-link-margin-bottom;
     overflow-wrap: anywhere;
     word-break: break-word;
   }
@@ -367,5 +377,9 @@
 // Frame section with divider modifier
 .frame.section-with-divider:not(.site-header) {
   // Mobile: remove global top padding on the outer section wrapper
-  .media-down(@bp-mobile-max, { padding-top: 0; });
+  padding-top: 0;
+
+  .media-up(@bp-tablet-min, {
+    padding-top: @blog-article-section-divider-padding-desktop;
+  });
 }
