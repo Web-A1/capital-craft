@@ -71,6 +71,16 @@
         top: 9%;
       });
     }
+
+    .reviews__pagination {
+      display: block;
+      text-align: center;
+      position: static;
+      inset: auto;
+      z-index: auto;
+      margin-top: @spacing-md;
+      align-self: center;
+    }
   }
 
   &__swiper {
@@ -234,9 +244,9 @@
   &__pagination {
     display: block;
     text-align: center;
-    position: static !important;
-    bottom: auto !important;
-    z-index: auto !important;
+    position: static;
+    inset: auto;
+    z-index: auto;
 
     .media-up(@bp-tablet-min, {
       display: none;
