@@ -104,6 +104,114 @@ if ($isArticle) {
     $bodyClasses[] = "page-article";
 }
 
+if (!$wa->assetExists("script", "tpl.capitalcraft.bundle")) {
+    $wa->registerScript(
+        "tpl.capitalcraft.bundle",
+        "templates/capitalcraft/js/global/bundle.js",
+        ["version" => "auto"],
+        ["type" => "module"],
+    );
+}
+$wa->useScript("tpl.capitalcraft.bundle");
+
+if ($isHome) {
+    if (!$wa->assetExists("style", "tpl.capitalcraft.swiper.css")) {
+        $wa->registerStyle(
+            "tpl.capitalcraft.swiper.css",
+            "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css",
+            ["relative" => false],
+        );
+    }
+    $wa->useStyle("tpl.capitalcraft.swiper.css");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.swiper")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.swiper",
+            "https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js",
+            ["relative" => false],
+            ["defer" => true],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.swiper");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.embla")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.embla",
+            "https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js",
+            ["relative" => false],
+            ["defer" => true],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.embla");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.embla-autoplay")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.embla-autoplay",
+            "https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js",
+            ["relative" => false],
+            ["defer" => true],
+            ["tpl.capitalcraft.embla"],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.embla-autoplay");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.home.partners")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.home.partners",
+            "templates/capitalcraft/js/pages/home/partners.js",
+            ["version" => "auto"],
+            ["defer" => true],
+            ["tpl.capitalcraft.embla-autoplay"],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.home.partners");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.home.showcase")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.home.showcase",
+            "templates/capitalcraft/js/pages/home/show_case_swiper.js",
+            ["version" => "auto"],
+            ["defer" => true],
+            ["tpl.capitalcraft.swiper"],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.home.showcase");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.home.faq")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.home.faq",
+            "templates/capitalcraft/js/pages/home/faq_swiper.js",
+            ["version" => "auto"],
+            ["defer" => true],
+            ["tpl.capitalcraft.swiper"],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.home.faq");
+
+    if (!$wa->assetExists("script", "tpl.capitalcraft.home.reviews")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.home.reviews",
+            "templates/capitalcraft/js/pages/home/reviews_swiper.js",
+            ["version" => "auto"],
+            ["defer" => true],
+            ["tpl.capitalcraft.swiper"],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.home.reviews");
+}
+
+if ($isFaq) {
+    if (!$wa->assetExists("script", "tpl.capitalcraft.faq-script")) {
+        $wa->registerScript(
+            "tpl.capitalcraft.faq-script",
+            "templates/capitalcraft/js/pages/faq/faq.js",
+            ["version" => "auto"],
+            ["defer" => true],
+        );
+    }
+    $wa->useScript("tpl.capitalcraft.faq-script");
+}
+
 if (!empty($bodyClasses)) {
     if (method_exists($document, "addBodyClass")) {
         foreach ($bodyClasses as $class) {
@@ -411,28 +519,6 @@ if ($addCanonical) {
       </button>
     </div>
   </div>
-
-  <?php if ($isHome): ?>
-    <script src="https://cdn.jsdelivr.net/npm/embla-carousel/embla-carousel.umd.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/embla-carousel-autoplay/embla-carousel-autoplay.umd.js"></script>
-
-    <script src="templates/capitalcraft/js/pages/home/partners.js"></script>
-
-    <!-- Swiper styles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
-    <!-- Swiper script -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="templates/capitalcraft/js/pages/home/show_case_swiper.js"></script>
-    <script src="templates/capitalcraft/js/pages/home/faq_swiper.js"></script>
-    <script src="templates/capitalcraft/js/pages/home/reviews_swiper.js"></script>
-  <?php endif; ?>
-
-  <?php if ($isFaq): ?>
-    <script src="templates/capitalcraft/js/pages/faq/faq.js"></script>
-  <?php endif; ?>
-
-  <script type="module" src="templates/capitalcraft/js/global/bundle.js"></script>
 
 </body>
 
