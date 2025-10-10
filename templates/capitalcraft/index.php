@@ -319,15 +319,15 @@ $scriptFallbackMap = [
     ],
 ];
 
-foreach (array_diff($requiredStyles, $styleNames) as $missingStyle) {
-    if (isset($styleFallbackMap[$missingStyle])) {
-        $document->addStyleSheet($styleFallbackMap[$missingStyle], ["version" => "auto"]);
+foreach ($requiredStyles as $styleName) {
+    if (isset($styleFallbackMap[$styleName])) {
+        $document->addStyleSheet($styleFallbackMap[$styleName], ["version" => "auto"]);
     }
 }
 
-foreach (array_diff($requiredScripts, $scriptNames) as $missingScript) {
-    if (isset($scriptFallbackMap[$missingScript])) {
-        $scriptInfo = $scriptFallbackMap[$missingScript];
+foreach ($requiredScripts as $scriptName) {
+    if (isset($scriptFallbackMap[$scriptName])) {
+        $scriptInfo = $scriptFallbackMap[$scriptName];
         $document->addScript($scriptInfo["path"], ["version" => "auto"], $scriptInfo["attribs"]);
     }
 }
