@@ -7,7 +7,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const viewport = section.querySelector(".embla__viewport");
-  const container = section.querySelector(".embla__container");
+  const container = viewport
+    ? viewport.querySelector(".embla__container")
+    : null;
   if (!viewport || !container) {
     return;
   }
@@ -16,36 +18,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const originalMarkup = container.innerHTML;
 
   let emblaInstance = null;
+  let autoplayPlugin = null;
   let desktopDuplicated = false;
   let desktopDragHandlers = null;
+  let mobileInitToken = 0;
+  let logosReadyPromise = null;
+  let viewportReadyPromise = null;
+  let emblaReadyPromise = null;
 
   const registerLogoInteractions = logo => {
     if (!logo || logo.dataset.listenersBound === "true") {
       return;
     }
 
-    let resetTimer;
+    let resetTimer = null;
 
-    const highlight = () => {
-      if (resetTimer) {
+    const clearTimer = () => {
+      if (resetTimer !== null) {
         window.clearTimeout(resetTimer);
         resetTimer = null;
       }
+    };
+
+    const highlight = () => {
+      clearTimer();
       logo.classList.add("no-filter");
     };
 
     const clearHighlight = () => {
-      if (resetTimer) {
-        window.clearTimeout(resetTimer);
-        resetTimer = null;
-      }
+      clearTimer();
       logo.classList.remove("no-filter");
     };
 
     const scheduleReset = (delay = 1200) => {
-      if (resetTimer) {
-        window.clearTimeout(resetTimer);
-      }
+      clearTimer();
       resetTimer = window.setTimeout(() => {
         logo.classList.remove("no-filter");
         resetTimer = null;
@@ -68,7 +74,13 @@ document.addEventListener("DOMContentLoaded", () => {
       { passive: true }
     );
 
-    logo.addEventListener("touchcancel", clearHighlight);
+    logo.addEventListener(
+      "touchcancel",
+      () => {
+        clearHighlight();
+      },
+      { passive: true }
+    );
 
     logo.addEventListener("pointerdown", event => {
       if (event.pointerType === "mouse") {
@@ -91,7 +103,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    logo.addEventListener("pointercancel", clearHighlight);
+    logo.addEventListener("pointercancel", () => {
+      clearHighlight();
+    });
 
     logo.dataset.listenersBound = "true";
   };
@@ -102,48 +116,285 @@ document.addEventListener("DOMContentLoaded", () => {
       .forEach(registerLogoInteractions);
   };
 
-  const waitForEmbla = (attempt = 0) => {
-    const hasEmbla =
-      typeof window.EmblaCarousel === "function" &&
-      typeof window.EmblaCarouselAutoplay === "function";
-    if (hasEmbla) {
-      if (!emblaInstance) {
-        const autoplay = window.EmblaCarouselAutoplay({
-          delay: 3000,
-          stopOnInteraction: false,
-          stopOnMouseEnter: false
-        });
+  const awaitImage = image => {
+    if (!image) {
+      return Promise.resolve();
+    }
 
-        emblaInstance = window.EmblaCarousel(
-          viewport,
-          {
-            loop: true,
-            align: "center",
-            skipSnaps: false,
-            containScroll: false
-          },
-          [autoplay]
-        );
+    const decodeImage =
+      typeof image.decode === "function"
+        ? () => image.decode().catch(() => undefined)
+        : () => Promise.resolve();
+
+    if (image.complete && image.naturalWidth > 0) {
+      return decodeImage();
+    }
+
+    return new Promise(resolve => {
+      const cleanup = () => {
+        image.removeEventListener("load", onLoad);
+        image.removeEventListener("error", onEnd);
+      };
+
+      const finalize = () => {
+        cleanup();
+        resolve();
+      };
+
+      const onLoad = () => {
+        decodeImage().finally(finalize);
+      };
+
+      const onEnd = finalize;
+
+      image.addEventListener("load", onLoad, { once: true });
+      image.addEventListener("error", onEnd, { once: true });
+    });
+  };
+
+  const ensureLogosReady = () => {
+    if (logosReadyPromise) {
+      return logosReadyPromise;
+    }
+
+    const logos = Array.from(container.querySelectorAll(".partner-logo"));
+    if (!logos.length) {
+      return Promise.resolve();
+    }
+
+    logosReadyPromise = Promise.all(logos.map(awaitImage)).finally(() => {
+      logosReadyPromise = null;
+    });
+
+    return logosReadyPromise;
+  };
+
+  const hasViewportWidth = () => viewport.clientWidth > 0;
+
+  const ensureViewportReady = () => {
+    if (hasViewportWidth()) {
+      return Promise.resolve();
+    }
+
+    if (viewportReadyPromise) {
+      return viewportReadyPromise;
+    }
+
+    viewportReadyPromise = new Promise(resolve => {
+      let resolved = false;
+      const cleanups = [];
+
+      const finish = () => {
+        if (resolved) {
+          return;
+        }
+        resolved = true;
+        while (cleanups.length) {
+          const cleanup = cleanups.pop();
+          if (typeof cleanup === "function") {
+            cleanup();
+          }
+        }
+        resolve();
+      };
+
+      const checkViewport = () => {
+        if (hasViewportWidth()) {
+          finish();
+        }
+      };
+
+      if (typeof ResizeObserver === "function") {
+        const observer = new ResizeObserver(() => {
+          checkViewport();
+        });
+        observer.observe(viewport);
+        cleanups.push(() => observer.disconnect());
       } else {
-        emblaInstance.reInit();
+        const onResize = () => {
+          checkViewport();
+        };
+        window.addEventListener("resize", onResize);
+        cleanups.push(() => window.removeEventListener("resize", onResize));
       }
 
+      if (typeof window.requestAnimationFrame === "function") {
+        const rafId = window.requestAnimationFrame(() => {
+          checkViewport();
+        });
+        cleanups.push(() => window.cancelAnimationFrame(rafId));
+      } else {
+        const timeoutId = window.setTimeout(() => {
+          checkViewport();
+        }, 0);
+        cleanups.push(() => window.clearTimeout(timeoutId));
+      }
+
+      const onLoad = () => {
+        checkViewport();
+      };
+      window.addEventListener("load", onLoad, { once: true });
+      cleanups.push(() => window.removeEventListener("load", onLoad));
+
+      const fallbackId = window.setTimeout(() => {
+        console.warn(
+          "Partners slider viewport is still zero width after 4s; continuing with current layout."
+        );
+        finish();
+      }, 4000);
+      cleanups.push(() => window.clearTimeout(fallbackId));
+    }).finally(() => {
+      viewportReadyPromise = null;
+    });
+
+    return viewportReadyPromise;
+  };
+
+  const isEmblaReady = () =>
+    typeof window.EmblaCarousel === "function" &&
+    typeof window.EmblaCarouselAutoplay === "function";
+
+  const ensureEmbla = () => {
+    if (isEmblaReady()) {
+      return Promise.resolve();
+    }
+
+    if (emblaReadyPromise) {
+      return emblaReadyPromise;
+    }
+
+    emblaReadyPromise = new Promise(resolve => {
+      let resolved = false;
+      const cleanups = [];
+
+      const finish = () => {
+        if (resolved) {
+          return;
+        }
+        resolved = true;
+        while (cleanups.length) {
+          const cleanup = cleanups.pop();
+          if (typeof cleanup === "function") {
+            cleanup();
+          }
+        }
+        resolve();
+      };
+
+      const checkReady = () => {
+        if (isEmblaReady()) {
+          finish();
+        }
+      };
+
+      if (typeof window.requestAnimationFrame === "function") {
+        const rafId = window.requestAnimationFrame(() => {
+          checkReady();
+        });
+        cleanups.push(() => window.cancelAnimationFrame(rafId));
+      } else {
+        const timeoutId = window.setTimeout(() => {
+          checkReady();
+        }, 0);
+        cleanups.push(() => window.clearTimeout(timeoutId));
+      }
+
+      const timeoutId = window.setTimeout(() => {
+        console.warn(
+          "Embla Carousel scripts did not finish loading within 8s; initializing with current availability."
+        );
+        finish();
+      }, 8000);
+      cleanups.push(() => window.clearTimeout(timeoutId));
+
+      const onWindowLoad = () => {
+        checkReady();
+      };
+      window.addEventListener("load", onWindowLoad);
+      cleanups.push(() => window.removeEventListener("load", onWindowLoad));
+
+      const scriptNodes = document.querySelectorAll(
+        'script[src*="embla-carousel"]'
+      );
+      scriptNodes.forEach(script => {
+        const onScriptLoad = () => {
+          checkReady();
+        };
+        script.addEventListener("load", onScriptLoad, { once: true });
+        cleanups.push(() => script.removeEventListener("load", onScriptLoad));
+      });
+    }).finally(() => {
+      emblaReadyPromise = null;
+    });
+
+    return emblaReadyPromise;
+  };
+
+  const getAutoplayPlugin = () => {
+    if (!autoplayPlugin && typeof window.EmblaCarouselAutoplay === "function") {
+      autoplayPlugin = window.EmblaCarouselAutoplay({
+        delay: 3000,
+        stopOnInteraction: false,
+        stopOnMouseEnter: false
+      });
+    }
+
+    return autoplayPlugin;
+  };
+
+  const initEmbla = () => {
+    if (!isEmblaReady()) {
       return;
     }
 
-    if (attempt >= 20) {
-      console.warn("Embla Carousel is not available for the partners slider.");
-      return;
+    const autoplay = getAutoplayPlugin();
+
+    if (!emblaInstance) {
+      emblaInstance = window.EmblaCarousel(
+        viewport,
+        {
+          loop: true,
+          align: "center",
+          skipSnaps: false,
+          containScroll: false
+        },
+        autoplay ? [autoplay] : undefined
+      );
+    } else {
+      emblaInstance.reInit();
     }
 
-    window.setTimeout(() => waitForEmbla(attempt + 1), 100);
+    if (emblaInstance && typeof emblaInstance.scrollTo === "function") {
+      emblaInstance.scrollTo(0, true);
+    }
+
+    if (autoplay) {
+      if (typeof autoplay.reset === "function") {
+        autoplay.reset();
+      }
+      if (typeof autoplay.play === "function") {
+        autoplay.play();
+      }
+    }
   };
 
   const destroyEmbla = () => {
-    if (emblaInstance) {
-      emblaInstance.destroy();
-      emblaInstance = null;
+    if (!emblaInstance) {
+      return;
     }
+
+    if (autoplayPlugin) {
+      if (typeof autoplayPlugin.stop === "function") {
+        autoplayPlugin.stop();
+      }
+      if (typeof autoplayPlugin.reset === "function") {
+        autoplayPlugin.reset();
+      }
+    }
+
+    emblaInstance.destroy();
+    emblaInstance = null;
+    autoplayPlugin = null;
   };
 
   const attachDesktopDrag = () => {
@@ -151,30 +402,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    let isDown = false;
+    let isDragging = false;
     let startX = 0;
     let scrollStart = 0;
 
     const stopDrag = () => {
-      isDown = false;
+      isDragging = false;
       viewport.classList.remove("dragging");
     };
 
     const onMouseDown = event => {
-      isDown = true;
+      isDragging = true;
       startX = event.pageX - viewport.offsetLeft;
       scrollStart = viewport.scrollLeft;
       viewport.classList.add("dragging");
     };
 
     const onMouseMove = event => {
-      if (!isDown) {
+      if (!isDragging) {
         return;
       }
+
       event.preventDefault();
       const currentX = event.pageX - viewport.offsetLeft;
-      const walk = currentX - startX;
-      viewport.scrollLeft = scrollStart - walk;
+      const delta = currentX - startX;
+      viewport.scrollLeft = scrollStart - delta;
     };
 
     viewport.addEventListener("mousedown", onMouseDown);
@@ -205,23 +457,56 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const setupMobile = () => {
+    mobileInitToken += 1;
+    const token = mobileInitToken;
+
+    destroyEmbla();
+
     if (desktopDuplicated) {
       container.innerHTML = originalMarkup;
       desktopDuplicated = false;
     }
 
+    logosReadyPromise = null;
+
     detachDesktopDrag();
     bindLogoInteractions();
-    waitForEmbla();
+
+    Promise.all([ensureEmbla(), ensureViewportReady(), ensureLogosReady()])
+      .then(() => {
+        if (token !== mobileInitToken || !mobileQuery.matches) {
+          return;
+        }
+
+        const launch = () => {
+          if (token !== mobileInitToken || !mobileQuery.matches) {
+            return;
+          }
+          initEmbla();
+        };
+
+        if (typeof window.requestAnimationFrame === "function") {
+          window.requestAnimationFrame(launch);
+        } else {
+          window.setTimeout(launch, 0);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
   };
 
   const setupDesktop = () => {
+    mobileInitToken += 1;
+
     destroyEmbla();
 
     if (!desktopDuplicated) {
       container.innerHTML = originalMarkup + originalMarkup;
       desktopDuplicated = true;
     }
+
+    logosReadyPromise = null;
 
     bindLogoInteractions();
     attachDesktopDrag();
@@ -238,7 +523,11 @@ document.addEventListener("DOMContentLoaded", () => {
   applyLayout(mobileQuery.matches);
 
   const mediaListener = event => {
-    applyLayout(event.matches);
+    if (event.matches) {
+      setupMobile();
+    } else {
+      setupDesktop();
+    }
   };
 
   if (typeof mobileQuery.addEventListener === "function") {
@@ -246,6 +535,12 @@ document.addEventListener("DOMContentLoaded", () => {
   } else if (typeof mobileQuery.addListener === "function") {
     mobileQuery.addListener(mediaListener);
   }
+
+  window.addEventListener("pageshow", event => {
+    if (event.persisted) {
+      applyLayout(mobileQuery.matches);
+    }
+  });
 
   bindLogoInteractions();
 });
