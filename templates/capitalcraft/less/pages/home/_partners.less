@@ -79,6 +79,13 @@
       -webkit-overflow-scrolling: touch;
       touch-action: pan-x;
 
+      &.is-embla-ready {
+        overflow-x: hidden;
+        scroll-snap-type: none;
+        -webkit-overflow-scrolling: auto;
+        overscroll-behavior-x: contain;
+      }
+
       .media-up(@bp-tablet-min, {
         overflow-x: hidden;
         scroll-snap-type: none;
