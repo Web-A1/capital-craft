@@ -25,6 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let logosReadyPromise = null;
   let viewportReadyPromise = null;
   let emblaReadyPromise = null;
+  let autoplayStartTimeout = null;
+
+  const viewportReadyClass = "is-embla-ready";
+  const autoplayStartDelay = 1500;
 
   const registerLogoInteractions = logo => {
     if (!logo || logo.dataset.listenersBound === "true") {
@@ -355,7 +359,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const getAutoplayPlugin = () => {
     if (!autoplayPlugin && typeof window.EmblaCarouselAutoplay === "function") {
       autoplayPlugin = window.EmblaCarouselAutoplay({
-        delay: 3000,
+        delay: 3200,
+        playOnInit: false,
         stopOnInteraction: false,
         stopOnMouseEnter: false
       });
@@ -364,7 +369,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return autoplayPlugin;
   };
 
-  const initEmbla = () => {
+  const initEmbla = token => {
     if (!isEmblaReady()) {
       return;
     }
@@ -386,23 +391,45 @@ document.addEventListener("DOMContentLoaded", () => {
       emblaInstance.reInit();
     }
 
+    viewport.classList.add(viewportReadyClass);
+    viewport.scrollLeft = 0;
+
     if (emblaInstance && typeof emblaInstance.scrollTo === "function") {
       emblaInstance.scrollTo(0, true);
+    }
+
+    if (autoplayStartTimeout !== null) {
+      window.clearTimeout(autoplayStartTimeout);
+      autoplayStartTimeout = null;
     }
 
     if (autoplay) {
       if (typeof autoplay.reset === "function") {
         autoplay.reset();
       }
-      if (typeof autoplay.play === "function") {
-        autoplay.play();
-      }
+
+      autoplayStartTimeout = window.setTimeout(() => {
+        if (token !== mobileInitToken) {
+          return;
+        }
+        if (typeof autoplay.play === "function") {
+          autoplay.play();
+        }
+      }, autoplayStartDelay);
     }
   };
 
   const destroyEmbla = () => {
     if (!emblaInstance) {
       return;
+    }
+
+    viewport.classList.remove(viewportReadyClass);
+    viewport.scrollLeft = 0;
+
+    if (autoplayStartTimeout !== null) {
+      window.clearTimeout(autoplayStartTimeout);
+      autoplayStartTimeout = null;
     }
 
     if (autoplayPlugin) {
@@ -505,7 +532,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (token !== mobileInitToken || !mobileQuery.matches) {
             return;
           }
-          initEmbla();
+          initEmbla(token);
         };
 
         if (typeof window.requestAnimationFrame === "function") {
