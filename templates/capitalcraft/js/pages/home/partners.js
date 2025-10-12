@@ -121,34 +121,56 @@ document.addEventListener("DOMContentLoaded", () => {
       return Promise.resolve();
     }
 
-    const decodeImage =
-      typeof image.decode === "function"
-        ? () => image.decode().catch(() => undefined)
-        : () => Promise.resolve();
-
     if (image.complete && image.naturalWidth > 0) {
-      return decodeImage();
+      return Promise.resolve();
     }
 
     return new Promise(resolve => {
+      let settled = false;
+      let fallbackId = null;
+
       const cleanup = () => {
         image.removeEventListener("load", onLoad);
-        image.removeEventListener("error", onEnd);
+        image.removeEventListener("error", onError);
       };
 
       const finalize = () => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        if (fallbackId !== null) {
+          window.clearTimeout(fallbackId);
+          fallbackId = null;
+        }
         cleanup();
         resolve();
       };
 
-      const onLoad = () => {
-        decodeImage().finally(finalize);
+      const runDecode = () => {
+        if (typeof image.decode === "function") {
+          image
+            .decode()
+            .catch(() => undefined)
+            .finally(finalize);
+          return;
+        }
+
+        finalize();
       };
 
-      const onEnd = finalize;
+      const onLoad = () => {
+        runDecode();
+      };
+
+      const onError = finalize;
 
       image.addEventListener("load", onLoad, { once: true });
-      image.addEventListener("error", onEnd, { once: true });
+      image.addEventListener("error", onError, { once: true });
+
+      fallbackId = window.setTimeout(() => {
+        finalize();
+      }, 2500);
     });
   };
 
@@ -461,6 +483,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const token = mobileInitToken;
 
     destroyEmbla();
+    viewport.scrollLeft = 0;
 
     if (desktopDuplicated) {
       container.innerHTML = originalMarkup;
