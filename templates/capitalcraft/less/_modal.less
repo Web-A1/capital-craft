@@ -6,6 +6,9 @@
   left: 0;
   width: 100%;
   height: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
   background: rgba(0, 0, 0, 0.7);
   display: none;
   align-items: center;
@@ -29,6 +32,7 @@
     width: 100%;
     max-width: 90%;
     max-height: 90vh;
+    max-height: calc(100dvh - (2 * @spacing-lg));
     overflow-y: auto;
     box-shadow: 0 141px 200px rgba(25, 58, 75, 0.3);
     display: flex;
@@ -36,6 +40,7 @@
     gap: @spacing-lg;
     position: relative;
     z-index: 2;
+    padding-bottom: calc(@spacing-lg + env(safe-area-inset-bottom));
 
     .media-up(@bp-tablet-min, {
       padding: @spacing-2xl;
@@ -196,6 +201,40 @@
       stroke-linecap: round;
       stroke-linejoin: round;
       fill: none;
+    }
+  }
+}
+
+@media (max-width: 360px), (max-height: 580px) {
+  .modal {
+    align-items: flex-start;
+  }
+
+  .modal__body {
+    gap: @spacing-md;
+    padding: @spacing-md;
+    padding-bottom: calc(@spacing-md + env(safe-area-inset-bottom));
+    margin-top: @spacing-sm;
+    max-height: calc(100dvh - (2 * @spacing-sm));
+  }
+
+  .modal__title {
+    font-size: @font-size-base * 1.35;
+  }
+
+  .modal__description {
+    font-size: @font-size-sub;
+  }
+
+  .modal__form {
+    gap: @spacing-md;
+
+    .personal-data span {
+      font-size: @font-size-sub;
+    }
+
+    .modal__btn {
+      width: 100%;
     }
   }
 }
