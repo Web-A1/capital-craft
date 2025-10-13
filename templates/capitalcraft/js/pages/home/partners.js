@@ -359,7 +359,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const getAutoplayPlugin = () => {
     if (!autoplayPlugin && typeof window.EmblaCarouselAutoplay === "function") {
       autoplayPlugin = window.EmblaCarouselAutoplay({
-        delay: 3200,
+        delay: 2200,
         playOnInit: false,
         stopOnInteraction: false,
         stopOnMouseEnter: false
