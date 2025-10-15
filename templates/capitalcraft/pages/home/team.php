@@ -45,9 +45,6 @@
                     </div>
                     <div class="team__images-secondary">
                         <div class="team__image team__image--secondary">
-                            <img src="/templates/capitalcraft/images/home/image_team_2.webp" alt="Фотография команды Capital Craft - дополнительный снимок" loading="lazy">
-                        </div>
-                        <div class="team__image team__image--secondary">
                             <img src="/templates/capitalcraft/images/home/image_team_3.webp" alt="Фотография команды Capital Craft - дополнительный снимок" loading="lazy">
                         </div>
                     </div>
