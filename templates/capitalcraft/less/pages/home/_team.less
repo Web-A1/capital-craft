@@ -128,7 +128,7 @@
   &__icon {
     display: none;
     align-self: flex-start;
-    margin-top: auto; // Прижимает иконку к низу
+    margin-top: @spacing-2xl; // сближаем иконку с описанием
 
     .media-up(@bp-tablet-min, {
       display: block;
@@ -179,11 +179,19 @@
     }
 
     &--main {
-      height: 250px;
+      aspect-ratio: 3 / 2;
 
       .media-up(@bp-tablet-min, {
-        height: 390px;
+        aspect-ratio: 3 / 2;
       });
+
+      @supports not (aspect-ratio: 3 / 2) {
+        height: 250px;
+
+        .media-up(@bp-tablet-min, {
+          height: 390px;
+        });
+      }
     }
 
     &--secondary {
