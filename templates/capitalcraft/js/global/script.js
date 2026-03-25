@@ -153,6 +153,7 @@ initTextTruncate();
 
 if (header) {
   const MOBILE_BREAKPOINT = 767;
+  const DESKTOP_STICKY_MIN_WIDTH = 1024;
   const root = document.documentElement;
 
   const readHeaderHeightFromStyles = () => {
@@ -191,6 +192,10 @@ if (header) {
   let isMobileViewport = window.innerWidth <= MOBILE_BREAKPOINT;
   let tolerance = getToleranceForViewport(isMobileViewport);
   let mobileHideThreshold = resolveHeaderHeight();
+  let desktopStickyThreshold = Math.max(
+    window.innerHeight - resolveHeaderHeight(),
+    0
+  );
   let lastScrollY = window.pageYOffset;
   let frozen = false;
   let autoHideSuspended = false;
@@ -283,10 +288,28 @@ if (header) {
     mobileHideThreshold = resolveHeaderHeight(newHeight);
   };
 
+  const updateDesktopStickyThreshold = newHeight => {
+    const headerHeight = resolveHeaderHeight(newHeight);
+    desktopStickyThreshold = Math.max(window.innerHeight - headerHeight, 0);
+  };
+
+  const updateDesktopStickyState = scrollY => {
+    if (window.innerWidth < DESKTOP_STICKY_MIN_WIDTH) {
+      header.classList.remove("desktop-sticky-active");
+      return;
+    }
+
+    header.classList.toggle(
+      "desktop-sticky-active",
+      scrollY > desktopStickyThreshold
+    );
+  };
+
   const onHeaderHeightChange = event => {
     const nextHeight = event?.detail?.height;
 
     updateMobileHideThreshold(nextHeight);
+    updateDesktopStickyThreshold(nextHeight);
   };
 
   const onResize = () => {
@@ -296,10 +319,16 @@ if (header) {
     if (isMobileViewport) {
       updateMobileHideThreshold();
     }
+
+    updateDesktopStickyThreshold();
+    updateDesktopStickyState(clampScrollY(window.pageYOffset));
   };
 
   window.addEventListener("cc:header-height-change", onHeaderHeightChange);
   window.addEventListener("resize", onResize, { passive: true });
+
+  updateDesktopStickyThreshold();
+  updateDesktopStickyState(clampScrollY(window.pageYOffset));
 
   let scrollScheduled = false;
 
@@ -307,6 +336,7 @@ if (header) {
     scrollScheduled = false;
     if (frozen) return;
     const currentScrollY = clampScrollY(window.pageYOffset);
+    updateDesktopStickyState(currentScrollY);
 
     if (!autoHideReady) {
       enforcePinnedState(currentScrollY);

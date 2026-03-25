@@ -61,14 +61,25 @@
   });
 
   .media-up(@bp-tablet-min, {
-    position: relative;
-    top: auto;
-    left: auto;
-    right: auto;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
     background: transparent;
     overflow: visible;
-    will-change: auto;
+    will-change: transform, background-color, box-shadow;
     transform: none;
+    transition:
+      transform 0.2s ease,
+      background-color 0.25s ease,
+      box-shadow 0.25s ease,
+      backdrop-filter 0.25s ease;
+
+    &.desktop-sticky-active {
+      background: fade(@color-bg-craft, 94%);
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 20px fade(@color-text, 10%);
+    }
 
     &::after {
       display: none;
