@@ -1,55 +1,63 @@
-# Структура проекта Capital Craft
+# Capital Craft
 
-## Общий обзор
-- CMS: **Joomla 5.3.2**
-- Пользовательский шаблон: `templates/capitalcraft`
-- Сборка: Node.js scripts (`npm run less:all`, `npm run js:build`)
-- Все стили пишутся на **Less**, все скрипты — нативный **JavaScript**.
+Корпоративный сайт инвестиционного агентства Capital Craft: https://capital-craft.ru
 
-## Основные директории шаблона
-| Путь | Назначение |
-| --- | --- |
-| `css/` | Скомпилированные стили. Не редактировать вручную. |
-| `data/` | Вспомогательные данные. |
-| `html/` | Override'ы стандартных компонентов Joomla (`com_content`, `mod_breadcrumbs` и т.п.). |
-| `images/<страница>/` | Изображения страниц (`home`, `faq`, `favicon`). Новые папки не создавать без крайней необходимости. |
-| `js/global/` | Глобальные модули (`script.js` — точка входа, собирается в `bundle.js`). |
-| `js/pages/<page>/` | Локальные скрипты страниц. |
-| `less/` | Исходники стилей. Частичные файлы начинаются с `_`. Основные: `base.less`, `critical.less`, `home.less`, `faq.less`. |
-| `less/pages/<page>/` | Подключаемые стили блоков страниц. |
-| `pages/<page>/` | PHP‑шаблоны блоков страниц. |
-| `partials/` | Общие части шаблона (`_header.php`, `_footer.php`, `_modal.php`). |
-| `index.php` | Точка сборки страниц. Подключает блоки и стили по условиям (`$isHome`, `$isFaq`, …). |
+## Кратко о проекте
+- Моя роль: fullstack-разработчик.
+- Ключевые SEO-разделы: https://capital-craft.ru, https://capital-craft.ru/blog, https://capital-craft.ru/faq
+- Статус: проект приостановлен по инициативе заказчика (реализовано ~90%)
+- Продакшен-окружение (на 25.03.2026): Joomla 6.0.3, PHP 8.4
+- Проект реализован как кастомный маркетинговый сайт с упором на SEO-архитектуру, скорость загрузки и mobile-first UX.
 
-## Правила разработки
-- **CSS**:
-  - Использовать существующие переменные из `less/_variables.less`.
-  - Вложенность только через `&`; медиазапросы сразу после класса с миксином `.media(@breakpoint, @rules)`.
-- **JavaScript**:
-  - Структура модульная: `js/global/` для общих модулей, `js/pages/<page>/` для конкретных страниц.
-  - Для глобальных изменений пересоберите бандл: `npm run js:build`.
-- **Изображения**: складывать в `images/<page>/`, новых папок избегать.
+Сайт разработан на чистом коде, без готовых шаблонов и конструкторов: собственный дизайн, верстка и серверная логика. Визуальная концепция отражает характер бизнеса: крафтовый подход, индивидуальность, точность и надежность без агрессивной маркетинговой подачи.
 
-## Чек‑лист нового блока
-1. PHP: `templates/capitalcraft/pages/<page>/<block>.php`
-2. Less: `templates/capitalcraft/less/pages/<page>/_<block>.less` и `@import` в `<page>.less`
-3. JS: `templates/capitalcraft/js/pages/<page>/<block>.js`
-4. Изображения: `templates/capitalcraft/images/<page>/`
-5. Подключение в `templates/capitalcraft/index.php`
-6. После правок выполнить `npm run less:all` (и при необходимости `npm run js:build`)
+## Что реализовано технически
+- Разработан кастомный production-шаблон `templates/capitalcraft` без использования готовых шаблонов и конструкторов.
+- Реализован серверный слой шаблона (`SeoHelper`, `TagFilterHelper`, `FaqHelper`, `RelatedHelper`) для SEO-логики, теговой фильтрации и подбора связанных материалов.
+- Настроены Joomla overrides (`com_content`, `com_finder`, `com_tags`, `mod_breadcrumbs`) для управления выводом контента и поисковой навигацией под задачи проекта.
+- Реализована фильтрация по тегам (`?tag=...`) для связки страниц `/blog` и `/faq`, AJAX-подгрузка материалов, синхронизация URL через History API и блоки релевантных материалов внутри страниц.
+- Используется SEO-разметка и метаданные (`Article`, `FAQPage`, `BreadcrumbList`, Open Graph, Twitter meta) для корректной индексации и представления страниц в поиске и социальных сетях.
 
-## Добавление новой страницы
-1. Создать PHP‑блоки в `pages/<page>/`.
-2. Создать стили `less/<page>.less` и папку `less/pages/<page>/` для блоков.
-3. JS: `js/pages/<page>/`.
-4. Изображения: `images/<page>/`.
-5. В `index.php` добавить условие `$is<Page>` и подключить CSS/JS.
+## Интеграция заявок в Telegram
+Форма обратной связи отправляет данные напрямую в Telegram Bot API:
+- frontend: `templates/capitalcraft/js/global/form-submit.js`
+- backend endpoint: `templates/capitalcraft/partials/_send_to_telegram.php`
+- config: `templates/capitalcraft/telegram_config.php`
 
-## Текущие страницы и блоки
-- **home**: `hero`, `partners`, `philosophy`, `team`, `faq-home`, `products`, `show_case`, `reviews`
-- **faq**: стили и JS есть, PHP‑блоков нет (используется компонент содержимого).
+В штатных условиях заявка обычно доставляется в Telegram-чат за ~300-600 мс.
 
-## Сборка и проверка
-- Скомпилировать все стили: `npm run less:all`
-- Пересобрать глобальный JS: `npm run js:build`
-- Тесты (запускают компиляцию less): `npm test`
+## Производительность
+Mobile-first архитектура подтверждена замером PageSpeed Insights (25.03.2026):
+- Mobile: Performance `97`, Accessibility `89`, Best Practices `96`, SEO `100`
+- Desktop: Performance `100`, Accessibility `89`, Best Practices `96`, SEO `100`
+
+Проверка: https://pagespeed.web.dev/report?url=https://capital-craft.ru
+
+## CI/CD и процесс разработки
+1. Разработка ведется локально.
+2. Изменения публикуются в ветку `dev`.
+3. После push в `dev` запускается автоматический деплой на DEV-поддомен `div.capital-craft.ru` (`.github/workflows/deploy-dev.yml`).
+4. На DEV-поддомене выполняется проверка функционала и интерфейса.
+5. После проверки ветка `dev` объединяется с `main`.
+6. После обновления `main` (merge из `dev`) запускается автоматический деплой на основной домен `capital-craft.ru` (`.github/workflows/deploy-prod.yml`).
+7. DEV и PROD используют раздельные базы данных, поэтому тестовые изменения не влияют на production-данные.
+
+## Ограничения (известные незавершенные части)
+- Пункты меню `/team` и `/cases` сейчас ведут на якорные секции главной страницы, а не на отдельные страницы (временный компромисс из-за приостановки проекта).
+- Не вынесена отдельная страница `/team`.
+- Не реализована отдельная страница `/cases` с планировавшейся серверной логикой тегов в связке с `/blog` и `/faq`.
+
+## Структура репозитория
+- `.github/workflows/` — CI/CD (DEV и PROD)
+- `templates/capitalcraft/` — основной кастомный шаблон
+- `templates/capitalcraft/helpers/` — серверная бизнес-логика шаблона
+- `templates/capitalcraft/html/` — Joomla overrides
+- `scripts/` — служебные задачи проекта
+
+## Полезные команды
+- `npm run less:all` — компиляция Less
+- `npm run js:build` — сборка JS
+- `npm run build` — полная сборка
+- `npm run sitemap` — генерация sitemap
+- `npm run format` / `npm run format:check` — форматирование
+- `npm run format:php:check` — проверка PHP-форматирования
