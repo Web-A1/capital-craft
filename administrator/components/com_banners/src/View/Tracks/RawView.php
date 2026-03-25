@@ -17,7 +17,7 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Component\Banners\Administrator\Model\TracksModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -41,11 +41,11 @@ class RawView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var TracksModel $model */
-        $model = $this->getModel();
+        $model    = $this->getModel();
         $basename = $model->getBaseName();
         $fileType = $model->getFileType();
         $mimeType = $model->getMimeType();
-        $content = $model->getContent();
+        $content  = $model->getContent();
 
         // Check for errors.
         if (\count($errors = $model->getErrors())) {
@@ -58,14 +58,8 @@ class RawView extends BaseHtmlView
         $app = Factory::getApplication();
         $app->setHeader(
             'Content-disposition',
-            'attachment; filename="' .
-                $basename .
-                '.' .
-                $fileType .
-                '"; creation-date="' .
-                Factory::getDate()->toRFC822() .
-                '"',
-            true,
+            'attachment; filename="' . $basename . '.' . $fileType . '"; creation-date="' . Factory::getDate()->toRFC822() . '"',
+            true
         );
         echo $content;
     }

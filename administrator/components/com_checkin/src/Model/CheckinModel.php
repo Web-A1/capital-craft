@@ -16,7 +16,7 @@ use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -45,7 +45,10 @@ class CheckinModel extends ListModel
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         if (empty($config['filter_fields'])) {
-            $config['filter_fields'] = ['table', 'count'];
+            $config['filter_fields'] = [
+                'table',
+                'count',
+            ];
         }
 
         parent::__construct($config, $factory);
@@ -99,12 +102,11 @@ class CheckinModel extends ListModel
 
             $fields = $db->getTableColumns($tn, false);
 
-            if (!isset($fields['checked_out'], $fields['checked_out_time'])) {
+            if (!(isset($fields['checked_out'], $fields['checked_out_time']))) {
                 continue;
             }
 
-            $query = $db
-                ->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName($tn))
                 ->set($db->quoteName('checked_out') . ' = DEFAULT');
 
@@ -113,7 +115,8 @@ class CheckinModel extends ListModel
             } else {
                 $nullDate = $db->getNullDate();
 
-                $query->set($db->quoteName('checked_out_time') . ' = :checkouttime')->bind(':checkouttime', $nullDate);
+                $query->set($db->quoteName('checked_out_time') . ' = :checkouttime')
+                    ->bind(':checkouttime', $nullDate);
             }
 
             if ($fields['checked_out']->Null === 'YES') {
@@ -126,12 +129,9 @@ class CheckinModel extends ListModel
 
             if ($db->execute()) {
                 $results += $db->getAffectedRows();
-                $this->getDispatcher()->dispatch(
-                    'onAfterCheckin',
-                    new AfterCheckinEvent('onAfterCheckin', [
-                        'subject' => $tn,
-                    ]),
-                );
+                $this->getDispatcher()->dispatch('onAfterCheckin', new AfterCheckinEvent('onAfterCheckin', [
+                    'subject' => $tn,
+                ]));
             }
         }
 
@@ -164,7 +164,7 @@ class CheckinModel extends ListModel
     public function getItems()
     {
         if (!isset($this->items)) {
-            $db = $this->getDatabase();
+            $db     = $this->getDatabase();
             $tables = $db->getTableList();
             $prefix = Factory::getApplication()->get('dbprefix');
 
@@ -183,11 +183,13 @@ class CheckinModel extends ListModel
 
                 $fields = $db->getTableColumns($tn, false);
 
-                if (!isset($fields['checked_out'], $fields['checked_out_time'])) {
+                if (!(isset($fields['checked_out'], $fields['checked_out_time']))) {
                     continue;
                 }
 
-                $query = $db->getQuery(true)->select('COUNT(*)')->from($db->quoteName($tn));
+                $query = $db->createQuery()
+                    ->select('COUNT(*)')
+                    ->from($db->quoteName($tn));
 
                 if ($fields['checked_out']->Null === 'YES') {
                     $query->where($db->quoteName('checked_out') . ' IS NOT NULL');

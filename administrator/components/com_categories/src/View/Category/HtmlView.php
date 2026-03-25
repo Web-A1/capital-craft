@@ -24,7 +24,7 @@ use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 use Joomla\Component\Categories\Administrator\Model\CategoryModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -98,15 +98,11 @@ class HtmlView extends BaseHtmlView
         /** @var CategoryModel $model */
         $model = $this->getModel();
 
-        $this->form = $model->getForm();
-        $this->item = $model->getItem();
+        $this->form  = $model->getForm();
+        $this->item  = $model->getItem();
         $this->state = $model->getState();
-        $section = $this->state->get('category.section') ? $this->state->get('category.section') . '.' : '';
-        $this->canDo = ContentHelper::getActions(
-            $this->state->get('category.component'),
-            $section . 'category',
-            $this->item->id,
-        );
+        $section     = $this->state->get('category.section') ? $this->state->get('category.section') . '.' : '';
+        $this->canDo = ContentHelper::getActions($this->state->get('category.component'), $section . 'category', $this->item->id);
         $this->assoc = $model->getAssoc();
 
         if ($this->getLayout() === 'modalreturn') {
@@ -125,7 +121,7 @@ class HtmlView extends BaseHtmlView
             $this->checkTags = true;
         }
 
-        $input = Factory::getApplication()->getInput();
+        $input          = Factory::getApplication()->getInput();
         $forcedLanguage = $input->get('forcedLanguage', '', 'cmd');
 
         $input->set('hidemainmenu', true);
@@ -169,11 +165,11 @@ class HtmlView extends BaseHtmlView
     {
         $extension = Factory::getApplication()->getInput()->get('extension');
 
-        $user = $this->getCurrentUser();
-        $userId = $user->id;
-        $toolbar = $this->getDocument()->getToolbar();
+        $user      = $this->getCurrentUser();
+        $userId    = $user->id;
+        $toolbar   = $this->getDocument()->getToolbar();
 
-        $isNew = $this->item->id == 0;
+        $isNew      = ($this->item->id == 0);
         $checkedOut = !(\is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 
         // Avoid nonsense situation.
@@ -182,33 +178,26 @@ class HtmlView extends BaseHtmlView
         }
 
         // The extension can be in the form com_foo.section
-        $parts = explode('.', $extension);
-        $component = $parts[0];
-        $section = \count($parts) > 1 ? $parts[1] : null;
+        $parts           = explode('.', $extension);
+        $component       = $parts[0];
+        $section         = (\count($parts) > 1) ? $parts[1] : null;
         $componentParams = ComponentHelper::getParams($component);
 
         // Need to load the menu language file as mod_menu hasn't been loaded yet.
         $lang = $this->getLanguage();
-        $lang->load($component, JPATH_BASE) ||
-            $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
+        $lang->load($component, JPATH_BASE)
+            || $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
 
         // Get the results for each action.
         $canDo = $this->canDo;
 
         // If a component categories title string is present, let's use it.
-        if (
-            $lang->hasKey(
-                $component_title_key =
-                    $component . ($section ? "_$section" : '') . '_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE',
-            )
-        ) {
+        if ($lang->hasKey($component_title_key = $component . ($section ? "_$section" : '') . '_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE')) {
             $title = Text::_($component_title_key);
         } elseif ($lang->hasKey($component_section_key = $component . ($section ? "_$section" : ''))) {
             // Else if the component section string exists, let's use it.
-            $title = Text::sprintf(
-                'COM_CATEGORIES_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE',
-                $this->escape(Text::_($component_section_key)),
-            );
+            $title = Text::sprintf('COM_CATEGORIES_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT')
+                . '_TITLE', $this->escape(Text::_($component_section_key)));
         } else {
             // Else use the base title
             $title = Text::_('COM_CATEGORIES_CATEGORY_BASE_' . ($isNew ? 'ADD' : 'EDIT') . '_TITLE');
@@ -228,35 +217,31 @@ class HtmlView extends BaseHtmlView
         // Prepare the toolbar.
         ToolbarHelper::title(
             $title,
-            'folder category-' .
-                ($isNew ? 'add' : 'edit') .
-                ' ' .
-                substr($component, 4) .
-                ($section ? "-$section" : '') .
-                '-category-' .
-                ($isNew ? 'add' : 'edit'),
+            'folder category-' . ($isNew ? 'add' : 'edit')
+                . ' ' . substr($component, 4) . ($section ? "-$section" : '') . '-category-' . ($isNew ? 'add' : 'edit')
         );
 
         if ($isNew) {
             $toolbar->apply('category.apply');
             $saveGroup = $toolbar->dropdownButton('save-group');
 
-            $saveGroup->configure(function (Toolbar $childBar) use ($canDo, $component) {
-                $childBar->save('category.save');
-                $childBar->save2new('category.save2new');
+            $saveGroup->configure(
+                function (Toolbar $childBar) use ($canDo, $component) {
+                    $childBar->save('category.save');
+                    $childBar->save2new('category.save2new');
 
-                if ($canDo->get('core.create', 'com_menus.menu') && $component === 'com_content') {
-                    $childBar->save('category.save2menulist', 'JTOOLBAR_SAVE_TO_MENU_AS_LIST');
-                    $childBar->save('category.save2menublog', 'JTOOLBAR_SAVE_TO_MENU_AS_BLOG');
+                    if ($canDo->get('core.create', 'com_menus.menu') && $component === 'com_content') {
+                        $childBar->save('category.save2menulist', 'JTOOLBAR_SAVE_TO_MENU_AS_LIST');
+                        $childBar->save('category.save2menublog', 'JTOOLBAR_SAVE_TO_MENU_AS_BLOG');
+                    }
                 }
-            });
+            );
 
             $toolbar->cancel('category.cancel', 'JTOOLBAR_CANCEL');
         } else {
             // If not checked out, can save the item.
             // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-            $itemEditable =
-                $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_user_id == $userId);
+            $itemEditable = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_user_id == $userId);
 
             // Can't save the record if it's checked out and editable
             if (!$checkedOut && $itemEditable) {
@@ -265,34 +250,32 @@ class HtmlView extends BaseHtmlView
 
             $saveGroup = $toolbar->dropdownButton('save-group');
 
-            $saveGroup->configure(function (Toolbar $childBar) use ($checkedOut, $canDo, $itemEditable, $component) {
-                // Can't save the record if it's checked out and editable
-                if (!$checkedOut && $itemEditable) {
-                    $childBar->save('category.save');
+            $saveGroup->configure(
+                function (Toolbar $childBar) use ($checkedOut, $canDo, $itemEditable, $component) {
+                    // Can't save the record if it's checked out and editable
+                    if (!$checkedOut && $itemEditable) {
+                        $childBar->save('category.save');
 
+                        if ($canDo->get('core.create')) {
+                            $childBar->save2new('category.save2new');
+                        }
+                    }
+
+                    if ($canDo->get('core.create', 'com_menus.menu') && $component === 'com_content') {
+                        $childBar->save('category.save2menulist', 'JTOOLBAR_SAVE_TO_MENU_AS_LIST');
+                        $childBar->save('category.save2menublog', 'JTOOLBAR_SAVE_TO_MENU_AS_BLOG');
+                    }
+
+                    // If an existing item, can save to a copy.
                     if ($canDo->get('core.create')) {
-                        $childBar->save2new('category.save2new');
+                        $childBar->save2copy('category.save2copy');
                     }
                 }
-
-                if ($canDo->get('core.create', 'com_menus.menu') && $component === 'com_content') {
-                    $childBar->save('category.save2menulist', 'JTOOLBAR_SAVE_TO_MENU_AS_LIST');
-                    $childBar->save('category.save2menublog', 'JTOOLBAR_SAVE_TO_MENU_AS_BLOG');
-                }
-
-                // If an existing item, can save to a copy.
-                if ($canDo->get('core.create')) {
-                    $childBar->save2copy('category.save2copy');
-                }
-            });
+            );
 
             $toolbar->cancel('category.cancel');
 
-            if (
-                ComponentHelper::isEnabled('com_contenthistory') &&
-                $componentParams->get('save_history', 0) &&
-                $itemEditable
-            ) {
+            if (ComponentHelper::isEnabled('com_contenthistory') && $componentParams->get('save_history', 0) && $itemEditable) {
                 $typeAlias = $extension . '.category';
                 $toolbar->versions($typeAlias, $this->item->id);
             }
@@ -302,8 +285,7 @@ class HtmlView extends BaseHtmlView
                 ComponentHelper::isEnabled('com_associations') &&
                 AssociationsHelper::hasSupport($component)
             ) {
-                $toolbar
-                    ->standardButton('contract', 'JTOOLBAR_ASSOCIATIONS', 'category.editAssociations')
+                $toolbar->standardButton('contract', 'JTOOLBAR_ASSOCIATIONS', 'category.editAssociations')
                     ->icon('icon-contract')
                     ->listCheck(false);
             }
@@ -317,20 +299,14 @@ class HtmlView extends BaseHtmlView
         // Try with a language string
         if (!$ref_key) {
             // Compute the ref_key if it does exist in the component
-            $languageKey =
-                strtoupper($component . ($section ? "_$section" : '')) .
-                '_CATEGORY_' .
-                ($isNew ? 'ADD' : 'EDIT') .
-                '_HELP_KEY';
+            $languageKey = strtoupper($component . ($section ? "_$section" : '')) . '_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT') . '_HELP_KEY';
 
             if ($lang->hasKey($languageKey)) {
                 $ref_key = $languageKey;
             } else {
-                $languageKey =
-                    'JHELP_COMPONENTS_' .
-                    strtoupper(substr($component, 4) . ($section ? "_$section" : '')) .
-                    '_CATEGORY_' .
-                    ($isNew ? 'ADD' : 'EDIT');
+                $languageKey = 'JHELP_COMPONENTS_'
+                    . strtoupper(substr($component, 4) . ($section ? "_$section" : ''))
+                    . '_CATEGORY_' . ($isNew ? 'ADD' : 'EDIT');
 
                 if ($lang->hasKey($languageKey)) {
                     $ref_key = $languageKey;
@@ -350,7 +326,7 @@ class HtmlView extends BaseHtmlView
         if (!$url) {
             if ($lang->hasKey($lang_help_url = strtoupper($component) . '_HELP_URL')) {
                 $debug = $lang->setDebug(false);
-                $url = Text::_($lang_help_url);
+                $url   = Text::_($lang_help_url);
                 $lang->setDebug($debug);
             }
         }
@@ -369,11 +345,11 @@ class HtmlView extends BaseHtmlView
      */
     protected function addModalToolbar()
     {
-        $extension = Factory::getApplication()->getInput()->get('extension');
-        $user = $this->getCurrentUser();
-        $userId = $user->id;
-        $isNew = $this->item->id == 0;
-        $toolbar = $this->getDocument()->getToolbar();
+        $extension  = Factory::getApplication()->getInput()->get('extension');
+        $user       = $this->getCurrentUser();
+        $userId     = $user->id;
+        $isNew      = ($this->item->id == 0);
+        $toolbar    = $this->getDocument()->getToolbar();
 
         // Avoid nonsense situation.
         if ($extension == 'com_categories') {
@@ -381,13 +357,13 @@ class HtmlView extends BaseHtmlView
         }
 
         // The extension can be in the form com_foo.section
-        $parts = explode('.', $extension);
+        $parts     = explode('.', $extension);
         $component = $parts[0];
 
         // Need to load the menu language file as mod_menu hasn't been loaded yet.
         $lang = $this->getLanguage();
-        $lang->load($component, JPATH_BASE) ||
-            $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
+        $lang->load($component, JPATH_BASE)
+            || $lang->load($component, JPATH_ADMINISTRATOR . '/components/' . $component);
 
         // Build the actions for new and existing records.
         $canDo = $this->canDo;
@@ -404,8 +380,7 @@ class HtmlView extends BaseHtmlView
         }
 
         $canCreate = $isNew;
-        $canEdit =
-            $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_user_id == $userId);
+        $canEdit   = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_user_id == $userId);
 
         // For new records, check the create permission.
         if ($canCreate || $canEdit) {

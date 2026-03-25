@@ -13,7 +13,7 @@ namespace Joomla\Component\Admin\Administrator\Service\HTML;
 use Joomla\CMS\Language\Text;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -45,6 +45,18 @@ class PhpSetting
     public function set($val)
     {
         return Text::_($val ? 'JYES' : 'JNO');
+    }
+
+    /**
+     * Method to generate a boolean message for a value
+     *
+     * @param   boolean  $val  is the value set?
+     *
+     * @return  string html code
+     */
+    public function enabled($val)
+    {
+        return Text::_($val ? 'JENABLED' : 'JDISABLED');
     }
 
     /**

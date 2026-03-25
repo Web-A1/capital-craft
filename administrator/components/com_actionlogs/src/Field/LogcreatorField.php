@@ -13,7 +13,7 @@ namespace Joomla\Component\Actionlogs\Administrator\Field;
 use Joomla\CMS\Form\Field\ListField;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -59,19 +59,11 @@ class LogcreatorField extends ListField
             $db = $this->getDatabase();
 
             // Construct the query
-            $query = $db
-                ->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('u.id', 'value'))
                 ->select($db->quoteName('u.username', 'text'))
                 ->from($db->quoteName('#__users', 'u'))
-                ->join(
-                    'INNER',
-                    $db->quoteName('#__action_logs', 'c') .
-                        ' ON ' .
-                        $db->quoteName('c.user_id') .
-                        ' = ' .
-                        $db->quoteName('u.id'),
-                )
+                ->join('INNER', $db->quoteName('#__action_logs', 'c') . ' ON ' . $db->quoteName('c.user_id') . ' = ' . $db->quoteName('u.id'))
                 ->group($db->quoteName('u.id'))
                 ->group($db->quoteName('u.username'))
                 ->order($db->quoteName('u.username'));

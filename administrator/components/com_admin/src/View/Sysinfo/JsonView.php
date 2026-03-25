@@ -19,7 +19,7 @@ use Joomla\CMS\User\CurrentUserTrait;
 use Joomla\Component\Admin\Administrator\Model\SysinfoModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -73,12 +73,12 @@ class JsonView extends AbstractView implements CurrentUserInterface
         $model = $this->getModel();
 
         return [
-            'info' => $model->getSafeData('info'),
+            'info'        => $model->getSafeData('info'),
             'phpSettings' => $model->getSafeData('phpSettings'),
-            'config' => $model->getSafeData('config'),
+            'config'      => $model->getSafeData('config'),
             'directories' => $model->getSafeData('directory', true),
-            'phpInfo' => $model->getSafeData('phpInfoArray'),
-            'extensions' => $model->getSafeData('extensions'),
+            'phpInfo'     => $model->getSafeData('phpInfoArray'),
+            'extensions'  => $model->getSafeData('extensions'),
         ];
     }
 }

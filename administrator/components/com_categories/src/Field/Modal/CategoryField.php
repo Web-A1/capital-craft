@@ -20,7 +20,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -54,7 +54,7 @@ class CategoryField extends ModalSelectField
     {
         // Check if the value consist with id:alias, extract the id only
         if ($value && str_contains($value, ':')) {
-            [$id] = explode(':', $value, 2);
+            [$id]  = explode(':', $value, 2);
             $value = (int) $id;
         }
 
@@ -70,33 +70,31 @@ class CategoryField extends ModalSelectField
             $extension = (string) Factory::getApplication()->getInput()->get('extension', 'com_content');
         }
 
-        Factory::getApplication()
-            ->getLanguage()
-            ->load('com_categories', JPATH_ADMINISTRATOR);
+        Factory::getApplication()->getLanguage()->load('com_categories', JPATH_ADMINISTRATOR);
 
         $languages = LanguageHelper::getContentLanguages([0, 1], false);
-        $language = (string) $this->element['language'];
+        $language  = (string) $this->element['language'];
 
         // Prepare enabled actions
-        $this->canDo['propagate'] = (string) $this->element['propagate'] == 'true' && \count($languages) > 2;
+        $this->canDo['propagate']  = ((string) $this->element['propagate'] == 'true') && \count($languages) > 2;
 
         // Prepare Urls
         $linkItems = (new Uri())->setPath(Uri::base(true) . '/index.php');
         $linkItems->setQuery([
-            'option' => 'com_categories',
-            'view' => 'categories',
-            'layout' => 'modal',
-            'tmpl' => 'component',
-            'extension' => $extension,
+            'option'                => 'com_categories',
+            'view'                  => 'categories',
+            'layout'                => 'modal',
+            'tmpl'                  => 'component',
+            'extension'             => $extension,
             Session::getFormToken() => 1,
         ]);
         $linkItem = clone $linkItems;
         $linkItem->setVar('view', 'category');
         $linkCheckin = (new Uri())->setPath(Uri::base(true) . '/index.php');
         $linkCheckin->setQuery([
-            'option' => 'com_categories',
-            'task' => 'categories.checkin',
-            'format' => 'json',
+            'option'                => 'com_categories',
+            'task'                  => 'categories.checkin',
+            'format'                => 'json',
             Session::getFormToken() => 1,
         ]);
 
@@ -112,20 +110,20 @@ class CategoryField extends ModalSelectField
         }
 
         $urlSelect = $linkItems;
-        $urlEdit = clone $linkItem;
+        $urlEdit   = clone $linkItem;
         $urlEdit->setVar('task', 'category.edit');
-        $urlNew = clone $linkItem;
+        $urlNew    = clone $linkItem;
         $urlNew->setVar('task', 'category.add');
 
-        $this->urls['select'] = (string) $urlSelect;
-        $this->urls['new'] = (string) $urlNew;
-        $this->urls['edit'] = (string) $urlEdit;
+        $this->urls['select']  = (string) $urlSelect;
+        $this->urls['new']     = (string) $urlNew;
+        $this->urls['edit']    = (string) $urlEdit;
         $this->urls['checkin'] = (string) $linkCheckin;
 
         // Prepare titles
-        $this->modalTitles['select'] = $modalTitle;
-        $this->modalTitles['new'] = Text::_('COM_CATEGORIES_NEW_CATEGORY');
-        $this->modalTitles['edit'] = Text::_('COM_CATEGORIES_EDIT_CATEGORY');
+        $this->modalTitles['select']  = $modalTitle;
+        $this->modalTitles['new']     = Text::_('COM_CATEGORIES_NEW_CATEGORY');
+        $this->modalTitles['edit']    = Text::_('COM_CATEGORIES_EDIT_CATEGORY');
 
         $this->hint = $this->hint ?: Text::_('COM_CATEGORIES_SELECT_A_CATEGORY');
 
@@ -146,9 +144,8 @@ class CategoryField extends ModalSelectField
 
         if ($value) {
             try {
-                $db = $this->getDatabase();
-                $query = $db
-                    ->getQuery(true)
+                $db    = $this->getDatabase();
+                $query = $db->createQuery()
                     ->select($db->quoteName('title'))
                     ->from($db->quoteName('#__categories'))
                     ->where($db->quoteName('id') . ' = :value')
@@ -173,7 +170,7 @@ class CategoryField extends ModalSelectField
      */
     protected function getLayoutData()
     {
-        $data = parent::getLayoutData();
+        $data             = parent::getLayoutData();
         $data['language'] = (string) $this->element['language'];
 
         return $data;

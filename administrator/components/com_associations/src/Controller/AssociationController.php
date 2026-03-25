@@ -16,7 +16,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -71,7 +71,7 @@ class AssociationController extends FormController
 
         // Only check in, if component item type allows to check out.
         if (AssociationsHelper::typeSupportsCheckout($extensionName, $typeName)) {
-            $ids = [];
+            $ids      = [];
             $targetId = $this->input->get('target-id', '', 'string');
 
             if ($targetId !== '') {

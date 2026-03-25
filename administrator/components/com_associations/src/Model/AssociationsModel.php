@@ -14,14 +14,14 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\CMS\Table\Table;
+use Joomla\CMS\Table\Category;
 use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 use Joomla\Database\Exception\ExecutionFailureException;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -98,14 +98,8 @@ class AssociationsModel extends ListModel
             $this->context .= '.' . $forcedItemType;
         }
 
-        $this->setState(
-            'itemtype',
-            $this->getUserStateFromRequest($this->context . '.itemtype', 'itemtype', '', 'string'),
-        );
-        $this->setState(
-            'language',
-            $this->getUserStateFromRequest($this->context . '.language', 'language', '', 'string'),
-        );
+        $this->setState('itemtype', $this->getUserStateFromRequest($this->context . '.itemtype', 'itemtype', '', 'string'));
+        $this->setState('language', $this->getUserStateFromRequest($this->context . '.language', 'language', '', 'string'));
 
         // List state information.
         parent::populateState($ordering, $direction);
@@ -158,12 +152,12 @@ class AssociationsModel extends ListModel
      */
     protected function getListQuery()
     {
-        $type = null;
+        $type         = null;
 
         [$extensionName, $typeName] = explode('.', $this->state->get('itemtype'), 2);
 
         $extension = AssociationsHelper::getSupportedExtension($extensionName);
-        $types = $extension->get('types');
+        $types     = $extension->get('types');
 
         if (\array_key_exists($typeName, $types)) {
             $type = $types[$typeName];
@@ -174,9 +168,9 @@ class AssociationsModel extends ListModel
         }
 
         // Create a new query object.
-        $user = $this->getCurrentUser();
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $user     = $this->getCurrentUser();
+        $db       = $this->getDatabase();
+        $query    = $db->createQuery();
 
         $details = $type->get('details');
 
@@ -193,8 +187,7 @@ class AssociationsModel extends ListModel
         $fields = $details['fields'];
 
         // Main query.
-        $query
-            ->select($db->quoteName($fields['id'], 'id'))
+        $query->select($db->quoteName($fields['id'], 'id'))
             ->select($db->quoteName($fields['title'], 'title'))
             ->select($db->quoteName($fields['alias'], 'alias'));
 
@@ -219,39 +212,40 @@ class AssociationsModel extends ListModel
         }
 
         // Join over the language.
-        $query
-            ->select($db->quoteName($fields['language'], 'language'))
+        $query->select($db->quoteName($fields['language'], 'language'))
             ->select($db->quoteName('l.title', 'language_title'))
             ->select($db->quoteName('l.image', 'language_image'))
             ->join(
                 'LEFT',
                 $db->quoteName('#__languages', 'l'),
-                $db->quoteName('l.lang_code') . ' = ' . $db->quoteName($fields['language']),
+                $db->quoteName('l.lang_code') . ' = ' . $db->quoteName($fields['language'])
             );
         $extensionNameItem = $extensionName . '.item';
 
         // Join over the associations.
-        $query
-            ->select('COUNT(' . $db->quoteName('asso2.id') . ') > 1 AS ' . $db->quoteName('association'))
+        $query->select('COUNT(' . $db->quoteName('asso2.id') . ') > 1 AS ' . $db->quoteName('association'))
             ->join(
                 'LEFT',
                 $db->quoteName('#__associations', 'asso'),
-                $db->quoteName('asso.id') .
-                    ' = ' .
-                    $db->quoteName($fields['id']) .
-                    ' AND ' .
-                    $db->quoteName('asso.context') .
-                    ' = :context',
+                $db->quoteName('asso.id') . ' = ' . $db->quoteName($fields['id'])
+                . ' AND ' . $db->quoteName('asso.context') . ' = :context'
             )
             ->join(
                 'LEFT',
                 $db->quoteName('#__associations', 'asso2'),
-                $db->quoteName('asso2.key') . ' = ' . $db->quoteName('asso.key'),
+                $db->quoteName('asso2.key') . ' = ' . $db->quoteName('asso.key')
             )
             ->bind(':context', $extensionNameItem);
 
         // Prepare the group by clause.
-        $groupby = [$fields['id'], $fields['title'], $fields['alias'], $fields['language'], 'l.title', 'l.image'];
+        $groupby = [
+            $fields['id'],
+            $fields['title'],
+            $fields['alias'],
+            $fields['language'],
+            'l.title',
+            'l.image',
+        ];
 
         // Select author for ACL checks.
         if (!empty($fields['created_user_id'])) {
@@ -262,17 +256,15 @@ class AssociationsModel extends ListModel
 
         // Select checked out data for check in checkins.
         if (!empty($fields['checked_out']) && !empty($fields['checked_out_time'])) {
-            $query
-                ->select($db->quoteName($fields['checked_out'], 'checked_out'))
+            $query->select($db->quoteName($fields['checked_out'], 'checked_out'))
                 ->select($db->quoteName($fields['checked_out_time'], 'checked_out_time'));
 
             // Join over the users.
-            $query
-                ->select($db->quoteName('u.name', 'editor'))
+            $query->select($db->quoteName('u.name', 'editor'))
                 ->join(
                     'LEFT',
                     $db->quoteName('#__users', 'u'),
-                    $db->quoteName('u.id') . ' = ' . $db->quoteName($fields['checked_out']),
+                    $db->quoteName('u.id') . ' = ' . $db->quoteName($fields['checked_out'])
                 );
 
             $groupby[] = 'u.name';
@@ -306,12 +298,11 @@ class AssociationsModel extends ListModel
             $query->select($db->quoteName($fields['catid'], 'catid'));
 
             // Join over the categories.
-            $query
-                ->select($db->quoteName('c.title', 'category_title'))
+            $query->select($db->quoteName('c.title', 'category_title'))
                 ->join(
                     'LEFT',
                     $db->quoteName('#__categories', 'c'),
-                    $db->quoteName('c.id') . ' = ' . $db->quoteName($fields['catid']),
+                    $db->quoteName('c.id') . ' = ' . $db->quoteName($fields['catid'])
                 );
 
             $groupby[] = 'c.title';
@@ -323,13 +314,12 @@ class AssociationsModel extends ListModel
             $query->select($db->quoteName($fields['menutype'], 'menutype'));
 
             // Join over the menu types.
-            $query
-                ->select($db->quoteName('mt.title', 'menutype_title'))
+            $query->select($db->quoteName('mt.title', 'menutype_title'))
                 ->select($db->quoteName('mt.id', 'menutypeid'))
                 ->join(
                     'LEFT',
                     $db->quoteName('#__menu_types', 'mt'),
-                    $db->quoteName('mt.menutype') . ' = ' . $db->quoteName($fields['menutype']),
+                    $db->quoteName('mt.menutype') . ' = ' . $db->quoteName($fields['menutype'])
                 );
 
             $groupby[] = 'mt.title';
@@ -338,16 +328,15 @@ class AssociationsModel extends ListModel
         }
 
         // If component item type supports access level, select the access level also.
-        if (\array_key_exists('acl', $support) && $support['acl'] == true && !empty($fields['access'])) {
+        if (\array_key_exists('acl', $support) && $support['acl'] && !empty($fields['access'])) {
             $query->select($db->quoteName($fields['access'], 'access'));
 
             // Join over the access levels.
-            $query
-                ->select($db->quoteName('ag.title', 'access_level'))
+            $query->select($db->quoteName('ag.title', 'access_level'))
                 ->join(
                     'LEFT',
                     $db->quoteName('#__viewlevels', 'ag'),
-                    $db->quoteName('ag.id') . ' = ' . $db->quoteName($fields['access']),
+                    $db->quoteName('ag.id') . ' = ' . $db->quoteName($fields['access'])
                 );
 
             $groupby[] = 'ag.title';
@@ -362,25 +351,27 @@ class AssociationsModel extends ListModel
 
         // If component item type is menus we need to remove the root item and the administrator menu.
         if ($extensionName === 'com_menus') {
-            $query->where($db->quoteName($fields['id']) . ' > 1')->where($db->quoteName('a.client_id') . ' = 0');
+            $query->where($db->quoteName($fields['id']) . ' > 1')
+                ->where($db->quoteName('a.client_id') . ' = 0');
         }
 
         // If component item type is category we need to remove all other component categories.
         if ($typeName === 'category') {
-            $query->where($db->quoteName('a.extension') . ' = :extensionname')->bind(':extensionname', $extensionName);
+            $query->where($db->quoteName('a.extension') . ' = :extensionname')
+                ->bind(':extensionname', $extensionName);
         } elseif ($typeNameExploded = explode('.', $typeName)) {
             if (\count($typeNameExploded) > 1 && array_pop($typeNameExploded) === 'category') {
-                $section = implode('.', $typeNameExploded);
+                $section              = implode('.', $typeNameExploded);
                 $extensionNameSection = $extensionName . '.' . $section;
-                $query
-                    ->where($db->quoteName('a.extension') . ' = :extensionsection')
+                $query->where($db->quoteName('a.extension') . ' = :extensionsection')
                     ->bind(':extensionsection', $extensionNameSection);
             }
         }
 
         // Filter on the language.
         if ($language = $this->getState('language')) {
-            $query->where($db->quoteName($fields['language']) . ' = :language')->bind(':language', $language);
+            $query->where($db->quoteName($fields['language']) . ' = :language')
+                ->bind(':language', $language);
         }
 
         // Filter by item state.
@@ -388,8 +379,7 @@ class AssociationsModel extends ListModel
 
         if (is_numeric($state)) {
             $state = (int) $state;
-            $query
-                ->where($db->quoteName($fields['state']) . ' = :state')
+            $query->where($db->quoteName($fields['state']) . ' = :state')
                 ->bind(':state', $state, ParameterType::INTEGER);
         } elseif ($state === '') {
             $query->whereIn($db->quoteName($fields['state']), [0, 1]);
@@ -399,14 +389,13 @@ class AssociationsModel extends ListModel
         $baselevel = 1;
 
         if ($categoryId = $this->getState('filter.category_id')) {
-            $categoryTable = Table::getInstance('Category', '\\Joomla\\CMS\\Table\\');
+            $categoryTable = new Category($db);
             $categoryTable->load($categoryId);
             $baselevel = (int) $categoryTable->level;
 
             $lft = (int) $categoryTable->lft;
             $rgt = (int) $categoryTable->rgt;
-            $query
-                ->where($db->quoteName('c.lft') . ' >= :lft')
+            $query->where($db->quoteName('c.lft') . ' >= :lft')
                 ->where($db->quoteName('c.rgt') . ' <= :rgt')
                 ->bind(':lft', $lft, ParameterType::INTEGER)
                 ->bind(':rgt', $rgt, ParameterType::INTEGER);
@@ -414,22 +403,21 @@ class AssociationsModel extends ListModel
 
         // Filter on the level.
         if ($level = $this->getState('filter.level')) {
-            $queryLevel = (int) $level + (int) $baselevel - 1;
-            $query
-                ->where($db->quoteName('a.level') . ' <= :alevel')
+            $queryLevel = ((int) $level + (int) $baselevel - 1);
+            $query->where($db->quoteName('a.level') . ' <= :alevel')
                 ->bind(':alevel', $queryLevel, ParameterType::INTEGER);
         }
 
         // Filter by menu type.
         if ($menutype = $this->getState('filter.menutype')) {
-            $query->where($db->quoteName($fields['menutype']) . ' = :menutype2')->bind(':menutype2', $menutype);
+            $query->where($db->quoteName($fields['menutype']) . ' = :menutype2')
+                ->bind(':menutype2', $menutype);
         }
 
         // Filter by access level.
         if ($access = $this->getState('filter.access')) {
             $access = (int) $access;
-            $query
-                ->where($db->quoteName($fields['access']) . ' = :access')
+            $query->where($db->quoteName($fields['access']) . ' = :access')
                 ->bind(':access', $access, ParameterType::INTEGER);
         }
 
@@ -437,20 +425,12 @@ class AssociationsModel extends ListModel
         if ($search = $this->getState('filter.search')) {
             if (stripos($search, 'id:') === 0) {
                 $search = (int) substr($search, 3);
-                $query
-                    ->where($db->quoteName($fields['id']) . ' = :searchid')
+                $query->where($db->quoteName($fields['id']) . ' = :searchid')
                     ->bind(':searchid', $search, ParameterType::INTEGER);
             } else {
                 $search = '%' . str_replace(' ', '%', trim($search)) . '%';
-                $query
-                    ->where(
-                        '(' .
-                            $db->quoteName($fields['title']) .
-                            ' LIKE :title' .
-                            ' OR ' .
-                            $db->quoteName($fields['alias']) .
-                            ' LIKE :alias)',
-                    )
+                $query->where('(' . $db->quoteName($fields['title']) . ' LIKE :title'
+                    . ' OR ' . $db->quoteName($fields['alias']) . ' LIKE :alias)')
                     ->bind(':title', $search)
                     ->bind(':alias', $search);
             }
@@ -460,8 +440,8 @@ class AssociationsModel extends ListModel
         $query->group($db->quoteName($groupby));
 
         // Add the list ordering clause
-        $listOrdering = $this->state->get('list.ordering', 'id');
-        $orderDirn = $this->state->get('list.direction', 'ASC');
+        $listOrdering  = $this->state->get('list.ordering', 'id');
+        $orderDirn     = $this->state->get('list.direction', 'ASC');
 
         $query->order($db->escape($listOrdering) . ' ' . $db->escape($orderDirn));
 
@@ -480,18 +460,20 @@ class AssociationsModel extends ListModel
      */
     public function purge($context = '', $key = '')
     {
-        $app = Factory::getApplication();
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)->delete($db->quoteName('#__associations'));
+        $app   = Factory::getApplication();
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()->delete($db->quoteName('#__associations'));
 
         // Filter by associations context.
         if ($context) {
-            $query->where($db->quoteName('context') . ' = :context')->bind(':context', $context);
+            $query->where($db->quoteName('context') . ' = :context')
+                ->bind(':context', $context);
         }
 
         // Filter by key.
         if ($key) {
-            $query->where($db->quoteName('key') . ' = :key')->bind(':key', $key);
+            $query->where($db->quoteName('key') . ' = :key')
+                ->bind(':key', $key);
         }
 
         $db->setQuery($query);
@@ -505,10 +487,8 @@ class AssociationsModel extends ListModel
         }
 
         $app->enqueueMessage(
-            Text::_(
-                (int) $db->getAffectedRows() > 0 ? 'COM_ASSOCIATIONS_PURGE_SUCCESS' : 'COM_ASSOCIATIONS_PURGE_NONE',
-            ),
-            'message',
+            Text::_((int) $db->getAffectedRows() > 0 ? 'COM_ASSOCIATIONS_PURGE_SUCCESS' : 'COM_ASSOCIATIONS_PURGE_NONE'),
+            'message'
         );
 
         return true;
@@ -526,10 +506,9 @@ class AssociationsModel extends ListModel
      */
     public function clean($context = '', $key = '')
     {
-        $app = Factory::getApplication();
-        $db = $this->getDatabase();
-        $query = $db
-            ->getQuery(true)
+        $app   = Factory::getApplication();
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
             ->select($db->quoteName('key') . ', COUNT(*)')
             ->from($db->quoteName('#__associations'))
             ->group($db->quoteName('key'))
@@ -537,12 +516,14 @@ class AssociationsModel extends ListModel
 
         // Filter by associations context.
         if ($context) {
-            $query->where($db->quoteName('context') . ' = :context')->bind(':context', $context);
+            $query->where($db->quoteName('context') . ' = :context')
+                ->bind(':context', $context);
         }
 
         // Filter by key.
         if ($key) {
-            $query->where($db->quoteName('key') . ' = :key')->bind(':key', $key);
+            $query->where($db->quoteName('key') . ' = :key')
+                ->bind(':key', $key);
         }
 
         $db->setQuery($query);
@@ -553,8 +534,7 @@ class AssociationsModel extends ListModel
 
         // We have orphans. Let's delete them.
         foreach ($assocKeys as $value) {
-            $query
-                ->clear()
+            $query->clear()
                 ->delete($db->quoteName('#__associations'))
                 ->where($db->quoteName('key') . ' = :valuekey')
                 ->bind(':valuekey', $value->key);
@@ -574,7 +554,7 @@ class AssociationsModel extends ListModel
 
         $app->enqueueMessage(
             Text::_($count > 0 ? 'COM_ASSOCIATIONS_DELETE_ORPHANS_SUCCESS' : 'COM_ASSOCIATIONS_DELETE_ORPHANS_NONE'),
-            'message',
+            'message'
         );
 
         return true;

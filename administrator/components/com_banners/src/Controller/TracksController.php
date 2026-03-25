@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -132,25 +132,33 @@ class TracksController extends BaseController
 
             // Create one year cookies.
             $cookieLifeTime = time() + 365 * 86400;
-            $cookieDomain = $app->get('cookie_domain', '');
-            $cookiePath = $app->get('cookie_path', '/');
-            $isHttpsForced = $app->isHttpsForced();
+            $cookieDomain   = $app->get('cookie_domain', '');
+            $cookiePath     = $app->get('cookie_path', '/');
+            $isHttpsForced  = $app->isHttpsForced();
 
-            $this->input->cookie->set(ApplicationHelper::getHash($this->context . '.basename'), $form['basename'], [
-                'expires' => $cookieLifeTime,
-                'path' => $cookiePath,
-                'domain' => $cookieDomain,
-                'secure' => $isHttpsForced,
-                'httponly' => true,
-            ]);
+            $this->input->cookie->set(
+                ApplicationHelper::getHash($this->context . '.basename'),
+                $form['basename'],
+                [
+                    'expires'  => $cookieLifeTime,
+                    'path'     => $cookiePath,
+                    'domain'   => $cookieDomain,
+                    'secure'   => $isHttpsForced,
+                    'httponly' => true,
+                ]
+            );
 
-            $this->input->cookie->set(ApplicationHelper::getHash($this->context . '.compressed'), $form['compressed'], [
-                'expires' => $cookieLifeTime,
-                'path' => $cookiePath,
-                'domain' => $cookieDomain,
-                'secure' => $isHttpsForced,
-                'httponly' => true,
-            ]);
+            $this->input->cookie->set(
+                ApplicationHelper::getHash($this->context . '.compressed'),
+                $form['compressed'],
+                [
+                    'expires'  => $cookieLifeTime,
+                    'path'     => $cookiePath,
+                    'domain'   => $cookieDomain,
+                    'secure'   => $isHttpsForced,
+                    'httponly' => true,
+                ]
+            );
 
             // Push the model into the view (as default).
             $view->setModel($model, true);

@@ -23,7 +23,7 @@ use Joomla\CMS\Pagination\Pagination;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -65,7 +65,12 @@ class CacheModel extends ListModel
     public function __construct($config = [], ?MVCFactoryInterface $factory = null)
     {
         if (empty($config['filter_fields'])) {
-            $config['filter_fields'] = ['group', 'count', 'size', 'client_id'];
+            $config['filter_fields'] = [
+                'group',
+                'count',
+                'size',
+                'client_id',
+            ];
         }
 
         parent::__construct($config, $factory);
@@ -119,7 +124,7 @@ class CacheModel extends ListModel
         if (empty($this->_data)) {
             try {
                 $cache = $this->getCache();
-                $data = $cache->getAll();
+                $data  = $cache->getAll();
 
                 if ($data && \count($data) > 0) {
                     // Process filter by search term.
@@ -133,15 +138,9 @@ class CacheModel extends ListModel
 
                     // Process ordering.
                     $listOrder = $this->getState('list.ordering', 'group');
-                    $listDirn = $this->getState('list.direction', 'ASC');
+                    $listDirn  = $this->getState('list.direction', 'ASC');
 
-                    $this->_data = ArrayHelper::sortObjects(
-                        $data,
-                        $listOrder,
-                        strtolower($listDirn) === 'desc' ? -1 : 1,
-                        true,
-                        true,
-                    );
+                    $this->_data = ArrayHelper::sortObjects($data, $listOrder, strtolower($listDirn) === 'desc' ? -1 : 1, true, true);
 
                     // Process pagination.
                     $limit = (int) $this->getState('list.limit', 25);
@@ -177,9 +176,9 @@ class CacheModel extends ListModel
 
         $options = [
             'defaultgroup' => '',
-            'storage' => $app->get('cache_handler', ''),
-            'caching' => true,
-            'cachebase' => $app->get('cache_path', JPATH_CACHE),
+            'storage'      => $app->get('cache_handler', ''),
+            'caching'      => true,
+            'cachebase'    => $app->get('cache_path', JPATH_CACHE),
         ];
 
         return Cache::getInstance('', $options);
@@ -207,11 +206,7 @@ class CacheModel extends ListModel
     public function getPagination()
     {
         if (empty($this->_pagination)) {
-            $this->_pagination = new Pagination(
-                $this->getTotal(),
-                $this->getState('list.start'),
-                $this->getState('list.limit'),
-            );
+            $this->_pagination = new Pagination($this->getTotal(), $this->getState('list.start'), $this->getState('list.limit'));
         }
 
         return $this->_pagination;

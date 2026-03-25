@@ -23,7 +23,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\String\StringHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -53,25 +53,13 @@ class TracksModel extends ListModel
     {
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = [
-                'b.name',
-                'banner_name',
-                'cl.name',
-                'client_name',
-                'client_id',
-                'c.title',
-                'category_title',
-                'category_id',
-                'track_type',
-                'a.track_type',
-                'type',
-                'count',
-                'a.count',
-                'track_date',
-                'a.track_date',
-                'end',
-                'begin',
-                'level',
-                'c.level',
+                'b.name', 'banner_name',
+                'cl.name', 'client_name', 'client_id',
+                'c.title', 'category_title', 'category_id',
+                'track_type', 'a.track_type', 'type',
+                'count', 'a.count',
+                'track_date', 'a.track_date', 'end', 'begin',
+                'level', 'c.level',
             ];
         }
 
@@ -109,47 +97,38 @@ class TracksModel extends ListModel
     protected function getListQuery()
     {
         // Create a new query object.
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $db    = $this->getDatabase();
+        $query = $db->createQuery();
 
         // Select the required fields from the table.
-        $query->select([
-            $db->quoteName('a.track_date'),
-            $db->quoteName('a.track_type'),
-            $db->quoteName('a.count'),
-            $db->quoteName('b.name', 'banner_name'),
-            $db->quoteName('cl.name', 'client_name'),
-            $db->quoteName('c.title', 'category_title'),
-        ]);
+        $query->select(
+            [
+                $db->quoteName('a.track_date'),
+                $db->quoteName('a.track_type'),
+                $db->quoteName('a.count'),
+                $db->quoteName('b.name', 'banner_name'),
+                $db->quoteName('cl.name', 'client_name'),
+                $db->quoteName('c.title', 'category_title'),
+            ]
+        );
 
         // From tracks table.
         $query->from($db->quoteName('#__banner_tracks', 'a'));
 
         // Join with the banners.
-        $query->join(
-            'LEFT',
-            $db->quoteName('#__banners', 'b'),
-            $db->quoteName('b.id') . ' = ' . $db->quoteName('a.banner_id'),
-        );
+        $query->join('LEFT', $db->quoteName('#__banners', 'b'), $db->quoteName('b.id') . ' = ' . $db->quoteName('a.banner_id'));
 
         // Join with the client.
-        $query->join(
-            'LEFT',
-            $db->quoteName('#__banner_clients', 'cl'),
-            $db->quoteName('cl.id') . ' = ' . $db->quoteName('b.cid'),
-        );
+        $query->join('LEFT', $db->quoteName('#__banner_clients', 'cl'), $db->quoteName('cl.id') . ' = ' . $db->quoteName('b.cid'));
 
         // Join with the category.
-        $query->join(
-            'LEFT',
-            $db->quoteName('#__categories', 'c'),
-            $db->quoteName('c.id') . ' = ' . $db->quoteName('b.catid'),
-        );
+        $query->join('LEFT', $db->quoteName('#__categories', 'c'), $db->quoteName('c.id') . ' = ' . $db->quoteName('b.catid'));
 
         // Filter by type.
 
         if ($type = (int) $this->getState('filter.type')) {
-            $query->where($db->quoteName('a.track_type') . ' = :type')->bind(':type', $type, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.track_type') . ' = :type')
+                ->bind(':type', $type, ParameterType::INTEGER);
         }
 
         // Filter by client.
@@ -157,8 +136,7 @@ class TracksModel extends ListModel
 
         if (is_numeric($clientId)) {
             $clientId = (int) $clientId;
-            $query
-                ->where($db->quoteName('b.cid') . ' = :clientId')
+            $query->where($db->quoteName('b.cid') . ' = :clientId')
                 ->bind(':clientId', $clientId, ParameterType::INTEGER);
         }
 
@@ -167,45 +145,38 @@ class TracksModel extends ListModel
 
         if (is_numeric($categoryId)) {
             $categoryId = (int) $categoryId;
-            $query
-                ->where($db->quoteName('b.catid') . ' = :categoryId')
+            $query->where($db->quoteName('b.catid') . ' = :categoryId')
                 ->bind(':categoryId', $categoryId, ParameterType::INTEGER);
         }
 
         // Filter by begin date.
         if ($begin = $this->getState('filter.begin')) {
-            $query->where($db->quoteName('a.track_date') . ' >= :begin')->bind(':begin', $begin);
+            $query->where($db->quoteName('a.track_date') . ' >= :begin')
+                ->bind(':begin', $begin);
         }
 
         // Filter by end date.
         if ($end = $this->getState('filter.end')) {
-            $query->where($db->quoteName('a.track_date') . ' <= :end')->bind(':end', $end);
+            $query->where($db->quoteName('a.track_date') . ' <= :end')
+                ->bind(':end', $end);
         }
 
         // Filter on the level.
         if ($level = (int) $this->getState('filter.level')) {
-            $query->where($db->quoteName('c.level') . ' <= :level')->bind(':level', $level, ParameterType::INTEGER);
+            $query->where($db->quoteName('c.level') . ' <= :level')
+                ->bind(':level', $level, ParameterType::INTEGER);
         }
 
         // Filter by search in banner name or client name.
         if ($search = $this->getState('filter.search')) {
             $search = '%' . StringHelper::strtolower($search) . '%';
-            $query
-                ->where(
-                    '(LOWER(' .
-                        $db->quoteName('b.name') .
-                        ') LIKE :search1 OR LOWER(' .
-                        $db->quoteName('cl.name') .
-                        ') LIKE :search2)',
-                )
+            $query->where('(LOWER(' . $db->quoteName('b.name') . ') LIKE :search1 OR LOWER(' . $db->quoteName('cl.name') . ') LIKE :search2)')
                 ->bind([':search1', ':search2'], $search);
         }
 
         // Add the list ordering clause.
         $query->order(
-            $db->quoteName($db->escape($this->getState('list.ordering', 'b.name'))) .
-                ' ' .
-                $db->escape($this->getState('list.direction', 'ASC')),
+            $db->quoteName($db->escape($this->getState('list.ordering', 'b.name'))) . ' ' . $db->escape($this->getState('list.direction', 'ASC'))
         );
 
         return $query;
@@ -218,7 +189,7 @@ class TracksModel extends ListModel
      */
     public function delete()
     {
-        $user = $this->getCurrentUser();
+        $user       = $this->getCurrentUser();
         $categoryId = (int) $this->getState('category_id');
 
         // Access checks.
@@ -230,26 +201,31 @@ class TracksModel extends ListModel
 
         if ($allow) {
             // Delete tracks from this banner
-            $db = $this->getDatabase();
-            $query = $db->getQuery(true)->delete($db->quoteName('#__banner_tracks'));
+            $db    = $this->getDatabase();
+            $query = $db->createQuery()
+                ->delete($db->quoteName('#__banner_tracks'));
 
             // Filter by type
             if ($type = (int) $this->getState('filter.type')) {
-                $query->where($db->quoteName('track_type') . ' = :type')->bind(':type', $type, ParameterType::INTEGER);
+                $query->where($db->quoteName('track_type') . ' = :type')
+                    ->bind(':type', $type, ParameterType::INTEGER);
             }
 
             // Filter by begin date
             if ($begin = $this->getState('filter.begin')) {
-                $query->where($db->quoteName('track_date') . ' >= :begin')->bind(':begin', $begin);
+                $query->where($db->quoteName('track_date') . ' >= :begin')
+                    ->bind(':begin', $begin);
             }
 
             // Filter by end date
             if ($end = $this->getState('filter.end')) {
-                $query->where($db->quoteName('track_date') . ' <= :end')->bind(':end', $end);
+                $query->where($db->quoteName('track_date') . ' <= :end')
+                    ->bind(':end', $end);
             }
 
-            $subQuery = $db->getQuery(true);
-            $subQuery->select($db->quoteName('id'))->from($db->quoteName('#__banners'));
+            $subQuery = $db->createQuery();
+            $subQuery->select($db->quoteName('id'))
+                ->from($db->quoteName('#__banners'));
 
             // Filter by client
             if ($clientId = (int) $this->getState('filter.client_id')) {
@@ -292,11 +268,7 @@ class TracksModel extends ListModel
     public function getBaseName()
     {
         if (!isset($this->basename)) {
-            $basename = str_replace(
-                '__SITE__',
-                Factory::getApplication()->get('sitename'),
-                $this->getState('basename'),
-            );
+            $basename   = str_replace('__SITE__', Factory::getApplication()->get('sitename'), $this->getState('basename'));
             $categoryId = $this->getState('filter.category_id');
 
             if (is_numeric($categoryId)) {
@@ -307,7 +279,7 @@ class TracksModel extends ListModel
                 }
 
                 $categoryName = $this->getCategoryName();
-                $basename = str_replace('__CATNAME__', $categoryName, $basename);
+                $basename     = str_replace('__CATNAME__', $categoryName, $basename);
             } else {
                 $basename = str_replace(['__CATID__', '__CATNAME__'], '', $basename);
             }
@@ -322,7 +294,7 @@ class TracksModel extends ListModel
                 }
 
                 $clientName = $this->getClientName();
-                $basename = str_replace('__CLIENTNAME__', $clientName, $basename);
+                $basename   = str_replace('__CLIENTNAME__', $clientName, $basename);
             } else {
                 $basename = str_replace(['__CLIENTID__', '__CLIENTNAME__'], '', $basename);
             }
@@ -371,9 +343,8 @@ class TracksModel extends ListModel
         $categoryId = (int) $this->getState('filter.category_id');
 
         if ($categoryId) {
-            $db = $this->getDatabase();
-            $query = $db
-                ->getQuery(true)
+            $db    = $this->getDatabase();
+            $query = $db->createQuery()
                 ->select($db->quoteName('title'))
                 ->from($db->quoteName('#__categories'))
                 ->where($db->quoteName('id') . ' = :categoryId')
@@ -406,9 +377,8 @@ class TracksModel extends ListModel
         $clientId = (int) $this->getState('filter.client_id');
 
         if ($clientId) {
-            $db = $this->getDatabase();
-            $query = $db
-                ->getQuery(true)
+            $db    = $this->getDatabase();
+            $query = $db->createQuery()
                 ->select($db->quoteName('name'))
                 ->from($db->quoteName('#__banner_clients'))
                 ->where($db->quoteName('id') . ' = :clientId')
@@ -463,42 +433,20 @@ class TracksModel extends ListModel
     public function getContent()
     {
         if (!isset($this->content)) {
-            $this->content =
-                '"' .
-                str_replace('"', '""', Text::_('COM_BANNERS_HEADING_NAME')) .
-                '","' .
-                str_replace('"', '""', Text::_('COM_BANNERS_HEADING_CLIENT')) .
-                '","' .
-                str_replace('"', '""', Text::_('JCATEGORY')) .
-                '","' .
-                str_replace('"', '""', Text::_('COM_BANNERS_HEADING_TYPE')) .
-                '","' .
-                str_replace('"', '""', Text::_('COM_BANNERS_HEADING_COUNT')) .
-                '","' .
-                str_replace('"', '""', Text::_('JDATE')) .
-                '"' .
-                "\n";
+            $this->content = '"' . str_replace('"', '""', Text::_('COM_BANNERS_HEADING_NAME')) . '","'
+                . str_replace('"', '""', Text::_('COM_BANNERS_HEADING_CLIENT')) . '","'
+                . str_replace('"', '""', Text::_('JCATEGORY')) . '","'
+                . str_replace('"', '""', Text::_('COM_BANNERS_HEADING_TYPE')) . '","'
+                . str_replace('"', '""', Text::_('COM_BANNERS_HEADING_COUNT')) . '","'
+                . str_replace('"', '""', Text::_('JDATE')) . '"' . "\n";
 
             foreach ($this->getItems() as $item) {
-                $this->content .=
-                    '"' .
-                    str_replace('"', '""', $item->banner_name) .
-                    '","' .
-                    str_replace('"', '""', $item->client_name) .
-                    '","' .
-                    str_replace('"', '""', $item->category_title) .
-                    '","' .
-                    str_replace(
-                        '"',
-                        '""',
-                        $item->track_type == 1 ? Text::_('COM_BANNERS_IMPRESSION') : Text::_('COM_BANNERS_CLICK'),
-                    ) .
-                    '","' .
-                    str_replace('"', '""', $item->count) .
-                    '","' .
-                    str_replace('"', '""', $item->track_date) .
-                    '"' .
-                    "\n";
+                $this->content .= '"' . str_replace('"', '""', $item->banner_name) . '","'
+                    . str_replace('"', '""', $item->client_name) . '","'
+                    . str_replace('"', '""', $item->category_title) . '","'
+                    . str_replace('"', '""', ($item->track_type == 1 ? Text::_('COM_BANNERS_IMPRESSION') : Text::_('COM_BANNERS_CLICK'))) . '","'
+                    . str_replace('"', '""', $item->count) . '","'
+                    . str_replace('"', '""', $item->track_date) . '"' . "\n";
             }
 
             if ($this->getState('compressed')) {
@@ -527,7 +475,7 @@ class TracksModel extends ListModel
 
                 $archive = new Archive();
 
-                if (!($packager = $archive->getAdapter('zip'))) {
+                if (!$packager = $archive->getAdapter('zip')) {
                     $this->setError(Text::_('COM_BANNERS_ERR_ZIP_ADAPTER_FAILURE'));
 
                     return false;

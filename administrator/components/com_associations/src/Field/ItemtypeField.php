@@ -15,7 +15,7 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -45,18 +45,14 @@ class ItemtypeField extends GroupedlistField
      */
     protected function getGroups()
     {
-        $options = [];
+        $options    = [];
         $extensions = AssociationsHelper::getSupportedExtensions();
 
         foreach ($extensions as $extension) {
             if ($extension->get('associationssupport') === true) {
                 foreach ($extension->get('types') as $type) {
-                    $context = $extension->get('component') . '.' . $type->get('name');
-                    $options[$extension->get('title')][] = HTMLHelper::_(
-                        'select.option',
-                        $context,
-                        $type->get('title'),
-                    );
+                    $context                             = $extension->get('component') . '.' . $type->get('name');
+                    $options[$extension->get('title')][] = HTMLHelper::_('select.option', $context, $type->get('title'));
                 }
             }
         }

@@ -16,7 +16,7 @@ use Joomla\CMS\Versioning\VersionableControllerTrait;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -47,7 +47,7 @@ class BannerController extends FormController
      */
     protected function allowAdd($data = [])
     {
-        $filter = $this->input->getInt('filter_category_id');
+        $filter     = $this->input->getInt('filter_category_id');
         $categoryId = ArrayHelper::getValue($data, 'catid', $filter, 'int');
 
         if ($categoryId) {
@@ -71,7 +71,7 @@ class BannerController extends FormController
      */
     protected function allowEdit($data = [], $key = 'id')
     {
-        $recordId = isset($data[$key]) ? (int) $data[$key] : 0;
+        $recordId   = isset($data[$key]) ? (int) $data[$key] : 0;
         $categoryId = 0;
 
         if ($recordId) {
@@ -104,9 +104,7 @@ class BannerController extends FormController
         $model = $this->getModel('Banner', '', []);
 
         // Preset the redirect
-        $this->setRedirect(
-            Route::_('index.php?option=com_banners&view=banners' . $this->getRedirectToListAppend(), false),
-        );
+        $this->setRedirect(Route::_('index.php?option=com_banners&view=banners' . $this->getRedirectToListAppend(), false));
 
         return parent::batch($model);
     }

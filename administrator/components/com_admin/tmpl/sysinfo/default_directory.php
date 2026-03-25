@@ -8,12 +8,13 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
 /** @var \Joomla\Component\Admin\Administrator\View\Sysinfo\HtmlView $this */
+
 ?>
 <div class="sysinfo">
     <table class="table">
@@ -31,7 +32,7 @@ use Joomla\CMS\Language\Text;
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($this->directory as $dir => $info): ?>
+            <?php foreach ($this->directory as $dir => $info) : ?>
                 <tr>
                     <th scope="row">
                         <?php echo '&#x200E;' . HTMLHelper::_('directory.message', $dir, $info['message']); ?>

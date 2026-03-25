@@ -18,7 +18,7 @@ use Joomla\Filesystem\Folder;
 use Joomla\String\StringHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -133,7 +133,7 @@ class HelpModel extends BaseDatabaseModel
         }
 
         // Get vars
-        $lang_tag = $this->getLangTag();
+        $lang_tag    = $this->getLangTag();
         $help_search = $this->getHelpSearch();
 
         // New style - Check for a TOC \JSON file
@@ -173,13 +173,7 @@ class HelpModel extends BaseDatabaseModel
             // Strip the extension
             $file = preg_replace('#\.xml$|\.html$#', '', $file);
 
-            if (
-                $help_search &&
-                StringHelper::strpos(
-                    StringHelper::strtolower(strip_tags($buffer)),
-                    StringHelper::strtolower($help_search),
-                ) === false
-            ) {
+            if ($help_search && StringHelper::strpos(StringHelper::strtolower(strip_tags($buffer)), StringHelper::strtolower($help_search)) === false) {
                 continue;
             }
 

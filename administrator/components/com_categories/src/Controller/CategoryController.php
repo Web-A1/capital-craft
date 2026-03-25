@@ -20,7 +20,7 @@ use Joomla\Input\Input;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -51,12 +51,8 @@ class CategoryController extends FormController
      * @since  1.6
      * @throws \Exception
      */
-    public function __construct(
-        $config = [],
-        ?MVCFactoryInterface $factory = null,
-        ?CMSApplication $app = null,
-        ?Input $input = null,
-    ) {
+    public function __construct($config = [], ?MVCFactoryInterface $factory = null, ?CMSApplication $app = null, ?Input $input = null)
+    {
         parent::__construct($config, $factory, $app, $input);
 
         if (empty($this->extension)) {
@@ -80,8 +76,7 @@ class CategoryController extends FormController
     {
         $user = $this->app->getIdentity();
 
-        return $user->authorise('core.create', $this->extension) ||
-            \count($user->getAuthorisedCategories($this->extension, 'core.create'));
+        return $user->authorise('core.create', $this->extension) || \count($user->getAuthorisedCategories($this->extension, 'core.create'));
     }
 
     /**
@@ -97,7 +92,7 @@ class CategoryController extends FormController
     protected function allowEdit($data = [], $key = 'parent_id')
     {
         $recordId = isset($data[$key]) ? (int) $data[$key] : 0;
-        $user = $this->app->getIdentity();
+        $user     = $this->app->getIdentity();
 
         // Check "edit" permission on record asset (explicit or inherited)
         if ($user->authorise('core.edit', $this->extension . '.category.' . $recordId)) {
@@ -163,14 +158,9 @@ class CategoryController extends FormController
 
         // When editing in modal then redirect to modalreturn layout
         if ($result && $this->input->get('layout') === 'modal') {
-            $id = $this->input->get('id');
-            $return =
-                'index.php?option=' .
-                $this->option .
-                '&view=' .
-                $this->view_item .
-                $this->getRedirectToItemAppend($id) .
-                '&layout=modalreturn&from-task=cancel';
+            $id     = $this->input->get('id');
+            $return = 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id)
+                . '&layout=modalreturn&from-task=cancel';
 
             $this->setRedirect(Route::_($return, false));
         }
@@ -258,12 +248,12 @@ class CategoryController extends FormController
         $item = $model->getItem();
 
         if (isset($item->params) && \is_array($item->params)) {
-            $registry = new Registry($item->params);
+            $registry     = new Registry($item->params);
             $item->params = (string) $registry;
         }
 
         if (isset($item->metadata) && \is_array($item->metadata)) {
-            $registry = new Registry($item->metadata);
+            $registry       = new Registry($item->metadata);
             $item->metadata = (string) $registry;
         }
 
@@ -271,7 +261,7 @@ class CategoryController extends FormController
             $editState = [];
 
             $type = 'component';
-            $id = $model->getState('category.id');
+            $id   = $model->getState('category.id');
             $link = 'index.php?option=com_content&view=category';
 
             if ($this->getTask() === 'save2menublog') {
@@ -279,10 +269,9 @@ class CategoryController extends FormController
             }
 
             $editState = [
-                'id' => $id,
-                'link' => $link,
-                'title' => $model->getItem($id)->title,
-                'type' => $type,
+                'link'    => $link,
+                'title'   => $model->getItem($id)->title,
+                'type'    => $type,
                 'request' => ['id' => $id],
             ];
 
@@ -292,19 +281,12 @@ class CategoryController extends FormController
                 'link' => $link,
             ]);
 
-            $this->setRedirect(
-                Route::_('index.php?option=com_menus&view=item&client_id=0&menutype=mainmenu&layout=edit', false),
-            );
+            $this->setRedirect(Route::_('index.php?option=com_menus&view=item&client_id=0&menutype=mainmenu&layout=edit', false));
         } elseif ($this->input->get('layout') === 'modal' && $this->task === 'save') {
             // When editing in modal then redirect to modalreturn layout
-            $id = $item->id;
-            $return =
-                'index.php?option=' .
-                $this->option .
-                '&view=' .
-                $this->view_item .
-                $this->getRedirectToItemAppend($id) .
-                '&layout=modalreturn&from-task=save';
+            $id     = $item->id;
+            $return = 'index.php?option=' . $this->option . '&view=' . $this->view_item . $this->getRedirectToItemAppend($id)
+                . '&layout=modalreturn&from-task=save';
 
             $this->setRedirect(Route::_($return, false));
         }

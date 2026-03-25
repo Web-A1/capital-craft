@@ -19,7 +19,7 @@ use Joomla\CMS\User\CurrentUserTrait;
 use Joomla\Component\Admin\Administrator\Model\SysinfoModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -88,27 +88,27 @@ class TextView extends AbstractView implements CurrentUserInterface
         return [
             'info' => [
                 'title' => Text::_('COM_ADMIN_SYSTEM_INFORMATION', true),
-                'data' => $model->getSafeData('info'),
+                'data'  => $model->getSafeData('info'),
             ],
             'phpSettings' => [
                 'title' => Text::_('COM_ADMIN_PHP_SETTINGS', true),
-                'data' => $model->getSafeData('phpSettings'),
+                'data'  => $model->getSafeData('phpSettings'),
             ],
             'config' => [
                 'title' => Text::_('COM_ADMIN_CONFIGURATION_FILE', true),
-                'data' => $model->getSafeData('config'),
+                'data'  => $model->getSafeData('config'),
             ],
             'directories' => [
                 'title' => Text::_('COM_ADMIN_DIRECTORY_PERMISSIONS', true),
-                'data' => $model->getSafeData('directory', true),
+                'data'  => $model->getSafeData('directory', true),
             ],
             'phpInfo' => [
                 'title' => Text::_('COM_ADMIN_PHP_INFORMATION', true),
-                'data' => $model->getSafeData('phpInfoArray'),
+                'data'  => $model->getSafeData('phpInfoArray'),
             ],
             'extensions' => [
                 'title' => Text::_('COM_ADMIN_EXTENSIONS', true),
-                'data' => $model->getSafeData('extensions'),
+                'data'  => $model->getSafeData('extensions'),
             ],
         ];
     }
@@ -128,7 +128,7 @@ class TextView extends AbstractView implements CurrentUserInterface
     {
         $lines = [];
 
-        $margin = $level > 0 ? str_repeat("\t", $level) : null;
+        $margin = ($level > 0) ? str_repeat("\t", $level) : null;
 
         $lines[] = $margin . '=============';
         $lines[] = $margin . $sectionName;
@@ -150,7 +150,7 @@ class TextView extends AbstractView implements CurrentUserInterface
 
                 if (\is_int($name) && ($name == 0 || $name == 1)) {
                     // The term "Master" is used because it is the term used in phpinfo() and this is a text representation of that.
-                    $name = $name == 0 ? 'Local Value' : 'Master Value';
+                    $name = ($name == 0 ? 'Local Value' : 'Master Value');
                 }
 
                 $lines[] = $margin . $name . ': ' . $value;

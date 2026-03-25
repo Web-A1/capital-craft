@@ -16,7 +16,7 @@ use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\Component\Admin\Administrator\Model\HelpModel;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -72,11 +72,11 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         /** @var HelpModel $model */
-        $model = $this->getModel();
-        $this->helpSearch = $model->getHelpSearch();
-        $this->page = $model->getPage();
-        $this->toc = $model->getToc();
-        $this->languageTag = $model->getLangTag();
+        $model                    = $this->getModel();
+        $this->helpSearch         = $model->getHelpSearch();
+        $this->page               = $model->getPage();
+        $this->toc                = $model->getToc();
+        $this->languageTag        = $model->getLangTag();
 
         $this->addToolbar();
 

@@ -14,17 +14,17 @@ use Joomla\CMS\Application\CMSApplication;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Event\ActionLog\AfterLogExportEvent;
-use Joomla\CMS\Input\Input;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Router\Route;
 use Joomla\Component\Actionlogs\Administrator\Helper\ActionlogsHelper;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogsModel;
+use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -38,11 +38,11 @@ class ActionlogsController extends AdminController
      * Constructor.
      *
      * @param   array                 $config   An optional associative array of configuration settings.
-     *                                         Recognized key values include 'name', 'default_task', 'model_path', and
-     *                                         'view_path' (this list is not meant to be comprehensive).
+     *                                          Recognized key values include 'name', 'default_task', 'model_path', and
+     *                                          'view_path' (this list is not meant to be comprehensive).
      * @param   ?MVCFactoryInterface  $factory  The factory.
-     * @param   CMSApplication        $app      The Application for the dispatcher
-     * @param   Input                 $input    Input
+     * @param   ?CMSApplication       $app      The Application for the dispatcher
+     * @param   ?Input                $input    Input
      *
      * @since   3.9.0
      *
@@ -97,21 +97,20 @@ class ActionlogsController extends AdminController
             // Destroy the iterator now
             unset($data);
 
-            $date = new Date('now', new \DateTimeZone('UTC'));
+            $date     = new Date('now', new \DateTimeZone('UTC'));
             $filename = 'logs_' . $date->format('Y-m-d_His_T');
 
             $csvDelimiter = ComponentHelper::getComponent('com_actionlogs')->getParams()->get('csv_delimiter', ',');
 
-            $this->app
-                ->setHeader('Content-Type', 'application/csv', true)
+            $this->app->setHeader('Content-Type', 'application/csv', true)
                 ->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '.csv"', true)
                 ->setHeader('Cache-Control', 'must-revalidate', true)
                 ->sendHeaders();
 
-            $output = fopen('php://output', 'w');
+            $output = fopen("php://output", "w");
 
             foreach ($rows as $row) {
-                fputcsv($output, $row, $csvDelimiter);
+                fputcsv($output, $row, $csvDelimiter, escape: "");
             }
 
             fclose($output);

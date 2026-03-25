@@ -8,14 +8,12 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\Component\Associations\Administrator\View\Association\HtmlView;
 
-/** @var HtmlView $this */
+/** @var \Joomla\Component\Associations\Administrator\View\Association\HtmlView $this */
 
 /** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->getDocument()->getWebAssetManager();
@@ -25,29 +23,23 @@ $wa->useScript('keepalive')
     ->useScript('webcomponent.core-loader');
 
 $options = [
-    'layout' => $this->app->getInput()->get('layout', '', 'string'),
+    'layout'   => $this->app->getInput()->get('layout', '', 'string'),
     'itemtype' => $this->itemType,
-    'id' => $this->referenceId,
+    'id'       => $this->referenceId,
 ];
 ?>
 <button id="toggle-left-panel" class="btn btn-sm btn-secondary"
         data-show-reference="<?php echo Text::_('COM_ASSOCIATIONS_EDIT_SHOW_REFERENCE'); ?>"
-        data-hide-reference="<?php echo Text::_('COM_ASSOCIATIONS_EDIT_HIDE_REFERENCE'); ?>"><?php echo Text::_(
-    'COM_ASSOCIATIONS_EDIT_HIDE_REFERENCE',
-); ?>
+        data-hide-reference="<?php echo Text::_('COM_ASSOCIATIONS_EDIT_HIDE_REFERENCE'); ?>"><?php echo Text::_('COM_ASSOCIATIONS_EDIT_HIDE_REFERENCE'); ?>
 </button>
 
-<form action="<?php echo Route::_(
-    'index.php?option=com_associations&view=association&' . http_build_query($options),
-); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" data-associatedview="<?php echo $this->typeName; ?>">
+<form action="<?php echo Route::_('index.php?option=com_associations&view=association&' . http_build_query($options)); ?>" method="post" name="adminForm" id="adminForm" class="form-validate" data-associatedview="<?php echo $this->typeName; ?>">
     <div class="sidebyside">
         <div class="outer-panel" id="left-panel">
             <div class="inner-panel">
                 <h3><?php echo Text::_('COM_ASSOCIATIONS_REFERENCE_ITEM'); ?></h3>
                 <iframe id="reference-association" name="reference-association" title="reference-association"
-                    src="<?php echo Route::_(
-                        $this->editUri . '&task=' . $this->typeName . '.edit&id=' . (int) $this->referenceId,
-                    ); ?>"
+                    src="<?php echo Route::_($this->editUri . '&task=' . $this->typeName . '.edit&id=' . (int) $this->referenceId); ?>"
                     height="400" width="400"
                     data-action="edit"
                     data-item="<?php echo $this->typeName; ?>"
@@ -89,7 +81,5 @@ $options = [
         </div>
     </div>
 
-    <input type="hidden" name="task" value="">
-    <input type="hidden" name="target-id" id="target-id" value="">
-    <?php echo HTMLHelper::_('form.token'); ?>
+    <?php echo $this->form->renderControlFields(); ?>
 </form>

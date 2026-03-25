@@ -13,13 +13,12 @@ namespace Joomla\Component\Actionlogs\Administrator\Helper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Object\CMSObject;
 use Joomla\CMS\Router\Route;
 use Joomla\Filesystem\Path;
 use Joomla\String\StringHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -56,8 +55,8 @@ class ActionlogsHelper
                 \sprintf(
                     '%s() requires an array or object implementing the Traversable interface, a %s was given.',
                     __METHOD__,
-                    \is_object($data) ? \get_class($data) : \gettype($data),
-                ),
+                    \is_object($data) ? \get_class($data) : \gettype($data)
+                )
             );
         }
 
@@ -72,14 +71,12 @@ class ActionlogsHelper
             static::loadTranslationFiles($extension);
 
             yield [
-                'id' => $log->id,
-                'message' => self::escapeCsvFormula(strip_tags(static::getHumanReadableLogMessage($log, false))),
-                'extension' => self::escapeCsvFormula(Text::_($extension)),
-                'date' => (new Date($log->log_date, new \DateTimeZone('UTC')))->format('Y-m-d H:i:s T'),
-                'name' => self::escapeCsvFormula($log->name),
-                'ip_address' => self::escapeCsvFormula(
-                    $log->ip_address === 'COM_ACTIONLOGS_DISABLED' ? $disabledText : $log->ip_address,
-                ),
+                'id'         => $log->id,
+                'message'    => self::escapeCsvFormula(strip_tags(static::getHumanReadableLogMessage($log, false))),
+                'extension'  => self::escapeCsvFormula(Text::_($extension)),
+                'date'       => (new Date($log->log_date, new \DateTimeZone('UTC')))->format('Y-m-d H:i:s T'),
+                'name'       => self::escapeCsvFormula($log->name),
+                'ip_address' => self::escapeCsvFormula($log->ip_address === 'COM_ACTIONLOGS_DISABLED' ? $disabledText : $log->ip_address),
             ];
         }
     }
@@ -96,13 +93,13 @@ class ActionlogsHelper
     public static function loadTranslationFiles($extension)
     {
         static $cache = [];
-        $extension = strtolower($extension);
+        $extension    = strtolower($extension);
 
         if (isset($cache[$extension])) {
             return;
         }
 
-        $lang = Factory::getLanguage();
+        $lang   = Factory::getLanguage();
         $source = '';
 
         switch (substr($extension, 0, 3)) {
@@ -136,36 +133,15 @@ class ActionlogsHelper
                 break;
         }
 
-        $lang->load($extension, JPATH_ADMINISTRATOR) || $lang->load($extension, $source);
+        $lang->load($extension, JPATH_ADMINISTRATOR)
+            || $lang->load($extension, $source);
 
         if (!$lang->hasKey(strtoupper($extension))) {
-            $lang->load($extension . '.sys', JPATH_ADMINISTRATOR) || $lang->load($extension . '.sys', $source);
+            $lang->load($extension . '.sys', JPATH_ADMINISTRATOR)
+                || $lang->load($extension . '.sys', $source);
         }
 
         $cache[$extension] = true;
-    }
-
-    /**
-     * Get parameters to be
-     *
-     * @param   string  $context  The context of the content
-     *
-     * @return  mixed  An object contains content type parameters, or null if not found
-     *
-     * @since   3.9.0
-     *
-     * @deprecated  4.3 will be removed in 6.0
-     *              Use the action log config model instead
-     *              Example: Factory::getApplication()->bootComponent('actionlogs')->getMVCFactory()
-     *                       ->createModel('ActionlogConfig', 'Administrator')->getLogContentTypeParams($context);
-     */
-    public static function getLogContentTypeParams($context)
-    {
-        return Factory::getApplication()
-            ->bootComponent('actionlogs')
-            ->getMVCFactory()
-            ->createModel('ActionlogConfig', 'Administrator')
-            ->getLogContentTypeParams($context);
     }
 
     /**
@@ -182,8 +158,8 @@ class ActionlogsHelper
     {
         static::loadActionLogPluginsLanguage();
         static $links = [];
-        $message = Text::_($log->message_language_key);
-        $messageData = json_decode($log->message, true);
+        $message      = Text::_($log->message_language_key);
+        $messageData  = json_decode($log->message, true);
 
         // Special handling for translation extension name
         if (isset($messageData['extension_name'])) {
@@ -235,7 +211,7 @@ class ActionlogsHelper
      * @param   string     $contentType
      * @param   integer    $id
      * @param   string     $urlVar
-     * @param   CMSObject  $object
+     * @param   \stdClass  $object
      *
      * @return  string  Link to the content item
      *
@@ -245,11 +221,11 @@ class ActionlogsHelper
     {
         // Try to find the component helper.
         $eName = str_replace('com_', '', $component);
-        $file = Path::clean(JPATH_ADMINISTRATOR . '/components/' . $component . '/helpers/' . $eName . '.php');
+        $file  = Path::clean(JPATH_ADMINISTRATOR . '/components/' . $component . '/helpers/' . $eName . '.php');
 
         if (file_exists($file)) {
             $prefix = ucfirst(str_replace('com_', '', $component));
-            $cName = $prefix . 'Helper';
+            $cName  = $prefix . 'Helper';
 
             \JLoader::register($cName, $file);
 
@@ -284,12 +260,26 @@ class ActionlogsHelper
         $loaded = true;
 
         $lang = Factory::getLanguage();
-        $db = Factory::getDbo();
+        $db   = Factory::getDbo();
 
         // Get all (both enabled and disabled) actionlog plugins
-        $query = $db
-            ->getQuery(true)
-            ->select($db->quoteName(['folder', 'element', 'params', 'extension_id'], ['type', 'name', 'params', 'id']))
+        $query = $db->createQuery()
+            ->select(
+                $db->quoteName(
+                    [
+                        'folder',
+                        'element',
+                        'params',
+                        'extension_id',
+                    ],
+                    [
+                        'type',
+                        'name',
+                        'params',
+                        'id',
+                    ]
+                )
+            )
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = ' . $db->quote('plugin'))
             ->where($db->quoteName('folder') . ' = ' . $db->quote('actionlog'))
@@ -308,8 +298,8 @@ class ActionlogsHelper
         }
 
         foreach ($rows as $row) {
-            $name = $row->name;
-            $type = $row->type;
+            $name      = $row->name;
+            $type      = $row->type;
             $extension = 'Plg_' . $type . '_' . $name;
             $extension = strtolower($extension);
 
@@ -318,8 +308,8 @@ class ActionlogsHelper
                 continue;
             }
 
-            $lang->load($extension, JPATH_ADMINISTRATOR) ||
-                $lang->load($extension, JPATH_PLUGINS . '/' . $type . '/' . $name);
+            $lang->load($extension, JPATH_ADMINISTRATOR)
+                || $lang->load($extension, JPATH_PLUGINS . '/' . $type . '/' . $name);
         }
 
         // Load plg_system_actionlogs too
@@ -357,4 +347,3 @@ class ActionlogsHelper
         return $value;
     }
 }
-

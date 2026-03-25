@@ -14,7 +14,7 @@ use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -43,18 +43,9 @@ class ImpmadeField extends FormField
     {
         $onclick = ' onclick="document.getElementById(\'' . $this->id . '\').value=\'0\';"';
 
-        return '<div class="input-group"><input class="form-control" type="text" name="' .
-            $this->name .
-            '" id="' .
-            $this->id .
-            '" value="' .
-            htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') .
-            '" readonly="readonly">' .
-            '<button type="button" class="btn btn-secondary" ' .
-            $onclick .
-            '>' .
-            '<span class="icon-sync" aria-hidden="true"></span> ' .
-            Text::_('JRESET') .
-            '</button></div>';
+        return '<div class="input-group"><input class="form-control" type="text" name="' . $this->name . '" id="' . $this->id . '" value="'
+            . htmlspecialchars($this->value, ENT_COMPAT, 'UTF-8') . '" readonly="readonly">'
+            . '<button type="button" class="btn btn-secondary" ' . $onclick . '>'
+            . '<span class="icon-sync" aria-hidden="true"></span> ' . Text::_('JRESET') . '</button></div>';
     }
 }

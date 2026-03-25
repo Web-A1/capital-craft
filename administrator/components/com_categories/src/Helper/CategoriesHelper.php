@@ -12,11 +12,11 @@ namespace Joomla\Component\Categories\Administrator\Helper;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Associations;
-use Joomla\CMS\Table\Table;
+use Joomla\Component\Categories\Administrator\Table\CategoryTable;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -36,27 +36,18 @@ class CategoriesHelper
      */
     public static function getAssociations($pk, $extension = 'com_content')
     {
-        $langAssociations = Associations::getAssociations(
-            $extension,
-            '#__categories',
-            'com_categories.item',
-            $pk,
-            'id',
-            'alias',
-            '',
-        );
-        $associations = [];
-        $user = Factory::getUser();
-        $groups = $user->getAuthorisedViewLevels();
+        $langAssociations = Associations::getAssociations($extension, '#__categories', 'com_categories.item', $pk, 'id', 'alias', '');
+        $associations     = [];
+        $user             = Factory::getUser();
+        $groups           = $user->getAuthorisedViewLevels();
 
         foreach ($langAssociations as $langAssociation) {
             // Include only published categories with user access
-            $arrId = explode(':', $langAssociation->id);
+            $arrId   = explode(':', $langAssociation->id);
             $assocId = (int) $arrId[0];
-            $db = Factory::getDbo();
+            $db      = Factory::getDbo();
 
-            $query = $db
-                ->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('published'))
                 ->from($db->quoteName('#__categories'))
                 ->whereIn($db->quoteName('access'), $groups)
@@ -83,10 +74,10 @@ class CategoriesHelper
      */
     public static function validateCategoryId($catid, $extension)
     {
-        $categoryTable = Table::getInstance('CategoryTable', '\\Joomla\\Component\\Categories\\Administrator\\Table\\');
+        $categoryTable = new CategoryTable(Factory::getDbo());
 
-        $data = [];
-        $data['id'] = $catid;
+        $data              = [];
+        $data['id']        = $catid;
         $data['extension'] = $extension;
 
         if (!$categoryTable->load($data)) {
@@ -105,10 +96,8 @@ class CategoriesHelper
      */
     public static function createCategory($data)
     {
-        $categoryModel = Factory::getApplication()
-            ->bootComponent('com_categories')
-            ->getMVCFactory()
-            ->createModel('Category', 'Administrator', ['ignore_request' => true]);
+        $categoryModel = Factory::getApplication()->bootComponent('com_categories')
+            ->getMVCFactory()->createModel('Category', 'Administrator', ['ignore_request' => true]);
         $categoryModel->save($data);
 
         $catid = $categoryModel->getState('category.id');

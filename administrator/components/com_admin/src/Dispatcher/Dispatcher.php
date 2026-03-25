@@ -13,7 +13,7 @@ namespace Joomla\Component\Admin\Administrator\Dispatcher;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -28,5 +28,7 @@ class Dispatcher extends ComponentDispatcher
      *
      * @return  void
      */
-    protected function checkAccess() {}
+    protected function checkAccess()
+    {
+    }
 }

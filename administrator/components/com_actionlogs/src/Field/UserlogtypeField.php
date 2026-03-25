@@ -43,19 +43,18 @@ class UserlogtypeField extends ListField
      */
     public function getOptions()
     {
-        $db = $this->getDatabase();
-        $user = Factory::getApplication()->getIdentity();
-        $query = $db
-            ->getQuery(true)
+        $db    = $this->getDatabase();
+        $user  = Factory::getApplication()->getIdentity();
+        $query = $db->createQuery()
             ->select($db->quoteName('extensions'))
             ->from($db->quoteName('#__action_logs_users'))
             ->where($db->quoteName('user_id') . ' = :userid')
             ->bind(':userid', $user->id, ParameterType::INTEGER);
 
         $extensions = $db->setQuery($query)->loadColumn();
-        $userExt = [];
-        $params = ComponentHelper::getParams('com_actionlogs');
-        $globalExt = $params->get('loggable_extensions', []);
+        $userExt    = [];
+        $params     = ComponentHelper::getParams('com_actionlogs');
+        $globalExt  = $params->get('loggable_extensions', []);
 
         if (!empty($extensions)) {
             $userExt = substr($extensions[0], 2);
@@ -63,17 +62,13 @@ class UserlogtypeField extends ListField
             $userExt = explode('","', $userExt);
         }
 
-        $common = array_merge($globalExt, array_intersect($globalExt, $userExt));
+        $common  = array_merge($globalExt, array_intersect($globalExt, $userExt));
         $options = [];
 
         foreach ($common as $extension) {
             ActionlogsHelper::loadTranslationFiles($extension);
-            $extensionName = Text::_($extension);
-            $options[ApplicationHelper::stringURLSafe($extensionName) . '_' . $extension] = HTMLHelper::_(
-                'select.option',
-                $extension,
-                $extensionName,
-            );
+            $extensionName                                                                = Text::_($extension);
+            $options[ApplicationHelper::stringURLSafe($extensionName) . '_' . $extension] = HTMLHelper::_('select.option', $extension, $extensionName);
         }
 
         ksort($options);

@@ -8,8 +8,10 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
+
 /** @var \Joomla\Component\Categories\Administrator\View\Category\HtmlView $this */
+
 ?>
 <div class="subhead noshadow mb-3">
     <?php echo $this->getDocument()->getToolbar('toolbar')->render(); ?>

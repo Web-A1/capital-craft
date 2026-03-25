@@ -13,7 +13,7 @@ namespace Joomla\Component\Actionlogs\Administrator\Plugin;
 use Joomla\CMS\Plugin\CMSPlugin;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -67,19 +67,19 @@ abstract class ActionLogPlugin extends CMSPlugin
      */
     protected function addLog($messages, $messageLanguageKey, $context, $userId = null)
     {
-        $app = $this->getApplication() ?: $this->app;
+        $app  = $this->getApplication() ?: $this->app;
         $user = $app->getIdentity();
 
         foreach ($messages as $index => $message) {
-            if (!\array_key_exists('userid', $message)) {
+            if (!\array_key_exists('userid', $message) && $user) {
                 $message['userid'] = $user->id;
             }
 
-            if (!\array_key_exists('username', $message)) {
+            if (!\array_key_exists('username', $message) && $user) {
                 $message['username'] = $user->username;
             }
 
-            if (!\array_key_exists('accountlink', $message)) {
+            if (!\array_key_exists('accountlink', $message) && $user) {
                 $message['accountlink'] = 'index.php?option=com_users&task=user.edit&id=' . $user->id;
             }
 
@@ -95,10 +95,8 @@ abstract class ActionLogPlugin extends CMSPlugin
         }
 
         /** @var \Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel $model */
-        $model = $app
-            ->bootComponent('com_actionlogs')
-            ->getMVCFactory()
-            ->createModel('Actionlog', 'Administrator', ['ignore_request' => true]);
+        $model = $app->bootComponent('com_actionlogs')
+            ->getMVCFactory()->createModel('Actionlog', 'Administrator', ['ignore_request' => true]);
 
         $model->addLog($messages, strtoupper($messageLanguageKey), $context, $userId);
     }

@@ -18,7 +18,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\Input\Input;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -81,10 +81,10 @@ class DisplayController extends BaseController
         $document = $this->app->getDocument();
 
         // Set the default view name and format from the Request.
-        $vName = $this->input->get('view', 'categories');
+        $vName   = $this->input->get('view', 'categories');
         $vFormat = $document->getType();
-        $lName = $this->input->get('layout', 'default', 'string');
-        $id = $this->input->getInt('id');
+        $lName   = $this->input->get('layout', 'default', 'string');
+        $id      = $this->input->getInt('id');
 
         // Check for edit form.
         if ($vName == 'category' && $lName == 'edit' && !$this->checkEditId('com_categories.edit.category', $id)) {
@@ -93,9 +93,7 @@ class DisplayController extends BaseController
                 $this->setMessage(Text::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id), 'error');
             }
 
-            $this->setRedirect(
-                Route::_('index.php?option=com_categories&view=categories&extension=' . $this->extension, false),
-            );
+            $this->setRedirect(Route::_('index.php?option=com_categories&view=categories&extension=' . $this->extension, false));
 
             return false;
         }

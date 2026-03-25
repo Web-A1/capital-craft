@@ -16,7 +16,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\Component\Associations\Administrator\Helper\AssociationsHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -97,7 +97,7 @@ class AssociationsController extends AdminController
         [$extensionName, $typeName] = explode('.', $this->input->get('itemtype'));
 
         $extension = AssociationsHelper::getSupportedExtension($extensionName);
-        $types = $extension->get('types');
+        $types     = $extension->get('types');
 
         if (!\array_key_exists($typeName, $types)) {
             return;
@@ -133,7 +133,7 @@ class AssociationsController extends AdminController
 
         $this->setRedirect(
             Route::_('index.php?option=' . $this->option . '&view=' . $this->view_list),
-            Text::_('COM_ASSOCIATIONS_YOU_ARE_NOT_ALLOWED_TO_CHECKIN_THIS_ITEM'),
+            Text::_('COM_ASSOCIATIONS_YOU_ARE_NOT_ALLOWED_TO_CHECKIN_THIS_ITEM')
         );
     }
 }

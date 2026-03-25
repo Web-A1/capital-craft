@@ -24,7 +24,7 @@ use Joomla\Database\QueryInterface;
 use Joomla\Utilities\ArrayHelper;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -48,18 +48,12 @@ class ActionlogsModel extends ListModel
     {
         if (empty($config['filter_fields'])) {
             $config['filter_fields'] = [
-                'a.id',
-                'id',
-                'a.extension',
-                'extension',
-                'a.user_id',
-                'user',
-                'a.message',
-                'message',
-                'a.log_date',
-                'log_date',
-                'a.ip_address',
-                'ip_address',
+                'a.id', 'id',
+                'a.extension', 'extension',
+                'a.user_id', 'user',
+                'a.message', 'message',
+                'a.log_date', 'log_date',
+                'a.ip_address', 'ip_address',
                 'dateRange',
             ];
         }
@@ -95,16 +89,12 @@ class ActionlogsModel extends ListModel
      */
     protected function getListQuery()
     {
-        $db = $this->getDatabase();
-        $query = $db
-            ->getQuery(true)
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
             ->select('a.*')
             ->select($db->quoteName('u.name'))
             ->from($db->quoteName('#__action_logs', 'a'))
-            ->join(
-                'LEFT',
-                $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('a.user_id') . ' = ' . $db->quoteName('u.id'),
-            );
+            ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('a.user_id') . ' = ' . $db->quoteName('u.id'));
 
         // Get ordering
         $fullorderCol = $this->state->get('list.fullordering', 'a.id DESC');
@@ -120,7 +110,8 @@ class ActionlogsModel extends ListModel
         // Apply filter by user
         if (!empty($user)) {
             $user = (int) $user;
-            $query->where($db->quoteName('a.user_id') . ' = :userid')->bind(':userid', $user, ParameterType::INTEGER);
+            $query->where($db->quoteName('a.user_id') . ' = :userid')
+                ->bind(':userid', $user, ParameterType::INTEGER);
         }
 
         // Get filter by extension
@@ -129,7 +120,8 @@ class ActionlogsModel extends ListModel
         // Apply filter by extension
         if (!empty($extension)) {
             $extension .= '%';
-            $query->where($db->quoteName('a.extension') . ' LIKE :extension')->bind(':extension', $extension);
+            $query->where($db->quoteName('a.extension') . ' LIKE :extension')
+                ->bind(':extension', $extension);
         }
 
         // Get filter by date range
@@ -142,8 +134,10 @@ class ActionlogsModel extends ListModel
             // If the chosen range is not more than a year ago
             if ($date['dNow'] !== false && $date['dStart'] !== false) {
                 $dStart = $date['dStart']->format('Y-m-d H:i:s');
-                $dNow = $date['dNow']->format('Y-m-d H:i:s');
-                $query->where($db->quoteName('a.log_date') . ' BETWEEN :dstart AND :dnow');
+                $dNow   = $date['dNow']->format('Y-m-d H:i:s');
+                $query->where(
+                    $db->quoteName('a.log_date') . ' BETWEEN :dstart AND :dnow'
+                );
                 $query->bind(':dstart', $dStart);
                 $query->bind(':dnow', $dNow);
             }
@@ -155,15 +149,16 @@ class ActionlogsModel extends ListModel
         if (!empty($search)) {
             if (stripos($search, 'id:') === 0) {
                 $ids = (int) substr($search, 3);
-                $query->where($db->quoteName('a.id') . ' = :id')->bind(':id', $ids, ParameterType::INTEGER);
+                $query->where($db->quoteName('a.id') . ' = :id')
+                    ->bind(':id', $ids, ParameterType::INTEGER);
             } elseif (stripos($search, 'item_id:') === 0) {
                 $ids = (int) substr($search, 8);
-                $query
-                    ->where($db->quoteName('a.item_id') . ' = :itemid')
+                $query->where($db->quoteName('a.item_id') . ' = :itemid')
                     ->bind(':itemid', $ids, ParameterType::INTEGER);
             } else {
                 $search = '%' . $search . '%';
-                $query->where($db->quoteName('a.message') . ' LIKE :message')->bind(':message', $search);
+                $query->where($db->quoteName('a.message') . ' LIKE :message')
+                    ->bind(':message', $search);
             }
         }
 
@@ -184,7 +179,7 @@ class ActionlogsModel extends ListModel
     private function buildDateRange($range)
     {
         // Get UTC for now.
-        $dNow = new Date();
+        $dNow   = new Date();
         $dStart = clone $dNow;
 
         switch ($range) {
@@ -217,7 +212,7 @@ class ActionlogsModel extends ListModel
                 $dStart->setTime(0, 0, 0);
 
                 // Now change the timezone back to UTC.
-                $tz = new \DateTimeZone('GMT');
+                $tz = new \DateTimeZone('UTC');
                 $dStart->setTimezone($tz);
                 break;
         }
@@ -238,16 +233,12 @@ class ActionlogsModel extends ListModel
     public function getLogsForItem($extension, $itemId)
     {
         $itemId = (int) $itemId;
-        $db = $this->getDatabase();
-        $query = $db
-            ->getQuery(true)
+        $db     = $this->getDatabase();
+        $query  = $db->createQuery()
             ->select('a.*')
             ->select($db->quoteName('u.name'))
             ->from($db->quoteName('#__action_logs', 'a'))
-            ->join(
-                'INNER',
-                $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('a.user_id') . ' = ' . $db->quoteName('u.id'),
-            )
+            ->join('INNER', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('a.user_id') . ' = ' . $db->quoteName('u.id'))
             ->where($db->quoteName('a.extension') . ' = :extension')
             ->where($db->quoteName('a.item_id') . ' = :itemid')
             ->bind(':extension', $extension)
@@ -277,7 +268,7 @@ class ActionlogsModel extends ListModel
      */
     public function getLogsData($pks = null)
     {
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $this->getLogDataQuery($pks);
 
         $db->setQuery($query);
@@ -296,7 +287,7 @@ class ActionlogsModel extends ListModel
      */
     public function getLogDataAsIterator($pks = null)
     {
-        $db = $this->getDatabase();
+        $db    = $this->getDatabase();
         $query = $this->getLogDataQuery($pks);
 
         $db->setQuery($query);
@@ -315,16 +306,12 @@ class ActionlogsModel extends ListModel
      */
     private function getLogDataQuery($pks = null)
     {
-        $db = $this->getDatabase();
-        $query = $db
-            ->getQuery(true)
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
             ->select('a.*')
             ->select($db->quoteName('u.name'))
             ->from($db->quoteName('#__action_logs', 'a'))
-            ->join(
-                'INNER',
-                $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('a.user_id') . ' = ' . $db->quoteName('u.id'),
-            );
+            ->join('INNER', $db->quoteName('#__users', 'u') . ' ON ' . $db->quoteName('a.user_id') . ' = ' . $db->quoteName('u.id'));
 
         if (\is_array($pks) && \count($pks) > 0) {
             $pks = ArrayHelper::toInteger($pks);
@@ -345,9 +332,11 @@ class ActionlogsModel extends ListModel
      */
     public function delete(&$pks)
     {
-        $keys = ArrayHelper::toInteger($pks);
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true)->delete($db->quoteName('#__action_logs'))->whereIn($db->quoteName('id'), $keys);
+        $keys  = ArrayHelper::toInteger($pks);
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
+            ->delete($db->quoteName('#__action_logs'))
+            ->whereIn($db->quoteName('id'), $keys);
         $db->setQuery($query);
 
         try {
@@ -395,8 +384,8 @@ class ActionlogsModel extends ListModel
      */
     public function getFilterForm($data = [], $loadData = true)
     {
-        $form = parent::getFilterForm($data, $loadData);
-        $params = ComponentHelper::getParams('com_actionlogs');
+        $form      = parent::getFilterForm($data, $loadData);
+        $params    = ComponentHelper::getParams('com_actionlogs');
         $ipLogging = (bool) $params->get('ip_logging', 0);
 
         // Add ip sort options to sort dropdown

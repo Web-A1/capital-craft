@@ -22,7 +22,7 @@ use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -210,35 +210,26 @@ class AssociationsHelper extends ContentHelper
      *
      * @since  3.7.0
      */
-    public static function getAssociationHtmlList(
-        $extensionName,
-        $typeName,
-        $itemId,
-        $itemLanguage,
-        $addLink = true,
-        $assocLanguages = true,
-    ) {
+    public static function getAssociationHtmlList($extensionName, $typeName, $itemId, $itemLanguage, $addLink = true, $assocLanguages = true)
+    {
         // Get the associations list for this item.
         $items = self::getAssociationList($extensionName, $typeName, $itemId);
 
         $titleFieldName = self::getTypeFieldName($extensionName, $typeName, 'title');
 
         // Get all content languages.
-        $languages = LanguageHelper::getContentLanguages([0, 1], false);
+        $languages         = LanguageHelper::getContentLanguages([0, 1], false);
         $content_languages = array_column($languages, 'lang_code');
 
         // Display warning if Content Language is trashed or deleted
         foreach ($items as $item) {
             if (!\in_array($item['language'], $content_languages)) {
-                Factory::getApplication()->enqueueMessage(
-                    Text::sprintf('JGLOBAL_ASSOCIATIONS_CONTENTLANGUAGE_WARNING', $item['language']),
-                    'warning',
-                );
+                Factory::getApplication()->enqueueMessage(Text::sprintf('JGLOBAL_ASSOCIATIONS_CONTENTLANGUAGE_WARNING', $item['language']), 'warning');
             }
         }
 
         $canEditReference = self::allowEdit($extensionName, $typeName, $itemId);
-        $canCreate = self::allowAdd($extensionName, $typeName);
+        $canCreate        = self::allowAdd($extensionName, $typeName);
 
         // Create associated items list.
         foreach ($languages as $langCode => $language) {
@@ -260,15 +251,14 @@ class AssociationsHelper extends ContentHelper
 
             // Get html parameters.
             if (isset($items[$langCode])) {
-                $title = $items[$langCode][$titleFieldName];
-                $additional = '';
+                $title       = $items[$langCode][$titleFieldName];
+                $additional  = '';
 
                 if (isset($items[$langCode]['catid'])) {
                     $db = Factory::getDbo();
 
                     // Get the category name
-                    $query = $db
-                        ->getQuery(true)
+                    $query = $db->createQuery()
                         ->select($db->quoteName('title'))
                         ->from($db->quoteName('#__categories'))
                         ->where($db->quoteName('id') . ' = :id')
@@ -282,8 +272,7 @@ class AssociationsHelper extends ContentHelper
                     $db = Factory::getDbo();
 
                     // Get the menutype name
-                    $query = $db
-                        ->getQuery(true)
+                    $query = $db->createQuery()
                         ->select($db->quoteName('title'))
                         ->from($db->quoteName('#__menu_types'))
                         ->where($db->quoteName('menutype') . ' = :menutype')
@@ -292,63 +281,47 @@ class AssociationsHelper extends ContentHelper
                     $db->setQuery($query);
                     $menutypeTitle = $db->loadResult();
 
-                    $additional =
-                        '<strong>' . Text::sprintf('COM_MENUS_MENU_SPRINTF', $menutypeTitle) . '</strong><br>';
+                    $additional = '<strong>' . Text::sprintf('COM_MENUS_MENU_SPRINTF', $menutypeTitle) . '</strong><br>';
                 }
 
-                $labelClass = 'bg-secondary';
-                $target = $langCode . ':' . $items[$langCode]['id'] . ':edit';
-                $allow =
-                    $canEditReference &&
-                    self::allowEdit($extensionName, $typeName, $items[$langCode]['id']) &&
-                    self::canCheckinItem($extensionName, $typeName, $items[$langCode]['id']);
+                $labelClass  = 'bg-secondary';
+                $target      = $langCode . ':' . $items[$langCode]['id'] . ':edit';
+                $allow       = $canEditReference
+                                && self::allowEdit($extensionName, $typeName, $items[$langCode]['id'])
+                                && self::canCheckinItem($extensionName, $typeName, $items[$langCode]['id']);
 
                 $additional .= $addLink && $allow ? Text::_('COM_ASSOCIATIONS_EDIT_ASSOCIATION') : '';
             } else {
                 $items[$langCode] = [];
 
-                $title = Text::_('COM_ASSOCIATIONS_NO_ASSOCIATION');
+                $title      = Text::_('COM_ASSOCIATIONS_NO_ASSOCIATION');
                 $additional = $addLink ? Text::_('COM_ASSOCIATIONS_ADD_NEW_ASSOCIATION') : '';
                 $labelClass = 'bg-warning';
-                $target = $langCode . ':0:add';
-                $allow = $canCreate;
+                $target     = $langCode . ':0:add';
+                $allow      = $canCreate;
             }
 
             // Generate item Html.
-            $options = [
-                'option' => 'com_associations',
-                'view' => 'association',
-                'layout' => 'edit',
+            $options   = [
+                'option'   => 'com_associations',
+                'view'     => 'association',
+                'layout'   => 'edit',
                 'itemtype' => $extensionName . '.' . $typeName,
-                'task' => 'association.edit',
-                'id' => $itemId,
-                'target' => $target,
+                'task'     => 'association.edit',
+                'id'       => $itemId,
+                'target'   => $target,
             ];
 
-            $url = Route::_('index.php?' . http_build_query($options));
-            $url = $allow && $addLink ? $url : '';
-            $text = $language->lang_code;
+            $url     = Route::_('index.php?' . http_build_query($options));
+            $url     = $allow && $addLink ? $url : '';
+            $text    = $language->lang_code;
 
-            $tooltip =
-                '<strong>' .
-                htmlspecialchars($language->title, ENT_QUOTES, 'UTF-8') .
-                '</strong><br>' .
-                htmlspecialchars($title, ENT_QUOTES, 'UTF-8') .
-                '<br><br>' .
-                $additional;
+            $tooltip = '<strong>' . htmlspecialchars($language->title, ENT_QUOTES, 'UTF-8') . '</strong><br>'
+                . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '<br><br>' . $additional;
             $classes = 'badge ' . $labelClass;
 
-            $items[$langCode]['link'] =
-                '<a href="' .
-                $url .
-                '" class="' .
-                $classes .
-                '">' .
-                $text .
-                '</a>' .
-                '<div role="tooltip">' .
-                $tooltip .
-                '</div>';
+            $items[$langCode]['link'] = '<a href="' . $url . '" class="' . $classes . '">' . $text . '</a>'
+                . '<div role="tooltip">' . $tooltip . '</div>';
         }
 
         return LayoutHelper::render('joomla.content.associations', $items);
@@ -417,7 +390,7 @@ class AssociationsHelper extends ContentHelper
 
         // Get the translated titles.
         $languagePath = JPATH_ADMINISTRATOR . '/components/' . $extensionName;
-        $lang = Factory::getLanguage();
+        $lang         = Factory::getLanguage();
 
         $lang->load($extensionName . '.sys', JPATH_ADMINISTRATOR);
         $lang->load($extensionName . '.sys', $languagePath);
@@ -427,20 +400,20 @@ class AssociationsHelper extends ContentHelper
         $result->def('title', Text::_(strtoupper($extensionName)));
 
         // Get the supported types
-        $types = $helper->getItemTypes();
+        $types  = $helper->getItemTypes();
         $rTypes = [];
 
         foreach ($types as $typeName) {
-            $details = $helper->getType($typeName);
-            $context = 'component';
-            $title = $helper->getTypeTitle($typeName);
+            $details     = $helper->getType($typeName);
+            $context     = 'component';
+            $title       = $helper->getTypeTitle($typeName);
             $languageKey = $typeName;
 
             $typeNameExploded = explode('.', $typeName);
 
             if (array_pop($typeNameExploded) === 'category') {
                 $languageKey = strtoupper($extensionName) . '_CATEGORIES';
-                $context = 'category';
+                $context     = 'category';
             }
 
             if ($lang->hasKey(strtoupper($extensionName . '_' . $title . 'S'))) {
@@ -475,8 +448,7 @@ class AssociationsHelper extends ContentHelper
     {
         $db = Factory::getDbo();
 
-        $query = $db
-            ->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('type') . ' = ' . $db->quote('component'))
@@ -680,9 +652,8 @@ class AssociationsHelper extends ContentHelper
      */
     public static function getLanguagefilterPluginId()
     {
-        $db = Factory::getDbo();
-        $query = $db
-            ->getQuery(true)
+        $db    = Factory::getDbo();
+        $query = $db->createQuery()
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
             ->where($db->quoteName('folder') . ' = ' . $db->quote('system'))

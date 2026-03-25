@@ -24,7 +24,7 @@ use Joomla\Utilities\IpHelper;
 use PHPMailer\PHPMailer\Exception as phpMailerException;
 
 // phpcs:disable PSR1.Files.SideEffects
-\defined('_JEXEC') or die();
+\defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
@@ -62,8 +62,8 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
             $user = Factory::getUser($userId);
         }
 
-        $db = $this->getDatabase();
-        $date = Factory::getDate();
+        $db     = $this->getDatabase();
+        $date   = Factory::getDate();
         $params = ComponentHelper::getComponent('com_actionlogs')->getParams();
 
         if ($params->get('ip_logging', 0)) {
@@ -79,14 +79,14 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
         $loggedMessages = [];
 
         foreach ($messages as $message) {
-            $logMessage = new \stdClass();
+            $logMessage                       = new \stdClass();
             $logMessage->message_language_key = $messageLanguageKey;
-            $logMessage->message = json_encode($message);
-            $logMessage->log_date = (string) $date;
-            $logMessage->extension = $context;
-            $logMessage->user_id = $user->id;
-            $logMessage->ip_address = $ip;
-            $logMessage->item_id = isset($message['id']) ? (int) $message['id'] : 0;
+            $logMessage->message              = json_encode($message);
+            $logMessage->log_date             = (string) $date;
+            $logMessage->extension            = $context;
+            $logMessage->user_id              = $user->id;
+            $logMessage->ip_address           = $ip;
+            $logMessage->item_id              = isset($message['id']) ? (int) $message['id'] : 0;
 
             try {
                 $db->insertObject('#__action_logs', $logMessage);
@@ -120,10 +120,10 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
      */
     protected function sendNotificationEmails($messages, $username, $context)
     {
-        $app = Factory::getApplication();
-        $lang = $app->getLanguage();
-        $db = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $app   = Factory::getApplication();
+        $lang  = $app->getLanguage();
+        $db    = $this->getDatabase();
+        $query = $db->createQuery();
 
         $query
             ->select($db->quoteName(['u.email', 'l.extensions']))
@@ -131,14 +131,8 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
             ->where($db->quoteName('u.block') . ' = 0')
             ->join(
                 'INNER',
-                $db->quoteName('#__action_logs_users', 'l') .
-                    ' ON ( ' .
-                    $db->quoteName('l.notify') .
-                    ' = 1 AND ' .
-                    $db->quoteName('l.user_id') .
-                    ' = ' .
-                    $db->quoteName('u.id') .
-                    ')',
+                $db->quoteName('#__action_logs_users', 'l') . ' ON ( ' . $db->quoteName('l.notify') . ' = 1 AND '
+                . $db->quoteName('l.user_id') . ' = ' . $db->quoteName('u.id') . ')'
             );
 
         $db->setQuery($query);
@@ -162,22 +156,22 @@ class ActionlogModel extends BaseDatabaseModel implements UserFactoryAwareInterf
         $extension = strtok($context, '.');
         $lang->load('com_actionlogs', JPATH_ADMINISTRATOR);
         ActionlogsHelper::loadTranslationFiles($extension);
-        $temp = [];
+        $temp      = [];
         $tempPlain = [];
 
         foreach ($messages as $message) {
-            $m = [];
+            $m              = [];
             $m['extension'] = Text::_($extension);
-            $m['message'] = ActionlogsHelper::getHumanReadableLogMessage($message);
-            $tzOffset = Factory::getApplication()->get('offset');
-            $m['date'] = HTMLHelper::_('date', $message->log_date, 'Y-m-d H:i:s T', $tzOffset);
-            $m['username'] = $username;
-            $temp[] = $m;
+            $m['message']   = ActionlogsHelper::getHumanReadableLogMessage($message);
+            $tzOffset       = Factory::getApplication()->get('offset');
+            $m['date']      = HTMLHelper::_('date', $message->log_date, 'Y-m-d H:i:s T', $tzOffset);
+            $m['username']  = $username;
+            $temp[]         = $m;
 
             // copy replacement tags array and set non-HTML message.
-            $mPlain = array_merge([], $m);
+            $mPlain            = array_merge([], $m);
             $mPlain['message'] = ActionlogsHelper::getHumanReadableLogMessage($message, false);
-            $tempPlain[] = $mPlain;
+            $tempPlain[]       = $mPlain;
         }
 
         $templateData = [

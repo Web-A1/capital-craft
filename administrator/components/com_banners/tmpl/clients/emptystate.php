@@ -8,7 +8,7 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 use Joomla\CMS\Layout\LayoutHelper;
 
@@ -16,9 +16,11 @@ use Joomla\CMS\Layout\LayoutHelper;
 
 $displayData = [
     'textPrefix' => 'COM_BANNERS_CLIENT',
-    'formURL' => 'index.php?option=com_banners&view=clients',
-    'helpURL' => 'https://docs.joomla.org/Special:MyLanguage/Help5.x:Banners:_Clients',
-    'icon' => 'icon-bookmark banners',
+    'formURL'    => 'index.php?option=com_banners&view=clients',
+    'helpURL'    => 'https://docs.joomla.org/Special:MyLanguage/Help5.x:Banners:_Clients',
+    'icon'       => 'icon-bookmark banners',
+
+    'controlFields' => $this->filterForm->renderControlFields(),
 ];
 
 if (count($this->getCurrentUser()->getAuthorisedCategories('com_banners', 'core.create')) > 0) {
