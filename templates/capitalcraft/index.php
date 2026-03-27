@@ -41,6 +41,17 @@ $isBlog =
     ($active && ($active->alias ?? "") === "blog") ||
     ($option === "com_finder" && $view === "search") ||
     ($option === "com_tags" && $view === "tag");
+$currentHost = strtolower((string) ($app->input->server->getString("HTTP_HOST", "")));
+$rootUrl = strtolower((string) Uri::root());
+$configDb = strtolower((string) Factory::getConfig()->get("db", ""));
+$isDevSubdomain =
+    strpos($currentHost, "div.capital-craft.ru") !== false ||
+    strpos($rootUrl, "div.capital-craft.ru") !== false ||
+    $configDb === "tdsta_ccdev";
+$robotsMeta =
+    $isDevSubdomain
+        ? "noindex, nofollow"
+        : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
 
 $document = Factory::getDocument();
 $wa = $document->getWebAssetManager();
@@ -170,7 +181,7 @@ if ($addCanonical) {
     <link rel="alternate" hreflang="x-default" href="https://capital-craft.ru/">
     
     <!-- Мета-теги для поисковых роботов -->
-    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="robots" content="<?= $robotsMeta ?>">
     
     <!-- Дополнительные SEO мета-теги для главной страницы -->
     <meta name="keywords" content="инвестиционные решения, привлечение финансирования, капитал, бизнес, лизинг, банки, инвестиции, финансирование, рост бизнеса, стратегия развития">
@@ -246,7 +257,7 @@ if ($addCanonical) {
   <?php else: ?>
     <?php if (!$isArticle): ?>
       <!-- Базовые SEO мета-теги для остальных страниц -->
-      <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+      <meta name="robots" content="<?= $robotsMeta ?>">
       <meta name="revisit-after" content="7 days">
 
       <!-- Open Graph теги для остальных страниц -->

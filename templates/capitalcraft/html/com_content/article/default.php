@@ -189,8 +189,19 @@ if ($isFAQPage) {
         '<meta name="twitter:url" content="' . htmlspecialchars($canonical, ENT_QUOTES, "UTF-8") . '" />',
     );
 
-    // Robots meta
-    $doc->setMetaData("robots", "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1");
+    // Robots meta: subdomain is closed from indexing, production keeps index/follow.
+    $currentHost = strtolower((string) (Uri::getInstance()->getHost() ?? ""));
+    $rootUrl = strtolower((string) Uri::root());
+    $configDb = strtolower((string) Factory::getConfig()->get("db", ""));
+    $isDevSubdomain =
+        strpos($currentHost, "div.capital-craft.ru") !== false ||
+        strpos($rootUrl, "div.capital-craft.ru") !== false ||
+        $configDb === "tdsta_ccdev";
+    $robotsMeta =
+        $isDevSubdomain
+            ? "noindex, nofollow"
+            : "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1";
+    $doc->setMetaData("robots", $robotsMeta);
 
     // Структурированные данные для статьи (расширенная схема)
     $schemaDescription = $doc->getMetaData("description");
